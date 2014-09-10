@@ -9,17 +9,20 @@ import java.awt.Color;
 import java.awt.Frame;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import modelos.Estacionamiento;
 import org.jdesktop.application.Action;
 
 
 public class FrmBoletoPerdidoPlaca extends javax.swing.JDialog {
+    Estacionamiento estacionamiento;
     Turno turno;
     Frame parent;
-    public FrmBoletoPerdidoPlaca(java.awt.Frame parent, boolean modal,Turno turno) {
+    public FrmBoletoPerdidoPlaca(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento) {
         super(parent,"Boleto perdido" ,modal);
         initComponents();
         this.parent = parent;
         this.turno = turno;
+        this.estacionamiento =  estacionamiento;
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
@@ -99,9 +102,9 @@ public class FrmBoletoPerdidoPlaca extends javax.swing.JDialog {
         if(auto!= null){
             if(auto.isDentro()){
                 if(auto.getBoletoPerdido()==null)
-                     new FrmBoletoPerdido((JFrame) parent,true, turno, auto);
+                     new FrmBoletoPerdido((JFrame) parent,true, turno, auto,estacionamiento);
                 else
-                    new FrmCobro(parent,true, turno, auto);
+                    new FrmCobro(parent,true, turno, auto,estacionamiento);
                 this.dispose();
                 }
             else

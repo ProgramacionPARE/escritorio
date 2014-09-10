@@ -10,6 +10,7 @@ import java.awt.Frame;
 import modeloReportes.CorteTurno;
 import modelos.Caja;
 import modelos.Empleado;
+import modelos.Estacionamiento;
 import modelos.Turno;
 import proyectopare.ProyectoPareApp;
 import vistas.formatos.FrmRetiroParcial;
@@ -24,21 +25,23 @@ public class FrmCaja extends javax.swing.JDialog {
     private Frame parent;
     private boolean esCorte;
     private Empleado empleado;
+    private Estacionamiento estacionamiento;
     
 
-    public FrmCaja(java.awt.Frame parent, boolean modal,Turno turno,boolean esCorte,Empleado empleado) {
+    public FrmCaja(java.awt.Frame parent, boolean modal,Turno turno,boolean esCorte,Empleado empleado,Estacionamiento estacionamiento) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(parent);
+      
         this.parent = parent;
         this.turno = turno;
         this.esCorte = esCorte;
         this.empleado = empleado;
-        caja = Caja.getByCaseta(turno.getEmpleado().getCaseta().getId());
+        this.estacionamiento = estacionamiento;
+        caja = Caja.getByCaseta(estacionamiento.getCaseta().getId());
         txtTotal.setText(String.valueOf(caja.getMonto()+caja.getFondo()));
         txtVenta.setText(String.valueOf(caja.getMonto()));
         txtFondo.setText(String.valueOf(caja.getFondo()));
-        
+          setLocationRelativeTo(parent);
         setVisible(true);
     }
 
@@ -142,12 +145,12 @@ public class FrmCaja extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       new FrmRetiroParcial(parent,true,turno);
+       new FrmRetiroParcial(parent,true,turno,estacionamiento);
        this.setVisible(false);
        if(esCorte){
             turno.realizarCorte(empleado);
             turno.actualizar();
-            new CorteTurno(turno).generarReporte(); 
+            new CorteTurno(turno,estacionamiento).generarReporte(); 
             ProyectoPareApp.getApplication().getView().initLogin();
        }
        this.dispose();

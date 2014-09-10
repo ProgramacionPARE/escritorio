@@ -27,6 +27,7 @@ import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import modelos.Auto;
+import modelos.Estacionamiento;
 import modelos.Progresivo;
 import modelos.Turno;
 import net.sourceforge.barbecue.Barcode;
@@ -41,8 +42,9 @@ import net.sourceforge.barbecue.BarcodeFactory;
 public class FrmReciboPago extends JDialog implements Printable {
     private PrinterJob job;
     private Barcode barcode=null;
+    private Estacionamiento estacionamiento;
     /** Creates new form VenBoletoValetParking1 */
-    public FrmReciboPago(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto) {
+    public FrmReciboPago(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto,Estacionamiento estacionamiento) {
         super(parent, modal);
         initComponents();
         this.getContentPane().setBackground(Color.white);
@@ -53,12 +55,12 @@ public class FrmReciboPago extends JDialog implements Printable {
         this.txtBoleto.setText(auto.getProgresivo());
         this.txtEntrada.setText(auto.getHoraEntrada());
         this.txtSalida.setText(auto.getHoraSalida());
-        this.txtEstacionamiento.setText(turno.getEmpleado().getCaseta().getCentroOperativo().getDescripcion());
+        this.txtEstacionamiento.setText(estacionamiento.getDescripcion());
         this.txtImporte.setText(String.format("%.2f", (float) auto.getMontoTangible()*.85));
         this.txtIVA.setText(String.format("%.2f", (float) auto.getMontoTangible()*.15));
         this.txtTotal.setText(String.format("%.2f", auto.getMontoTangible()));
-        this.txtProgresivo.setText("NO. "+Progresivo.getUltimoProgresivo(turno.getEmpleado().getCaseta(), "RECIBO_PAGO"));
-        Progresivo.setProgresivoMasUno(turno.getEmpleado().getCaseta(), "RECIBO_PAGO");
+        this.txtProgresivo.setText("NO. "+Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO"));
+        Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(), "RECIBO_PAGO");
         
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
         int selectedService = 0;

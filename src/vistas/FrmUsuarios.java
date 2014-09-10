@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modelos.Empleado;
+import modelos.Estacionamiento;
 import modelos.Operacion;
 import modelos.Turno;
 import vistas.formatos.FrmInfoUsuario;
@@ -28,16 +29,18 @@ import vistas.formatos.FrmInfoUsuario;
 public class FrmUsuarios extends javax.swing.JDialog {
 
     Turno turno;
+    Estacionamiento estacionamiento;
     Empleado empleado;
     String estado = "";
 
     /**
      * Creates new form FrmUsuarios
      */
-    public FrmUsuarios(java.awt.Frame parent, boolean modal, Turno turno) {
+    public FrmUsuarios(java.awt.Frame parent, boolean modal, Turno turno,Estacionamiento estacionamiento) {
         super(parent, "Usuarios", modal);
         initComponents(); 
         this.turno = turno;
+        this.estacionamiento = estacionamiento;
         cargarTabla();
         tblUsuario.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -402,7 +405,7 @@ public class FrmUsuarios extends javax.swing.JDialog {
         if(validaCamposEntrada()){
             if(estado.equals("Agregar")){
                 Empleado nuevoEmpleado = new Empleado(0, Integer.valueOf(txtNivel.getText()),txtNombre.getText(), 
-                turno.getEmpleado().getCaseta(), (String)cbxTipo.getSelectedItem(),txtUsuario.getText(),txtContraseña.getText());
+                estacionamiento.getCaseta(), (String)cbxTipo.getSelectedItem(),txtUsuario.getText(),txtContraseña.getText());
                 nuevoEmpleado.guardar();
                 empleado = nuevoEmpleado;
                 regresarEstado();

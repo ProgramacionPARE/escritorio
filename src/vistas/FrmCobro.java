@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Caja;
 import modelos.DetallesMovimiento;
+import modelos.Estacionamiento;
 import modelos.Tarifa;
 import modelos.Turno;
 import org.jdesktop.application.Action;
@@ -20,16 +21,19 @@ import vistas.formatos.FrmReciboPago;
  * @author Asistente Proyectos2
  */
 public class FrmCobro extends javax.swing.JDialog implements Runnable{
-    Auto auto;
+    Estacionamiento estacionamiento;
     Turno turno;
+    Auto auto;
+    
     /**
      * Creates new form FrmCobro
      */
-    public FrmCobro(java.awt.Frame parent, boolean modal,Turno turno,Auto auto) {
+    public FrmCobro(java.awt.Frame parent, boolean modal,Turno turno,Auto auto,Estacionamiento estacionamiento) {
         super(parent,"Cobro de boleto", modal);
         initComponents();
         this.auto = auto;
         this.turno = turno;
+        this.estacionamiento = estacionamiento;
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
@@ -293,8 +297,11 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         new Thread(this).start();
         //Pregunto si imprimo recibo de pago
         int showConfirmDialog = JOptionPane.showConfirmDialog(this, "Quieres imprimir recibo de pago", "Recibo de pago",JOptionPane.YES_NO_OPTION);
-        if(showConfirmDialog == JOptionPane.YES_OPTION)
-            new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),turno,auto);
+        if(showConfirmDialog == JOptionPane.YES_OPTION){
+            auto.setReciboImpreso(true);
+            auto.actualizar();
+            new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),turno,auto,estacionamiento);   
+        }
         this.dispose();
     }
     
@@ -302,7 +309,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     public void run() {
         auto.setDentro(false);
         //Actualizo monto en caja
-        Caja caja= Caja.getByCaseta(turno.getEmpleado().getCaseta().getId());
+        Caja caja= Caja.getByCaseta(estacionamiento.getCaseta().getId());
         caja.setMonto(caja.getMonto()+auto.getMontoTangible());
         caja.actualizar();
         //Reviso si el auto fue boleto perdido, cancelado o cobrado normalmente 
@@ -343,8 +350,5 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     private javax.swing.JTextField txtImporteTotal;
     private javax.swing.JTextField txtTiempoEstadia;
     // End of variables declaration//GEN-END:variables
-
-
-
 
 }

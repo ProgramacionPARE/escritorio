@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="210" pageHeight="297" columnWidth="196" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" isIgnorePagination="true" uuid="af183cac-43cc-41d4-be3d-5efb00f029c4">
+	<property name="ireport.zoom" value="2.357947691000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="parameter1" class="java.lang.String"/>
+	<field name="progresivo" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.String"/>
+	<field name="dentro" class="java.lang.Boolean"/>
+	<variable name="dentroFlag" class="java.lang.String">
+		<variableExpression><![CDATA[( $F{dentro} ? "Dentro" : "Fuera" )]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="196" height="20" uuid="efe062cb-c775-4440-807d-511e12c4631e"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="20" width="53" height="12" uuid="898dfa45-1f77-469e-82db-e0b776bb69a8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="71" y="20" width="125" height="12" uuid="a2ac9959-db5e-4ede-ad5a-ba1484358093"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="32" width="196" height="1" uuid="68bb4de0-debe-42c7-8fbd-930bd133e0cb"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="12" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="12" uuid="0d57671f-1865-4e80-a827-e5349cfa5369"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Progresivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="0" width="50" height="12" uuid="aec453ce-76b7-411a-a0b4-51dc25baea6c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Matricula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="50" height="12" uuid="2e019617-fc0e-4771-a56c-e56d3e8fa956"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="196" height="12" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="231e375d-30aa-48aa-aaec-a8935ab04bdb">
+					<printWhenExpression><![CDATA[$F{dentro}]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="50" height="12" uuid="402fce5e-8219-44c4-a3a5-7baff254a628"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{progresivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="0" width="50" height="12" uuid="77f4b046-b5a0-459a-ad55-0bf3278800f9"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="50" height="12" uuid="edbd2da3-360b-4755-a9ac-161db5da1ca8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{dentroFlag}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="94" height="12" uuid="f76f8032-cac2-4e91-9469-ee47471e2393"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Boletos emitidos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="14" width="94" height="12" uuid="d193e95a-590a-453c-b5d4-bf130fea29b6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Autos dentro:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="26" width="94" height="12" uuid="6b3517f8-b404-41c1-946f-11a6ce0fff0c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Autos fuera:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="196" height="1" uuid="a1be650e-191d-4df6-a96e-24949ebed0a6"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

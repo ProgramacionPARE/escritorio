@@ -43,8 +43,8 @@ public class FrmObjetoPrenda extends JDialog implements Printable {
    
     private void iniciarOtrosComponentes() {
         txtCajero.setText(turno.getEmpleado().getNombre());
-        txtCaseta.setText(turno.getEmpleado().getCaseta().getDescripcion());
-        txtCentroOperativo.setText(turno.getEmpleado().getCaseta().getCentroOperativo().getDescripcion());
+        //txtCaseta.setText(turno.getEmpleado().getCaseta().getDescripcion());
+        //txtCentroOperativo.setText(turno.getEmpleado().getCaseta().getCentroOperativo().getDescripcion());
         txtFecha.setText(Tiempo.getHora()+"  "+Tiempo.getFecha());
         txtPlacas.setText(auto.getMatricula());
         txtProgresivo.setText(String.valueOf(auto.getProgresivo()));

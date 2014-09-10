@@ -3,6 +3,7 @@
 package vistas;
 
 import modelos.Caja;
+import modelos.Estacionamiento;
 import modelos.Turno;
 
 /**
@@ -12,15 +13,16 @@ import modelos.Turno;
 public class FrmNuevoTurno extends javax.swing.JDialog {
     Caja caja;
     Turno turno;
+    Estacionamiento estacionamiento;
     /**
      * Creates new form FrmNuevoTurno
      */
-    public FrmNuevoTurno(java.awt.Frame parent, boolean modal,Turno turno) {
+    public FrmNuevoTurno(java.awt.Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
         this.turno = turno;
-        caja = Caja.getByCaseta(turno.getEmpleado().getCaseta().getId());
+        caja = Caja.getByCaseta(estacionamiento.getCaseta().getId());
         this.txtFondoInicial.setText(String.valueOf(caja.getFondo()));
         this.setVisible(true);
     }

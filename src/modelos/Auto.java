@@ -13,9 +13,11 @@ import java.util.logging.Logger;
 
 public class Auto {
 
+
   
     int id;
     boolean dentro;
+    boolean reciboImpreso;
     String progresivo;
     String clave;
     String matricula;
@@ -62,6 +64,16 @@ public class Auto {
         this.boletoPerdido = boletoPerdido;
         this.boletoCancelado = boletoCancelado;
     }
+
+    public boolean isReciboImpreso() {
+        return reciboImpreso;
+    }
+
+    public void setReciboImpreso(boolean reciboImpreso) {
+        this.reciboImpreso = reciboImpreso;
+    }
+
+
     
 
     public boolean isDentro() {
@@ -239,7 +251,19 @@ public class Auto {
         this.clave = clave;
     }
     
-    
+    public static List<Auto> ordenarByProgresivo(List<Auto> autos) {
+       for(int i =0 ; i< autos.size()-1;i++){
+            for(int j =i+1 ; j< autos.size();j++){
+                if(Long.valueOf(autos.get(i).getProgresivo()) > Long.valueOf(autos.get(j).getProgresivo())){
+                   Auto aux = autos.get(i);
+                   autos.set(i,autos.get(j));
+                   autos.set(j,aux);
+                }
+            }
+       }
+       return autos;
+    }
+
       public static Auto getAutoByMatricula(String matricula) {
        Auto auto = null;
         try {
@@ -330,6 +354,11 @@ public class Auto {
                 auto.dentro = true;
             }else
                 auto.dentro = false;
+            
+            if (executeQuery.getString("recibo").equals("NO")){
+                auto.reciboImpreso = false;
+            }else
+                auto.reciboImpreso = true;
             
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -458,8 +487,8 @@ public class Auto {
                      ",`hora_entrada` =? ,`hora_salida` =?,`marca` =?  "+
                      ",`modelo` =? ,`color` =?,`id_boleto_perdido` =?  "+
                       ",`horas_estadia` =? ,`minutos_estadia` =?,`monto_tangible` =?  "+
-                      ",`turno_salida_id` =? ,`entrada_salida` =? ,`id_boleto_cancelado` =? "+
-                     "WHERE `id`=?");
+                      ",`turno_salida_id` =? ,`entrada_salida` =? ,`recibo` =? ,"+
+                     "`id_boleto_cancelado` =?  WHERE `id`=?");
              statement.setString(1, progresivo);
              statement.setString(2, matricula);
              statement.setString(3, fechaEntrada);
@@ -475,8 +504,9 @@ public class Auto {
              statement.setFloat(13, montoTangible);
              statement.setLong(14, turnoSalida.getId());
              statement.setString(15, dentro ? "E" : "S" );
-             statement.setInt(16, boletoCancelado != null ? boletoCancelado.getId() : 0 );
-             statement.setInt(17, id);
+             statement.setString(16, reciboImpreso ? "SI" : "NO" );
+             statement.setInt(17, boletoCancelado != null ? boletoCancelado.getId() : 0 );
+             statement.setInt(18, id);
   
              statement.executeUpdate();
              conexion.cerrarConexion();

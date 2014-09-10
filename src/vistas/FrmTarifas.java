@@ -1,22 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package vistas;
 
 import java.util.ArrayList;
 import javax.swing.JTextField;
+import modelos.Estacionamiento;
 import modelos.Tarifa;
 
 
 public class FrmTarifas extends javax.swing.JDialog {
+    Estacionamiento estacionamiento;
     private Tarifa tarifa;
     private ArrayList<JTextField>  txtTarifas = new ArrayList();
 
     
-    public FrmTarifas(java.awt.Frame parent, boolean modal) {
+    public FrmTarifas(java.awt.Frame parent, boolean modal, Estacionamiento estacionamiento) {
         super(parent,"Tarifas", modal);
         initComponents();
         txtTarifas.add(txtFraccion1);
@@ -26,16 +22,8 @@ public class FrmTarifas extends javax.swing.JDialog {
         btnGuardar.setVisible(false);
         
         this.setLocationRelativeTo(parent);
-        ArrayList<Tarifa> all = Tarifa.getAll();
-       
-        if (all.size()>0){ 
-            tarifa = all.get(0);
-            cargarDatos(tarifa);}
-        else{
-            tarifa = new Tarifa();
-            tarifa.guardar();
-            cargarDatos(tarifa);
-        }
+        tarifa = estacionamiento.getCaseta().getTarifa();
+        cargarDatos(tarifa);
             
         setVisible(true);
     }

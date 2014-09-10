@@ -1,7 +1,5 @@
 package modeloReportes;
 
-import modelos.DetallesMovimiento;
-import modelos.Turno;
 import ModelosAux.Tiempo;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -17,6 +15,9 @@ import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
+import modelos.DetallesMovimiento;
+import modelos.Estacionamiento;
+import modelos.Turno;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
@@ -26,9 +27,11 @@ import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
 
 public class CorteTurno  {
     private Turno turno;
+    private Estacionamiento estacionamiento;
 
-    public CorteTurno(Turno turno) {
+    public CorteTurno(Turno turno,Estacionamiento estacionamiento) {
         this.turno = turno;
+        this.estacionamiento = estacionamiento;
     }
 
     public void generarReporte(){
@@ -47,14 +50,15 @@ public class CorteTurno  {
         parametros.put("pendientes",turno.getNoBolTurnoS());
         parametros.put("total",turno.getTotal());
         parametros.put("turno",turno.getTipoTurno());
-        parametros.put("centroCostos",turno.getEmpleado().getCaseta().getCentroOperativo().getDescripcion());
+        parametros.put("centroCostos",estacionamiento.getDescripcion());
         
         if(turno.getDetallesMovimiento().size()<1){
             turno.getDetallesMovimiento().add(new DetallesMovimiento());
         }  
         try {
             JasperReport reporte = (JasperReport) JRLoader.
-            loadObject(new File("/home/empleado/pare/reportes/corteTurno.jasper"));
+            //loadObject(new File("/home/empleado/pare/reportes/corteTurno.jasper"));
+            loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/corteTurno.jasper"));
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getDetallesMovimiento()));
             PrinterJob job = PrinterJob.getPrinterJob();
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);

@@ -23,7 +23,6 @@ public class Empleado implements IDBModel {
     long id;
     int nivel;
     String nombre;
-    Caseta caseta;
     String tipoPuesto;
     String tipoTurno;
     String usuario;
@@ -35,8 +34,7 @@ public class Empleado implements IDBModel {
         this.nombre = nombre;
         this.usuario = usuario;
         this.contraseña = contraseña;
-        
-        this.caseta = caseta;
+       
         this.tipoPuesto = tipoPuesto;
     }   
     
@@ -144,13 +142,6 @@ public class Empleado implements IDBModel {
         this.nivel = nivel;
     }
 
-    public Caseta getCaseta() {
-        return caseta;
-    }
-
-    public void setCaseta(Caseta caseta) {
-        this.caseta = caseta;
-    }
 
     public String getTipoPuesto() {
         return tipoPuesto;
@@ -181,7 +172,8 @@ public class Empleado implements IDBModel {
            statement.setString(3, usuario);
            statement.setString(4, contraseña); 
            statement.setString(5, tipoPuesto);
-           statement.setLong(6, caseta.getId());
+           statement.setInt(6, 1);
+           
 
            statement.executeUpdate();
            ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -200,14 +192,13 @@ public class Empleado implements IDBModel {
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE usuarios SET `nombre_completo`=? ,`nivel` =? , `nombre` =?"
-                    +",`contras` =? ,`tipo_empleado` =? ,`id_caseta` =?  WHERE `id`=?");
+                    +",`contras` =? ,`tipo_empleado` =?  WHERE `id`=?");
             statement.setString(1, nombre);
             statement.setInt(2, nivel);
             statement.setString(3, usuario);
             statement.setString(4, contraseña); 
             statement.setString(5, tipoPuesto);
-            statement.setLong(6, caseta.getId());
-             statement.setLong(7, id);
+             statement.setLong(6, id);
 
             statement.executeUpdate();
             conexion.cerrarConexion();

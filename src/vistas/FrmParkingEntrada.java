@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.print.PrinterJob;
 import javax.swing.JOptionPane;
 import modelos.Auto;
+import modelos.Estacionamiento;
 import modelos.Progresivo;
 import modelos.Turno;
 import org.jdesktop.application.Action;
@@ -20,19 +21,21 @@ import vistas.formatos.FrmP3BoletoParabrisas;
  */
 public class FrmParkingEntrada extends javax.swing.JDialog {
     Turno turno;
+    Estacionamiento estacionamiento;
     /**
      * Creates new form FrmParkingEntrada
      */
-    public FrmParkingEntrada(java.awt.Frame parent, boolean modal,Turno turno) {
+    public FrmParkingEntrada(java.awt.Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento) {
         super(parent,"Entrada nueva", modal);
         initComponents();
         this.turno = turno;
+        this.estacionamiento = estacionamiento;
         this.getContentPane().setBackground(Color.white);
         txtFechaEntrada.setText(Tiempo.getFecha());
         txtHoraEntrada.setText(Tiempo.getHora());
         txtCajero.setText(turno.getEmpleado().getNombre());
-        txtProgresivo.setText(Progresivo.getUltimoProgresivo(turno.getEmpleado().getCaseta(),"BOLETO"));
-        txtTarifa.setText(turno.getEmpleado().getCaseta().getTarifas().get(0).getDescripcion());
+        txtProgresivo.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"BOLETO"));
+        txtTarifa.setText(estacionamiento.getCaseta().getTarifa().getDescripcion());
         pack();
         setLocationRelativeTo(parent);
         setVisible(true);
@@ -65,9 +68,9 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
                 "Imprimir boleto",JOptionPane.YES_NO_CANCEL_OPTION);
         if(confirmDialog == JOptionPane.YES_OPTION){
             Auto auto= new Auto(0,txtProgresivo.getText(),Seguridad.getClave(6), txtMatricula.getText(),
-                    turno.getEmpleado().getCaseta().getTarifas().get(0),
+                    estacionamiento.getCaseta().getTarifa(),
                     txtFechaEntrada.getText() ,"", txtHoraEntrada.getText(),"", turno, null,0,0, 
-                    turno.getEmpleado().getCaseta(),0, "", txtModelo.getText(), "", null,null);
+                    estacionamiento.getCaseta(),0, "", txtModelo.getText(), "", null,null);
             //Aumento en uno los boletos generados
             turno.setNoBol(turno.getNoBol()+1);
             //Actualizo el folio final en el turno
@@ -75,11 +78,11 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
             turno.actualizar();
             // Guardo entrada y actualizo progresivo
             auto.guardar();
-            Progresivo.setProgresivoMasUno(turno.getEmpleado().getCaseta(),"BOLETO");
+            Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),"BOLETO");
             //Imprimo boletos
             PrinterJob job = PrinterJob.getPrinterJob();
             // Boleto al cliente
-            new FrmP1BoletoCliente(this, false,job,turno,auto);
+            new FrmP1BoletoCliente(this, false,job,turno,auto,estacionamiento);
             //Boleto llaves
             new FrmP2BoletoLlaves(this, false,job,turno,auto);
             //Boleto Parabrisas

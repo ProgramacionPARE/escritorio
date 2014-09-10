@@ -22,24 +22,25 @@ public class Caseta {
 
     private long id;
     private String descripcion;
-    private CentroOperativo centroOperativo;
-    private ArrayList<Tarifa> tarifas;
+    private long idEstacionameinto;
+    private Tarifa tarifas;
 
-    public Caseta(int id, String descripcion, CentroOperativo centroOperativo) {
+    public Caseta(long id, String descripcion, long idEstacionameinto,Tarifa tarifa) {
         this.id = id;
         this.descripcion = descripcion;
-        this.centroOperativo = centroOperativo;
-        this.tarifas = Tarifa.getAll();
+        this.idEstacionameinto = idEstacionameinto;
+        this.tarifas = tarifa;
     }
 
-    public ArrayList<Tarifa> getTarifas() {
+    public Tarifa getTarifa() {
         return tarifas;
     }
 
-    public void setTarifas(ArrayList<Tarifa> tarifas) {
+    public void setTarifa(Tarifa tarifas) {
         this.tarifas = tarifas;
     }
-    
+
+
     public Long getId() {
         return id;
     }
@@ -57,28 +58,30 @@ public class Caseta {
         this.descripcion = descripcion;
     }
 
-    public CentroOperativo getCentroOperativo() {
-        return centroOperativo;
+    public long getIdEstacionameinto() {
+        return idEstacionameinto;
     }
 
-    public void setCentroOperativo(CentroOperativo centroOperativo) {
-        this.centroOperativo = centroOperativo;
+    public void setIdEstacionameinto(long idEstacionameinto) {
+        this.idEstacionameinto = idEstacionameinto;
     }
+
+
     
-    static Caseta getById(int id) {
+    static Caseta getById(long id) {
        Caseta caseta = null;
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM caseta where id = ?");
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
-                caseta = new Caseta(resultSet.getInt("id"),
+                caseta = new Caseta(resultSet.getLong("id"),
                         resultSet.getString("descripcion"),
-                        CentroOperativo.getById(resultSet.getInt("id_centro_operativo")));
+                       resultSet.getLong("id"),Tarifa.getById(resultSet.getLong("id")));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {

@@ -25,6 +25,7 @@ import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JDialog;
 import modelos.Auto;
+import modelos.Estacionamiento;
 import modelos.Turno;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
@@ -38,10 +39,11 @@ import proyectopare.clases.PARAMETROS;
  * @author Roman
  */
 public class FrmP1BoletoCliente extends JDialog implements Printable {
+    private Estacionamiento estacionamiento;
     private PrinterJob job;
     private Barcode barcode=null;
     /** Creates new form VenBoletoValetParking1 */
-    public FrmP1BoletoCliente(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto) {
+    public FrmP1BoletoCliente(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto,Estacionamiento estacionamiento) {
         super(parent, modal);
         try {
         initComponents();
@@ -57,7 +59,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
         int selectedService = 0;
         for(int i = 0; i < services.length;i++){
-            if(services[i].getName().toUpperCase().contains("STAR TSP100 CUTTER")){
+            if(services[i].getName().toUpperCase().contains("STAR")){
                 selectedService = i;
                 }
             }
@@ -71,10 +73,10 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
         printRequestAttributeSet.add(mediaSizeName);
         printRequestAttributeSet.add(new Copies(1));
         
-        lblLugar.setText(turno.getEmpleado().getCaseta().getCentroOperativo().getDescripcion());
+        lblLugar.setText(estacionamiento.getDescripcion());
        
         lblPlacas.setText(auto.getMatricula());
-        lblTarifa.setText("$ "+ turno.getEmpleado().getCaseta().getTarifas().get(0).getDescripcion());
+        lblTarifa.setText("$ "+ estacionamiento.getCaseta().getTarifa().getDescripcion());
         lblProgresivo.setText("No. " + auto.getProgresivo() );
         lblFecha.setText(auto.getFechaEntrada()+" "+auto.getHoraEntrada());
         lblAcomodador.setText(turno.getEmpleado().getNombre());

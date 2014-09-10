@@ -32,10 +32,16 @@ public class Turno implements IDBModel {
     
     private ArrayList <DetallesMovimiento> detallesMovimiento;
     private ArrayList <RetiroParcial> retirosParciales;
-    
+    private Estacionamiento estacionamiento;
+
     public Turno() {
+        this.estacionamiento = Estacionamiento.getDatos();
+    }
+    
+    public Turno(Estacionamiento estacionamiento) {
         detallesMovimiento = new ArrayList<DetallesMovimiento>();
         retirosParciales = new ArrayList <RetiroParcial>();
+        this.estacionamiento = estacionamiento;
      }
 
     public Turno(long id, Empleado empleado, String tipoTurno, String fechaApertura, String horaApertura, String fechaCierre, String horaCierre, long folioInicial, long folioFinal, int noBol, int noBolTurnoA, int noBolCancelados, int noBolPerdidos, int noBolCobrados, int noBolTurnoS, float total, ArrayList<DetallesMovimiento> detallesMovimiento, ArrayList<RetiroParcial> retirosParciales) {
@@ -64,7 +70,7 @@ public class Turno implements IDBModel {
         retirosParciales = new ArrayList <RetiroParcial>();
         fechaApertura = Tiempo.getFecha();
         horaApertura = Tiempo.getHora();
-        folioInicial = Long.valueOf(Progresivo.getUltimoProgresivo(empleado.getCaseta(), "BOLETO"));
+        folioInicial = Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta() , "BOLETO"));
         folioFinal = folioInicial; 
         noBolTurnoA = Auto.getAutosPendientes().size();
         this.empleado = empleado;
@@ -75,7 +81,7 @@ public class Turno implements IDBModel {
         this.empleado = operador;
         fechaCierre = Tiempo.getFecha();
         horaCierre = Tiempo.getHora();
-        folioFinal =  Long.valueOf(Progresivo.getUltimoProgresivo(empleado.getCaseta(), "BOLETO"));
+        folioFinal =  Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "BOLETO"));
         noBol =  (int)(folioFinal- folioInicial);
         noBolTurnoS = Auto.getAutosPendientes().size();
         noBolCobrados = Auto.getAutosCobradosTurnoActual(this).size();
@@ -182,6 +188,14 @@ public class Turno implements IDBModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Estacionamiento getEstacionamiento() {
+        return estacionamiento;
+    }
+
+    public void setEstacionamiento(Estacionamiento estacionamiento) {
+        this.estacionamiento = estacionamiento;
     }
 
     public Empleado getOperador() {

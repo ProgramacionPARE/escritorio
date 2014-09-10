@@ -31,6 +31,7 @@ import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JOptionPane;
 import modelos.Caja;
+import modelos.Estacionamiento;
 import modelos.Progresivo;
 import modelos.RetiroParcial;
 import modelos.Turno;
@@ -42,15 +43,16 @@ import proyectopare.clases.PARAMETROS;
  * @author sistema
  */
 public class FrmRetiroParcial extends javax.swing.JDialog implements Printable{
+    private Estacionamiento estacionamiento;
     private PrinterJob job;
     private Turno turno;
 
     
-    public FrmRetiroParcial(java.awt.Frame parent, boolean modal,Turno turno) {
+    public FrmRetiroParcial(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento) {
         super(parent, modal);
         initComponents();
         this.turno = turno;
-
+        this.estacionamiento = estacionamiento;
         this.getContentPane().setBackground(Color.white);
         this.setLocationRelativeTo(parent);
         this.job = PrinterJob.getPrinterJob();
@@ -72,12 +74,12 @@ public class FrmRetiroParcial extends javax.swing.JDialog implements Printable{
         printRequestAttributeSet.add(new Copies(1));
         
         this.txtCajero.setText(turno.getEmpleado().getNombre());
-        this.txtCaseta.setText(turno.getEmpleado().getCaseta().getDescripcion());
-        this.txtCentroOperativo.setText(turno.getEmpleado().getCaseta().getCentroOperativo().getDescripcion());
+        this.txtCaseta.setText(estacionamiento.getCaseta().getDescripcion());
+        this.txtCentroOperativo.setText(estacionamiento.getDescripcion());
         this.txtFecha.setText(Tiempo.getFecha());
         this.txtHora.setText(Tiempo.getHora());
         this.txtTipoTurno.setText(turno.getTipoTurno());
-        this.txtProgresivo.setText("NO. "+ Progresivo.getUltimoProgresivo(turno.getEmpleado().getCaseta(),"RETIRO_PARCIAL"));
+        this.txtProgresivo.setText("NO. "+ Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"RETIRO_PARCIAL"));
          lblCopia.setVisible(false);
         setVisible(true);
 
@@ -441,14 +443,14 @@ public class FrmRetiroParcial extends javax.swing.JDialog implements Printable{
 
     private void btnRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetiroActionPerformed
        if(validaCamposEntrada()){
-            Caja caja = Caja.getByCaseta(turno.getEmpleado().getCaseta().getId());
+            Caja caja = Caja.getByCaseta(estacionamiento.getCaseta().getId());
             RetiroParcial retiro = new RetiroParcial(Long.valueOf( Progresivo.getUltimoProgresivo(
-                turno.getEmpleado().getCaseta(),"RETIRO_PARCIAL")),
+               estacionamiento.getCaseta(),"RETIRO_PARCIAL")),
                 this.txtFecha.getText(),this.txtHora.getText(),Float.valueOf(this.txtMonto.getText()),
-                caja.getMonto(),turno.getId(),turno.getEmpleado().getCaseta().getId());
+                caja.getMonto(),turno.getId(),estacionamiento.getCaseta().getId());
             btnRetiro.setVisible(false);
             
-            Progresivo.setProgresivoMasUno(turno.getEmpleado().getCaseta(),"RETIRO_PARCIAL");
+            Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),"RETIRO_PARCIAL");
             retiro.guardar();
             turno.getRetirosParciales().add(retiro);
             turno.actualizar();

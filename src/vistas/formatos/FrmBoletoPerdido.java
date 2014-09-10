@@ -1,12 +1,5 @@
 package vistas.formatos;
 
-import modelos.Auto;
-import modelos.BoletoPerdido;
-import modelos.Empleado;
-import modelos.Operacion;
-import modelos.Progresivo;
-import modelos.PropietarioPerdido;
-import modelos.Turno;
 import ModelosAux.Tiempo;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,10 +14,19 @@ import java.awt.print.PrinterJob;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import modelos.Auto;
+import modelos.BoletoPerdido;
+import modelos.Empleado;
+import modelos.Estacionamiento;
+import modelos.Operacion;
+import modelos.Progresivo;
+import modelos.PropietarioPerdido;
+import modelos.Turno;
 import vistas.FrmCobro;
 
 
 public class FrmBoletoPerdido extends JDialog implements Printable {
+    private Estacionamiento estacionamiento;
     private Turno turno;
     private Auto auto;
     private BoletoPerdido boletoPerdido;
@@ -32,11 +34,12 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
     private Empleado empleado;
     private JFrame parent;
 
-    public FrmBoletoPerdido(javax.swing.JFrame padre, boolean b, Turno turno,Auto auto) {
+    public FrmBoletoPerdido(javax.swing.JFrame padre, boolean b, Turno turno,Auto auto, Estacionamiento estacionamiento ) {
         super(padre,b);
         this.turno = turno;
         this.auto = auto;
         this.parent = padre;
+        this.estacionamiento = estacionamiento;
         initComponents();
         this.setLocationRelativeTo(padre);
         iniciarOtrosComponentes();
@@ -46,8 +49,8 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
    
     private void iniciarOtrosComponentes() {
         txtCajero.setText(turno.getEmpleado().getNombre());
-        txtCaseta.setText(turno.getEmpleado().getCaseta().getDescripcion());
-        txtCentroOperativo.setText(turno.getEmpleado().getCaseta().getCentroOperativo().getDescripcion());
+        txtCaseta.setText(estacionamiento.getCaseta().getDescripcion());
+        txtCentroOperativo.setText(estacionamiento.getDescripcion());
         txtFecha.setText(Tiempo.getHora()+"  "+Tiempo.getFecha());
         txtPlacas.setText(auto.getMatricula());
         txtProgresivo.setText(String.valueOf(auto.getProgresivo()));
@@ -669,12 +672,12 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
                     txtTelefono.getText(),txtTipoIdentificacion.getText(),
                     txtNumeroIdentificacion.getText());
                 boletoPerdido = new BoletoPerdido(Long.valueOf(
-                    Progresivo.getUltimoProgresivo(turno.getEmpleado().getCaseta(),
+                    Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),
                         "PERDIDO")), auto, propietario,turno);
-                Progresivo.setProgresivoMasUno(turno.getEmpleado().getCaseta(), "PERDIDO");
+                Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(), "PERDIDO");
                 propietario.setBoletoPerdido(boletoPerdido);
                 auto.setBoletoPerdido(boletoPerdido);
-                new FrmCobro(parent,true, turno, auto);
+                new FrmCobro(parent,true, turno, auto,estacionamiento);
                 if (!auto.isDentro()){
                     propietario.guardar();
                     boletoPerdido.guardar();

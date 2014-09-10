@@ -6,6 +6,7 @@
 
 package vistas;
 
+import modelos.Estacionamiento;
 import modelos.Progresivo;
 import modelos.Turno;
 
@@ -14,18 +15,20 @@ import modelos.Turno;
  * @author sistema
  */
 public class FrmFolios extends javax.swing.JDialog {
+    Estacionamiento estacionamiento;
     Turno turno;
     /** 
      * Creates new form FrmFolios
      */
-    public FrmFolios(java.awt.Frame parent, boolean modal,Turno turno) {
+    public FrmFolios(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento) {
         super(parent, modal);
         initComponents();
         this.turno = turno;
-        txtBoleto.setText(Progresivo.getUltimoProgresivo(turno.getEmpleado().getCaseta(), "BOLETO"));
-        txtRetiro.setText(Progresivo.getUltimoProgresivo(turno.getEmpleado().getCaseta(), "RETIRO_PARCIAL"));
-        txtPerdido.setText(Progresivo.getUltimoProgresivo(turno.getEmpleado().getCaseta(), "PERDIDO"));
-        txtRecibo.setText(Progresivo.getUltimoProgresivo(turno.getEmpleado().getCaseta(), "RECIBO_PAGO"));
+        this.estacionamiento = estacionamiento;
+        txtBoleto.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "BOLETO"));
+        txtRetiro.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RETIRO_PARCIAL"));
+        txtPerdido.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "PERDIDO"));
+        txtRecibo.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO"));
         btnGuardar.setVisible(false);
         setLocationRelativeTo(parent);
         setVisible(true);
@@ -137,10 +140,10 @@ public class FrmFolios extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Progresivo.setProgresivo(turno.getEmpleado().getCaseta(), "BOLETO",Integer.valueOf(txtBoleto.getText()));
-        Progresivo.setProgresivo(turno.getEmpleado().getCaseta(), "RETIRO_PARCIAL",Integer.valueOf(txtRetiro.getText()));
-        Progresivo.setProgresivo(turno.getEmpleado().getCaseta(), "PERDIDO",Integer.valueOf(txtPerdido.getText()));
-        Progresivo.setProgresivo(turno.getEmpleado().getCaseta(), "RECIBO_PAGO",Integer.valueOf(txtRecibo.getText()));
+        Progresivo.setProgresivo(estacionamiento.getCaseta(), "BOLETO",Integer.valueOf(txtBoleto.getText()));
+        Progresivo.setProgresivo(estacionamiento.getCaseta(), "RETIRO_PARCIAL",Integer.valueOf(txtRetiro.getText()));
+        Progresivo.setProgresivo(estacionamiento.getCaseta(), "PERDIDO",Integer.valueOf(txtPerdido.getText()));
+        Progresivo.setProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO",Integer.valueOf(txtRecibo.getText()));
         txtBoleto.setEditable(false);
         txtRetiro.setEditable(false);
         txtPerdido.setEditable(false);

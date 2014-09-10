@@ -94,14 +94,14 @@ public class Tarifa implements IDBModel{
         return String.format("%02d:%02d-%02d:%02d",horaI,minutoI,horaF,minutoF );
     }
     
-    public static Tarifa getById(int id){
+    public static Tarifa getById(long id){
         Tarifa tarifa = new Tarifa();
         Conexion conexion = new Conexion();
         try {
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM tarifa where id = ?");
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
                 String costosString[] = resultSet.getString("costos").split("@");
@@ -122,25 +122,25 @@ public class Tarifa implements IDBModel{
         return tarifa;
      }       
     
-    public static ArrayList<Tarifa> getAll() {
-       ArrayList<Tarifa> tarifas = new ArrayList<Tarifa>();
-       Conexion conexion = new Conexion(); 
-       try {
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM tarifa");
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()){
-                tarifas.add(Tarifa.getById(resultSet.getInt("id")));
-            }
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            conexion.cerrarConexion();
-        }    
-       return tarifas;
-    }
+//    public static ArrayList<Tarifa> getAll() {
+//       ArrayList<Tarifa> tarifas = new ArrayList<Tarifa>();
+//       Conexion conexion = new Conexion(); 
+//       try {
+//            Connection connectionDB = conexion.getConnectionDB();
+//            PreparedStatement  statement = connectionDB.
+//            prepareStatement("SELECT * FROM tarifa");
+//            ResultSet resultSet = statement.executeQuery();
+//            while(resultSet.next()){
+//                tarifas.add(Tarifa.getById(resultSet.getInt("id")));
+//            }
+//           
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+//        }finally{
+//            conexion.cerrarConexion();
+//        }    
+//       return tarifas;
+//    }
 //    float costos[];
 //    float precioHora;
 //    float tarifaMaxima;

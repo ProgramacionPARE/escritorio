@@ -45,7 +45,7 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
         int selectedService = 0;
         for(int i = 0; i < services.length;i++){
-            if(services[i].getName().contains("Star")){
+            if(services[i].getName().contains("STAR")){
                 selectedService = i;
                 }
             }

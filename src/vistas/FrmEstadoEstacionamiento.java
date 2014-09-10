@@ -10,17 +10,22 @@ import ModelosAux.Tiempo;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import modeloReportes.ReporteFolios;
 import modelos.Auto;
+import modelos.Estacionamiento;
 import modelos.IUseCalendar;
 import modelos.RetiroParcial;
 import modelos.Turno;
+import vistas.formatos.FrmReciboPago;
 
 /**
  *
@@ -29,14 +34,17 @@ import modelos.Turno;
 public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUseCalendar {
     Frame parent;
     Turno turno;
+    Estacionamiento estacionamiento;
+    List<Auto> autosReporte;
     /**
      * Creates new form FrmEstadoEstacionamiento
      */
-    public FrmEstadoEstacionamiento(java.awt.Frame parent, boolean modal,Turno turno) {
+    public FrmEstadoEstacionamiento(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento) {
         super(parent, modal);
         initComponents();
         personalizarTablas();
         this.parent = parent;
+        this.estacionamiento =  estacionamiento;
         setLocationRelativeTo(parent);
         cargarDatos(Tiempo.getFecha());
         this.txtFecha.setText(Tiempo.getFecha());
@@ -83,6 +91,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     
     private void cargarDatos(String fecha) {
         deshablitarCbx();
+        autosReporte = new ArrayList<Auto>();
         //Habilitar cbx de turnos disponibles
         ArrayList<Turno> turnos = Turno.getTurnosByFechaAbierto(fecha);
         Iterator<Turno> turnosIterator = turnos.iterator();
@@ -112,14 +121,14 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         modelTurno.fireTableDataChanged();
         Iterator<Turno> iterator = turnos.iterator();
         while(iterator.hasNext()){
-            Turno turno = iterator.next();
-            if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-            modelTurno.addRow(new Object[]{turno.getHoraCierre()!=null?"CERRADO":"ABIERTO",turno.getTipoTurno(),
-                turno.getHoraApertura(),turno.getHoraCierre(),turno.getEmpleado().getNombre(),
-                turno.getFolioInicial(),turno.getFolioFinal(),turno.getTotal()});
-            importeTurnosTabla+=turno.getTotal();
+            Turno turnoAux = iterator.next();
+            if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+            modelTurno.addRow(new Object[]{turnoAux.getHoraCierre()!=null?"CERRADO":"ABIERTO",turnoAux.getTipoTurno(),
+                turnoAux.getHoraApertura(),turnoAux.getHoraCierre(),turnoAux.getEmpleado().getNombre(),
+                turnoAux.getFolioInicial(),turnoAux.getFolioFinal(),turnoAux.getTotal()});
+            importeTurnosTabla+=turnoAux.getTotal();
             }
         }
         this.tblTurnos.setModel(modelTurno);
@@ -131,18 +140,18 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         modelRetiros.fireTableDataChanged();
         iterator = turnos.iterator();
         while(iterator.hasNext()){
-            Turno turno = iterator.next();
+            Turno turnoAux = iterator.next();
             
-            ArrayList<RetiroParcial> retirosParciales = turno.getRetirosParciales();
+            ArrayList<RetiroParcial> retirosParciales = turnoAux.getRetirosParciales();
             Iterator<RetiroParcial> iteratorRetiros = retirosParciales.iterator();
             while(iteratorRetiros.hasNext()){
                 RetiroParcial retiro = iteratorRetiros.next();
                
-                if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
                     modelRetiros.addRow(new Object[]{retiro.getProgresivo(), Turno.getById(retiro.getIdTurno()).getTipoTurno(),
-                    retiro.getHora(),retiro.getMontoReal(),retiro.getMonto(),retiro.getMonto()-retiro.getMonto()});
+                    retiro.getHora(),retiro.getMontoReal(),retiro.getMonto(),retiro.getMontoReal()-retiro.getMonto()});
                      importeRetirosTabla+=retiro.getMontoReal();
                 }
             }
@@ -158,91 +167,95 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         modelAutos.fireTableDataChanged();
         iterator = turnos.iterator();
         while(iterator.hasNext()){
-            Turno turno = iterator.next();
+            Turno turnoAux = iterator.next();
             //Autos cobrados
             if(this.cbxCobrado.isSelected()){
-                List<Auto> autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(turno);   
+                List<Auto> autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(turnoAux); 
+                
                 Iterator<Auto> iteratorAutosCobrados = autosCobradosTurnoActual.iterator();
-                 if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                    ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                 if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                    ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
                         noAutosTabla += autosCobradosTurnoActual.size();
                     }
                 while(iteratorAutosCobrados.hasNext()){
                     Auto auto = iteratorAutosCobrados.next();
                     
-                    if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                    ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-                        modelAutos.addRow(new Object[]{"COBRADO",auto.getProgresivo(),turno.getTipoTurno(),auto.getMatricula(),
+                    if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                    ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                        modelAutos.addRow(new Object[]{"COBRADO",auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
                             auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
                             auto.getMontoTangible()});
                         importeAutosTabla += auto.getMontoTangible();
+                        autosReporte.add(auto);
                     }
                 }
             }
             //Autos pendientes
             if(this.cbxDentro.isSelected()){
-                List<Auto> autosPendientesTurnoActual = Auto.getAutosPendientes(turno);
+                List<Auto> autosPendientesTurnoActual = Auto.getAutosPendientes(turnoAux);
 
                 Iterator<Auto> iteratorAutosPendientes = autosPendientesTurnoActual.iterator();
-                if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                    ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                    ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
                         noAutosTabla += autosPendientesTurnoActual.size();    
                 }
                 while(iteratorAutosPendientes.hasNext()){
                     Auto auto = iteratorAutosPendientes.next();
                     
-                    if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                    ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-                        modelAutos.addRow(new Object[]{"PENDIENTE",auto.getProgresivo(),turno.getTipoTurno(),auto.getMatricula(),
-                            auto.getHoraEntrada(),"-","-","-"});
-                    
+                    if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                    ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                        modelAutos.addRow(new Object[]{"PENDIENTE",auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
+                        auto.getHoraEntrada(),"-","-","-"});
+                        autosReporte.add(auto);
                     }
                 }
             }
             //Autos Cancelados
             if(this.cbxCancelado.isSelected()){
-                List<Auto> autosCanceladosTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(turno);
+                List<Auto> autosCanceladosTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(turnoAux);
                 Iterator<Auto> iteratorAutosCancelados = autosCanceladosTurnoActual.iterator();
-                if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                    ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                    ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
                         noAutosTabla += autosCanceladosTurnoActual.size();  
                 }
                 while(iteratorAutosCancelados.hasNext()){
                     Auto auto = iteratorAutosCancelados.next();
-                    if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                    ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) )
-                        modelAutos.addRow(new Object[]{"CANCELADO",auto.getProgresivo(),turno.getTipoTurno(),auto.getMatricula(),
+                    if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                    ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) )
+                        modelAutos.addRow(new Object[]{"CANCELADO",auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
                             auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
                             auto.getMontoTangible()}); 
+                            autosReporte.add(auto);
                 }
             }
             //Autos boleto perdido
             if(this.cbxPerdido.isSelected()){
-                List<Auto> autosPerdidosTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(turno);
+                List<Auto> autosPerdidosTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(turnoAux);
              
                 Iterator<Auto> iteratorAutosPerdidos = autosPerdidosTurnoActual.iterator();
-                 if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                    ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                 if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                    ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
                         noAutosTabla += autosPerdidosTurnoActual.size();
                 }                  
                
                 while(iteratorAutosPerdidos.hasNext()){
                     Auto auto = iteratorAutosPerdidos.next();
                      
-                    if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                    ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-                        modelAutos.addRow(new Object[]{"PERDIDO",auto.getProgresivo(),turno.getTipoTurno(),auto.getMatricula(),
+                    if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                    ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                        modelAutos.addRow(new Object[]{"PERDIDO",auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
                             auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
                             auto.getMontoTangible()});
                         importeAutosTabla += auto.getMontoTangible();
+                        autosReporte.add(auto);
                     }
                 }
             }
@@ -258,36 +271,33 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         int boletosCancelados=0; 
         int boletosTurnoA=0;
         while(iteratorTurnos.hasNext()){
-            Turno turno = iteratorTurnos.next();
-            if( ( turno.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
-                ( turno.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                ( turno.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-                    boletosEmitidos += turno.getNoBol();
-                    boletosTurnoA += turno.getNoBolTurnoA();
-                    boletosPendientes+= turno.getNoBol() + turno.getNoBolTurnoA() - (turno.getNoBolCobrados() + turno.getNoBolCancelados() +turno.getNoBolPerdidos() );
-                    boletosCobrados += turno.getNoBolCobrados();
-                    boletosPerdidos += turno.getNoBolPerdidos();
-                    boletosCancelados += turno.getNoBolCancelados(); 
+            Turno turnoAux = iteratorTurnos.next();
+            if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
+                ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
+                ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                    boletosEmitidos += turnoAux.getNoBol();
+                    boletosTurnoA += turnoAux.getNoBolTurnoA();
+                    boletosPendientes+= turnoAux.getNoBol() + turnoAux.getNoBolTurnoA() - (turnoAux.getNoBolCobrados() + turnoAux.getNoBolCancelados() +turnoAux.getNoBolPerdidos() );
+                    boletosCobrados += turnoAux.getNoBolCobrados();
+                    boletosPerdidos += turnoAux.getNoBolPerdidos();
+                    boletosCancelados += turnoAux.getNoBolCancelados(); 
             }
                 
         }
         this.txtTotalTurnos.setText(String.valueOf(importeTurnosTabla));
-        
-        
+         
         this.txtNoBoletosAutos.setText(String.valueOf(noAutosTabla));
         this.txtTotalAutos.setText(String.valueOf(importeAutosTabla));
         
         this.txtTotalRetiros.setText(String.valueOf(importeRetirosTabla));
         
-       
         this.txtBoletosTurnoA.setText(String.valueOf(boletosTurnoA));
         this.txtBoletosEmitidos.setText(String.valueOf(boletosEmitidos));
         this.txtBoletosCobrados.setText(String.valueOf(boletosCobrados));
         this.txtBoletosPorCobrar.setText(String.valueOf(boletosPendientes));
         this.txtBoletosPerdidos.setText(String.valueOf(boletosPerdidos));
         this.txtBoletosCancelados.setText(String.valueOf(boletosCancelados));
-        
-        
+             
     }
     
     @Override
@@ -448,7 +458,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
 
             },
             new String [] {
-                "Progresivo", "Turno", "Hora", "Monto real", "Monto reportado", "Diferencia"
+                "Progresivo", "Turno", "Hora", "Monto real", "Monto retirado", "Diferencia"
             }
         ) {
             Class[] types = new Class [] {
@@ -637,6 +647,11 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         btnImprimir.setBackground(new java.awt.Color(255, 255, 255));
         btnImprimir.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         btnImprimir.setText("Imprimir folios");
+        btnImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirActionPerformed(evt);
+            }
+        });
 
         btnImprimir1.setBackground(new java.awt.Color(255, 255, 255));
         btnImprimir1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -712,26 +727,25 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                             .addComponent(cbxPrimer)
                             .addComponent(cbxTercer)
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jSeparator1)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
-                                        .addComponent(txtBoletosPorCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtBoletosCobrados)
-                                        .addComponent(txtBoletosCancelados)
-                                        .addComponent(txtBoletosPerdidos, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtBoletosEmitidos, javax.swing.GroupLayout.Alignment.LEADING)))
-                                .addComponent(jLabel6))
+                            .addComponent(jSeparator1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
+                                    .addComponent(txtBoletosPorCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtBoletosCobrados)
+                                    .addComponent(txtBoletosCancelados)
+                                    .addComponent(txtBoletosPerdidos, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtBoletosEmitidos, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addComponent(jLabel6)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel18)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -870,8 +884,16 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     }//GEN-LAST:event_cbxCanceladoActionPerformed
 
     private void btnImprimir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimir1ActionPerformed
-     new FrmArqueo(this.parent,true,turno);
+     new FrmArqueo(this.parent,true,turno, estacionamiento);
     }//GEN-LAST:event_btnImprimir1ActionPerformed
+
+    private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
+        int showConfirmDialog = JOptionPane.showConfirmDialog(this, "¿Quieres ordenar el reporte por NO. de folio?", "Folios",JOptionPane.YES_NO_OPTION);
+        if(showConfirmDialog == JOptionPane.YES_OPTION)
+            new ReporteFolios(autosReporte,estacionamiento,true).generarReporte();
+        else
+            new ReporteFolios(autosReporte,estacionamiento,false).generarReporte();
+    }//GEN-LAST:event_btnImprimirActionPerformed
 
 
 

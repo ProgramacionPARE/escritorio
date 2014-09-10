@@ -107,7 +107,7 @@ public class BoletoCancelado implements IDBModel{
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM boleto_perdido where id = ?");
+            prepareStatement("SELECT * FROM boleto_cancelado where id = ?");
             statement.setInt(1, id);
             ResultSet executeQuery = statement.executeQuery();
             if (executeQuery.next()){

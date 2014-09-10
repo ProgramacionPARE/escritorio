@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import modeloReportes.CorteTurno;
 import modelos.Caja;
 import modelos.Empleado;
+import modelos.Estacionamiento;
 import modelos.Turno;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.FrameView;
@@ -26,24 +27,20 @@ import vistas.FrmNuevoTurno;
 import vistas.FrmReportes;
 import vistas.FrmUsuarios;
 
-/**
- * The application's main frame.
- */
+
 public class ProyectoPareView extends FrameView {
    JLabel lblNombreOperador;
+   private Estacionamiento estacionamiento;
    private Empleado empleado;
    private boolean turnoAbrierto;
+   
 
     public ProyectoPareView(SingleFrameApplication app) {
         super(app);
         lblNombreOperador = new JLabel("");
         initComponents();  
-        iniciaOtrosComponentes();
-       
+        iniciaOtrosComponentes();   
 }
-
-  
-    
     public void initLogin(){
         btnCerrarSesion.setVisible(false);
         Turno turnoTemp = Turno.existeTurnoAbierto();
@@ -56,6 +53,7 @@ public class ProyectoPareView extends FrameView {
                 getClass().getResource("/proyectopare/resources/parking_entrada18x18.gif"));
         this.getFrame().setIconImage(img.getImage());
         this.getFrame().setExtendedState(Frame.MAXIMIZED_BOTH);
+        estacionamiento = Estacionamiento.getDatos();
     }
 
   
@@ -223,19 +221,19 @@ public class ProyectoPareView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        FrmReportes dialog = new FrmReportes(ProyectoPareApp.getApplication().getMainFrame(), true);
+        FrmReportes dialog = new FrmReportes(ProyectoPareApp.getApplication().getMainFrame(), true, estacionamiento);
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         if(turnoAbrierto){
             int res =  JOptionPane.showConfirmDialog(this.getFrame(), "Quieres tambien hacer corte de turno?","Cerrar sesion", JOptionPane.YES_NO_CANCEL_OPTION);
             if(res ==  JOptionPane.YES_OPTION){
-                if(Caja.getByCaseta(turno.getEmpleado().getCaseta().getId()).getFondo()>0 ){
-                     new FrmCaja(this.getFrame(),true,turno,true,empleado);
+                if(Caja.getByCaseta(estacionamiento.getCaseta().getId()).getFondo()>0 ){
+                     new FrmCaja(this.getFrame(),true,turno,true,empleado,estacionamiento);
                 }else{
                     turno.realizarCorte(empleado);
                     turno.actualizar();
-                    new CorteTurno(turno).generarReporte(); 
+                    new CorteTurno(turno,estacionamiento).generarReporte(); 
                     empleado = null;
                     btnCerrarSesion.setVisible(false);
                     initLogin();
@@ -253,28 +251,25 @@ public class ProyectoPareView extends FrameView {
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCajaActionPerformed
-        new FrmCaja(this.getFrame(),true,turno,false,empleado);
+        new FrmCaja(this.getFrame(),true,turno,false,empleado,estacionamiento);
     }//GEN-LAST:event_btnCajaActionPerformed
 
     private void btnEstacionamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstacionamientoActionPerformed
-        new FrmEstadoEstacionamiento(this.getFrame(),true,turno);        
+        new FrmEstadoEstacionamiento(this.getFrame(),true,turno, estacionamiento);        
     }//GEN-LAST:event_btnEstacionamientoActionPerformed
 
     private void btnConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracionActionPerformed
-       new FrmMenuAdministracion(this.getFrame(),true,turno);
+       new FrmMenuAdministracion(this.getFrame(),true,turno,estacionamiento);
     }//GEN-LAST:event_btnConfiguracionActionPerformed
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
-         new FrmUsuarios(this.getFrame(), true, turno);
+         new FrmUsuarios(this.getFrame(), true, turno,estacionamiento);
     }//GEN-LAST:event_btnUsuariosActionPerformed
 
     @Action
     public void llamadaParking() {
-        new FrmMenuParking(this.getFrame(),true,turno);
-        //if(parking == null) {
-        //new VenParking (ProyectoPareApp.getApplication().getMainFrame(), false,turno).setVisible(true);
-        //}
-        //parking.setVisible(true);
+        new FrmMenuParking(this.getFrame(),true,turno,estacionamiento);
+
     }
 
     public void validaPermisos(Empleado empleado) {
@@ -285,14 +280,14 @@ public class ProyectoPareView extends FrameView {
              int showConfirmDialog = JOptionPane.showConfirmDialog(this.getFrame(),"¿Quiere abrir un nuevo turno?", 
                 "Turno nuevo", JOptionPane.YES_NO_OPTION );
             if(showConfirmDialog == JOptionPane.YES_OPTION){
-                turno = new Turno();
+                turno = new Turno(estacionamiento);
                 turno.inicializarTurno(empleado,"");
                 turno.guardar();
-                new FrmNuevoTurno(this.getFrame(),true,turno);
+                new FrmNuevoTurno(this.getFrame(),true,turno,estacionamiento);
                 turnoAbrierto  = true;
             }else{
                 turnoAbrierto  = false;
-                turno = new Turno();
+                turno = new Turno(estacionamiento);
                 turno.setEmpleado(empleado);
             }
               
@@ -300,6 +295,7 @@ public class ProyectoPareView extends FrameView {
         }else{
             turnoAbrierto  = true;
             turno = turnoTemp;
+            turno.setEstacionamiento(estacionamiento);
             turno.setEmpleado(empleado);
             if(turnoTemp.getOperador().getId() != empleado.getId()){
                 JOptionPane.showMessageDialog(this.getFrame(), "Turno abierto, empleado temporal",
@@ -357,116 +353,10 @@ public class ProyectoPareView extends FrameView {
                    btnCaja.setVisible(false);
                }  break;
        }
-        
-        
-        
         btnCerrarSesion.setText("Cerrar sesion de "+empleado.getUsuario());
-        btnCerrarSesion.setVisible(true);
-
-        
+        btnCerrarSesion.setVisible(true);    
     }
 
-    @Action
-    public void llamadaAlarmas() {
-//        if(imprimirBitacoraAlarmas == null) {
-//            imprimirBitacoraAlarmas = new VenImprimeBitacoraAlarmas(ProyectoPareApp.getApplication().getMainFrame(), false);
-//        }
-//        imprimirBitacoraAlarmas.setVisible(true);
-    }
-
-    @Action
-    public void llamadaUsuarios() {
-//        if(usuarios == null) {
-////            usuarios = new VenUsuarios(ProyectoPareApp.getApplication().getMainFrame(),false);
-//            usuarios.setVisible(true);
-//        }
-//        else {
-//            usuarios.setVisible(true);
-//        }
-    }
-
-    @Action
-    public void llamadaAsistenciaOperadores() {
-
-        
-    }
-
-    @Action
-    public void salir(boolean borrarAlarma) {
-      //  if (borrarAlarma) new proyectopare.clases.Alarmas().removerAlarmaSalida(proyectopare.clases.PARAMETROS.ID_SALIDA);
-//        if(aTiempoExtra != null)
-//            aTiempoExtra.cerrarVentana();
-//        if(actaAdmin != null)
-//            actaAdmin.cerrarVentana();
-//        if(acuseDoc != null)
-//            acuseDoc.cerrarVentana();
-//        if(autosPernoc != null)
-//            autosPernoc.cerrarVentana();
-//       // if(bolPerdido != null)
-//       //     bolPerdido.cerrarVentana();
-//        if(comunInterno != null)
-//            comunInterno.cerrarVentana();
-//        if(config != null)
-//            config.cerrarVentana();
-//        if(danAutos != null)
-//            danAutos.cerrarVentana();
-//        if(repFormatos  != null)
-//            repFormatos.cerrarVentana();
-//        if(movOrganiz != null)
-//            movOrganiz.cerrarVentana();
-//        if(objPrenda != null)
-//            objPrenda.cerrarVentana();
-//        if(parking != null)
-//            parking.cerrarVentana();
-//        if(progPesonal != null)
-//            progPesonal.cerrarVentana();
-//        if(recPago != null)
-//            recPago.cerrarVentana();
-//        if(regPensiones != null)
-//            regPensiones.cerrarVentana();
-//        if(reqPersonal != null)
-//            reqPersonal.cerrarVentana();
-//        if(segDiscip != null)
-//            segDiscip.cerrarVentana();
-//        if(solPapel != null)
-//            solPapel.cerrarVentana();
-//        if(vacProgram != null)
-//            vacProgram.cerrarVentana();
-//        if(operadores != null)
-//            operadores.cerrarVentana();
-//    //    public static VenTarifas tarifas = null;
-//        if(caja != null)
-//            caja.cerrarVentana();
-//        if(tarifaPago != null)
-//            tarifaPago.cerrarVentana();
-//        if(imprimirESParking != null)
-//            imprimirESParking.cerrarVentana();
-//        if(imprimirESCaja != null)
-//            imprimirESCaja.cerrarVentana();
-//        if(catalogoListas != null)
-//            catalogoListas.cerrarVentana();
-//        if(catClientes != null)
-//            catClientes.cerrarVentana();
-//        if(usuarios != null)
-//            usuarios.cerrarVentana();
-//        if(imprimirExtractoCuenta != null)
-//            imprimirExtractoCuenta.cerrarVentana();
-//
-//
-//        if(imprimirBitacoraAlarmas != null)
-//            imprimirBitacoraAlarmas.cerrarVentana();
-//        if(foliosForma != null)
-//            foliosForma.cerrarVentana();
-//        if (borrarAlarma) System.exit(0);
-    }
-
-    @Action
-    public void llamadaClientes() {
-//        if(catClientes == null) {
-//            //catClientes = new VenClientes(ProyectoPareApp.getApplication().getMainFrame(), false);
-//        }
-//        catClientes.setVisible(true);
-    }
 
     public void setCajaAlarma(boolean requiereRetitroParcial) {
        if(requiereRetitroParcial)
@@ -479,18 +369,13 @@ public class ProyectoPareView extends FrameView {
     public void cerrarTurno(){
         turno.realizarCorte(empleado);
         turno.actualizar();
-        new CorteTurno(turno).generarReporte();
+        new CorteTurno(turno,estacionamiento).generarReporte();
         empleado = null;
         btnCerrarSesion.setVisible(false);
         initLogin();
     }
 
-    @Action
-    public void onTarifaMenu() {
-       // VenTarifasPago  frmTarifas = new VenTarifasPago(this.getFrame(),true);
-//        frmTarifas.setVisible(true);
-        //FrmTarifas  frmTarifas = new FrmTarifas(this.getFrame(),true);
-    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -509,39 +394,6 @@ public class ProyectoPareView extends FrameView {
 
     private JDialog aboutBox;
     private Turno turno;
-
-//    public static VenATiempoExtra aTiempoExtra = null;
-//    public static VenActaAdministrativa actaAdmin = null;
-//    public static VenAcuseDocumentos acuseDoc = null;
-//    public static VenAutosPernoctantes autosPernoc = null;
-//    public static FrmBoletoPerdido bolPerdido = null;
-//    public static VenComunicadoInterno comunInterno = null;
-//    public static VenConfiguraciones config = null;
-//    public static VenDaniosAutomovil danAutos = null;
-//    public static VenEmisReportFormatos repFormatos  = null;
-//    public static VenMovOrganizacionales movOrganiz = null;
-//    public static VenObjetosPrenda objPrenda = null;
-//    public static VenParking parking = null;
-//    public static VenProgrSemanalPersonal progPesonal = null;
-//    public static VenReciboPago recPago = null;
-//    public static VenRegistroPensiones regPensiones = null;
-//    public static VenRequisicionPersonal reqPersonal = null;
-//    public static VenSDisciplinarioEmpleado segDiscip = null;
-//    public static VenSolicitudPapeleria solPapel = null;
-//    public static VenVacacionesProgramadas vacProgram = null;
-//    public static VenOperadores operadores = null;
-////    public static VenTarifas tarifas = null;
-//    public static VenMovimientosCaja caja = null;
-//    public static VenTarifasPago tarifaPago = null;
-//    public static VenImprimeEntSalParking imprimirESParking = null;
-//    public static VenImprimeEntSalCaja imprimirESCaja = null;
-//    public static VenCatalogoListas catalogoListas = null;
-//    public static VenClientes catClientes = null;
-//    public static VenUsuarios usuarios = null;
-//    public static VenImprimeExtractoCuenta imprimirExtractoCuenta = null;
-//    public static VenImprimeBitacoraAlarmas imprimirBitacoraAlarmas = null;
-//    public static Login loginUsuarios = null;
-//    public static VenFoliosFormatos foliosForma = null;
 
 
 

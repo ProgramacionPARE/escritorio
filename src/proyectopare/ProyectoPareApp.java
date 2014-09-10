@@ -4,7 +4,6 @@
 
 package proyectopare;
 
-import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 

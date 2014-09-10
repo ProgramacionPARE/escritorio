@@ -6,13 +6,16 @@
 
 package vistas;
 
-import vistas.formatos.FrmBoletoCancelado;
-import modelos.Auto;
-import modelos.Turno;
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.print.PrinterJob;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import modelos.Auto;
+import modelos.Estacionamiento;
+import modelos.Turno;
+import vistas.formatos.FrmBoletoCancelado;
+import vistas.formatos.FrmReciboPago;
 
 /**
  *
@@ -23,15 +26,17 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog {
     Turno turno;
     Frame parent;
     String accion;
+    Estacionamiento estacionamiento;
     /**
      * Creates new form FrmLeerCodigoBarras
      */
-    public FrmLeerCodigoBarras(java.awt.Frame parent, boolean modal,Turno turno,String accion) {
+    public FrmLeerCodigoBarras(java.awt.Frame parent, boolean modal,Turno turno,String accion, Estacionamiento estacionamiento) {
         super(parent,"Codigo de barras", modal);
         this.parent = parent;
         initComponents();
         this.turno = turno;
         this.accion = accion;
+        this.estacionamiento = estacionamiento;
         this.getContentPane().setBackground(Color.white);
         pack();
         id ="";
@@ -102,14 +107,23 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog {
                 if (auto != null){
                     if(auto.isDentro()){
                         if(accion.equals("COBRO"))
-                            new FrmCobro(parent, true,turno,auto);
-                        else if (accion.equals("CANCELAR"))
+                            new FrmCobro(parent, true,turno,auto,estacionamiento);
+                        else if (accion.equals("CANCELAR")){
                             if(auto.getBoletoCancelado()==null)
-                                new FrmBoletoCancelado((JFrame) parent, true,turno,auto);
+                                new FrmBoletoCancelado((JFrame) parent, true,turno,auto,estacionamiento);
                             else
-                                 new FrmCobro(parent,true, turno, auto);
-                        this.dispose();
+                                 new FrmCobro(parent,true, turno, auto,estacionamiento);
+                        }
+                      
                     }
+                    else if(accion.equals("RECIBO")){
+                        if(!auto.isReciboImpreso()){
+                            auto.setReciboImpreso(true);
+                            auto.actualizar();
+                            new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),turno,auto,estacionamiento);
+                        }
+                    }
+                    this.dispose();
                 }
         else
             id = "";

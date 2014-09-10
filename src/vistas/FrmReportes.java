@@ -1,20 +1,16 @@
 
 package vistas;
 
-import modelos.Turno;
 import ModelosAux.Tiempo;
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
-import java.util.List;
 import javax.swing.JOptionPane;
 import modeloReportes.CorteDiario;
 import modeloReportes.CorteTurno;
+import modelos.Estacionamiento;
+import modelos.Turno;
 import org.freixas.jcalendar.DateEvent;
 import org.freixas.jcalendar.DateListener;
 import org.freixas.jcalendar.JCalendar;
@@ -23,10 +19,12 @@ import org.jdesktop.application.Action;
 
 public class FrmReportes extends javax.swing.JDialog {
     String reporteDiarioFecha; 
+    private Estacionamiento estacionamiento;
 
-    public FrmReportes(Frame parent, boolean modal) {
+    public FrmReportes(Frame parent, boolean modal,Estacionamiento estacionamiento) {
         super(parent,"Reportes", modal);
         initComponents();
+        this.estacionamiento = estacionamiento;
         reporteDiario();
         this.pack();
         this.setLocationRelativeTo(parent);
@@ -61,7 +59,7 @@ public class FrmReportes extends javax.swing.JDialog {
         if(ckbReporteDiarioDetelleTurno.isSelected()){
             Iterator<Turno> iterator = turnosByFecha.iterator();
             while (iterator.hasNext())
-                new CorteTurno(iterator.next()).generarReporte();
+                new CorteTurno(iterator.next(), estacionamiento).generarReporte();
         }
         if(turnosByFecha.size()>0)
             new CorteDiario(turnosByFecha,reporteDiarioFecha).generarReporte();
