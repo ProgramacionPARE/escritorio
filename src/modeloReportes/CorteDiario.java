@@ -66,8 +66,8 @@ public class CorteDiario  {
 
         try {
             JasperReport reporte = (JasperReport) JRLoader.
-            //loadObject(new File("/home/empleado/pare/reportes/corteDiario.jasper"));
-            loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/corteDiario.jasper"));
+            loadObject(new File("/home/empleado/pare/reportes/corteDiario.jasper"));
+            //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/corteDiario.jasper"));
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turnos));
             PrinterJob job = PrinterJob.getPrinterJob();

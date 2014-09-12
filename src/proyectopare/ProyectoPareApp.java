@@ -38,3 +38,31 @@ public class ProyectoPareApp extends SingleFrameApplication {
 
 }
 
+//class pojo1
+//{
+//String name;
+//String age;
+////generate setter and getters
+//}
+//
+//once you set the variables in pojo1 class you can send that using the following code
+//
+//String postUrl="www.site.com";// put in your url
+//Gson gson= new Gson();
+//HttpPost post = new HttpPost(postUrl);
+//StringEntity  postingString =new StringEntity(gson.toJson(pojo1));//convert your pojo to   json
+//post.setEntity(postingString);
+//post.setHeader("Content-type", "application/json");
+//HttpResponse  response = httpClient.execute(post);
+//
+//and these are the imports
+//
+//import org.apache.http.HttpEntity;
+//import org.apache.http.HttpResponse;
+//import org.apache.http.client.HttpClient;
+//import org.apache.http.client.methods.HttpPost;
+//import org.apache.http.entity.StringEntity;
+//
+//and for GSON
+//
+//import com.google.gson.Gson;

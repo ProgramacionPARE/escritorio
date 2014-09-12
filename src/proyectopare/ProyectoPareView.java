@@ -6,12 +6,16 @@ package proyectopare;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import modeloReportes.CorteTurno;
 import modelos.Caja;
+import modelos.DetallesMovimiento;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Turno;
@@ -233,7 +237,11 @@ public class ProyectoPareView extends FrameView {
                 }else{
                     turno.realizarCorte(empleado);
                     turno.actualizar();
-                    new CorteTurno(turno,estacionamiento).generarReporte(); 
+                     Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> detalles = turno.getDetallesMovimiento().entrySet().iterator();
+                    while(detalles.hasNext()){
+                         new CorteTurno(turno, estacionamiento, detalles.next().getValue()).generarReporte();
+                    }
+                   
                     empleado = null;
                     btnCerrarSesion.setVisible(false);
                     initLogin();
@@ -369,7 +377,11 @@ public class ProyectoPareView extends FrameView {
     public void cerrarTurno(){
         turno.realizarCorte(empleado);
         turno.actualizar();
-        new CorteTurno(turno,estacionamiento).generarReporte();
+         Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> detalles = turno.getDetallesMovimiento().entrySet().iterator();
+                while(detalles.hasNext()){
+                     new CorteTurno(turno, estacionamiento, detalles.next().getValue()).generarReporte();
+                }
+
         empleado = null;
         btnCerrarSesion.setVisible(false);
         initLogin();

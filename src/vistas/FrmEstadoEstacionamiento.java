@@ -10,10 +10,14 @@ import ModelosAux.Tiempo;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
-import java.awt.print.PrinterJob;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -25,7 +29,6 @@ import modelos.Estacionamiento;
 import modelos.IUseCalendar;
 import modelos.RetiroParcial;
 import modelos.Turno;
-import vistas.formatos.FrmReciboPago;
 
 /**
  *
@@ -36,6 +39,11 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     Turno turno;
     Estacionamiento estacionamiento;
     List<Auto> autosReporte;
+    ArrayList<JCheckBox> cbxSeries;
+    
+    Map<Long,List<Auto>> aCobrados;
+    Map<Long,List<Auto>> aPendientes;
+    boolean fechaCambio = true;
     /**
      * Creates new form FrmEstadoEstacionamiento
      */
@@ -46,12 +54,27 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         this.parent = parent;
         this.estacionamiento =  estacionamiento;
         setLocationRelativeTo(parent);
-        cargarDatos(Tiempo.getFecha());
+        
         this.txtFecha.setText(Tiempo.getFecha());
         this.turno = turno;
+        cbxSeries = new ArrayList();
+        cbxSeries.add(cbxSerie1);cbxSeries.add(cbxSerie2);cbxSeries.add(cbxSerie3);cbxSeries.add(cbxSerie4);cbxSeries.add(cbxSerie5);
+        Iterator<JCheckBox> iterator = cbxSeries.iterator();
+        while(iterator.hasNext()){
+            iterator.next().setVisible(false);
+        }
+       
+        aCobrados = new HashMap();
+        aPendientes = new HashMap();
+        
+        
+        cargarDatos(Tiempo.getFecha());
         setVisible(true);
+        
+        
     }
-    
+
+
     
     private void personalizarTablas(){
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -90,9 +113,18 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     }
     
     private void cargarDatos(String fecha) {
+        
         deshablitarCbx();
         autosReporte = new ArrayList<Auto>();
         //Habilitar cbx de turnos disponibles
+        List<String> series = Auto.getSeries();
+        if(series.size()>1){
+            for(int i = 0 ; i< series.size();i++){
+                cbxSeries.get(i).setText("Serie "+ series.get(i));
+                cbxSeries.get(i).setVisible(true);
+            }
+        }
+   
         ArrayList<Turno> turnos = Turno.getTurnosByFechaAbierto(fecha);
         Iterator<Turno> turnosIterator = turnos.iterator();
         while(turnosIterator.hasNext()){
@@ -112,8 +144,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                     break;
             }
                 
-        }
-
+        } 
         // Turnos
         float importeTurnosTabla=0;
         DefaultTableModel modelTurno = (DefaultTableModel) this.tblTurnos.getModel();
@@ -130,9 +161,10 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                 turnoAux.getFolioInicial(),turnoAux.getFolioFinal(),turnoAux.getTotal()});
             importeTurnosTabla+=turnoAux.getTotal();
             }
+            this.tblTurnos.setModel(modelTurno);
         }
-        this.tblTurnos.setModel(modelTurno);
-        
+      
+  
         //Retiros parciales
          float importeRetirosTabla=0;
         DefaultTableModel modelRetiros = (DefaultTableModel) this.tblRetiros.getModel();
@@ -155,10 +187,10 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                      importeRetirosTabla+=retiro.getMontoReal();
                 }
             }
-            
+            this.tblRetiros.setModel(modelRetiros);
         }
-        this.tblRetiros.setModel(modelRetiros);
         
+   
         //Autos
         int noAutosTabla=0;
         float importeAutosTabla=0;
@@ -166,11 +198,19 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         modelAutos.getDataVector().removeAllElements();
         modelAutos.fireTableDataChanged();
         iterator = turnos.iterator();
+        boolean banderaCambio=false;
         while(iterator.hasNext()){
             Turno turnoAux = iterator.next();
-            //Autos cobrados
+          
+        //Autos cobrados
             if(this.cbxCobrado.isSelected()){
-                List<Auto> autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(turnoAux); 
+                 List<Auto> autosCobradosTurnoActual = new ArrayList(); 
+                if(fechaCambio){
+                    autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(turnoAux);
+                    aCobrados.put(turnoAux.getId(), autosCobradosTurnoActual);
+                }else{
+                    autosCobradosTurnoActual = aCobrados.get(turnoAux.getId());
+                }
                 
                 Iterator<Auto> iteratorAutosCobrados = autosCobradosTurnoActual.iterator();
                  if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
@@ -184,18 +224,30 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                     if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
                     ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
                     ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-                        modelAutos.addRow(new Object[]{"COBRADO",auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
-                            auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
-                            auto.getMontoTangible()});
-                        importeAutosTabla += auto.getMontoTangible();
-                        autosReporte.add(auto);
+                        for(int i = 0 ; i< series.size();i++){
+                            if(cbxSeries.get(i).isVisible() && cbxSeries.get(i).isSelected() && series.get(i).equals(auto.getSerie()) || series.size()==1){
+                                modelAutos.addRow(new Object[]{"COBRADO",auto.getSerie()+auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
+                                auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
+                                auto.getMontoTangible()});
+                                importeAutosTabla += auto.getMontoTangible();
+                                autosReporte.add(auto);                                    
+                            }                           
+                        }
                     }
+                this.tblAutos.setModel(modelAutos);
                 }
-            }
+            }   
             //Autos pendientes
             if(this.cbxDentro.isSelected()){
-                List<Auto> autosPendientesTurnoActual = Auto.getAutosPendientes(turnoAux);
-
+                List<Auto> autosPendientesTurnoActual = new ArrayList(); 
+                if(fechaCambio){
+                    banderaCambio = true;
+                    autosPendientesTurnoActual = Auto.getAutosPendientes(turnoAux);  
+                    aPendientes.put(turnoAux.getId(), autosPendientesTurnoActual);
+                }else{
+                    autosPendientesTurnoActual = aPendientes.get(turnoAux.getId());
+                }
+                
                 Iterator<Auto> iteratorAutosPendientes = autosPendientesTurnoActual.iterator();
                 if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
                     ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
@@ -208,12 +260,17 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                     if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
                     ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
                     ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-                        modelAutos.addRow(new Object[]{"PENDIENTE",auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
-                        auto.getHoraEntrada(),"-","-","-"});
-                        autosReporte.add(auto);
+                        for(int i = 0 ; i< series.size();i++){
+                            if(cbxSeries.get(i).isVisible() && cbxSeries.get(i).isSelected() && series.get(i).equals(auto.getSerie()) || series.size()==1){
+                                modelAutos.addRow(new Object[]{"PENDIENTE",auto.getSerie()+auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
+                                auto.getHoraEntrada(),"-","-","-"});
+                                autosReporte.add(auto);
+                            }
+                        }
                     }
+                this.tblAutos.setModel(modelAutos);
                 }
-            }
+            }  
             //Autos Cancelados
             if(this.cbxCancelado.isSelected()){
                 List<Auto> autosCanceladosTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(turnoAux);
@@ -227,13 +284,20 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                     Auto auto = iteratorAutosCancelados.next();
                     if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
                     ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
-                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) )
-                        modelAutos.addRow(new Object[]{"CANCELADO",auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
-                            auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
-                            auto.getMontoTangible()}); 
-                            autosReporte.add(auto);
+                    ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
+                        for(int i = 0 ; i< series.size();i++){
+                            if(cbxSeries.get(i).isVisible() && cbxSeries.get(i).isSelected() && series.get(i).equals(auto.getSerie()) || series.size()==1){
+                                modelAutos.addRow(new Object[]{"CANCELADO",auto.getSerie()+auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
+                                    auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
+                                    auto.getMontoTangible()}); 
+                                    autosReporte.add(auto);
+                                this.tblAutos.setModel(modelAutos);
+                            }
+                        }
+                    }
                 }
             }
+   
             //Autos boleto perdido
             if(this.cbxPerdido.isSelected()){
                 List<Auto> autosPerdidosTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(turnoAux);
@@ -251,17 +315,25 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                     if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
                     ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
                     ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-                        modelAutos.addRow(new Object[]{"PERDIDO",auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
-                            auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
-                            auto.getMontoTangible()});
-                        importeAutosTabla += auto.getMontoTangible();
-                        autosReporte.add(auto);
+                        for(int i = 0 ; i< series.size();i++){
+                            if(cbxSeries.get(i).isVisible() && cbxSeries.get(i).isSelected() && series.get(i).equals(auto.getSerie()) || series.size()==1){
+                                modelAutos.addRow(new Object[]{"PERDIDO",auto.getSerie()+auto.getProgresivo(),turnoAux.getTipoTurno(),auto.getMatricula(),
+                                    auto.getHoraEntrada(),auto.getHoraSalida(),String.format("%02d",auto.getHorasTangibles())+" : "+String.format("%02d",auto.getMinutosTangibles()),
+                                    auto.getMontoTangible()});
+                                importeAutosTabla += auto.getMontoTangible();
+                                autosReporte.add(auto);
+                            }
+                        }
                     }
+                    this.tblAutos.setModel(modelAutos);
                 }
             }
         }
-        this.tblAutos.setModel(modelAutos);
-          
+        if(banderaCambio){
+            fechaCambio = false;
+            banderaCambio= false;
+        }
+        
         //Datos estadisticos
         Iterator<Turno> iteratorTurnos = turnos.iterator();
         int boletosEmitidos=0;
@@ -297,12 +369,13 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         this.txtBoletosPorCobrar.setText(String.valueOf(boletosPendientes));
         this.txtBoletosPerdidos.setText(String.valueOf(boletosPerdidos));
         this.txtBoletosCancelados.setText(String.valueOf(boletosCancelados));
-             
+         
     }
     
     @Override
     public void updateFecha(String fecha) {
         this.txtFecha.setText(fecha);
+         fechaCambio = true;
        cargarDatos(fecha);
     }
     
@@ -371,6 +444,11 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         btnImprimir1 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         txtBoletosTurnoA = new javax.swing.JTextField();
+        cbxSerie1 = new javax.swing.JCheckBox();
+        cbxSerie2 = new javax.swing.JCheckBox();
+        cbxSerie3 = new javax.swing.JCheckBox();
+        cbxSerie5 = new javax.swing.JCheckBox();
+        cbxSerie4 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -667,6 +745,56 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         txtBoletosTurnoA.setEditable(false);
         txtBoletosTurnoA.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        cbxSerie1.setBackground(java.awt.SystemColor.control);
+        cbxSerie1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cbxSerie1.setSelected(true);
+        cbxSerie1.setText("serie1");
+        cbxSerie1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSerie1ActionPerformed(evt);
+            }
+        });
+
+        cbxSerie2.setBackground(java.awt.SystemColor.control);
+        cbxSerie2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cbxSerie2.setSelected(true);
+        cbxSerie2.setText("serie2");
+        cbxSerie2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSerie2ActionPerformed(evt);
+            }
+        });
+
+        cbxSerie3.setBackground(java.awt.SystemColor.control);
+        cbxSerie3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cbxSerie3.setSelected(true);
+        cbxSerie3.setText("serie3");
+        cbxSerie3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSerie3ActionPerformed(evt);
+            }
+        });
+
+        cbxSerie5.setBackground(java.awt.SystemColor.control);
+        cbxSerie5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cbxSerie5.setSelected(true);
+        cbxSerie5.setText("serie5");
+        cbxSerie5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSerie5ActionPerformed(evt);
+            }
+        });
+
+        cbxSerie4.setBackground(java.awt.SystemColor.control);
+        cbxSerie4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cbxSerie4.setSelected(true);
+        cbxSerie4.setText("serie4");
+        cbxSerie4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSerie4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -674,87 +802,101 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel15)
-                            .addGap(30, 30, 30)
-                            .addComponent(jLabel14)
-                            .addGap(82, 82, 82)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnSetFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1185, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTotalRetiros, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbxSerie1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnImprimir1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbxSerie2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbxSerie3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbxSerie4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbxSerie5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cbxDentro, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbxCobrado, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbxPerdido, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbxCancelado, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel20)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNoBoletosAutos, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTotalAutos, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxSegundo)
-                            .addComponent(cbxPrimer)
-                            .addComponent(cbxTercer)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel15)
+                                    .addGap(30, 30, 30)
+                                    .addComponent(jLabel14)
+                                    .addGap(82, 82, 82)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnSetFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel17)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtTotalRetiros, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnImprimir1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
-                                    .addComponent(txtBoletosPorCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtBoletosCobrados)
-                                    .addComponent(txtBoletosCancelados)
-                                    .addComponent(txtBoletosPerdidos, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtBoletosEmitidos, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addComponent(jLabel6)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel18)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTotalTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBoletosTurnoA, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(20, 20, 20))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(jLabel20)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtNoBoletosAutos, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel19)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtTotalAutos, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                                        .addComponent(cbxDentro, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbxCobrado, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbxPerdido, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbxCancelado, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbxSegundo)
+                                    .addComponent(cbxPrimer)
+                                    .addComponent(cbxTercer)
+                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jSeparator1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
+                                            .addComponent(txtBoletosPorCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtBoletosCobrados)
+                                            .addComponent(txtBoletosCancelados)
+                                            .addComponent(txtBoletosPerdidos, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtBoletosEmitidos, javax.swing.GroupLayout.Alignment.LEADING)))
+                                    .addComponent(jLabel6)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel18)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtTotalTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtBoletosTurnoA, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(20, 20, 20))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -769,27 +911,9 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cbxCobrado)
-                                .addComponent(cbxPerdido)
-                                .addComponent(cbxCancelado)
-                                .addComponent(cbxDentro))
-                            .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtTotalAutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel19))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtNoBoletosAutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel20))))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
                             .addComponent(txtTotalTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -831,7 +955,33 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(txtBoletosPerdidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtBoletosPerdidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbxSerie1)
+                            .addComponent(cbxSerie2)
+                            .addComponent(cbxSerie3)
+                            .addComponent(cbxSerie5)
+                            .addComponent(cbxSerie4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cbxCobrado)
+                                .addComponent(cbxPerdido)
+                                .addComponent(cbxCancelado)
+                                .addComponent(cbxDentro))
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtTotalAutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel19))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtNoBoletosAutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel20)))))
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -895,6 +1045,26 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             new ReporteFolios(autosReporte,estacionamiento,false).generarReporte();
     }//GEN-LAST:event_btnImprimirActionPerformed
 
+    private void cbxSerie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSerie1ActionPerformed
+          cargarDatos(this.txtFecha.getText());
+    }//GEN-LAST:event_cbxSerie1ActionPerformed
+
+    private void cbxSerie2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSerie2ActionPerformed
+          cargarDatos(this.txtFecha.getText());
+    }//GEN-LAST:event_cbxSerie2ActionPerformed
+
+    private void cbxSerie3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSerie3ActionPerformed
+         cargarDatos(this.txtFecha.getText());
+    }//GEN-LAST:event_cbxSerie3ActionPerformed
+
+    private void cbxSerie5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSerie5ActionPerformed
+           cargarDatos(this.txtFecha.getText());
+    }//GEN-LAST:event_cbxSerie5ActionPerformed
+
+    private void cbxSerie4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSerie4ActionPerformed
+           cargarDatos(this.txtFecha.getText());
+    }//GEN-LAST:event_cbxSerie4ActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -907,6 +1077,11 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     private javax.swing.JCheckBox cbxPerdido;
     private javax.swing.JCheckBox cbxPrimer;
     private javax.swing.JCheckBox cbxSegundo;
+    private javax.swing.JCheckBox cbxSerie1;
+    private javax.swing.JCheckBox cbxSerie2;
+    private javax.swing.JCheckBox cbxSerie3;
+    private javax.swing.JCheckBox cbxSerie4;
+    private javax.swing.JCheckBox cbxSerie5;
     private javax.swing.JCheckBox cbxTercer;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -946,6 +1121,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     private javax.swing.JTextField txtTotalRetiros;
     private javax.swing.JTextField txtTotalTurnos;
     // End of variables declaration//GEN-END:variables
+
 
 
 

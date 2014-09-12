@@ -29,7 +29,7 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
     }
   @Action
     public void onNuevaEntrada() {
-        new FrmParkingEntrada(parent,true,turno,estacionamiento);
+       
     }
     
     
@@ -62,6 +62,11 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
         btnEntrada.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnEntrada.setText("Entrada");
         btnEntrada.setName("btnEntrada"); // NOI18N
+        btnEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntradaActionPerformed(evt);
+            }
+        });
 
         btnBoletoPerdido.setAction(actionMap.get("onBoletoPerdido")); // NOI18N
         btnBoletoPerdido.setBackground(new java.awt.Color(255, 255, 255));
@@ -170,6 +175,14 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
         new Thread(this).start();
        
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
+        if(estacionamiento.getTipo().equals("Valet"))
+            new FrmEntradaValet(parent,true,turno,estacionamiento);
+        else if(estacionamiento.getTipo().equals("Autoservicio"))
+            new FrmEntradaAutoservicio(parent,true,turno,estacionamiento);
+ 
+    }//GEN-LAST:event_btnEntradaActionPerformed
 
     @Action
     public void onNuevaSalida() {

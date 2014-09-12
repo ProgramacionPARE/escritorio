@@ -3,7 +3,9 @@ package vistas;
 
 import ModelosAux.Tiempo;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -30,9 +32,9 @@ public class FrmArqueo extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
-        ArrayList<DetallesMovimiento> generarDetalles = DetallesMovimiento.generarDetalles(
+       HashMap<String, ArrayList<DetallesMovimiento>> generarDetalles = DetallesMovimiento.generarDetalles(
                 Auto.getAutosCobradosTurnoActual(turno),Auto.getAutosBoletoPerdidoTurnoActual(turno),
-                Auto.getAutosBoletoCanceladoTurnoActual(turno));
+                Auto.getAutosBoletoCanceladoTurnoActual(turno),turno);
         llenarTabla(generarDetalles,turno);
         total();
         this.estacionamiento =  estacionamiento;
@@ -44,7 +46,7 @@ public class FrmArqueo extends javax.swing.JDialog {
     }
     
     
-    private void llenarTabla(ArrayList<DetallesMovimiento> generarDetalles,Turno turno){
+    private void llenarTabla(HashMap<String, ArrayList<DetallesMovimiento>> generarDetalles,Turno turno){
         float totalImporteBoletos = 0f;
         int totalBoletos = 0;
         //Boletos
@@ -52,7 +54,8 @@ public class FrmArqueo extends javax.swing.JDialog {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );     
         tblVenta.setDefaultRenderer(String.class, centerRenderer);
-        Iterator<DetallesMovimiento> iterator = generarDetalles.iterator();
+         ArrayList<DetallesMovimiento> detalles = DetallesMovimiento.fusionarDetalles(generarDetalles);
+        Iterator<DetallesMovimiento> iterator = detalles.iterator();
         while(iterator.hasNext()){
             DetallesMovimiento next = iterator.next();
            // if(next.getTipo().equals("Boleto")){
@@ -1274,9 +1277,12 @@ public class FrmArqueo extends javax.swing.JDialog {
         arqueo.getDetallesArqueo().add(new DetallesArqueo(0,0,0,"SubtotalRetiros" ));
     }
     turno.setDetallesMovimiento(DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(turno),
-                Auto.getAutosBoletoPerdidoTurnoActual(turno),Auto.getAutosBoletoCanceladoTurnoActual(turno)));
+                Auto.getAutosBoletoPerdidoTurnoActual(turno),Auto.getAutosBoletoCanceladoTurnoActual(turno),turno));
      
-    new CorteTurno(turno,estacionamiento).generarReporte();
+     Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> detalles = turno.getDetallesMovimiento().entrySet().iterator();
+                while(detalles.hasNext()){
+                     new CorteTurno(turno, estacionamiento, detalles.next().getValue()).generarReporte();
+                }
     new modeloReportes.ReporteArqueo(turno,arqueo,estacionamiento).generarReporte();
 
     }//GEN-LAST:event_btnImprimirArqueoActionPerformed

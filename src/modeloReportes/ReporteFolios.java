@@ -52,8 +52,8 @@ public class ReporteFolios  {
         }  
         try {
             JasperReport reporte = (JasperReport) JRLoader.
-            //loadObject(new File("/home/empleado/pare/reportes/folios.jasper"));
-            loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/folios.jasper"));
+            loadObject(new File("/home/empleado/pare/reportes/folios.jasper"));
+            //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/folios.jasper"));
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(autos));
             PrinterJob job = PrinterJob.getPrinterJob();
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);

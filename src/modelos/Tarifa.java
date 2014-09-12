@@ -122,31 +122,28 @@ public class Tarifa implements IDBModel{
         return tarifa;
      }       
     
-//    public static ArrayList<Tarifa> getAll() {
-//       ArrayList<Tarifa> tarifas = new ArrayList<Tarifa>();
-//       Conexion conexion = new Conexion(); 
-//       try {
-//            Connection connectionDB = conexion.getConnectionDB();
-//            PreparedStatement  statement = connectionDB.
-//            prepareStatement("SELECT * FROM tarifa");
-//            ResultSet resultSet = statement.executeQuery();
-//            while(resultSet.next()){
-//                tarifas.add(Tarifa.getById(resultSet.getInt("id")));
-//            }
-//           
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-//        }finally{
-//            conexion.cerrarConexion();
-//        }    
-//       return tarifas;
-//    }
-//    float costos[];
-//    float precioHora;
-//    float tarifaMaxima;
-//    float precioBoletoPerdido;
-//    int horasCompletas;
-//    String descripcion;
+    public static ArrayList<Tarifa> getAll() {
+       ArrayList<Tarifa> tarifas = new ArrayList<Tarifa>();
+       Conexion conexion = new Conexion(); 
+       try {
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT * FROM tarifa");
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                tarifas.add(Tarifa.getById(resultSet.getInt("id")));
+            }
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conexion.cerrarConexion();
+        }    
+       return tarifas;
+    }
+    
+    
+
      @Override
     public void guardar() {
         String costosString = "";

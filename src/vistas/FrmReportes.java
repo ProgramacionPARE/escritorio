@@ -6,9 +6,11 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import modeloReportes.CorteDiario;
 import modeloReportes.CorteTurno;
+import modelos.DetallesMovimiento;
 import modelos.Estacionamiento;
 import modelos.Turno;
 import org.freixas.jcalendar.DateEvent;
@@ -57,9 +59,14 @@ public class FrmReportes extends javax.swing.JDialog {
     public void onReporteDiarioImprimir() {
         ArrayList<Turno> turnosByFecha = Turno.getTurnosByFecha(reporteDiarioFecha);
         if(ckbReporteDiarioDetelleTurno.isSelected()){
-            Iterator<Turno> iterator = turnosByFecha.iterator();
-            while (iterator.hasNext())
-                new CorteTurno(iterator.next(), estacionamiento).generarReporte();
+            Iterator<Turno> turnos = turnosByFecha.iterator();
+            while (turnos.hasNext()){
+                Turno turnoActual = turnos.next();
+                Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> detalles = turnoActual.getDetallesMovimiento().entrySet().iterator();
+                while(detalles.hasNext()){
+                     new CorteTurno(turnoActual, estacionamiento, detalles.next().getValue()).generarReporte();
+                }
+            }
         }
         if(turnosByFecha.size()>0)
             new CorteDiario(turnosByFecha,reporteDiarioFecha).generarReporte();

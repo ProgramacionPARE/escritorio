@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +18,8 @@ public class Auto {
   
     int id;
     boolean dentro;
-    boolean reciboImpreso;
+    boolean reciboImpreso;    
+    String serie;
     String progresivo;
     String clave;
     String matricula;
@@ -38,13 +40,14 @@ public class Auto {
     BoletoPerdido boletoPerdido;
     BoletoCancelado boletoCancelado;
 
-    public Auto(int id , String progresivo, String clave, String matricula, Tarifa tarifa, 
+    public Auto(int id ,String serie, String progresivo, String clave, String matricula, Tarifa tarifa, 
             String fechaEntrada, String fechaSalida, String horaEntrada, String horaSalida, 
             Turno turnoEntrada, Turno turnoSalida,int horasTangibles,int minutosTangibles, 
             Caseta caseta, float montoTangible, String marca, String modelo, String color,
             BoletoPerdido boletoPerdido, BoletoCancelado boletoCancelado) {
         this.id = id;
         this.clave = clave;
+        this.serie = serie;
         this.progresivo = progresivo;
         this.matricula = matricula;
         this.tarifa = tarifa;
@@ -71,6 +74,14 @@ public class Auto {
 
     public void setReciboImpreso(boolean reciboImpreso) {
         this.reciboImpreso = reciboImpreso;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
     }
 
 
@@ -251,6 +262,24 @@ public class Auto {
         this.clave = clave;
     }
     
+    public static List<String> getSeries(){
+        ArrayList<String> series = new ArrayList();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT DISTINCT serie  FROM tbl_entradas_parking ");
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                series.add(executeQuery.getString("serie"));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return series;
+    }
+    
     public static List<Auto> ordenarByProgresivo(List<Auto> autos) {
        for(int i =0 ; i< autos.size()-1;i++){
             for(int j =i+1 ; j< autos.size();j++){
@@ -265,7 +294,7 @@ public class Auto {
     }
 
       public static Auto getAutoByMatricula(String matricula) {
-       Auto auto = null;
+        Auto auto = null;
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -307,9 +336,10 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where clave = ? and progresivo = ?");
-            statement.setString(1, clave.substring(0,6));
-            statement.setString(2, clave.substring(6,12));
+            prepareStatement("SELECT id FROM tbl_entradas_parking where clave = ? and serie = ? and progresivo = ? ");
+            statement.setString(1, clave.substring(0,5));
+            statement.setString(2, clave.substring(5,6));
+            statement.setString(3, clave.substring(6,12));
             
             ResultSet executeQuery = statement.executeQuery();
             if (executeQuery.next()){
@@ -326,6 +356,7 @@ public class Auto {
 
     public static Auto getById(int id){
         Auto auto = null;
+        System.out.println(new Date().getTime());
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -334,7 +365,7 @@ public class Auto {
             statement.setInt(1, id);
             ResultSet executeQuery = statement.executeQuery();
             if (executeQuery.next()){
-                auto = new Auto(executeQuery.getInt("id"),executeQuery.getString("progresivo"),
+                auto = new Auto(executeQuery.getInt("id"),executeQuery.getString("serie"),executeQuery.getString("progresivo"),
                 executeQuery.getString("clave"),executeQuery.getString("matricula"),
                 Tarifa.getById(executeQuery.getInt("id_tarifa")),executeQuery.getString("fecha_entrada"),
                 executeQuery.getString("fecha_salida"),executeQuery.getString("hora_entrada"),
@@ -344,7 +375,8 @@ public class Auto {
                 ,executeQuery.getFloat("monto_tangible"),executeQuery.getString("marca"),
                 executeQuery.getString("modelo"),executeQuery.getString("color"),
                 BoletoPerdido.getById(executeQuery.getInt("id_boleto_perdido")),
-                BoletoCancelado.getBoletoCanceladoById(executeQuery.getInt("id_boleto_cancelado"))
+                BoletoCancelado.getById(executeQuery.getInt("id_boleto_cancelado"))
+              
                 );
                 if(auto.getBoletoPerdido()!=null)
                     auto.getBoletoPerdido().setAuto(auto);
@@ -366,6 +398,9 @@ public class Auto {
         }
         return auto;
     }
+    
+    
+    
     public static List<Auto> getAutosPendientes(){
         ArrayList <Auto> autos = new ArrayList<Auto>();
         try {
@@ -488,7 +523,7 @@ public class Auto {
                      ",`modelo` =? ,`color` =?,`id_boleto_perdido` =?  "+
                       ",`horas_estadia` =? ,`minutos_estadia` =?,`monto_tangible` =?  "+
                       ",`turno_salida_id` =? ,`entrada_salida` =? ,`recibo` =? ,"+
-                     "`id_boleto_cancelado` =?  WHERE `id`=?");
+                     "`id_boleto_cancelado` =?,`serie` =?   WHERE `id`=?");
              statement.setString(1, progresivo);
              statement.setString(2, matricula);
              statement.setString(3, fechaEntrada);
@@ -506,7 +541,8 @@ public class Auto {
              statement.setString(15, dentro ? "E" : "S" );
              statement.setString(16, reciboImpreso ? "SI" : "NO" );
              statement.setInt(17, boletoCancelado != null ? boletoCancelado.getId() : 0 );
-             statement.setInt(18, id);
+             statement.setString(18, serie ); 
+             statement.setInt(19, id);
   
              statement.executeUpdate();
              conexion.cerrarConexion();
@@ -523,8 +559,8 @@ public class Auto {
             prepareStatement("INSERT INTO tbl_entradas_parking (`progresivo`,`clave`, `matricula`,"+
                             " `id_tarifa`,`fecha_entrada`,`hora_entrada`,"+
                             " `operador_entrada`,`id_caseta`,"+
-                            " `turno_entrada_id`,`marca`)"+
-                            " VALUES (?,?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+                            " `turno_entrada_id`,`marca`,`serie` )"+
+                            " VALUES (?,?,?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, progresivo);
             statement.setString(2, clave);
             statement.setString(3, matricula);
@@ -535,6 +571,8 @@ public class Auto {
             statement.setLong(8, caseta.getId()); 
             statement.setLong(9, turnoEntrada.getId());
             statement.setString(10, marca);
+            statement.setString(11, serie);
+            
             
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();

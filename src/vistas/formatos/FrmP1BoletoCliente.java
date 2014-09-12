@@ -48,7 +48,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
         try {
         initComponents();
         //barcode = BarcodeFactory.createUPCA(progresivo);
-        barcode = BarcodeFactory.createCode128B(auto.getClave()+auto.getProgresivo());
+        barcode = BarcodeFactory.createCode128B(auto.getClave()+auto.getSerie()+auto.getProgresivo());
         barcode.setBarHeight(60);
         barcode.setBarWidth(2);
         barcode.setDrawingText(false);
@@ -76,7 +76,6 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
         lblLugar.setText(estacionamiento.getDescripcion());
        
         lblPlacas.setText(auto.getMatricula());
-        lblTarifa.setText("$ "+ estacionamiento.getCaseta().getTarifa().getDescripcion());
         lblProgresivo.setText("No. " + auto.getProgresivo() );
         lblFecha.setText(auto.getFechaEntrada()+" "+auto.getHoraEntrada());
         lblAcomodador.setText(turno.getEmpleado().getNombre());
@@ -116,8 +115,6 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
         lblLugar = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        lblTarifa = new javax.swing.JLabel();
         jLabPlacas1 = new javax.swing.JLabel();
         lblPlacas = new javax.swing.JLabel();
         jLabPlacas4 = new javax.swing.JLabel();
@@ -209,14 +206,6 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
         jLabel8.setIconTextGap(0);
         jLabel8.setName("jLabel8"); // NOI18N
 
-        jLabel2.setFont(resourceMap.getFont("jLabel2.font")); // NOI18N
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
-
-        lblTarifa.setFont(resourceMap.getFont("lblTarifa.font")); // NOI18N
-        lblTarifa.setText(resourceMap.getString("lblTarifa.text")); // NOI18N
-        lblTarifa.setName("lblTarifa"); // NOI18N
-
         jLabPlacas1.setFont(resourceMap.getFont("jLabPlacas1.font")); // NOI18N
         jLabPlacas1.setText(resourceMap.getString("jLabPlacas1.text")); // NOI18N
         jLabPlacas1.setName("jLabPlacas1"); // NOI18N
@@ -285,7 +274,6 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabPlacas2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabPlacas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabPlacas4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
@@ -297,7 +285,6 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lblModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(lblPlacas, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(0, 0, Short.MAX_VALUE)))))))
                 .addContainerGap())
@@ -334,19 +321,15 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabPlacas4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel9)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(lblTarifa))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabPlacas)
                     .addComponent(lblPlacas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabPlacas2)
                     .addComponent(lblModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabPlacas1)
                     .addComponent(lblAcomodador, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -430,7 +413,6 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
     private javax.swing.JLabel jLabPlacas4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
@@ -448,7 +430,6 @@ public class FrmP1BoletoCliente extends JDialog implements Printable {
     private javax.swing.JLabel lblModelo;
     private javax.swing.JLabel lblPlacas;
     private javax.swing.JLabel lblProgresivo;
-    private javax.swing.JLabel lblTarifa;
     // End of variables declaration//GEN-END:variables
 
 }

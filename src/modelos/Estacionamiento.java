@@ -21,14 +21,16 @@ public class Estacionamiento implements IDBModel{
     String direccion;
     Caseta caseta;
     int numeroCaseta;
+    String tipo;
 
-    public Estacionamiento(int id, int centroCostos, String descripcion, String direccion, Caseta caseta, int numeroCaseta) {
+    public Estacionamiento(int id, int centroCostos, String descripcion, String direccion, Caseta caseta, int numeroCaseta,String tipo) {
         this.id = id;
         this.centroCostos = centroCostos;
         this.descripcion = descripcion;
         this.direccion = direccion;
         this.caseta = caseta;
         this.numeroCaseta = numeroCaseta;
+        this.tipo = tipo;
     }
     
 
@@ -82,6 +84,14 @@ public class Estacionamiento implements IDBModel{
         this.numeroCaseta = numeroCaseta;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
 
      
     
@@ -119,7 +129,8 @@ public class Estacionamiento implements IDBModel{
             if (resultSet.next()){
                 centro = new Estacionamiento(resultSet.getInt("id"),
                 resultSet.getInt("centro_costos"), resultSet.getString("descripcion"), resultSet.getString("direccion"),
-                Caseta.getById( Long.valueOf(resultSet.getString("caseta_actual"))),resultSet.getInt("caseta_actual") );
+                Caseta.getById( Long.valueOf(resultSet.getString("caseta_actual"))),resultSet.getInt("caseta_actual"),
+                resultSet.getString("tipo"));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -140,12 +151,13 @@ public class Estacionamiento implements IDBModel{
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE estacionamiento SET `centro_costos`=? ,`descripcion` =? , `direccion` =?"
-                    +",`caseta_actual` =?   WHERE `id`=?");
+                    +",`caseta_actual` =?  ,`tipo` =?   WHERE `id`=?");
             statement.setInt(1, this.centroCostos);
             statement.setString(2, this.descripcion);
             statement.setString(3, this.direccion);
             statement.setLong(4, this.numeroCaseta);
-            statement.setLong(5, this.id);
+            statement.setString(5, this.tipo);
+            statement.setLong(6, this.id);
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {

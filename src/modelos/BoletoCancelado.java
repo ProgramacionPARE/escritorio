@@ -101,7 +101,7 @@ public class BoletoCancelado implements IDBModel{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    static public BoletoCancelado getBoletoCanceladoById(int id){
+    static public BoletoCancelado getById(int id){
      BoletoCancelado boletoCancelado = null;
         try {
             Conexion conexion = new Conexion();

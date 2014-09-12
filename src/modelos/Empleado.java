@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +29,7 @@ public class Empleado implements IDBModel {
     String usuario;
     String contraseña;
 
-    public Empleado(int id, int nivel, String nombre, Caseta caseta, String tipoPuesto,String usuario,String contraseña) {
+    public Empleado(int id, int nivel, String nombre,  String tipoPuesto,String usuario,String contraseña) {
         this.id = id;
         this.nivel = nivel;
         this.nombre = nombre;
@@ -39,6 +40,7 @@ public class Empleado implements IDBModel {
     }   
     
         public  static Empleado getById(Long idEmpleado) {
+       
         Empleado empleado = null;
         try {
             Conexion conexion = new Conexion();
@@ -50,13 +52,14 @@ public class Empleado implements IDBModel {
             if (resultSet.next()){
                 empleado = new Empleado(resultSet.getInt("id"),resultSet.getInt("nivel"),
                         resultSet.getString("nombre_completo"), 
-                        Caseta.getById(resultSet.getInt("id_caseta")),resultSet.getString("tipo_empleado"),
+                        resultSet.getString("tipo_empleado"),
                         resultSet.getString("nombre"),resultSet.getString("contras"));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
         return empleado;
     }
     

@@ -7,8 +7,12 @@
 package vistas;
 
 import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import modeloReportes.CorteTurno;
 import modelos.Caja;
+import modelos.DetallesMovimiento;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Turno;
@@ -150,7 +154,10 @@ public class FrmCaja extends javax.swing.JDialog {
        if(esCorte){
             turno.realizarCorte(empleado);
             turno.actualizar();
-            new CorteTurno(turno,estacionamiento).generarReporte(); 
+             Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> detalles = turno.getDetallesMovimiento().entrySet().iterator();
+                while(detalles.hasNext()){
+                     new CorteTurno(turno, estacionamiento, detalles.next().getValue()).generarReporte();
+            }
             ProyectoPareApp.getApplication().getView().initLogin();
        }
        this.dispose();

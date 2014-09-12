@@ -19,13 +19,13 @@ import vistas.formatos.FrmP3BoletoParabrisas;
  *
  * @author Asistente Proyectos2
  */
-public class FrmParkingEntrada extends javax.swing.JDialog {
+public class FrmEntradaValet extends javax.swing.JDialog {
     Turno turno;
     Estacionamiento estacionamiento;
     /**
      * Creates new form FrmParkingEntrada
      */
-    public FrmParkingEntrada(java.awt.Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento) {
+    public FrmEntradaValet(java.awt.Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento) {
         super(parent,"Entrada nueva", modal);
         initComponents();
         this.turno = turno;
@@ -35,7 +35,6 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
         txtHoraEntrada.setText(Tiempo.getHora());
         txtCajero.setText(turno.getEmpleado().getNombre());
         txtProgresivo.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"BOLETO"));
-        txtTarifa.setText(estacionamiento.getCaseta().getTarifa().getDescripcion());
         pack();
         setLocationRelativeTo(parent);
         setVisible(true);
@@ -67,8 +66,8 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
         int confirmDialog = JOptionPane.showConfirmDialog(this,"¿Se imprimira el boleto estas seguro?",
                 "Imprimir boleto",JOptionPane.YES_NO_CANCEL_OPTION);
         if(confirmDialog == JOptionPane.YES_OPTION){
-            Auto auto= new Auto(0,txtProgresivo.getText(),Seguridad.getClave(6), txtMatricula.getText(),
-                    estacionamiento.getCaseta().getTarifa(),
+            Auto auto= new Auto(0,"0",txtProgresivo.getText(),Seguridad.getClave(5), txtMatricula.getText(),
+                    estacionamiento.getCaseta().getTarifas().get(0),
                     txtFechaEntrada.getText() ,"", txtHoraEntrada.getText(),"", turno, null,0,0, 
                     estacionamiento.getCaseta(),0, "", txtModelo.getText(), "", null,null);
             //Aumento en uno los boletos generados
@@ -114,13 +113,11 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
         txtProgresivo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtMatricula = new javax.swing.JTextField();
         txtModelo = new javax.swing.JTextField();
         txtNotas = new javax.swing.JTextField();
         btnEntrada = new javax.swing.JButton();
-        txtTarifa = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -155,9 +152,6 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
         jLabel5.setText("Modelo");
         jLabel5.setName("jLabel5"); // NOI18N
 
-        jLabel6.setText("Tarifa:");
-        jLabel6.setName("jLabel6"); // NOI18N
-
         jLabel7.setText("Notas:");
         jLabel7.setName("jLabel7"); // NOI18N
 
@@ -175,15 +169,11 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
         txtNotas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNotas.setName("txtNotas"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(FrmParkingEntrada.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(FrmEntradaValet.class, this);
         btnEntrada.setAction(actionMap.get("onGuardarAuto")); // NOI18N
         btnEntrada.setBackground(new java.awt.Color(255, 255, 255));
         btnEntrada.setText("Entrada");
         btnEntrada.setName("btnEntrada"); // NOI18N
-
-        txtTarifa.setEditable(false);
-        txtTarifa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtTarifa.setName("txtTarifa"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -196,7 +186,6 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -211,8 +200,7 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
                                 .addComponent(txtCajero)
                                 .addComponent(txtMatricula))
                             .addComponent(txtNotas)
-                            .addComponent(txtModelo)
-                            .addComponent(txtTarifa, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addComponent(txtModelo)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -243,17 +231,13 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtNotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -276,7 +260,6 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField txtCajero;
     private javax.swing.JTextField txtFechaEntrada;
@@ -285,6 +268,5 @@ public class FrmParkingEntrada extends javax.swing.JDialog {
     private javax.swing.JTextField txtModelo;
     private javax.swing.JTextField txtNotas;
     private javax.swing.JTextField txtProgresivo;
-    private javax.swing.JTextField txtTarifa;
     // End of variables declaration//GEN-END:variables
 }

@@ -57,8 +57,8 @@ public class ReporteArqueo  {
 
         try {
             JasperReport reporte = (JasperReport) JRLoader.
-            //loadObject(new File("/home/empleado/pare/reportes/arqueo.jasper"));
-            loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/arqueo.jasper"));
+            loadObject(new File("/home/empleado/pare/reportes/arqueo.jasper"));
+            //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/arqueo.jasper"));
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(arqueo.getDetallesArqueo()));
             PrinterJob job = PrinterJob.getPrinterJob();
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);

@@ -404,8 +404,8 @@ public class FrmUsuarios extends javax.swing.JDialog {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if(validaCamposEntrada()){
             if(estado.equals("Agregar")){
-                Empleado nuevoEmpleado = new Empleado(0, Integer.valueOf(txtNivel.getText()),txtNombre.getText(), 
-                estacionamiento.getCaseta(), (String)cbxTipo.getSelectedItem(),txtUsuario.getText(),txtContraseña.getText());
+                Empleado nuevoEmpleado = new Empleado(0, Integer.valueOf(txtNivel.getText()),txtNombre.getText()
+                        , (String)cbxTipo.getSelectedItem(),txtUsuario.getText(),txtContraseña.getText());
                 nuevoEmpleado.guardar();
                 empleado = nuevoEmpleado;
                 regresarEstado();

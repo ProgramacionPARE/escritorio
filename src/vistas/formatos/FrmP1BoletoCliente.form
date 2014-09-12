@@ -96,7 +96,6 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="jLabPlacas2" alignment="0" max="32767" attributes="1"/>
-                                      <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jLabPlacas" alignment="0" max="32767" attributes="1"/>
                                       <Component id="jLabPlacas4" alignment="0" pref="70" max="32767" attributes="1"/>
                                   </Group>
@@ -110,7 +109,6 @@
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="lblModelo" min="-2" pref="293" max="-2" attributes="0"/>
-                                              <Component id="lblTarifa" min="-2" pref="293" max="-2" attributes="0"/>
                                               <Component id="lblPlacas" min="-2" pref="293" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -161,22 +159,17 @@
                           <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblTarifa" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabPlacas" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblPlacas" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabPlacas2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblModelo" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabPlacas1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblAcomodador" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
@@ -315,20 +308,6 @@
             <Property name="verticalAlignment" type="int" value="1"/>
             <Property name="iconTextGap" type="int" value="0"/>
             <Property name="name" type="java.lang.String" value="jLabel8" noResource="true"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
-          <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel2.font"/>
-            <Property name="text" type="java.lang.String" resourceKey="jLabel2.text"/>
-            <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblTarifa">
-          <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="lblTarifa.font"/>
-            <Property name="text" type="java.lang.String" resourceKey="lblTarifa.text"/>
-            <Property name="name" type="java.lang.String" value="lblTarifa" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabPlacas1">

@@ -23,28 +23,32 @@ public class Caseta {
     private long id;
     private String descripcion;
     private long idEstacionameinto;
-    private Tarifa tarifas;
+    private ArrayList <Tarifa> tarifas;
 
-    public Caseta(long id, String descripcion, long idEstacionameinto,Tarifa tarifa) {
+    public Caseta(long id, String descripcion, long idEstacionameinto,ArrayList <Tarifa> tarifas) {
         this.id = id;
         this.descripcion = descripcion;
         this.idEstacionameinto = idEstacionameinto;
-        this.tarifas = tarifa;
-    }
-
-    public Tarifa getTarifa() {
-        return tarifas;
-    }
-
-    public void setTarifa(Tarifa tarifas) {
         this.tarifas = tarifas;
     }
 
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public ArrayList<Tarifa> getTarifas() {
+        return tarifas;
+    }
+
+    public void setTarifas(ArrayList<Tarifa> tarifas) {
+        this.tarifas = tarifas;
+    }
+
+   
     public void setId(int id) {
         this.id = id;
     }
@@ -81,7 +85,7 @@ public class Caseta {
             if (resultSet.next()){
                 caseta = new Caseta(resultSet.getLong("id"),
                         resultSet.getString("descripcion"),
-                       resultSet.getLong("id"),Tarifa.getById(resultSet.getLong("id")));
+                       resultSet.getLong("id"), Tarifa.getAll() );
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {

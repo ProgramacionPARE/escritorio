@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +33,7 @@ public class Turno implements IDBModel {
     private int noBolTurnoS;
     private float total;
     
-    private ArrayList <DetallesMovimiento> detallesMovimiento;
+    private  HashMap<String, ArrayList<DetallesMovimiento>> detallesMovimiento;
     private ArrayList <RetiroParcial> retirosParciales;
     private Estacionamiento estacionamiento;
 
@@ -39,12 +42,16 @@ public class Turno implements IDBModel {
     }
     
     public Turno(Estacionamiento estacionamiento) {
-        detallesMovimiento = new ArrayList<DetallesMovimiento>();
+        detallesMovimiento = new  HashMap<String, ArrayList<DetallesMovimiento>>();
         retirosParciales = new ArrayList <RetiroParcial>();
         this.estacionamiento = estacionamiento;
      }
 
-    public Turno(long id, Empleado empleado, String tipoTurno, String fechaApertura, String horaApertura, String fechaCierre, String horaCierre, long folioInicial, long folioFinal, int noBol, int noBolTurnoA, int noBolCancelados, int noBolPerdidos, int noBolCobrados, int noBolTurnoS, float total, ArrayList<DetallesMovimiento> detallesMovimiento, ArrayList<RetiroParcial> retirosParciales) {
+    public Turno(long id, Empleado empleado, String tipoTurno, String fechaApertura, 
+            String horaApertura, String fechaCierre, String horaCierre, long folioInicial, 
+            long folioFinal, int noBol, int noBolTurnoA, int noBolCancelados, int noBolPerdidos,
+            int noBolCobrados, int noBolTurnoS, float total, HashMap<String, ArrayList<DetallesMovimiento>> detallesMovimiento,
+            ArrayList<RetiroParcial> retirosParciales) {
         this.id = id;
         this.empleado = empleado;
         this.tipoTurno = tipoTurno;
@@ -66,7 +73,7 @@ public class Turno implements IDBModel {
     }
 
     public void inicializarTurno(Empleado empleado,String tipoTurno){
-        detallesMovimiento = new ArrayList<DetallesMovimiento>();
+        detallesMovimiento = new HashMap<String, ArrayList<DetallesMovimiento>>();
         retirosParciales = new ArrayList <RetiroParcial>();
         fechaApertura = Tiempo.getFecha();
         horaApertura = Tiempo.getHora();
@@ -89,7 +96,7 @@ public class Turno implements IDBModel {
         noBolCancelados = Auto.getAutosBoletoCanceladoTurnoActual(this).size();
         //Obtener Detalles de movimiento del turno
         detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this),
-                Auto.getAutosBoletoPerdidoTurnoActual(this),Auto.getAutosBoletoCanceladoTurnoActual(this));
+                Auto.getAutosBoletoPerdidoTurnoActual(this),Auto.getAutosBoletoCanceladoTurnoActual(this),this);
         DetallesMovimiento.ordenarPorPU(detallesMovimiento);
         DetallesMovimiento.guardar(detallesMovimiento, this.getId());
         total = DetallesMovimiento.calcularTotal(detallesMovimiento);
@@ -134,6 +141,7 @@ public class Turno implements IDBModel {
     
     
     public static Turno getById(Long id){
+        
         Turno turno = new Turno();
         try {
             Conexion conexion = new Conexion();
@@ -152,13 +160,15 @@ public class Turno implements IDBModel {
                 resultSet.getInt("no_bol_turno_a"),resultSet.getInt("no_bol_cancelados"),
                 resultSet.getInt("no_bol_perdidos"),resultSet.getInt("no_bol_cobrados"),      
                 resultSet.getInt("no_bol_turno_s"),
-                resultSet.getFloat("Total"), DetallesMovimiento.getByTurnoId(id),
+                resultSet.getFloat("Total"),null,
                 RetiroParcial.getRetirosParcialesByTurnoId(id));
             }
+            turno.setDetallesMovimiento( DetallesMovimiento.getById(id));
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
         return turno;
     }
     
@@ -328,14 +338,15 @@ public class Turno implements IDBModel {
         this.total = total;
     }
 
-    public ArrayList<DetallesMovimiento> getDetallesMovimiento() {
+    public Map<String, ArrayList<DetallesMovimiento>> getDetallesMovimiento() {
         return detallesMovimiento;
     }
 
-    public void setDetallesMovimiento(ArrayList<DetallesMovimiento> detallesMovimiento) {
+    public void setDetallesMovimiento(HashMap<String, ArrayList<DetallesMovimiento>> detallesMovimiento) {
         this.detallesMovimiento = detallesMovimiento;
     }
 
+   
 
     public void setId(long id) {
         this.id = id;

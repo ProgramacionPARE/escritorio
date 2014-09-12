@@ -1,15 +1,11 @@
 package modeloReportes;
 
 import ModelosAux.Tiempo;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -23,15 +19,16 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
 
 public class CorteTurno  {
     private Turno turno;
+    private ArrayList<DetallesMovimiento> detalleM;
     private Estacionamiento estacionamiento;
 
-    public CorteTurno(Turno turno,Estacionamiento estacionamiento) {
+    public CorteTurno(Turno turno,Estacionamiento estacionamiento,ArrayList<DetallesMovimiento> detalleM) {
         this.turno = turno;
         this.estacionamiento = estacionamiento;
+        this.detalleM =  detalleM;
     }
 
     public void generarReporte(){
@@ -52,14 +49,14 @@ public class CorteTurno  {
         parametros.put("turno",turno.getTipoTurno());
         parametros.put("centroCostos",estacionamiento.getDescripcion());
         
-        if(turno.getDetallesMovimiento().size()<1){
-            turno.getDetallesMovimiento().add(new DetallesMovimiento());
+        if(detalleM.size()<1){
+            detalleM.add(new DetallesMovimiento());
         }  
         try {
             JasperReport reporte = (JasperReport) JRLoader.
-            //loadObject(new File("/home/empleado/pare/reportes/corteTurno.jasper"));
-            loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/corteTurno.jasper"));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getDetallesMovimiento()));
+            loadObject(new File("/home/empleado/pare/reportes/corteTurno.jasper"));
+            //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/corteTurno.jasper"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(detalleM));
             PrinterJob job = PrinterJob.getPrinterJob();
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             int selectedService = 0;

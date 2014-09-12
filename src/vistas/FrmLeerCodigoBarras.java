@@ -99,6 +99,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+        
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         Auto auto=null;
         if (evt.getKeyChar() == '\n') { 
