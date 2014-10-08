@@ -22,9 +22,9 @@ public class Conexion {
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            String servidor = "jdbc:mysql://localhost/paredb";
+            String servidor = "jdbc:mysql://192.168.1.147/paredb";
             String usuarioDB="root";
-            String passwordDB="#parePROGRAMACIONdb";
+            String passwordDB="1234";
             conexion= DriverManager.getConnection(servidor,usuarioDB,passwordDB);
         }
         catch(ClassNotFoundException ex)

@@ -99,7 +99,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="1" attributes="0">
-                                              <Component id="jLabel15" alignment="1" min="-2" pref="113" max="-2" attributes="0"/>
+                                              <Component id="lblProgresivo" alignment="1" min="-2" pref="113" max="-2" attributes="0"/>
                                               <Component id="jLabel1" min="-2" pref="125" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -211,7 +211,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="txtProgresivo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblProgresivo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="lblProgresivoPerdido" min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
@@ -506,12 +506,12 @@
             <Property name="name" type="java.lang.String" value="txtProgresivo" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel15">
+        <Component class="javax.swing.JLabel" name="lblProgresivo">
           <Properties>
             <Property name="font" type="java.awt.Font" resourceKey="txtTurno.font"/>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" resourceKey="jLabel15.text"/>
-            <Property name="name" type="java.lang.String" value="jLabel15" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="lblProgresivo.text"/>
+            <Property name="name" type="java.lang.String" value="lblProgresivo" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNumeroIdentificacion">

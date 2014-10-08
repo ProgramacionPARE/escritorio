@@ -27,26 +27,19 @@ public class Tarifa implements IDBModel{
     float costos[];
     float precioHora;
     float tarifaMaxima;
+    float tarifaUnica;
     float precioBoletoPerdido;
     int horasCompletas;
     String descripcion;
-    
     public Tarifa() {
         costos = new float[4];
     
     }
 
-    public Tarifa(int fraciones, float[] costos, float precioHora, float tarifaMaxima, float precioBoletoPerdido, int horasCompletas, String descripcion) {
-        this.fraciones = fraciones;
-        this.costos = costos;
-        this.precioHora = precioHora;
-        this.tarifaMaxima = tarifaMaxima;
-        this.precioBoletoPerdido = precioBoletoPerdido;
-        this.horasCompletas = horasCompletas;
-        this.descripcion = descripcion;
-    }
 
-    public Tarifa(int id, int fraciones, float[] costos, float precioHora, float tarifaMaxima, float precioBoletoPerdido, int horasCompletas, String descripcion) {
+
+    public Tarifa(int id, int fraciones, float[] costos, float precioHora, float tarifaMaxima, 
+            float precioBoletoPerdido, int horasCompletas, String descripcion,float tarifaUnica) {
         this.id = id;
         this.fraciones = fraciones;
         this.costos = costos;
@@ -55,6 +48,7 @@ public class Tarifa implements IDBModel{
         this.precioBoletoPerdido = precioBoletoPerdido;
         this.horasCompletas = horasCompletas;
         this.descripcion = descripcion;
+        this.tarifaUnica = tarifaUnica;
     }
 
     public static float getImporteEstadia(Auto auto){
@@ -64,7 +58,7 @@ public class Tarifa implements IDBModel{
         //Calculo del monto por fraccion de hora
         if(auto.getBoletoCancelado()!=null)
             return 0;
-        if (auto.getHorasTangibles()< auto.getTarifa().getHorasCompletas()){
+        if (auto.getHorasTangibles() < auto.getTarifa().getHorasCompletas()){
             importeMinutos =  auto.getTarifa().getPrecioHora();
         }else{
             for(int i= 0; i< auto.getTarifa().getFraciones();i++){
@@ -74,7 +68,20 @@ public class Tarifa implements IDBModel{
             }
         }
         importeHoras = auto.getHorasTangibles()*auto.getTarifa().getPrecioHora();
-        return importeHoras+importeMinutos;
+        float importeFinal = importeHoras+importeMinutos;
+        if(auto.getTarifa().getTarifaMaxima()>0){
+            if(importeFinal > auto.getTarifa().getTarifaMaxima()){
+                importeFinal =  auto.getTarifa().getTarifaMaxima();
+            }
+        }
+        importeFinal -= auto.getDescuento();
+        if(importeFinal<0)
+            importeFinal = 0;
+        if(auto.getTarifa().getTarifaUnica()>0){
+            importeFinal =  auto.getTarifa().getTarifaUnica();
+        }
+        
+        return importeFinal;
     }
     
     public static String getRangoEstadia(Auto auto){
@@ -84,7 +91,7 @@ public class Tarifa implements IDBModel{
             if(auto.getMinutosTangibles()-((60/auto.getTarifa().getFraciones())*(i)) >= 0 &&
                 auto.getMinutosTangibles()-((60/auto.getTarifa().getFraciones())*(i+1))  < 0){
                     minutoI = ((60/auto.getTarifa().getFraciones())*(i))+1;
-                    minutoF = ((60/auto.getTarifa().getFraciones())*(i+1));
+                    minutoF = ((60/auto.getTarifa().getFraciones())*(i+1))%60;
                     horaI = auto.getHorasTangibles();
                     horaF = i != auto.getTarifa().getFraciones()-1 ? auto.getHorasTangibles() : 
                             (auto.getHorasTangibles()+1);
@@ -112,7 +119,7 @@ public class Tarifa implements IDBModel{
                 tarifa = new Tarifa(resultSet.getInt("id"),resultSet.getInt("fracciones"), costosArray, 
                         resultSet.getInt("precio_hora"),resultSet.getFloat("tarifa_maxima"),
                         resultSet.getFloat("boleto_perdido"), resultSet.getInt("hora_inicial"),
-                        resultSet.getString("descripcion"));
+                        resultSet.getString("descripcion"),resultSet.getFloat("tarifa_unica"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
@@ -121,6 +128,14 @@ public class Tarifa implements IDBModel{
         }    
         return tarifa;
      }       
+
+    public float getTarifaUnica() {
+        return tarifaUnica;
+    }
+
+    public void setTarifaUnica(float tarifaUnica) {
+        this.tarifaUnica = tarifaUnica;
+    }
     
     public static ArrayList<Tarifa> getAll() {
        ArrayList<Tarifa> tarifas = new ArrayList<Tarifa>();
@@ -142,9 +157,8 @@ public class Tarifa implements IDBModel{
        return tarifas;
     }
     
-    
 
-     @Override
+    @Override
     public void guardar() {
         String costosString = "";
         for (Float costo:costos){
@@ -157,15 +171,17 @@ public class Tarifa implements IDBModel{
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO tarifa (`fracciones`, `costos`,"+
                             " `precio_hora`,`tarifa_maxima`,`boleto_perdido`,"+
-                            "`hora_inicial`,`descripcion`)" +
-                            " VALUES (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+                            "`hora_inicial`,`descripcion`,`tarifa_unica` )" +
+                            " VALUES (?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, 4);
             statement.setString(2,costosString );
             statement.setFloat(3, precioHora);
             statement.setFloat(4, tarifaMaxima); 
             statement.setFloat(5, precioBoletoPerdido);
             statement.setLong(6, horasCompletas);
-            statement.setString(7, descripcion); 
+            statement.setString(7, descripcion);
+            statement.setFloat(8, tarifaUnica);
+            
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if(generatedKeys.next())
@@ -189,7 +205,7 @@ public class Tarifa implements IDBModel{
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE tarifa SET `fracciones`=? ,`costos` =? , "+
                             "`precio_hora` =?,`tarifa_maxima` =? ,`boleto_perdido` =?"+
-                            " ,`hora_inicial` =? ,`descripcion` =?  WHERE `id`=?");
+                            " ,`hora_inicial` =? ,`descripcion` =?,`tarifa_unica` =?  WHERE `id`=?");
             statement.setInt(1, 4);
             statement.setString(2,costosString );
             statement.setFloat(3, precioHora);
@@ -197,7 +213,8 @@ public class Tarifa implements IDBModel{
             statement.setFloat(5, precioBoletoPerdido);
             statement.setLong(6, horasCompletas);
             statement.setString(7, descripcion); 
-            statement.setInt(8, id); 
+            statement.setFloat(8, tarifaUnica);
+            statement.setInt(9, id); 
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {

@@ -96,9 +96,9 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
         }
         
         Graphics2D g2d = (Graphics2D)g;
-        g2d.transform(AffineTransform.getScaleInstance(.45,.45));
-        g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/1.7,(this).getHeight()/1.7 ));
-        g2d.transform(AffineTransform.getTranslateInstance(0,-140));
+        g2d.transform(AffineTransform.getScaleInstance(.48,.48));
+        g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/1.5,(this).getHeight()/1.5 ));
+        g2d.transform(AffineTransform.getTranslateInstance(0,-220));
         
         this.printAll(g2d);
         return PAGE_EXISTS;
@@ -149,38 +149,45 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
 
         jPanel1.setBackground(resourceMap.getColor("jPanel1.background")); // NOI18N
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel1.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
 
         jLabel1.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel1.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jLabel1.setName("jLabel1"); // NOI18N
 
         jLabel2.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel2.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jLabel2.setName("jLabel2"); // NOI18N
 
         jLabel7.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel7.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
         jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jLabel7.setName("jLabel7"); // NOI18N
 
         jLabel8.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel8.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText(resourceMap.getString("jLabel8.text")); // NOI18N
         jLabel8.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel8.setName("jLabel8"); // NOI18N
 
         jLabel9.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel9.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
 
         jLabel10.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel10.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel10.setText(resourceMap.getString("jLabel10.text")); // NOI18N
         jLabel10.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
@@ -205,6 +212,7 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
         });
 
         jLabel15.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel15.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText(resourceMap.getString("jLabel15.text")); // NOI18N
         jLabel15.setName("jLabel15"); // NOI18N
@@ -247,6 +255,7 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
         jLabel20.setName("jLabel20"); // NOI18N
 
         jLabel22.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel22.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel22.setText(resourceMap.getString("jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
 
@@ -255,6 +264,7 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
         jLabel23.setName("jLabel23"); // NOI18N
 
         jLabel25.setFont(resourceMap.getFont("btnGuardar.font")); // NOI18N
+        jLabel25.setForeground(resourceMap.getColor("jLabel10.foreground")); // NOI18N
         jLabel25.setText(resourceMap.getString("jLabel25.text")); // NOI18N
         jLabel25.setName("jLabel25"); // NOI18N
 
@@ -282,11 +292,6 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
                                 .add(jLabel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 154, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(jScrollPane1))
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .add(jLabel22)
-                                .add(217, 217, 217)
-                                .add(btnGuardar)
-                                .add(47, 47, 47))
                             .add(jPanel1Layout.createSequentialGroup()
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                                     .add(jLabel15, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 145, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -320,14 +325,19 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
                                                 .add(txtPlacas, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 252, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                                     .add(jPanel1Layout.createSequentialGroup()
                                         .add(0, 0, Short.MAX_VALUE)
-                                        .add(txtTurno, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 252, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))))
+                                        .add(txtTurno, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 252, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .add(244, 244, 244)
+                        .add(jLabel22)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(btnGuardar)
+                        .add(47, 47, 47)))
                 .addContainerGap())
             .add(jPanel1Layout.createSequentialGroup()
-                .add(27, 27, 27)
-                .add(jLabel23, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
-                .add(18, 18, 18)
+                .add(jLabel23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 296, Short.MAX_VALUE)
+                .add(45, 45, 45)
                 .add(jLabel19)
-                .add(173, 173, 173))
+                .add(58, 58, 58))
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jLabel25)
@@ -336,10 +346,11 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel19)
-                    .add(jLabel23))
+                    .add(jLabel23)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(31, 31, 31)
+                        .add(jLabel19)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -370,8 +381,8 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
                 .add(jLabel25)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED, 14, Short.MAX_VALUE)
-                .add(jLabel20, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED, 15, Short.MAX_VALUE)
+                .add(jLabel20, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel22)
@@ -400,7 +411,7 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         if (validaCamposEntrada()){
-            if(new Operacion().requierePermisos(turno.getEmpleado(), "Supervisor",true)){
+            if(new Operacion(this.parent).requierePermisos(turno.getEmpleado(), "Supervisor",true)){
                 btnGuardar.setVisible(false);
                 boletoCancelado = new BoletoCancelado(0, txtRazon.getText(), turno);
                 boletoCancelado.setAuto(auto);

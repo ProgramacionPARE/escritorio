@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="corteTurno" language="groovy" pageWidth="210" pageHeight="297" whenNoDataType="NoDataSection" columnWidth="190" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" whenResourceMissingType="Empty" isIgnorePagination="true" uuid="52038caf-a3be-430e-a6db-a5230bd76111">
 	<property name="ireport.zoom" value="1.9487171000000083"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="185"/>
 	<style name="style1"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="folioInicial" class="java.lang.String"/>
@@ -15,7 +15,6 @@
 	<parameter name="cobrados" class="java.lang.Number"/>
 	<parameter name="pendientes" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
-	<parameter name="boletosTotales" class="java.lang.String"/>
 	<parameter name="turno" class="java.lang.String"/>
 	<parameter name="centroCostos" class="java.lang.String"/>
 	<parameter name="fechaTurno" class="java.lang.String"/>
@@ -27,6 +26,9 @@
 	<field name="importe" class="java.lang.String"/>
 	<field name="tipo" class="java.lang.String"/>
 	<field name="rangoHorario" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.String" incrementType="Report">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
 	<title>
 		<band height="107" splitType="Immediate">
 			<staticText>
@@ -206,7 +208,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="40" splitType="Immediate">
+		<band height="25" splitType="Immediate">
 			<staticText>
 				<reportElement x="106" y="13" width="40" height="12" uuid="32a48f8d-2a95-4b66-bf3d-a609386c0c97"/>
 				<textElement textAlignment="Center">
@@ -236,15 +238,6 @@
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="26" width="44" height="12" uuid="64ba6b37-0182-47e6-9a3d-ea2e41af74d4">
-					<printWhenExpression><![CDATA[$P{cobrados} != 0]]></printWhenExpression>
-				</reportElement>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Normal]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="48" y="0" width="96" height="12" uuid="13ea89d9-e306-4b47-90db-14e9942a1633"/>
 				<textElement>
 					<font size="8"/>
@@ -255,110 +248,39 @@
 	</columnHeader>
 	<detail>
 		<band height="12" splitType="Stretch">
-			<printWhenExpression><![CDATA[$F{tipo}.equals("Boleto")]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$F{tipo}.substring( 0, 6 ).equals( "Titulo" )]]></printWhenExpression>
 			<textField>
-				<reportElement x="2" y="0" width="60" height="12" isPrintWhenDetailOverflows="true" uuid="e7c6da84-f117-414b-acea-2621b0a4b909"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{rangoHorario}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="64" y="0" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="772e71e5-984d-4925-9ffc-bfc3ed8bd25b"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{noBol}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="105" y="0" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="4a722f95-956e-49a1-b969-da656c094ab2"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{precioUnitario}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="147" y="0" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="0bd70466-69f6-4476-acdc-07b03dd1e5b4"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
-			</textField>
-		</band>
-		<band height="27" splitType="Stretch">
-			<printWhenExpression><![CDATA[$F{tipo}.equals( "Cancelado" )]]></printWhenExpression>
-			<textField>
-				<reportElement x="149" y="15" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="23bcd116-7e33-4e02-9620-9e5a1ea275ac"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="66" y="15" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="baa765e1-cef3-4528-9481-5cf935ba2536"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{noBol}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="3" y="0" width="61" height="15" uuid="ca710793-fcb3-4011-a7c7-7ea63b923b32">
-					<printWhenExpression><![CDATA[$P{cobrados} != 0]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="8" y="0" width="100" height="12" uuid="9f06e13e-1a94-48ce-8870-7f38a72e74ee"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Cancelados]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="107" y="15" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="62fbe781-ff50-42a4-83ea-33744dff839c"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{precioUnitario}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="3" y="15" width="60" height="12" isPrintWhenDetailOverflows="true" uuid="2dbcc55b-1197-4bda-b004-bd18ea34055a"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{rangoHorario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tipo}.substring( 6, $F{tipo}.length() )]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="30" splitType="Stretch">
-			<printWhenExpression><![CDATA[$F{tipo}.equals( "Perdido" )]]></printWhenExpression>
+		<band height="12" splitType="Stretch">
 			<textField>
-				<reportElement x="106" y="16" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="822802ac-d638-4473-b9d2-e058b82f7e1e"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{precioUnitario}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="2" y="1" width="60" height="15" uuid="3827250b-e73d-4c79-8f01-ef337e8c6870">
-					<printWhenExpression><![CDATA[$P{cobrados} != 0]]></printWhenExpression>
-				</reportElement>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Perdidos]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="2" y="16" width="60" height="12" isPrintWhenDetailOverflows="true" uuid="b7267f9c-a85e-4dc3-af69-9abe0faf3c22"/>
+				<reportElement x="3" y="0" width="60" height="12" isPrintWhenDetailOverflows="true" uuid="e7c6da84-f117-414b-acea-2621b0a4b909"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rangoHorario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="65" y="16" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="9fcd9f8e-f648-4ac8-a872-dd18938b3c30"/>
+				<reportElement x="65" y="0" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="772e71e5-984d-4925-9ffc-bfc3ed8bd25b"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{noBol}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="148" y="16" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="390ef572-d81f-415e-b094-a29f745e6769"/>
+				<reportElement x="106" y="0" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="4a722f95-956e-49a1-b969-da656c094ab2"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precioUnitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="148" y="0" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="0bd70466-69f6-4476-acdc-07b03dd1e5b4"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -367,7 +289,7 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="14" splitType="Stretch">
+		<band height="84" splitType="Stretch">
 			<textField>
 				<reportElement x="148" y="2" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="5daa7428-c8e6-47ac-b6b1-e0fadd0230e3"/>
 				<textElement textAlignment="Center">
@@ -385,13 +307,58 @@
 			<line>
 				<reportElement x="-2" y="1" width="190" height="1" uuid="f26c9d1e-0fa1-4619-a4df-f63dab7a910f"/>
 			</line>
-			<textField>
-				<reportElement x="65" y="2" width="40" height="12" isPrintWhenDetailOverflows="true" uuid="88b30ee0-85e9-4f87-aef0-9cac74d7a065"/>
-				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
+			<staticText>
+				<reportElement x="-1" y="21" width="100" height="10" uuid="a1a89a86-90ed-491e-b265-fe9b12761f72"/>
+				<textElement>
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{boletosTotales}]]></textFieldExpression>
+				<text><![CDATA[Comentarios]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="41" width="188" height="1" uuid="75e36b50-c781-400a-ad6f-efdf248b2f9b"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="54" width="188" height="1" uuid="1c1a9174-20e0-4c5d-b02d-d7dfa8194633"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="80" width="188" height="1" uuid="3d8a5f39-b162-4072-989c-09835a644bad"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="67" width="188" height="1" uuid="b9936a36-3317-45fe-aea9-67801b3b68a3"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="62" y="1" width="42" height="13" uuid="9a1921a3-3c32-40ad-9be5-4f97b198441e"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numBoletos}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
+	<pageFooter>
+		<band height="50">
+			<line>
+				<reportElement x="2" y="16" width="183" height="1" uuid="e9b00aff-46f0-49f2-a15d-fadf8d1e9f72"/>
+			</line>
+			<textField>
+				<reportElement x="32" y="21" width="118" height="11" uuid="a4fed4f1-4ece-4dd7-ae77-b6ef069373e6"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{operador}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>

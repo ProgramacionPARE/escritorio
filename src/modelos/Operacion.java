@@ -1,18 +1,25 @@
 package modelos;
 
-import proyectopare.ProyectoPareApp;
+
+import java.awt.Frame;
 import vistas.FrmLoginTemporal;
 
 public class Operacion  {
     boolean acceso;
     String permiso;
     public String getPermiso;
-    
+    private Frame parent;
     
     public boolean isAcceso() {
         return acceso;
     }
 
+    public Operacion(Frame parent) {
+        this.parent = parent;
+    }
+    
+    
+    
     public void setAcceso(boolean acceso) {
         this.acceso = acceso;
     }
@@ -106,7 +113,7 @@ public class Operacion  {
     }
 
     private  boolean abrirLogin() {
-        FrmLoginTemporal frmLoginTemporal = new FrmLoginTemporal(ProyectoPareApp.getApplication().getMainView().getFrame(),true,this);
+        FrmLoginTemporal frmLoginTemporal = new FrmLoginTemporal(parent,true,this);
         frmLoginTemporal.setVisible(true);  
         return acceso;
     }

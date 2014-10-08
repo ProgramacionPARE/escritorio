@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import modeloReportes.CorteDiario;
 import modeloReportes.CorteTurno;
+import modeloReportes.RetirosParciales;
 import modelos.DetallesMovimiento;
 import modelos.Estacionamiento;
 import modelos.Turno;
@@ -29,6 +30,7 @@ public class FrmReportes extends javax.swing.JDialog {
         this.estacionamiento = estacionamiento;
         reporteDiario();
         this.pack();
+         FrmPrincipal.nuevaVentana(this);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
 
@@ -62,11 +64,10 @@ public class FrmReportes extends javax.swing.JDialog {
             Iterator<Turno> turnos = turnosByFecha.iterator();
             while (turnos.hasNext()){
                 Turno turnoActual = turnos.next();
-                Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> detalles = turnoActual.getDetallesMovimiento().entrySet().iterator();
-                while(detalles.hasNext()){
-                     new CorteTurno(turnoActual, estacionamiento, detalles.next().getValue()).generarReporte();
-                }
-            }
+                turnoActual.detallesParaImprimir();
+                new CorteTurno(turnoActual, estacionamiento).generarReporte();
+                new RetirosParciales(turnoActual, estacionamiento).generarReporte();
+;            }
         }
         if(turnosByFecha.size()>0)
             new CorteDiario(turnosByFecha,reporteDiarioFecha).generarReporte();
@@ -87,6 +88,11 @@ public class FrmReportes extends javax.swing.JDialog {
         panelCalendar = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
@@ -172,6 +178,10 @@ public class FrmReportes extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+         FrmPrincipal.restaurarUltimaVentana();        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
 
   
 

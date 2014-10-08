@@ -9,6 +9,7 @@ package vistas.formatos;
 import ModelosAux.Sistema;
 import ModelosAux.Tiempo;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -35,8 +36,8 @@ import modelos.Estacionamiento;
 import modelos.Progresivo;
 import modelos.RetiroParcial;
 import modelos.Turno;
-import proyectopare.ProyectoPareApp;
 import proyectopare.clases.PARAMETROS;
+import vistas.FrmPrincipal;
 
 /**
  *
@@ -46,13 +47,16 @@ public class FrmRetiroParcial extends javax.swing.JDialog implements Printable{
     private Estacionamiento estacionamiento;
     private PrinterJob job;
     private Turno turno;
-
+    private Frame parent;
+    private Caja caja;
     
-    public FrmRetiroParcial(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento) {
+    public FrmRetiroParcial(Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento,Caja caja) {
         super(parent, modal);
         initComponents();
         this.turno = turno;
+        this.parent = parent;
         this.estacionamiento = estacionamiento;
+        this.caja = caja;
         this.getContentPane().setBackground(Color.white);
         this.setLocationRelativeTo(parent);
         this.job = PrinterJob.getPrinterJob();
@@ -92,6 +96,28 @@ public class FrmRetiroParcial extends javax.swing.JDialog implements Printable{
             txtMonto.grabFocus();
             return false;
         }
+        try{
+            Float.valueOf(txtMonto.getText());
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this,"Ingresa un monto valido.",
+            "Solo numeros",JOptionPane.WARNING_MESSAGE);
+            txtMonto.grabFocus();
+            return false;
+        }
+        
+        if (Float.valueOf(txtMonto.getText()) > caja.getMonto() ){
+            JOptionPane.showMessageDialog(this,"El monto a retirar no puede ser mayor a " +caja.getMonto()+"",
+            "Error en monto",JOptionPane.WARNING_MESSAGE);
+            txtMonto.grabFocus();
+            return false;
+        }
+        if (Float.valueOf(txtMonto.getText())<0){
+            JOptionPane.showMessageDialog(this,"El monto a retirar no puede ser menor a 0.",
+            "Error en monto",JOptionPane.WARNING_MESSAGE);
+            txtMonto.grabFocus();
+            return false;
+        }
+        
         return true;
 
     }
@@ -459,7 +485,7 @@ public class FrmRetiroParcial extends javax.swing.JDialog implements Printable{
             caja.setMonto(caja.getMonto()-Float.valueOf(txtMonto.getText()));
             caja.actualizar();
             //Reviso si activo la alarma
-            ProyectoPareApp.getApplication().getView().setCajaAlarma(
+            ((FrmPrincipal)parent).setCajaAlarma(
                 Sistema.requiereRetitroParcial(caja) );
             imprimir(false);
             lblCopia.setVisible(true);

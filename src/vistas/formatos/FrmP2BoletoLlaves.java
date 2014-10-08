@@ -23,45 +23,28 @@ import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import modelos.Auto;
+import modelos.Empleado;
 import modelos.Turno;
 import proyectopare.clases.ImprimirForma;
 
 
-public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable{
+public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable , Runnable{
     private PrinterJob job;
 
     /** Creates new form VenBoletoValetParking1 */
     public FrmP2BoletoLlaves(java.awt.Dialog parent, boolean modal, PrinterJob job,
-           Turno turno, Auto auto) {
+           Turno turno, Auto auto,Empleado empleado) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
         this.job = job;
         lblModelo.setText(auto.getModelo().toUpperCase());
         lblPlacas.setText(auto.getMatricula().toUpperCase());
-        lblEncargado.setText(turno.getEmpleado().getNombre().toUpperCase());
+        lblEncargado.setText(empleado.getNombre());
         jLabProgresivo.setText("NO. " + auto.getProgresivo());
+        new Thread(this).start();
         
-        
-        this.job = PrinterJob.getPrinterJob();
-        PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
-        int selectedService = 0;
-        for(int i = 0; i < services.length;i++){
-            if(services[i].getName().contains("STAR")){
-                selectedService = i;
-                }
-            }
-        try {
-            job.setPrintService(services[selectedService]);
-        } catch (PrinterException ex) {
-            Logger.getLogger(FrmP1BoletoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-       MediaSizeName mediaSizeName = MediaSize.findMedia(4,4,MediaPrintableArea.INCH);
-        printRequestAttributeSet.add(mediaSizeName);
-        printRequestAttributeSet.add(new Copies(1));
-        setVisible(true);
-        imprimir();
+      
     }
 
     /** This method is called from within the constructor to
@@ -77,7 +60,6 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable{
         jLabel18 = new javax.swing.JLabel();
         jLabPlacas = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
         jLabColor = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabModelo = new javax.swing.JLabel();
@@ -118,11 +100,6 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable{
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel22.setText(resourceMap.getString("jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
-
-        jLabel23.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel23.setText(resourceMap.getString("jLabel23.text")); // NOI18N
-        jLabel23.setName("jLabel23"); // NOI18N
 
         jLabColor.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
         jLabColor.setText(resourceMap.getString("jLabColor.text")); // NOI18N
@@ -186,9 +163,7 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable{
                         .addGap(19, 19, 19)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel22)
-                                    .addComponent(jLabel23))
+                                .addComponent(jLabel22)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(37, 37, 37)
@@ -246,10 +221,8 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEncargado))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel23)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                            .addComponent(lblEncargado))))
+                .addGap(51, 51, 51)
                 .addComponent(jLabPlacas1)
                 .addGap(18, 18, 18)
                 .addComponent(lbl12)
@@ -324,7 +297,6 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable{
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbl12;
@@ -333,5 +305,28 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable{
     private javax.swing.JLabel lblModelo;
     private javax.swing.JLabel lblPlacas;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        this.job = PrinterJob.getPrinterJob();
+        PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+        int selectedService = 0;
+        for(int i = 0; i < services.length;i++){
+            if(services[i].getName().contains("STAR")){
+                selectedService = i;
+                }
+            }
+        try {
+            job.setPrintService(services[selectedService]);
+        } catch (PrinterException ex) {
+            Logger.getLogger(FrmP1BoletoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+       MediaSizeName mediaSizeName = MediaSize.findMedia(4,4,MediaPrintableArea.INCH);
+        printRequestAttributeSet.add(mediaSizeName);
+        printRequestAttributeSet.add(new Copies(1));
+        setVisible(true);
+        imprimir();
+    }
 
 }

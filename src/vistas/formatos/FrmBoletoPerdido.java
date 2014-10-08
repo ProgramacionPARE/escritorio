@@ -1,6 +1,7 @@
 package vistas.formatos;
 
 import ModelosAux.Tiempo;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -22,6 +23,7 @@ import modelos.Operacion;
 import modelos.Progresivo;
 import modelos.PropietarioPerdido;
 import modelos.Turno;
+import vistas.FrmBoletoPerdidoPlaca;
 import vistas.FrmCobro;
 
 
@@ -32,9 +34,9 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
     private BoletoPerdido boletoPerdido;
     private PrinterJob job;
     private Empleado empleado;
-    private JFrame parent;
+    private Frame parent;
 
-    public FrmBoletoPerdido(javax.swing.JFrame padre, boolean b, Turno turno,Auto auto, Estacionamiento estacionamiento ) {
+    public FrmBoletoPerdido(Frame padre, boolean b, Turno turno,Auto auto, Estacionamiento estacionamiento ) {
         super(padre,b);
         this.turno = turno;
         this.auto = auto;
@@ -48,12 +50,19 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
 
    
     private void iniciarOtrosComponentes() {
+        if(estacionamiento.getTipo().equals("Valet")){
+            txtProgresivo.setText(String.valueOf(auto.getProgresivo()));
+            txtPlacas.setText(auto.getMatricula());
+        }else if(estacionamiento.getTipo().equals("Autoservicio")){
+            txtProgresivo.setVisible(false);
+            lblProgresivo.setVisible(false);
+            txtPlacas.setEditable(true);
+        }
         txtCajero.setText(turno.getEmpleado().getNombre());
         txtCaseta.setText(estacionamiento.getCaseta().getDescripcion());
         txtCentroOperativo.setText(estacionamiento.getDescripcion());
         txtFecha.setText(Tiempo.getHora()+"  "+Tiempo.getFecha());
-        txtPlacas.setText(auto.getMatricula());
-        txtProgresivo.setText(String.valueOf(auto.getProgresivo()));
+     
         txtTurno.setText(turno.getTipoTurno());
     }
     
@@ -183,7 +192,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
         txtPlacas = new javax.swing.JTextField();
         txtNoTarjCirculacion = new javax.swing.JTextField();
         txtProgresivo = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
+        lblProgresivo = new javax.swing.JLabel();
         txtNumeroIdentificacion = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         txtCentroOperativo = new javax.swing.JTextField();
@@ -345,10 +354,10 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
         txtProgresivo.setBorder(null);
         txtProgresivo.setName("txtProgresivo"); // NOI18N
 
-        jLabel15.setFont(resourceMap.getFont("txtTurno.font")); // NOI18N
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel15.setText(resourceMap.getString("jLabel15.text")); // NOI18N
-        jLabel15.setName("jLabel15"); // NOI18N
+        lblProgresivo.setFont(resourceMap.getFont("txtTurno.font")); // NOI18N
+        lblProgresivo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblProgresivo.setText(resourceMap.getString("lblProgresivo.text")); // NOI18N
+        lblProgresivo.setName("lblProgresivo"); // NOI18N
 
         txtNumeroIdentificacion.setFont(resourceMap.getFont("txtTurno.font")); // NOI18N
         txtNumeroIdentificacion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -489,7 +498,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
                                     .add(jPanel1Layout.createSequentialGroup()
                                         .add(3, 3, 3)
                                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                            .add(jLabel15, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 113, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                            .add(lblProgresivo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 113, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                             .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                         .add(18, 18, 18)))
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -528,17 +537,16 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                             .add(txtTurno, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
-                                            .add(txtPlacas)))))))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 128, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(244, 244, 244)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(lblProgresivoPerdido, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .add(txtPlacas)))))
                             .add(jPanel1Layout.createSequentialGroup()
-                                .add(jLabel8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 58, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(txtFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 252, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                                .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 128, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(244, 244, 244)
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(lblProgresivoPerdido, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(jPanel1Layout.createSequentialGroup()
+                                        .add(jLabel8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 58, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(18, 18, 18)
+                                        .add(txtFecha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 252, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap())
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -572,7 +580,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                         .add(txtProgresivo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(jLabel15))
+                        .add(lblProgresivo))
                     .add(lblProgresivoPerdido, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -662,7 +670,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         if (validaCamposEntrada()){
-            if(new Operacion().requierePermisos(turno.getEmpleado(), "Supervisor",true)){
+            if(new Operacion(this.parent).requierePermisos(turno.getEmpleado(), "Supervisor",true)){
                 btnGuardar.setVisible(false);
                 auto.setColor(txtColor.getText());
                 auto.setModelo(txtModelo.getText());
@@ -696,7 +704,6 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -715,6 +722,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblProgresivo;
     private javax.swing.JLabel lblProgresivoPerdido;
     private javax.swing.JTextField txtCajero;
     private javax.swing.JTextField txtCaseta;

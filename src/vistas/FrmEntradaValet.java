@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Estacionamiento;
 import modelos.Progresivo;
+import modelos.Rest;
 import modelos.Turno;
 import org.jdesktop.application.Action;
 import vistas.formatos.FrmP1BoletoCliente;
@@ -66,10 +67,10 @@ public class FrmEntradaValet extends javax.swing.JDialog {
         int confirmDialog = JOptionPane.showConfirmDialog(this,"¿Se imprimira el boleto estas seguro?",
                 "Imprimir boleto",JOptionPane.YES_NO_CANCEL_OPTION);
         if(confirmDialog == JOptionPane.YES_OPTION){
-            Auto auto= new Auto(0,"0",txtProgresivo.getText(),Seguridad.getClave(5), txtMatricula.getText(),
+            Auto auto= new Auto(0,txtNotas.getText(),"0",txtProgresivo.getText(),Seguridad.getClave(5), txtMatricula.getText(),
                     estacionamiento.getCaseta().getTarifas().get(0),
                     txtFechaEntrada.getText() ,"", txtHoraEntrada.getText(),"", turno, null,0,0, 
-                    estacionamiento.getCaseta(),0, "", txtModelo.getText(), "", null,null);
+                    estacionamiento.getCaseta(),0, "", txtModelo.getText(), "", null,null,0);
             //Aumento en uno los boletos generados
             turno.setNoBol(turno.getNoBol()+1);
             //Actualizo el folio final en el turno
@@ -77,13 +78,14 @@ public class FrmEntradaValet extends javax.swing.JDialog {
             turno.actualizar();
             // Guardo entrada y actualizo progresivo
             auto.guardar();
+            Rest.sendAuto(auto,estacionamiento);
             Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),"BOLETO");
             //Imprimo boletos
             PrinterJob job = PrinterJob.getPrinterJob();
             // Boleto al cliente
-            new FrmP1BoletoCliente(this, false,job,turno,auto,estacionamiento);
+            new FrmP1BoletoCliente(this, false,job,turno,auto,estacionamiento,turno.getEmpleado());
             //Boleto llaves
-            new FrmP2BoletoLlaves(this, false,job,turno,auto);
+            new FrmP2BoletoLlaves(this, false,job,turno,auto,turno.getEmpleado());
             //Boleto Parabrisas
             new FrmP3BoletoParabrisas(this, false ,job,turno,auto);
             

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 package vistas;
 
@@ -25,11 +21,21 @@ public class FrmFolios extends javax.swing.JDialog {
         initComponents();
         this.turno = turno;
         this.estacionamiento = estacionamiento;
+         String ser = "";
+        for(String s : estacionamiento.getCaseta().getSeries())
+            ser+=s+" ";
         txtBoleto.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "BOLETO"));
         txtRetiro.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RETIRO_PARCIAL"));
         txtPerdido.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "PERDIDO"));
         txtRecibo.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO"));
         btnGuardar.setVisible(false);
+        txtSeries.setText(ser);
+        if(estacionamiento.getTipo().equals("Valet")){
+            jLabel6.setVisible(false);
+            txtSeries.setText("0");
+            txtSeries.setVisible(false);
+            
+        }
         setLocationRelativeTo(parent);
         setVisible(true);
     }
@@ -54,6 +60,8 @@ public class FrmFolios extends javax.swing.JDialog {
         btnGuardar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtSeries = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -61,46 +69,46 @@ public class FrmFolios extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         jLabel1.setText("Boletos");
         jLabel1.setName("jLabel1"); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 14, 134, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 134, -1));
 
         jLabel2.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         jLabel2.setText("Boletos perdido");
         jLabel2.setName("jLabel2"); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 53, 134, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 134, -1));
 
         jLabel3.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         jLabel3.setText("Recibo pago");
         jLabel3.setName("jLabel3"); // NOI18N
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 131, 134, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 134, -1));
 
         jLabel4.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         jLabel4.setText("Retiro parcial");
         jLabel4.setName("jLabel4"); // NOI18N
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 93, 134, 15));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 134, 15));
 
         txtBoleto.setEditable(false);
         txtBoleto.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         txtBoleto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtBoleto.setName("txtBoleto"); // NOI18N
-        getContentPane().add(txtBoleto, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 12, 160, -1));
+        getContentPane().add(txtBoleto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 160, -1));
 
         txtPerdido.setEditable(false);
         txtPerdido.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         txtPerdido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPerdido.setName("txtPerdido"); // NOI18N
-        getContentPane().add(txtPerdido, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 51, 160, -1));
+        getContentPane().add(txtPerdido, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 160, -1));
 
         txtRetiro.setEditable(false);
         txtRetiro.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         txtRetiro.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtRetiro.setName("txtRetiro"); // NOI18N
-        getContentPane().add(txtRetiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 90, 160, -1));
+        getContentPane().add(txtRetiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, 160, -1));
 
         txtRecibo.setEditable(false);
         txtRecibo.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
         txtRecibo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtRecibo.setName("txtRecibo"); // NOI18N
-        getContentPane().add(txtRecibo, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 129, 160, -1));
+        getContentPane().add(txtRecibo, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, 160, -1));
 
         btnGuardar.setBackground(new java.awt.Color(255, 255, 255));
         btnGuardar.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
@@ -111,7 +119,7 @@ public class FrmFolios extends javax.swing.JDialog {
                 btnGuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 310, 40));
+        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 310, 40));
 
         btnEditar.setBackground(new java.awt.Color(255, 255, 255));
         btnEditar.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
@@ -122,10 +130,21 @@ public class FrmFolios extends javax.swing.JDialog {
                 btnEditarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 310, 40));
+        getContentPane().add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 310, 40));
 
         jLabel5.setName("jLabel5"); // NOI18N
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 50, 10));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, 50, 10));
+
+        jLabel6.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
+        jLabel6.setText("Series");
+        jLabel6.setName("jLabel6"); // NOI18N
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 134, -1));
+
+        txtSeries.setEditable(false);
+        txtSeries.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
+        txtSeries.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtSeries.setName("txtSeries"); // NOI18N
+        getContentPane().add(txtSeries, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 160, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -135,6 +154,7 @@ public class FrmFolios extends javax.swing.JDialog {
         txtRetiro.setEditable(true);
         txtPerdido.setEditable(true);
         txtRecibo.setEditable(true);
+        txtSeries.setEditable(true);
         btnEditar.setVisible(false);
         btnGuardar.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -144,10 +164,13 @@ public class FrmFolios extends javax.swing.JDialog {
         Progresivo.setProgresivo(estacionamiento.getCaseta(), "RETIRO_PARCIAL",Integer.valueOf(txtRetiro.getText()));
         Progresivo.setProgresivo(estacionamiento.getCaseta(), "PERDIDO",Integer.valueOf(txtPerdido.getText()));
         Progresivo.setProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO",Integer.valueOf(txtRecibo.getText()));
+        estacionamiento.getCaseta().setSeries(txtSeries.getText().split(" "));
+        estacionamiento.getCaseta().actualizar();
         txtBoleto.setEditable(false);
         txtRetiro.setEditable(false);
         txtPerdido.setEditable(false);
         txtRecibo.setEditable(false);
+        txtSeries.setEditable(false);
         btnEditar.setVisible(true);
         btnGuardar.setVisible(false);
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -164,9 +187,11 @@ public class FrmFolios extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField txtBoleto;
     private javax.swing.JTextField txtPerdido;
     private javax.swing.JTextField txtRecibo;
     private javax.swing.JTextField txtRetiro;
+    private javax.swing.JTextField txtSeries;
     // End of variables declaration//GEN-END:variables
 }

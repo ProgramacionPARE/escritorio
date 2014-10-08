@@ -4,20 +4,19 @@ package vistas;
 import ModelosAux.Sistema;
 import ModelosAux.Tiempo;
 import java.awt.Color;
+import java.awt.Frame;
+import java.awt.event.ItemEvent;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Caja;
-import modelos.DetallesMovimiento;
 import modelos.Estacionamiento;
 import modelos.Tarifa;
 import modelos.Turno;
 import org.jdesktop.application.Action;
-import proyectopare.ProyectoPareApp;
 import vistas.formatos.FrmReciboPago;
 
 /**
@@ -28,16 +27,17 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     Estacionamiento estacionamiento;
     Turno turno;
     Auto auto;
-    
+    Frame parent;
     /**
      * Creates new form FrmCobro
      */
-    public FrmCobro(java.awt.Frame parent, boolean modal,Turno turno,Auto auto,Estacionamiento estacionamiento) {
+    public FrmCobro(Frame parent, boolean modal,Turno turno,Auto auto,Estacionamiento estacionamiento) {
         super(parent,"Cobro de boleto", modal);
         initComponents();
         this.auto = auto;
         this.turno = turno;
         this.estacionamiento = estacionamiento;
+        this.parent = parent;
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
@@ -59,8 +59,9 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         }
     }
     
-    private void calcularImporte() {
+    public void calcularImporte() {
         //Completo la informacion de la salida del auto
+        txtTiempoEstadia.setText("");
         auto.setHoraSalida(Tiempo.getHora());
         auto.setFechaSalida(Tiempo.getFecha());
         
@@ -68,6 +69,10 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
         auto.setTurnoSalida(turno);
         auto.setMontoTangible(Tarifa.getImporteEstadia(auto));
+        auto.actualizar();
+        if(auto.getDescuento()>0){
+            lblDescuento.setText("Descuento: $ "+auto.getDescuento());
+        }
         // Completo campos del formulario
         txtFechaEntrada.setText(auto.getFechaEntrada());
         txtFechaSalida.setText(auto.getFechaSalida());
@@ -110,8 +115,10 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         jLabel7 = new javax.swing.JLabel();
         txtCambio = new javax.swing.JTextField();
         cbxTarifas = new javax.swing.JComboBox();
+        btnDescuento = new javax.swing.JButton();
+        lblDescuento = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jLabel1.setText("Entrada");
         jLabel1.setName("jLabel1"); // NOI18N
@@ -148,12 +155,17 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         txtDineroPagado.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         txtDineroPagado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtDineroPagado.setName("txtDineroPagado"); // NOI18N
-        txtDineroPagado.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtDineroPagadoKeyReleased(evt);
+        txtDineroPagado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDineroPagadoActionPerformed(evt);
             }
+        });
+        txtDineroPagado.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtDineroPagadoKeyTyped(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDineroPagadoKeyReleased(evt);
             }
         });
 
@@ -174,6 +186,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(FrmCobro.class, this);
         btnCobrar.setAction(actionMap.get("onCobrar")); // NOI18N
+        btnCobrar.setBackground(new java.awt.Color(255, 255, 255));
         btnCobrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnCobrar.setText("Cobrar");
         btnCobrar.setName("btnCobrar"); // NOI18N
@@ -188,11 +201,27 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
 
         cbxTarifas.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         cbxTarifas.setName("cbxTarifas"); // NOI18N
+        cbxTarifas.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxTarifasItemStateChanged(evt);
+            }
+        });
         cbxTarifas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxTarifasActionPerformed(evt);
             }
         });
+
+        btnDescuento.setBackground(new java.awt.Color(255, 255, 255));
+        btnDescuento.setText("Aplicar descuento");
+        btnDescuento.setName("btnDescuento"); // NOI18N
+        btnDescuento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescuentoActionPerformed(evt);
+            }
+        });
+
+        lblDescuento.setName("lblDescuento"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -204,19 +233,18 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtImporteTotal, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txtImporteBoletoPerdido)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cbxTarifas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(69, 69, 69))
+                                    .addComponent(lblDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtImporteBoletoPerdido)
+                                    .addComponent(txtImporteTotal)
+                                    .addComponent(btnDescuento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
                                 .addGap(197, 197, 197))
@@ -230,12 +258,15 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFechaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFechaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtHoraSalida)
-                            .addComponent(txtHoraEntrada))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtFechaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFechaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtHoraSalida)
+                                    .addComponent(txtHoraEntrada)))
+                            .addComponent(cbxTarifas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtDineroPagado)
@@ -283,12 +314,21 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
+
+        txtDineroPagado.setNextFocusableComponent(this.cbxTarifas);
+        cbxTarifas.setNextFocusableComponent(this.btnCobrar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -317,19 +357,38 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     }//GEN-LAST:event_txtDineroPagadoKeyReleased
 
     private void cbxTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTarifasActionPerformed
-        System.out.println(cbxTarifas.getSelectedItem());
-        auto.setTarifa(estacionamiento.getCaseta().getTarifas().get(cbxTarifas.getSelectedIndex()));
-        calcularImporte();
+      
     }//GEN-LAST:event_cbxTarifasActionPerformed
+
+    private void cbxTarifasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTarifasItemStateChanged
+        if(ItemEvent.SELECTED == evt.getStateChange() ){
+            auto.setTarifa(estacionamiento.getCaseta().getTarifas().get(cbxTarifas.getSelectedIndex()));
+            calcularImporte();
+        }
+    }//GEN-LAST:event_cbxTarifasItemStateChanged
+
+    private void txtDineroPagadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDineroPagadoActionPerformed
+        if(btnCobrar.isEnabled())
+            onCobrar();
+    }//GEN-LAST:event_txtDineroPagadoActionPerformed
+
+    private void btnDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescuentoActionPerformed
+        new FrmLeerCodigoBarrasDescuento(parent,true,turno,estacionamiento,this);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDescuentoActionPerformed
 
     @Action
     public void onCobrar() {
         new Thread(this).start();
+         int showConfirmDialog ;
         //Pregunto si imprimo recibo de pago
-        int showConfirmDialog = JOptionPane.showConfirmDialog(this, "Quieres imprimir recibo de pago", "Recibo de pago",JOptionPane.YES_NO_OPTION);
+        if(auto.getBoletoCancelado()!=null || auto.getBoletoPerdido()!=null)
+            showConfirmDialog = JOptionPane.YES_OPTION;
+        else
+            showConfirmDialog = JOptionPane.showConfirmDialog(this, "Quieres imprimir recibo de pago", "Recibo de pago",JOptionPane.YES_NO_OPTION);
         if(showConfirmDialog == JOptionPane.YES_OPTION){
             auto.setReciboImpreso(true);
             auto.actualizar();
+            auto.setMontoPago(Float.valueOf(txtDineroPagado.getText()));
             new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),turno,auto,estacionamiento);   
         }
         this.dispose();
@@ -356,12 +415,13 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
                 //Auto.getAutosBoletoPerdidoTurnoActual(turno),Auto.getAutosBoletoCanceladoTurnoActual(turno),turno) ));
         turno.actualizar();
         //Reviso si activo la alarma
-        ProyectoPareApp.getApplication().getView().setCajaAlarma(
+        ((FrmPrincipal)parent).setCajaAlarma(
                 Sistema.requiereRetitroParcial(caja) );
     }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCobrar;
+    private javax.swing.JButton btnDescuento;
     private javax.swing.JComboBox cbxTarifas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -370,6 +430,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel lblDescuento;
     private javax.swing.JTextField txtCambio;
     private javax.swing.JTextField txtDineroPagado;
     private javax.swing.JTextField txtFechaEntrada;

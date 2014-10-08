@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package vistas;
 
@@ -10,7 +5,6 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.print.PrinterJob;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Estacionamiento;
 import modelos.Turno;
@@ -101,6 +95,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog {
 
         
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        System.out.println("Hola");
         Auto auto=null;
         if (evt.getKeyChar() == '\n') { 
             if (id.length() ==12 )

@@ -5,9 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -53,12 +50,10 @@ public class DetallesMovimiento{
        return resp;
     }
     
-    static void guardar(HashMap<String, ArrayList<DetallesMovimiento>>  detallesMovimiento, Long id){
-        Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> iterator = detallesMovimiento.entrySet().iterator();
-        while(iterator.hasNext()){
-            Map.Entry<String, ArrayList<DetallesMovimiento>> next = iterator.next();
+    static void guardar(ArrayList<DetallesMovimiento>  detallesMovimiento, Long id){
+
             
-            for(DetallesMovimiento d : next.getValue()){
+            for(DetallesMovimiento d : detallesMovimiento){
                 try {
                     Conexion conexion = new Conexion();
                     Connection connectionDB = conexion.getConnectionDB();
@@ -72,26 +67,20 @@ public class DetallesMovimiento{
                     statement.setLong(4, id);
                     statement.setString(5, d.getTipo());
                     statement.setString(6, d.getRangoHorario());
-                    statement.setString(7, next.getKey());
+                    //statement.setString(7, next.getKey());
                     statement.executeUpdate();
                     conexion.cerrarConexion();
                 } catch (SQLException ex) {
                     Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
+
 
     }
     
-    public static HashMap<String, ArrayList<DetallesMovimiento>> getById(Long turno_id){
-        HashMap<String, ArrayList<DetallesMovimiento>> mapDetalles = new HashMap< String, ArrayList<DetallesMovimiento>>();
+    public static ArrayList<DetallesMovimiento> getById(Long turno_id){
+        ArrayList<DetallesMovimiento> mapDetalles = new ArrayList();
          
-        List<String> series = Auto.getSeries();        
-        Iterator<String> iterator = series.iterator();
-        while(iterator.hasNext()){
-            mapDetalles.put(iterator.next(), new ArrayList());
-        }
-        
         //ArrayList<DetallesMovimiento> dm= new ArrayList<DetallesMovimiento>();
         try {
             Conexion conexion = new Conexion();
@@ -101,7 +90,7 @@ public class DetallesMovimiento{
             statement.setLong(1, turno_id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
-                mapDetalles.get(resultSet.getString("serie")).
+                mapDetalles.
                         add(new DetallesMovimiento(resultSet.getString("rango_horario"),
                         resultSet.getString("tipo"),resultSet.getInt("cantidad_boletos") ,
                         resultSet.getFloat("precio_unitario"), resultSet.getFloat("importe")));
@@ -116,56 +105,54 @@ public class DetallesMovimiento{
          return mapDetalles;
      }
     
-    public static float calcularTotal ( HashMap<String, ArrayList<DetallesMovimiento>> generarDetalles ){
+    public static float calcularTotal ( ArrayList<DetallesMovimiento> generarDetalles ){
         float   total = 0;
-        Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> iterator = generarDetalles.entrySet().iterator();
-        while(iterator.hasNext()){
-            Map.Entry<String, ArrayList<DetallesMovimiento>> next = iterator.next();
-            ArrayList<DetallesMovimiento> value = next.getValue();
-        for(DetallesMovimiento d : value){
+
+        for(DetallesMovimiento d : generarDetalles){
             total+= d.getImporte();
         }
-        }
+
         return total;
     }
     
-    public static void ordenarPorPU( HashMap<String, ArrayList<DetallesMovimiento>> detallesMovimiento){
-        Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> iterator = detallesMovimiento.entrySet().iterator();
-        while(iterator.hasNext()){
-            Map.Entry<String, ArrayList<DetallesMovimiento>> next = iterator.next();
-            ArrayList<DetallesMovimiento> value = next.getValue();
-            for(int i =0 ; i< value.size()-1;i++){
-                for(int j =i+1 ; j< value.size();j++){
-                    if(value.get(i).getPrecioUnitario()> value.get(j).getPrecioUnitario()
-                            || value.get(i).getTipo().equals("Cancelado")
-                            || value.get(i).getTipo().equals("Perdido")){
-                       DetallesMovimiento aux = value.get(i);
-                       value.set(i,value.get(j));
-                       value.set(j,aux);
-                    }
+    public static void ordenarPorPU(  ArrayList<DetallesMovimiento> detallesMovimiento){
+       
+        ArrayList<DetallesMovimiento> value = detallesMovimiento;
+        for(int i =0 ; i< value.size()-1;i++){
+            for(int j =i+1 ; j< value.size();j++){
+                if(value.get(i).getPrecioUnitario()> value.get(j).getPrecioUnitario()
+                        || value.get(i).getTipo().equals("Cancelado")
+                        || value.get(i).getTipo().equals("Perdido")){
+                   DetallesMovimiento aux = value.get(i);
+                   value.set(i,value.get(j));
+                   value.set(j,aux);
                 }
-           }
+            }
+        }
+        String text = "";
+        for(int i =0 ; i< value.size();i++){
+            if(!value.get(i).getTipo().equals(text)){
+                text = value.get(i).getTipo();
+                value.get(i).setTipo("Titulo"+value.get(i).getTipo());
+            }
         }
     }
     
-    public static HashMap<String, ArrayList<DetallesMovimiento>> generarDetalles(List<Auto> autosCobradosTurnoActual,
+    public static ArrayList<DetallesMovimiento> generarDetalles(List<Auto> autosCobradosTurnoActual,
         List<Auto> autosBoletoPerdidoTurnoActual, List<Auto> autosBoletoCanceladoTurnoActual,Turno turno){
-        HashMap<String, ArrayList<DetallesMovimiento>> mapDetalles = new HashMap();
+        
+        ArrayList<DetallesMovimiento> mapDetalles = new ArrayList();
        
-        List<String> series = Auto.getSeries();
-        Iterator<String> iterator = series.iterator();
-        while(iterator.hasNext()){
-            mapDetalles.put(iterator.next(), new ArrayList());
-        }
+      
         //ArrayList<DetallesMovimiento> detallesMovimiento= new ArrayList<DetallesMovimiento>();
         Iterator<Auto> iteratorAutos = autosCobradosTurnoActual.iterator();
         while (iteratorAutos.hasNext()){
             Auto next = iteratorAutos.next();
             
             //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles.get(next.getSerie()), Tarifa.getRangoEstadia(next),"Boleto");
+            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, Tarifa.getRangoEstadia(next),next.getTarifa().getDescripcion());
             if(detalles==null){
-                mapDetalles.get(next.getSerie()).add(new DetallesMovimiento(Tarifa.getRangoEstadia(next), "Boleto", 1, next.getMontoTangible(), next.getMontoTangible()));
+                mapDetalles.add(new DetallesMovimiento(Tarifa.getRangoEstadia(next), next.getTarifa().getDescripcion(), 1, next.getMontoTangible(), next.getMontoTangible()));
             }else{
                 detalles.setNoBol( detalles.getNoBol()+1);
                 detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
@@ -178,9 +165,9 @@ public class DetallesMovimiento{
             Auto next = iteratorAutosPerdidos.next();
             
             //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles.get(next.getSerie()), Tarifa.getRangoEstadia(next),"Perdido");
+            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, Tarifa.getRangoEstadia(next),"Perdido");
             if(detalles==null){
-                mapDetalles.get(next.getSerie()).add(new DetallesMovimiento("", "Perdido", 1, next.getTarifa().getPrecioBoletoPerdido(), 
+                mapDetalles.add(new DetallesMovimiento("", "Perdido", 1, next.getTarifa().getPrecioBoletoPerdido(), 
                 next.getTarifa().getPrecioBoletoPerdido()));
             }else{
                 detalles.setNoBol( detalles.getNoBol()+1);
@@ -194,57 +181,56 @@ public class DetallesMovimiento{
             Auto next = iteratorAutosCancelados.next();
             
             //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles.get(next.getSerie()), Tarifa.getRangoEstadia(next),"Cancelado");
+            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, Tarifa.getRangoEstadia(next),"Cancelado");
             if(detalles==null){
-                mapDetalles.get(next.getSerie()).add(new DetallesMovimiento("", "Cancelado", 1, 0 , 0));
+                mapDetalles.add(new DetallesMovimiento("", "Cancelado", 1, 0 , 0));
             }else{
                 detalles.setNoBol( detalles.getNoBol()+1);
                 detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
             }
            
         }
-
         return mapDetalles;
     }
     
-    public static ArrayList<DetallesMovimiento> fusionarDetalles(HashMap<String, ArrayList<DetallesMovimiento>> generarDetalles) {
-        ArrayList<DetallesMovimiento> fusionarDetalles = new ArrayList<>();
-        
-        Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> iterator = generarDetalles.entrySet().iterator();
-        while(iterator.hasNext()){
-            Map.Entry<String, ArrayList<DetallesMovimiento>> next = iterator.next();
-            ArrayList<DetallesMovimiento> value = next.getValue();
-            for(DetallesMovimiento dm :value){
-                boolean existe = false;
-                for(DetallesMovimiento fusion :fusionarDetalles){
-                    if( dm.getRangoHorario().equals(fusion.getRangoHorario())  && dm.getTipo().equals(fusion.getTipo())){
-                        dm.getRangoHorario();
-                        
-                        break;
-                    }
-                }
-                if(!existe){
-                    fusionarDetalles.add(dm); 
-                }
-                
-            }
-            for(int i =0 ; i< value.size()-1;i++){
-                for(int j =i+1 ; j< value.size();j++){
-                    if(value.get(i).getPrecioUnitario()> value.get(j).getPrecioUnitario()
-                            || value.get(i).getTipo().equals("Cancelado")
-                            || value.get(i).getTipo().equals("Perdido")){
-                       DetallesMovimiento aux = value.get(i);
-                       value.set(i,value.get(j));
-                       value.set(j,aux);
-                    }
-                }
-           }
-            
-            
-        }
-    
-        return fusionarDetalles;
-    }
+//    public static ArrayList<DetallesMovimiento> fusionarDetalles(HashMap<String, ArrayList<DetallesMovimiento>> generarDetalles) {
+//        ArrayList<DetallesMovimiento> fusionarDetalles = new ArrayList<>();
+//        
+//        Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> iterator = generarDetalles.entrySet().iterator();
+//        while(iterator.hasNext()){
+//            Map.Entry<String, ArrayList<DetallesMovimiento>> next = iterator.next();
+//            ArrayList<DetallesMovimiento> value = next.getValue();
+//            for(DetallesMovimiento dm :value){
+//                boolean existe = false;
+//                for(DetallesMovimiento fusion :fusionarDetalles){
+//                    if( dm.getRangoHorario().equals(fusion.getRangoHorario())  && dm.getTipo().equals(fusion.getTipo())){
+//                        dm.getRangoHorario();
+//                        
+//                        break;
+//                    }
+//                }
+//                if(!existe){
+//                    fusionarDetalles.add(dm); 
+//                }
+//                
+//            }
+//            for(int i =0 ; i< value.size()-1;i++){
+//                for(int j =i+1 ; j< value.size();j++){
+//                    if(value.get(i).getPrecioUnitario()> value.get(j).getPrecioUnitario()
+//                            || value.get(i).getTipo().equals("Cancelado")
+//                            || value.get(i).getTipo().equals("Perdido")){
+//                       DetallesMovimiento aux = value.get(i);
+//                       value.set(i,value.get(j));
+//                       value.set(j,aux);
+//                    }
+//                }
+//           }
+//            
+//            
+//        }
+//    
+//        return fusionarDetalles;
+//    }
 
     
     

@@ -2,16 +2,17 @@
 
 package vistas;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import modelos.Empleado;
-import proyectopare.ProyectoPareApp;
 
 
 public class FrmLogin extends javax.swing.JDialog {
-
-    public FrmLogin(java.awt.Frame parent, boolean modal) {
+    JFrame parent ;
+    public FrmLogin(JFrame parent, boolean modal) {
         super(parent,"Entrar", modal);
         initComponents();
+        this.parent = parent;
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -100,7 +101,7 @@ public class FrmLogin extends javax.swing.JDialog {
         int showConfirmDialog = JOptionPane.showConfirmDialog(this,"Esto cerrara el sistema. ¿Quieres continuar?", 
                 "Salir", JOptionPane.YES_NO_OPTION );
         if(showConfirmDialog == JOptionPane.YES_OPTION){
-             ProyectoPareApp.getApplication().exit();
+            parent.dispose();
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -121,7 +122,7 @@ public class FrmLogin extends javax.swing.JDialog {
             
         }else{
             this.setVisible(false);
-            ProyectoPareApp.getApplication().getView().validaPermisos(empleado);
+            ((FrmPrincipal)parent).validaPermisos(empleado);
             this.dispose();
         }
     }

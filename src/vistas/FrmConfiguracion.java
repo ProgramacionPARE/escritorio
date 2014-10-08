@@ -16,6 +16,8 @@ public class FrmConfiguracion extends javax.swing.JDialog {
         ButtonGroup group = new ButtonGroup();
         group.add(this.rbtAutoservicio);
         group.add(this.rbtValet);
+        group.add(this.rbtValetMasivo);
+        
         this.estacionamiento  = estacionamiento;
         txtEstacionamiento.setText(estacionamiento.getDescripcion());
         txtDireccion.setText(estacionamiento.getDireccion());
@@ -24,9 +26,16 @@ public class FrmConfiguracion extends javax.swing.JDialog {
         if(estacionamiento.getTipo().equals("Valet")){
             this.rbtValet.setSelected(true);
             this.rbtAutoservicio.setSelected(false);
+            this.rbtValetMasivo.setSelected(false);
         }else if(estacionamiento.getTipo().equals("Autoservicio")){
             this.rbtValet.setSelected(false);
-            this.rbtAutoservicio.setSelected(true);
+            this.rbtAutoservicio.setSelected(false);
+            this.rbtValetMasivo.setSelected(true);
+        }else if(estacionamiento.getTipo().equals("ValetMasivo")){
+            this.rbtValet.setSelected(false);
+            this.rbtAutoservicio.setSelected(false);
+            this.rbtValetMasivo.setSelected(true);
+            
         }
         setLocationRelativeTo(parent);
         setVisible(true);
@@ -51,6 +60,7 @@ public class FrmConfiguracion extends javax.swing.JDialog {
         rbtValet = new javax.swing.JRadioButton();
         rbtAutoservicio = new javax.swing.JRadioButton();
         jLabel6 = new javax.swing.JLabel();
+        rbtValetMasivo = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -96,7 +106,7 @@ public class FrmConfiguracion extends javax.swing.JDialog {
                 btnModificarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 308, 39));
+        getContentPane().add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 308, 39));
 
         btnGuardar.setText("Guardar");
         btnGuardar.setName("btnGuardar"); // NOI18N
@@ -105,7 +115,7 @@ public class FrmConfiguracion extends javax.swing.JDialog {
                 btnGuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 308, 39));
+        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 308, 39));
 
         jLabel5.setName("jLabel5"); // NOI18N
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, 60, 10));
@@ -113,7 +123,7 @@ public class FrmConfiguracion extends javax.swing.JDialog {
         rbtValet.setText("ValetParking");
         rbtValet.setEnabled(false);
         rbtValet.setName("rbtValet"); // NOI18N
-        getContentPane().add(rbtValet, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
+        getContentPane().add(rbtValet, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
         rbtAutoservicio.setText("Autoservicio");
         rbtAutoservicio.setEnabled(false);
@@ -123,6 +133,11 @@ public class FrmConfiguracion extends javax.swing.JDialog {
         jLabel6.setText("Tipo de estacionamiento");
         jLabel6.setName("jLabel6"); // NOI18N
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
+
+        rbtValetMasivo.setText("ValetMasivo");
+        rbtValetMasivo.setEnabled(false);
+        rbtValetMasivo.setName("rbtValetMasivo"); // NOI18N
+        getContentPane().add(rbtValetMasivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -137,6 +152,8 @@ public class FrmConfiguracion extends javax.swing.JDialog {
                 estacionamiento.setTipo("Valet");
             if(rbtAutoservicio.isSelected())
                 estacionamiento.setTipo("Autoservicio");
+            if(rbtValetMasivo.isSelected())
+                estacionamiento.setTipo("ValetMasivo");
             
             estacionamiento.actualizar();
             txtCentroCostos.setEditable(false);
@@ -147,7 +164,9 @@ public class FrmConfiguracion extends javax.swing.JDialog {
             btnGuardar.setVisible(false);
             rbtAutoservicio.setEnabled(false);
             rbtValet.setEnabled(false);
+            rbtValetMasivo.setEnabled(false);
         
+            
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -160,6 +179,7 @@ public class FrmConfiguracion extends javax.swing.JDialog {
         btnGuardar.setVisible(true);
         rbtAutoservicio.setEnabled(true);
         rbtValet.setEnabled(true);
+        rbtValetMasivo.setEnabled(true);
         
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -203,6 +223,7 @@ public class FrmConfiguracion extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JRadioButton rbtAutoservicio;
     private javax.swing.JRadioButton rbtValet;
+    private javax.swing.JRadioButton rbtValetMasivo;
     private javax.swing.JTextField txtCentroCostos;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtEstacionamiento;

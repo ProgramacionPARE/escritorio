@@ -22,6 +22,7 @@ public class Estacionamiento implements IDBModel{
     Caseta caseta;
     int numeroCaseta;
     String tipo;
+    String token;
 
     public Estacionamiento(int id, int centroCostos, String descripcion, String direccion, Caseta caseta, int numeroCaseta,String tipo) {
         this.id = id;
@@ -43,6 +44,16 @@ public class Estacionamiento implements IDBModel{
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
+    
 
     public int getCentroCostos() {
         return centroCostos;

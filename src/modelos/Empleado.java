@@ -12,12 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 public class Empleado implements IDBModel {
+
 
 
     
@@ -28,14 +28,15 @@ public class Empleado implements IDBModel {
     String tipoTurno;
     String usuario;
     String contraseña;
-
-    public Empleado(int id, int nivel, String nombre,  String tipoPuesto,String usuario,String contraseña) {
+    String clave;
+    
+    public Empleado(int id, int nivel, String nombre,  String tipoPuesto,String usuario,String contraseña, String clave) {
         this.id = id;
         this.nivel = nivel;
         this.nombre = nombre;
         this.usuario = usuario;
         this.contraseña = contraseña;
-       
+        this.clave = clave;
         this.tipoPuesto = tipoPuesto;
     }   
     
@@ -53,7 +54,8 @@ public class Empleado implements IDBModel {
                 empleado = new Empleado(resultSet.getInt("id"),resultSet.getInt("nivel"),
                         resultSet.getString("nombre_completo"), 
                         resultSet.getString("tipo_empleado"),
-                        resultSet.getString("nombre"),resultSet.getString("contras"));
+                        resultSet.getString("nombre"),resultSet.getString("contras")
+                        ,resultSet.getString("clave"));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -100,6 +102,28 @@ public class Empleado implements IDBModel {
         }
         return empleado;
     }
+    
+    public static Empleado getByIdClave(String id) {
+        Empleado empleado = null;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM usuarios where clave = ? and  id= ?");
+            statement.setString(1, id.substring(0,6));
+            statement.setInt(2, Integer.valueOf(id.substring(6,12)));
+            
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()){
+                empleado = Empleado.getById(resultSet.getLong("id"));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return empleado;
+    }
+
 
     public String getUsuario() {
         return usuario;
@@ -117,6 +141,16 @@ public class Empleado implements IDBModel {
         this.contraseña = contraseña;
     }
 
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+        
+        
     public Empleado() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -168,14 +202,16 @@ public class Empleado implements IDBModel {
            Connection connectionDB = conexion.getConnectionDB();
            PreparedStatement  statement = connectionDB.
            prepareStatement("INSERT INTO usuarios (`nombre_completo`, `nivel`,"+
-                           " `nombre`,`contras`,`tipo_empleado`,`id_caseta`)"
-                           + " VALUES (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+                           " `nombre`,`contras`,`tipo_empleado`,`clave`,`id_caseta`)"
+                           + " VALUES (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
            statement.setString(1, nombre);
            statement.setInt(2, nivel);
            statement.setString(3, usuario);
            statement.setString(4, contraseña); 
            statement.setString(5, tipoPuesto);
-           statement.setInt(6, 1);
+           statement.setString(6,clave);
+           
+           statement.setInt(7, 1);
            
 
            statement.executeUpdate();
@@ -195,13 +231,14 @@ public class Empleado implements IDBModel {
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE usuarios SET `nombre_completo`=? ,`nivel` =? , `nombre` =?"
-                    +",`contras` =? ,`tipo_empleado` =?  WHERE `id`=?");
+                    +",`contras` =? ,`tipo_empleado` =? ,`clave` =?    WHERE `id`=?");
             statement.setString(1, nombre);
             statement.setInt(2, nivel);
             statement.setString(3, usuario);
             statement.setString(4, contraseña); 
             statement.setString(5, tipoPuesto);
-             statement.setLong(6, id);
+            statement.setString(5, clave);
+            statement.setLong(6, id);
 
             statement.executeUpdate();
             conexion.cerrarConexion();

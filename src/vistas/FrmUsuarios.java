@@ -6,6 +6,7 @@
 package vistas;
 
 import ModelosAux.Seguridad;
+import java.awt.Frame;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,15 +33,16 @@ public class FrmUsuarios extends javax.swing.JDialog {
     Estacionamiento estacionamiento;
     Empleado empleado;
     String estado = "";
-
+    private Frame parent;
     /**
      * Creates new form FrmUsuarios
      */
-    public FrmUsuarios(java.awt.Frame parent, boolean modal, Turno turno,Estacionamiento estacionamiento) {
+    public FrmUsuarios(Frame parent, boolean modal, Turno turno,Estacionamiento estacionamiento) {
         super(parent, "Usuarios", modal);
         initComponents(); 
         this.turno = turno;
         this.estacionamiento = estacionamiento;
+        this.parent = parent;
         cargarTabla();
         tblUsuario.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -78,7 +80,7 @@ public class FrmUsuarios extends javax.swing.JDialog {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );     
         tblUsuario.setDefaultRenderer(String.class, centerRenderer);
-            
+        FrmPrincipal.nuevaVentana(this);    
         setLocationRelativeTo(parent);
         setVisible(true);
     }
@@ -90,7 +92,7 @@ public class FrmUsuarios extends javax.swing.JDialog {
         Iterator<Empleado> iterator = empleados.iterator();
         while (iterator.hasNext()) {
             Empleado next = iterator.next();
-            if(new Operacion().requierePermisos( turno.getEmpleado(), next.getTipoPuesto(),false))
+            if(new Operacion(this.parent).requierePermisos( turno.getEmpleado(), next.getTipoPuesto(),false))
                 model.addRow(new String[]{String.valueOf(next.getId()), next.getNombre(), next.getTipoPuesto()});
             
         }
@@ -158,6 +160,11 @@ public class FrmUsuarios extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         filler1.setName("filler1"); // NOI18N
@@ -405,7 +412,7 @@ public class FrmUsuarios extends javax.swing.JDialog {
         if(validaCamposEntrada()){
             if(estado.equals("Agregar")){
                 Empleado nuevoEmpleado = new Empleado(0, Integer.valueOf(txtNivel.getText()),txtNombre.getText()
-                        , (String)cbxTipo.getSelectedItem(),txtUsuario.getText(),txtContraseña.getText());
+                        , (String)cbxTipo.getSelectedItem(),txtUsuario.getText(),txtContraseña.getText(),Seguridad.getClave(6));
                 nuevoEmpleado.guardar();
                 empleado = nuevoEmpleado;
                 regresarEstado();
@@ -478,6 +485,10 @@ public class FrmUsuarios extends javax.swing.JDialog {
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
       new FrmInfoUsuario(this,false,PrinterJob.getPrinterJob(),empleado);
     }//GEN-LAST:event_btnImprimirActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+         FrmPrincipal.restaurarUltimaVentana();        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

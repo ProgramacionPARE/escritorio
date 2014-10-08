@@ -80,5 +80,14 @@ public class Tiempo {
 	return  ((int) (estancia.getTime()/(60 * 1000)))%60;	
     }
 
+    public static boolean horaVsHoraActual(String fecha,String hora) {
+        if(getDirenciaHoras(fecha,hora,getFecha(),getHora())<0)
+            return false;
+        if(getDirenciaMinutos(fecha,hora,getFecha(),getHora())< 0){
+            return false;
+        }
+        return true;
+    }
+
   
 }

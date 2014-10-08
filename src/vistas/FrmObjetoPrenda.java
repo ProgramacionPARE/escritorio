@@ -1,12 +1,7 @@
 package vistas;
 
-import modelos.Auto;
-import modelos.BoletoPerdido;
-import modelos.Empleado;
-import modelos.Operacion;
-import modelos.PropietarioPerdido;
-import modelos.Turno;
 import ModelosAux.Tiempo;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -19,6 +14,12 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import modelos.Auto;
+import modelos.BoletoPerdido;
+import modelos.Empleado;
+import modelos.Operacion;
+import modelos.PropietarioPerdido;
+import modelos.Turno;
 import proyectopare.clases.PARAMETROS;
 
 
@@ -28,12 +29,14 @@ public class FrmObjetoPrenda extends JDialog implements Printable {
     private BoletoPerdido boletoPerdido;
     private PrinterJob job;
     private Empleado empleado;
+    private Frame parent;
 
     public FrmObjetoPrenda(javax.swing.JFrame padre, boolean b, Turno turno,Auto auto) {
         super(padre,b);
         this.turno = turno;
         this.auto = auto;
         this.empleado = empleado;
+        this.parent = parent;
         initComponents();
         this.setLocationRelativeTo(padre);
         iniciarOtrosComponentes();
@@ -627,7 +630,7 @@ public class FrmObjetoPrenda extends JDialog implements Printable {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         if (validaCamposEntrada()){
-            if(new Operacion().requierePermisos(turno.getEmpleado(), "Supervisor",true)){
+            if(new Operacion(this.parent).requierePermisos(turno.getEmpleado(), "Supervisor",true)){
                 btnGuardar.setVisible(false);
                 auto.setColor(txtColor.getText());
                 auto.setModelo(txtModelo.getText());

@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import modeloReportes.CorteTurno;
+import modeloReportes.RetirosParciales;
 import modelos.Caja;
 import modelos.DetallesMovimiento;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Turno;
-import proyectopare.ProyectoPareApp;
 import vistas.formatos.FrmRetiroParcial;
 
 /**
@@ -45,6 +45,7 @@ public class FrmCaja extends javax.swing.JDialog {
         txtTotal.setText(String.valueOf(caja.getMonto()+caja.getFondo()));
         txtVenta.setText(String.valueOf(caja.getMonto()));
         txtFondo.setText(String.valueOf(caja.getFondo()));
+         FrmPrincipal.nuevaVentana(this);
           setLocationRelativeTo(parent);
         setVisible(true);
     }
@@ -67,6 +68,11 @@ public class FrmCaja extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setText("Total en caja");
@@ -149,19 +155,23 @@ public class FrmCaja extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       new FrmRetiroParcial(parent,true,turno,estacionamiento);
+       new FrmRetiroParcial(parent,true,turno,estacionamiento,caja);
        this.setVisible(false);
        if(esCorte){
             turno.realizarCorte(empleado);
             turno.actualizar();
-             Iterator<Map.Entry<String, ArrayList<DetallesMovimiento>>> detalles = turno.getDetallesMovimiento().entrySet().iterator();
-                while(detalles.hasNext()){
-                     new CorteTurno(turno, estacionamiento, detalles.next().getValue()).generarReporte();
-            }
-            ProyectoPareApp.getApplication().getView().initLogin();
+            new CorteTurno(turno, estacionamiento).generarReporte();
+            new RetirosParciales(turno, estacionamiento).generarReporte();
+
+      
+            ((FrmPrincipal)parent).initLogin();
        }
        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        FrmPrincipal.restaurarUltimaVentana();       
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

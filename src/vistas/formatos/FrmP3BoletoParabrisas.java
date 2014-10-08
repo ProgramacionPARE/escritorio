@@ -31,7 +31,7 @@ import proyectopare.clases.ImprimirForma;
  *
  * @author Roman
  */
-public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printable{
+public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printable,Runnable{
     private PrinterJob job;
 
     /** Creates new form VenBoletoValetParking1 */
@@ -41,25 +41,8 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         this.setLocationRelativeTo(parent);
         this.job = job;
         jLabProgresivo.setText("NO. " + auto.getProgresivo());
-        this.job = PrinterJob.getPrinterJob();
-        PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
-        int selectedService = 0;
-        for(int i = 0; i < services.length;i++){
-            if(services[i].getName().contains("STAR")){
-                selectedService = i;
-                }
-            }
-        try {
-            job.setPrintService(services[selectedService]);
-        } catch (PrinterException ex) {
-            Logger.getLogger(FrmP1BoletoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-        MediaSizeName mediaSizeName = MediaSize.findMedia(4,4,MediaPrintableArea.INCH);
-        printRequestAttributeSet.add(mediaSizeName);
-        printRequestAttributeSet.add(new Copies(1));
-        setVisible(true);
-        imprimir();
+        new Thread(this).start();
+        
     }
 
 
@@ -238,5 +221,27 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        this.job = PrinterJob.getPrinterJob();
+        PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+        int selectedService = 0;
+        for(int i = 0; i < services.length;i++){
+            if(services[i].getName().contains("STAR")){
+                selectedService = i;
+                }
+            }
+        try {
+            job.setPrintService(services[selectedService]);
+        } catch (PrinterException ex) {
+            Logger.getLogger(FrmP1BoletoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+        MediaSizeName mediaSizeName = MediaSize.findMedia(4,4,MediaPrintableArea.INCH);
+        printRequestAttributeSet.add(mediaSizeName);
+        printRequestAttributeSet.add(new Copies(1));
+        setVisible(true);
+        imprimir(); }
 
 }

@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -32,8 +31,12 @@ public class Turno implements IDBModel {
     private int noBolCobrados;
     private int noBolTurnoS;
     private float total;
+    private HashMap<String,Turno> turnosImprimir;
     
-    private  HashMap<String, ArrayList<DetallesMovimiento>> detallesMovimiento;
+    private  ArrayList<DetallesMovimiento> detallesMovimiento;
+    
+    public static  HashMap<Long,Turno> cacheTurnos = new HashMap();
+    
     private ArrayList <RetiroParcial> retirosParciales;
     private Estacionamiento estacionamiento;
 
@@ -42,7 +45,7 @@ public class Turno implements IDBModel {
     }
     
     public Turno(Estacionamiento estacionamiento) {
-        detallesMovimiento = new  HashMap<String, ArrayList<DetallesMovimiento>>();
+        detallesMovimiento = new  ArrayList<DetallesMovimiento>();
         retirosParciales = new ArrayList <RetiroParcial>();
         this.estacionamiento = estacionamiento;
      }
@@ -50,7 +53,7 @@ public class Turno implements IDBModel {
     public Turno(long id, Empleado empleado, String tipoTurno, String fechaApertura, 
             String horaApertura, String fechaCierre, String horaCierre, long folioInicial, 
             long folioFinal, int noBol, int noBolTurnoA, int noBolCancelados, int noBolPerdidos,
-            int noBolCobrados, int noBolTurnoS, float total, HashMap<String, ArrayList<DetallesMovimiento>> detallesMovimiento,
+            int noBolCobrados, int noBolTurnoS, float total, ArrayList<DetallesMovimiento> detallesMovimiento,
             ArrayList<RetiroParcial> retirosParciales) {
         this.id = id;
         this.empleado = empleado;
@@ -73,7 +76,7 @@ public class Turno implements IDBModel {
     }
 
     public void inicializarTurno(Empleado empleado,String tipoTurno){
-        detallesMovimiento = new HashMap<String, ArrayList<DetallesMovimiento>>();
+        detallesMovimiento =new  ArrayList<DetallesMovimiento>();
         retirosParciales = new ArrayList <RetiroParcial>();
         fechaApertura = Tiempo.getFecha();
         horaApertura = Tiempo.getHora();
@@ -85,6 +88,7 @@ public class Turno implements IDBModel {
     }
     
     public void realizarCorte(Empleado operador){
+        
         this.empleado = operador;
         fechaCierre = Tiempo.getFecha();
         horaCierre = Tiempo.getHora();
@@ -98,8 +102,39 @@ public class Turno implements IDBModel {
         detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this),
                 Auto.getAutosBoletoPerdidoTurnoActual(this),Auto.getAutosBoletoCanceladoTurnoActual(this),this);
         DetallesMovimiento.ordenarPorPU(detallesMovimiento);
-        DetallesMovimiento.guardar(detallesMovimiento, this.getId());
+        //DetallesMovimiento.guardar(detallesMovimiento, this.getId());
         total = DetallesMovimiento.calcularTotal(detallesMovimiento);
+        detallesParaImprimir();
+    }
+    
+    public void detallesParaImprimir(){
+        turnosImprimir = new HashMap();
+        for(String s: estacionamiento.getCaseta().getSeries()){
+            turnosImprimir.put(s,new Turno());
+            turnosImprimir.get(s).empleado = this.getEmpleado();
+            turnosImprimir.get(s).fechaCierre = Tiempo.getFecha();
+            turnosImprimir.get(s).horaCierre = Tiempo.getHora();
+            
+            turnosImprimir.get(s).folioInicial =  Auto.getPrimerProgresivoPorSerie(this,s);
+            turnosImprimir.get(s).folioFinal =  Auto.getUltimoProgresivoPorSerie(this,s);
+            turnosImprimir.get(s).noBol =  (int)(folioFinal- folioInicial);
+            
+            turnosImprimir.get(s).setFechaApertura(this.getFechaApertura());
+            if(!estacionamiento.getTipo().equals("Valet"))
+            turnosImprimir.get(s).setTipoTurno(this.getTipoTurno()+" - "+ s);
+            else turnosImprimir.get(s).setTipoTurno(this.getTipoTurno());
+                    
+            turnosImprimir.get(s).noBolTurnoS = Auto.getAutosPendientes(s).size();
+            turnosImprimir.get(s).noBolCobrados = Auto.getAutosCobradosTurnoActual(this,s).size();
+            turnosImprimir.get(s).noBolPerdidos = Auto.getAutosBoletoPerdidoTurnoActual(this,s).size();
+            turnosImprimir.get(s).noBolCancelados = Auto.getAutosBoletoCanceladoTurnoActual(this,s).size();
+            //Obtener Detalles de movimiento del turno
+            turnosImprimir.get(s).detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this,s),
+                    Auto.getAutosBoletoPerdidoTurnoActual(this,s),Auto.getAutosBoletoCanceladoTurnoActual(this,s),this);
+            DetallesMovimiento.ordenarPorPU(turnosImprimir.get(s).detallesMovimiento);
+            //DetallesMovimiento.guardar(turnosImprimir.get(s).detallesMovimiento, this.getId());
+            turnosImprimir.get(s).total = DetallesMovimiento.calcularTotal(turnosImprimir.get(s).detallesMovimiento);
+        }
     }
     
     public static ArrayList<Turno> getTurnosByFecha(String fecha){
@@ -143,32 +178,37 @@ public class Turno implements IDBModel {
     public static Turno getById(Long id){
         
         Turno turno = new Turno();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM turnos where id_turno = ?");
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
-                turno = new Turno(resultSet.getLong("id_turno"),Empleado.getById(resultSet.getLong("id_operador")),
-                       resultSet.getString("tipo_turno"),
-                resultSet.getString("fecha_apertura"), resultSet.getString("hora_apertura") ,
-                resultSet.getString("fecha_cierre"),resultSet.getString("hora_cierre"),
-                resultSet.getLong("folio_inicial"),resultSet.getLong("folio_final"),
-                resultSet.getInt("no_bol"),
-                resultSet.getInt("no_bol_turno_a"),resultSet.getInt("no_bol_cancelados"),
-                resultSet.getInt("no_bol_perdidos"),resultSet.getInt("no_bol_cobrados"),      
-                resultSet.getInt("no_bol_turno_s"),
-                resultSet.getFloat("Total"),null,
-                RetiroParcial.getRetirosParcialesByTurnoId(id));
+        if(cacheTurnos.containsKey(id)){
+            turno = cacheTurnos.get(id);
+        }else{
+            try {
+                Conexion conexion = new Conexion();
+                Connection connectionDB = conexion.getConnectionDB();
+                PreparedStatement  statement = connectionDB.
+                prepareStatement("SELECT * FROM turnos where id_turno = ?");
+                statement.setLong(1, id);
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()){
+                    turno = new Turno(resultSet.getLong("id_turno"),Empleado.getById(resultSet.getLong("id_operador")),
+                           resultSet.getString("tipo_turno"),
+                    resultSet.getString("fecha_apertura"), resultSet.getString("hora_apertura") ,
+                    resultSet.getString("fecha_cierre"),resultSet.getString("hora_cierre"),
+                    resultSet.getLong("folio_inicial"),resultSet.getLong("folio_final"),
+                    resultSet.getInt("no_bol"),
+                    resultSet.getInt("no_bol_turno_a"),resultSet.getInt("no_bol_cancelados"),
+                    resultSet.getInt("no_bol_perdidos"),resultSet.getInt("no_bol_cobrados"),      
+                    resultSet.getInt("no_bol_turno_s"),
+                    resultSet.getFloat("Total"),null,
+                    RetiroParcial.getRetirosParcialesByTurnoId(id));
+                }
+                turno.setDetallesMovimiento( DetallesMovimiento.getById(id));
+                turno.setEstacionamiento(Estacionamiento.getDatos());
+                cacheTurnos.put(turno.getId(), turno);
+                conexion.cerrarConexion();
+            } catch (SQLException ex) {
+                Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
             }
-            turno.setDetallesMovimiento( DetallesMovimiento.getById(id));
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
         return turno;
     }
     
@@ -198,6 +238,14 @@ public class Turno implements IDBModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public HashMap<String, Turno> getTurnosImprimir() {
+        return turnosImprimir;
+    }
+
+    public void setTurnosImprimir(HashMap<String, Turno> turnosImprimir) {
+        this.turnosImprimir = turnosImprimir;
     }
 
     public Estacionamiento getEstacionamiento() {
@@ -338,13 +386,22 @@ public class Turno implements IDBModel {
         this.total = total;
     }
 
-    public Map<String, ArrayList<DetallesMovimiento>> getDetallesMovimiento() {
+    public ArrayList<DetallesMovimiento> getDetallesMovimiento() {
         return detallesMovimiento;
     }
 
-    public void setDetallesMovimiento(HashMap<String, ArrayList<DetallesMovimiento>> detallesMovimiento) {
+    public void setDetallesMovimiento(ArrayList<DetallesMovimiento> detallesMovimiento) {
         this.detallesMovimiento = detallesMovimiento;
     }
+
+    public static HashMap<Long, Turno> getCacheTurnos() {
+        return cacheTurnos;
+    }
+
+    public static void setCacheTurnos(HashMap<Long, Turno> cacheTurnos) {
+        Turno.cacheTurnos = cacheTurnos;
+    }
+
 
    
 
