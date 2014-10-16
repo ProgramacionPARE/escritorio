@@ -2,7 +2,6 @@
 
 package vistas.formatos;
 
-import ModelosAux.Seguridad;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Graphics;

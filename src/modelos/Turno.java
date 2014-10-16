@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,11 +100,11 @@ public class Turno implements IDBModel {
         noBolPerdidos = Auto.getAutosBoletoPerdidoTurnoActual(this).size();
         noBolCancelados = Auto.getAutosBoletoCanceladoTurnoActual(this).size();
         //Obtener Detalles de movimiento del turno
-        detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this),
-                Auto.getAutosBoletoPerdidoTurnoActual(this),Auto.getAutosBoletoCanceladoTurnoActual(this),this);
-        DetallesMovimiento.ordenarPorPU(detallesMovimiento);
+        //detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this),
+        //        Auto.getAutosBoletoPerdidoTurnoActual(this),Auto.getAutosBoletoCanceladoTurnoActual(this),this);
+        //DetallesMovimiento.ordenarPorPU(detallesMovimiento);
         //DetallesMovimiento.guardar(detallesMovimiento, this.getId());
-        total = DetallesMovimiento.calcularTotal(detallesMovimiento);
+        //total = DetallesMovimiento.calcularTotal(detallesMovimiento);
         detallesParaImprimir();
     }
     
@@ -111,29 +112,42 @@ public class Turno implements IDBModel {
         turnosImprimir = new HashMap();
         for(String s: estacionamiento.getCaseta().getSeries()){
             turnosImprimir.put(s,new Turno());
+            
             turnosImprimir.get(s).empleado = this.getEmpleado();
-            turnosImprimir.get(s).fechaCierre = Tiempo.getFecha();
-            turnosImprimir.get(s).horaCierre = Tiempo.getHora();
+            turnosImprimir.get(s).tipoTurno = this.getTipoTurno();
+            
+            turnosImprimir.get(s).fechaApertura = this.getFechaApertura();
+            turnosImprimir.get(s).horaApertura = this.getHoraApertura();
+            
+            turnosImprimir.get(s).noBolTurnoA = this.getNoBolTurnoA();
+            
+            turnosImprimir.get(s).fechaCierre = this.getFechaCierre();
+            turnosImprimir.get(s).horaCierre = this.getHoraCierre();
             
             turnosImprimir.get(s).folioInicial =  Auto.getPrimerProgresivoPorSerie(this,s);
-            turnosImprimir.get(s).folioFinal =  Auto.getUltimoProgresivoPorSerie(this,s);
-            turnosImprimir.get(s).noBol =  (int)(folioFinal- folioInicial);
+            turnosImprimir.get(s).folioFinal =  Auto.getUltimoProgresivoPorSerie(this,s)+1;
+            turnosImprimir.get(s).noBol =  (int)(turnosImprimir.get(s).folioFinal - turnosImprimir.get(s).folioInicial);
             
             turnosImprimir.get(s).setFechaApertura(this.getFechaApertura());
-            if(!estacionamiento.getTipo().equals("Valet"))
-            turnosImprimir.get(s).setTipoTurno(this.getTipoTurno()+" - "+ s);
-            else turnosImprimir.get(s).setTipoTurno(this.getTipoTurno());
+            if(estacionamiento.getTipo().equals("Autoservicio"))
+                turnosImprimir.get(s).setTipoTurno(this.getTipoTurno()+" - "+ s);
+            //
+            List<Auto> autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(this,s);
+            List<Auto> autosBoletoPerdidoTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(this,s);
+            List<Auto> autosBoletoCanceladoTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(this,s);
                     
             turnosImprimir.get(s).noBolTurnoS = Auto.getAutosPendientes(s).size();
-            turnosImprimir.get(s).noBolCobrados = Auto.getAutosCobradosTurnoActual(this,s).size();
-            turnosImprimir.get(s).noBolPerdidos = Auto.getAutosBoletoPerdidoTurnoActual(this,s).size();
-            turnosImprimir.get(s).noBolCancelados = Auto.getAutosBoletoCanceladoTurnoActual(this,s).size();
+            turnosImprimir.get(s).noBolCobrados = autosCobradosTurnoActual.size();
+            turnosImprimir.get(s).noBolPerdidos = autosBoletoPerdidoTurnoActual.size();
+            turnosImprimir.get(s).noBolCancelados = autosBoletoCanceladoTurnoActual.size();
             //Obtener Detalles de movimiento del turno
-            turnosImprimir.get(s).detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this,s),
-                    Auto.getAutosBoletoPerdidoTurnoActual(this,s),Auto.getAutosBoletoCanceladoTurnoActual(this,s),this);
+            turnosImprimir.get(s).detallesMovimiento = DetallesMovimiento.generarDetalles(autosCobradosTurnoActual,
+                    autosBoletoPerdidoTurnoActual,autosBoletoCanceladoTurnoActual,this);
+            
             DetallesMovimiento.ordenarPorPU(turnosImprimir.get(s).detallesMovimiento);
             //DetallesMovimiento.guardar(turnosImprimir.get(s).detallesMovimiento, this.getId());
             turnosImprimir.get(s).total = DetallesMovimiento.calcularTotal(turnosImprimir.get(s).detallesMovimiento);
+            this.total+=  turnosImprimir.get(s).total;
         }
     }
     

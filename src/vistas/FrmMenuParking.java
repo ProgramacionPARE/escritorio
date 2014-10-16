@@ -151,7 +151,7 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
     
     @Override
     public void run() {
-       lblNoAutos.setText(String.valueOf(Auto.getAutosPendientes(turno).size()));
+       lblNoAutos.setText(String.valueOf(Auto.getAutosPendientes().size()));
     }
     
     @SuppressWarnings("unchecked")

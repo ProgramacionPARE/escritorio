@@ -30,7 +30,7 @@ public class FrmFolios extends javax.swing.JDialog {
         txtRecibo.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO"));
         btnGuardar.setVisible(false);
         txtSeries.setText(ser);
-        if(estacionamiento.getTipo().equals("Valet")){
+        if(!estacionamiento.getTipo().equals("Autoservicio") ){
             jLabel6.setVisible(false);
             txtSeries.setText("0");
             txtSeries.setVisible(false);

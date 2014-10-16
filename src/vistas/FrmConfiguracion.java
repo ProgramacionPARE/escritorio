@@ -56,11 +56,12 @@ public class FrmConfiguracion extends javax.swing.JDialog {
         txtNumeroCaseta = new javax.swing.JTextField();
         btnModificar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         rbtValet = new javax.swing.JRadioButton();
         rbtAutoservicio = new javax.swing.JRadioButton();
         jLabel6 = new javax.swing.JLabel();
         rbtValetMasivo = new javax.swing.JRadioButton();
+        jLabel7 = new javax.swing.JLabel();
+        txtDireccionIP = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -83,21 +84,21 @@ public class FrmConfiguracion extends javax.swing.JDialog {
 
         jLabel3.setText("Centro de costos");
         jLabel3.setName("jLabel3"); // NOI18N
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 128, 139, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 139, -1));
 
         jLabel4.setText("Numero caseta");
         jLabel4.setName("jLabel4"); // NOI18N
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 128, 151, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 151, -1));
 
         txtCentroCostos.setEditable(false);
         txtCentroCostos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCentroCostos.setName("txtCentroCostos"); // NOI18N
-        getContentPane().add(txtCentroCostos, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 149, 139, -1));
+        getContentPane().add(txtCentroCostos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 139, -1));
 
         txtNumeroCaseta.setEditable(false);
         txtNumeroCaseta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNumeroCaseta.setName("txtNumeroCaseta"); // NOI18N
-        getContentPane().add(txtNumeroCaseta, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 149, 151, -1));
+        getContentPane().add(txtNumeroCaseta, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, 151, -1));
 
         btnModificar.setText("Modificar");
         btnModificar.setName("btnModificar"); // NOI18N
@@ -106,7 +107,7 @@ public class FrmConfiguracion extends javax.swing.JDialog {
                 btnModificarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 308, 39));
+        getContentPane().add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 308, 39));
 
         btnGuardar.setText("Guardar");
         btnGuardar.setName("btnGuardar"); // NOI18N
@@ -115,29 +116,35 @@ public class FrmConfiguracion extends javax.swing.JDialog {
                 btnGuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 308, 39));
-
-        jLabel5.setName("jLabel5"); // NOI18N
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, 60, 10));
+        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 308, 39));
 
         rbtValet.setText("ValetParking");
         rbtValet.setEnabled(false);
         rbtValet.setName("rbtValet"); // NOI18N
-        getContentPane().add(rbtValet, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
+        getContentPane().add(rbtValet, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, -1, -1));
 
         rbtAutoservicio.setText("Autoservicio");
         rbtAutoservicio.setEnabled(false);
         rbtAutoservicio.setName("rbtAutoservicio"); // NOI18N
-        getContentPane().add(rbtAutoservicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, -1, -1));
+        getContentPane().add(rbtAutoservicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, -1, -1));
 
         jLabel6.setText("Tipo de estacionamiento");
         jLabel6.setName("jLabel6"); // NOI18N
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
 
         rbtValetMasivo.setText("ValetMasivo");
         rbtValetMasivo.setEnabled(false);
         rbtValetMasivo.setName("rbtValetMasivo"); // NOI18N
-        getContentPane().add(rbtValetMasivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, -1, -1));
+        getContentPane().add(rbtValetMasivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 290, -1, -1));
+
+        jLabel7.setText("Direccion IP");
+        jLabel7.setName("jLabel7"); // NOI18N
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 139, -1));
+
+        txtDireccionIP.setEditable(false);
+        txtDireccionIP.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDireccionIP.setName("txtDireccionIP"); // NOI18N
+        getContentPane().add(txtDireccionIP, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 140, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -219,13 +226,14 @@ public class FrmConfiguracion extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JRadioButton rbtAutoservicio;
     private javax.swing.JRadioButton rbtValet;
     private javax.swing.JRadioButton rbtValetMasivo;
     private javax.swing.JTextField txtCentroCostos;
     private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtDireccionIP;
     private javax.swing.JTextField txtEstacionamiento;
     private javax.swing.JTextField txtNumeroCaseta;
     // End of variables declaration//GEN-END:variables

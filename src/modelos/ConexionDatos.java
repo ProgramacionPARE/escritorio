@@ -8,24 +8,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Kevin Arnold
- */
-public class Conexion {
-      private Connection conexion=null;
+
+
+public  class ConexionDatos {
+      private static Connection conexion=null;
     
     
-    public Connection getConnectionDB() {
-        if (conexion != null )
-            return conexion;
+    public static Connection getConnectionDB() {
+//        if (conexion != null )
+//            return conexion;
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            String servidor = "jdbc:mysql://"+Configuracion.getDatos().getIp()+"/paredb";
+            String servidor = "jdbc:mysql://localhost/paredatos";
             String usuarioDB="root";
             String passwordDB="#parePROGRAMACIONdb";
             conexion= DriverManager.getConnection(servidor,usuarioDB,passwordDB);
+            
         }
         catch(ClassNotFoundException ex)
         {
@@ -52,7 +51,7 @@ public class Conexion {
          try {
              conexion.close();
          } catch (SQLException ex) {
-             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+             Logger.getLogger(ConexionDatos.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
     

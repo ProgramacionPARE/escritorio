@@ -57,7 +57,7 @@ public class Rest {
     }
     
     public static String sendAuto(Auto a,Estacionamiento estacionamiento){
-       HttpClient client = HttpClients.custom().build();
+     //  HttpClient client = HttpClients.custom().build();
         
 //        try {
 //            List<NameValuePair> auto = new ArrayList<>(1);

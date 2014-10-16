@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 
 public class Estacionamiento implements IDBModel{
+    static Estacionamiento e;
     int id;
     int centroCostos;
     String descripcion;
@@ -22,9 +23,11 @@ public class Estacionamiento implements IDBModel{
     Caseta caseta;
     int numeroCaseta;
     String tipo;
-    String token;
+    String token;   
 
-    public Estacionamiento(int id, int centroCostos, String descripcion, String direccion, Caseta caseta, int numeroCaseta,String tipo) {
+    
+    public Estacionamiento(int id, int centroCostos, String descripcion, String direccion,
+            Caseta caseta, int numeroCaseta,String tipo) {
         this.id = id;
         this.centroCostos = centroCostos;
         this.descripcion = descripcion;
@@ -52,8 +55,7 @@ public class Estacionamiento implements IDBModel{
     public void setToken(String token) {
         this.token = token;
     }
-    
-    
+
 
     public int getCentroCostos() {
         return centroCostos;
@@ -107,31 +109,34 @@ public class Estacionamiento implements IDBModel{
      
     
     public static Estacionamiento getDatos() {
-       Estacionamiento estacionamiento = null;
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM estacionamiento");
-            
-            ResultSet resultSet = statement.executeQuery();
-           
-            if (resultSet.next()){
-                estacionamiento = Estacionamiento.getById(resultSet.getLong("id"));
+        Estacionamiento estacionamiento = null;
+        if(Estacionamiento.e == null){
+            try {
+                Conexion conexion = new Conexion();
+                Connection connectionDB = conexion.getConnectionDB();
+                PreparedStatement  statement = connectionDB.
+                prepareStatement("SELECT * FROM estacionamiento");
+
+                ResultSet resultSet = statement.executeQuery();
+
+                if (resultSet.next()){
+                    estacionamiento = Estacionamiento.getById(resultSet.getLong("id"),connectionDB);
+                }
+                conexion.cerrarConexion();
+            } catch (SQLException ex) {
+                Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
             }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+            e = estacionamiento;
         }
-        return estacionamiento;
+        return e;
     
     }
     
-    static Estacionamiento getById(long id) {
+    static Estacionamiento getById(long id, Connection cDB) {
        Estacionamiento centro = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           
+            Connection connectionDB = cDB;
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM estacionamiento where id = ?");
             statement.setLong(1, id);
@@ -140,10 +145,10 @@ public class Estacionamiento implements IDBModel{
             if (resultSet.next()){
                 centro = new Estacionamiento(resultSet.getInt("id"),
                 resultSet.getInt("centro_costos"), resultSet.getString("descripcion"), resultSet.getString("direccion"),
-                Caseta.getById( Long.valueOf(resultSet.getString("caseta_actual"))),resultSet.getInt("caseta_actual"),
+                Caseta.getById(resultSet.getLong("caseta_actual")),resultSet.getInt("caseta_actual"),
                 resultSet.getString("tipo"));
             }
-            conexion.cerrarConexion();
+           
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -157,7 +162,7 @@ public class Estacionamiento implements IDBModel{
 
     @Override
     public void actualizar() {
-          try {
+        try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
@@ -168,6 +173,7 @@ public class Estacionamiento implements IDBModel{
             statement.setString(3, this.direccion);
             statement.setLong(4, this.numeroCaseta);
             statement.setString(5, this.tipo);
+
             statement.setLong(6, this.id);
             statement.executeUpdate();
             conexion.cerrarConexion();

@@ -37,12 +37,13 @@ public class DetallesMovimiento{
        return resp;
     }
     
-    private static DetallesMovimiento existeRangoHorario(ArrayList<DetallesMovimiento> dt, String rangoEstadia,String tipo) {
+    private static DetallesMovimiento existeRangoHorario(ArrayList<DetallesMovimiento> dt, Auto auto,String tipo) {
         DetallesMovimiento resp=null;
+        String rangoEstadia = Tarifa.getRangoEstadia(auto);
         Iterator<DetallesMovimiento> iterator = dt.iterator(); 
         while(iterator.hasNext()){
             DetallesMovimiento next = iterator.next();
-            if(next.getRangoHorario().equals(rangoEstadia) && next.getTipo().equals(tipo)){
+            if((next.getRangoHorario().equals(rangoEstadia) || next.getImporte()==auto.getMontoTangible() ) && next.getTipo().equals(tipo)){
                 resp = next;
                 break;
             }
@@ -145,27 +146,34 @@ public class DetallesMovimiento{
        
       
         //ArrayList<DetallesMovimiento> detallesMovimiento= new ArrayList<DetallesMovimiento>();
-        Iterator<Auto> iteratorAutos = autosCobradosTurnoActual.iterator();
-        while (iteratorAutos.hasNext()){
-            Auto next = iteratorAutos.next();
-            
-            //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, Tarifa.getRangoEstadia(next),next.getTarifa().getDescripcion());
-            if(detalles==null){
-                mapDetalles.add(new DetallesMovimiento(Tarifa.getRangoEstadia(next), next.getTarifa().getDescripcion(), 1, next.getMontoTangible(), next.getMontoTangible()));
-            }else{
-                detalles.setNoBol( detalles.getNoBol()+1);
-                detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
+   
+        ArrayList<Tarifa> all = Tarifa.getAll();
+        Iterator<Tarifa> iterator = all.iterator();
+        while(iterator.hasNext()){ 
+           Tarifa tarifaNext = iterator.next();
+            Iterator<Auto> iteratorAutos = autosCobradosTurnoActual.iterator();
+            while (iteratorAutos.hasNext()){
+                Auto next = iteratorAutos.next();
+                
+                //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
+                if(next.getTarifa().getId()== tarifaNext.getId()){
+                    DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,next.getTarifa().getDescripcion());
+                    if(detalles==null){
+                        mapDetalles.add(new DetallesMovimiento(Tarifa.getRangoEstadia(next), next.getTarifa().getDescripcion(), 1, next.getMontoTangible(), next.getMontoTangible()));
+                    }else{
+                        detalles.setNoBol( detalles.getNoBol()+1);
+                        detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
+                    }
+                }
             }
-           
         }
-        
+       /* 
         Iterator<Auto> iteratorAutosPerdidos = autosBoletoPerdidoTurnoActual.iterator();
         while (iteratorAutosPerdidos.hasNext()){
             Auto next = iteratorAutosPerdidos.next();
             
             //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, Tarifa.getRangoEstadia(next),"Perdido");
+            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,"Perdido");
             if(detalles==null){
                 mapDetalles.add(new DetallesMovimiento("", "Perdido", 1, next.getTarifa().getPrecioBoletoPerdido(), 
                 next.getTarifa().getPrecioBoletoPerdido()));
@@ -181,7 +189,7 @@ public class DetallesMovimiento{
             Auto next = iteratorAutosCancelados.next();
             
             //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, Tarifa.getRangoEstadia(next),"Cancelado");
+            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next ,"Cancelado");
             if(detalles==null){
                 mapDetalles.add(new DetallesMovimiento("", "Cancelado", 1, 0 , 0));
             }else{
@@ -189,7 +197,7 @@ public class DetallesMovimiento{
                 detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
             }
            
-        }
+        }*/
         return mapDetalles;
     }
     

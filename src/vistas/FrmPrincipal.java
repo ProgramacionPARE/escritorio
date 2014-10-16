@@ -5,10 +5,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -204,8 +201,8 @@ public class FrmPrincipal extends JFrame{
             if(showConfirmDialog == JOptionPane.YES_OPTION){
                 turno = new Turno(estacionamiento);
                 turno.inicializarTurno(empleado,"");
-                turno.guardar();
                 new FrmNuevoTurno(this,true,turno,estacionamiento);
+                turno.guardar();
                 turnoAbrierto  = true;
             }else{
                 turnoAbrierto  = false;

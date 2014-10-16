@@ -95,7 +95,6 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog {
 
         
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
-        System.out.println("Hola");
         Auto auto=null;
         if (evt.getKeyChar() == '\n') { 
             if (id.length() ==12 )

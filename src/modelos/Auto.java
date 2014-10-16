@@ -13,13 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Auto {
-
-   
-
-       
-    
-
-  
     int id;
     float descuento;
     boolean dentro;
@@ -675,7 +668,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT min(progresivo)  as progresivo FROM tbl_entradas_parking where turno_entrada_id = ? and  serie = ?");
+            prepareStatement("SELECT min(progresivo) as progresivo FROM tbl_entradas_parking where turno_entrada_id = ? and  serie = ?");
             statement.setLong(1, turno.getId());
             statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -688,9 +681,6 @@ public class Auto {
         }
         return progresivo;
     }
-    
-    
-
     
 
     public static long getUltimoProgresivo(){

@@ -38,13 +38,15 @@ public class CorteTurno implements Runnable  {
 
     @Override
     public void run() {
-         Iterator<Entry<String, Turno>> iterator = turno.getTurnosImprimir().entrySet().iterator();
+        Iterator<Entry<String, Turno>> iterator = turno.getTurnosImprimir().entrySet().iterator();
         while(iterator.hasNext()){
             Turno turno = iterator.next().getValue();
             Map<String, Object> parametros = new HashMap<String, Object>();
             parametros.put("fechaTurno", turno.getFechaApertura());
             parametros.put("operador", turno.getOperador().getNombre());
-            parametros.put("fecha", Tiempo.getFecha()+" "+Tiempo.getHora() );
+            parametros.put("fecha", turno.getFechaApertura());
+            parametros.put("fechaApertura",  turno.getHoraApertura() );
+            parametros.put("fechaCierre",    turno.getHoraCierre()  );
             parametros.put("folioInicial", turno.getFolioInicial());
             parametros.put("folioFinal",turno.getFolioFinal());
             parametros.put("numBoletos",turno.getNoBol());
@@ -55,8 +57,8 @@ public class CorteTurno implements Runnable  {
             parametros.put("pendientes",turno.getNoBolTurnoS());
             parametros.put("total",turno.getTotal());
             parametros.put("turno",turno.getTipoTurno());
-            parametros.put("numBoletos",turno.getNoBolCancelados() +turno.getNoBolCobrados()
-                    + turno.getNoBolPerdidos());
+            //parametros.put("numBoletosCobrados",turno.getNoBolCancelados() +turno.getNoBolCobrados()
+             //       + turno.getNoBolPerdidos());
             parametros.put("centroCostos",estacionamiento.getDescripcion());
 
             if(turno.getDetallesMovimiento().size()<1){
@@ -75,6 +77,7 @@ public class CorteTurno implements Runnable  {
                         selectedService = i;
                         }
                     }
+                JasperExportManager.exportReportToPdfFile(jasperPrint, "cortes/reporte-"+Tiempo.getFecha()+"-"+turno.getTipoTurno()+".pdf");
                 PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
                 printRequestAttributeSet.add(new Copies(1));
                 JRPrintServiceExporter exporter;
@@ -85,6 +88,7 @@ public class CorteTurno implements Runnable  {
                 exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
                 exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
                 exporter.exportReport();
+               
 
     //            exporter = new JRPrintServiceExporter();
     //            SimplePrintServiceExporterConfiguration configuration = new SimplePrintServiceExporterConfiguration();

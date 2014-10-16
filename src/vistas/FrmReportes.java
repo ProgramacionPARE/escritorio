@@ -6,12 +6,10 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import modeloReportes.CorteDiario;
 import modeloReportes.CorteTurno;
 import modeloReportes.RetirosParciales;
-import modelos.DetallesMovimiento;
 import modelos.Estacionamiento;
 import modelos.Turno;
 import org.freixas.jcalendar.DateEvent;
@@ -67,7 +65,7 @@ public class FrmReportes extends javax.swing.JDialog {
                 turnoActual.detallesParaImprimir();
                 new CorteTurno(turnoActual, estacionamiento).generarReporte();
                 new RetirosParciales(turnoActual, estacionamiento).generarReporte();
-;            }
+            }
         }
         if(turnosByFecha.size()>0)
             new CorteDiario(turnosByFecha,reporteDiarioFecha).generarReporte();
