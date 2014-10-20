@@ -119,6 +119,11 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         lblDescuento = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("Entrada");
         jLabel1.setName("jLabel1"); // NOI18N
@@ -376,6 +381,14 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         new FrmLeerCodigoBarrasDescuento(parent,true,turno,estacionamiento,this);        // TODO add your handling code here:
     }//GEN-LAST:event_btnDescuentoActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        String ObjButtons[] = {"Si","No"};
+        int PromptResult = JOptionPane.showOptionDialog(null,"Estas seguro de no cobrar este boleto, permanecera abierto.","NO cobrar boleto",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+        if(PromptResult==JOptionPane.YES_OPTION){
+             this.dispose();
+        }
+    }//GEN-LAST:event_formWindowClosing
+
     @Action
     public void onCobrar() {
         new Thread(this).start();
@@ -406,9 +419,10 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
             turno.setNoBolCancelados(turno.getNoBolCancelados()+1);
         else if(auto.getBoletoPerdido()!= null)
             turno.setNoBolPerdidos(turno.getNoBolPerdidos()+1);
-         else
+        else
             turno.setNoBolCobrados(turno.getNoBolCobrados()+1);
        
+        turno.setTotal(auto.getMontoTangible());
         auto.actualizar();
         
         //turno.setTotal(DetallesMovimiento.calcularTotal(DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(turno),

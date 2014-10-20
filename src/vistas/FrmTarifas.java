@@ -11,7 +11,7 @@ import modelos.Estacionamiento;
 import modelos.Tarifa;
 
 
-public class FrmTarifas extends javax.swing.JDialog {
+public class FrmTarifas extends javax.swing.JDialog  {
     Estacionamiento estacionamiento;
     private Tarifa tarifa;
     private String estado="";
@@ -70,6 +70,7 @@ public class FrmTarifas extends javax.swing.JDialog {
         this.txtBoletoPerdido.setText(String.valueOf(tarifa.getPrecioBoletoPerdido()));
         this.txtDescripcion.setText(String.valueOf(tarifa.getDescripcion()));
         this.txtTarifaUnica.setText(String.valueOf(tarifa.getTarifaUnica()));
+        this.txtMontoInicial.setText(String.valueOf(tarifa.getMontoInicial()));
         int i=0;
         for(Float n:tarifa.getCostos()){
             txtTarifas.get(i).setText(String.valueOf(n));
@@ -111,6 +112,8 @@ public class FrmTarifas extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel26 = new javax.swing.JLabel();
         txtTarifaUnica = new javax.swing.JTextField();
+        txtMontoInicial = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -299,6 +302,16 @@ public class FrmTarifas extends javax.swing.JDialog {
         txtTarifaUnica.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtTarifaUnica.setName("txtTarifaUnica"); // NOI18N
 
+        txtMontoInicial.setEditable(false);
+        txtMontoInicial.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
+        txtMontoInicial.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtMontoInicial.setName("txtMontoInicial"); // NOI18N
+
+        jLabel27.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel27.setText("Monto adicional");
+        jLabel27.setName("jLabel27"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -348,8 +361,14 @@ public class FrmTarifas extends javax.swing.JDialog {
                                         .addComponent(txtHorasCompletas, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(16, 16, 16)
                                         .addComponent(txtFraccion4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTarifaUnica, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtTarifaUnica, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtMontoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -416,19 +435,23 @@ public class FrmTarifas extends javax.swing.JDialog {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtHorasCompletas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtFraccion4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel26)
-                                        .addGap(13, 13, 13)
-                                        .addComponent(txtTarifaUnica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel26)
+                                                .addGap(13, 13, 13)
+                                                .addComponent(txtTarifaUnica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel27)
+                                                .addGap(13, 13, 13)
+                                                .addComponent(txtMontoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                                 .addComponent(jLabel23)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jSeparator1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addComponent(jLabel1))
         );
@@ -454,6 +477,7 @@ public class FrmTarifas extends javax.swing.JDialog {
         txtPrecioHora.setEditable(true);
         txtTarifaMaxima.setEditable(true);
         txtTarifaUnica.setEditable(true);
+        txtMontoInicial.setEditable(true);
         
         estado = "Modificar";
 
@@ -480,6 +504,7 @@ public class FrmTarifas extends javax.swing.JDialog {
             txtPrecioHora.setEditable(true);
             txtTarifaMaxima.setEditable(true);
             txtTarifaUnica.setEditable(true);
+            txtMontoInicial.setEditable(true);
         
             txtBoletoPerdido.setText("");
             txtDescripcion.setText("");
@@ -565,6 +590,12 @@ public class FrmTarifas extends javax.swing.JDialog {
             txtTarifaUnica.grabFocus();
             return false;
         }
+        if (txtMontoInicial.getText().equals("")){
+            JOptionPane.showMessageDialog(this,"Si existe introduce el monto inicial, de lo contrario ingresa 0.",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtMontoInicial.grabFocus();
+            return false;
+        }
         return true;
      }
  
@@ -581,7 +612,8 @@ public class FrmTarifas extends javax.swing.JDialog {
             if(estado.equals("Agregar")){
                 Tarifa nuevaTarifa = new Tarifa(0,4,costos,Float.valueOf(txtPrecioHora.getText()),
                 Float.valueOf(txtTarifaMaxima.getText()),Float.valueOf(txtBoletoPerdido.getText()),
-                Integer.valueOf(txtHorasCompletas.getText()),txtDescripcion.getText(),Float.valueOf(txtTarifaUnica.getText()) );
+                Integer.valueOf(txtHorasCompletas.getText()),txtDescripcion.getText(),
+                        Float.valueOf(txtTarifaUnica.getText()),Float.valueOf(txtMontoInicial.getText()) );
                 nuevaTarifa.guardar();
                 tarifa = nuevaTarifa;
                 cargarTabla();
@@ -621,6 +653,7 @@ public class FrmTarifas extends javax.swing.JDialog {
         txtPrecioHora.setEditable(false);
         txtTarifaMaxima.setEditable(false);
         txtTarifaUnica.setEditable(false);
+        txtTarifaUnica.setEditable(false);
         
         estado = "";
     }
@@ -639,6 +672,7 @@ public class FrmTarifas extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -652,6 +686,7 @@ public class FrmTarifas extends javax.swing.JDialog {
     private javax.swing.JTextField txtFraccion3;
     private javax.swing.JTextField txtFraccion4;
     private javax.swing.JTextField txtHorasCompletas;
+    private javax.swing.JTextField txtMontoInicial;
     private javax.swing.JTextField txtPrecioHora;
     private javax.swing.JTextField txtTarifaMaxima;
     private javax.swing.JTextField txtTarifaUnica;

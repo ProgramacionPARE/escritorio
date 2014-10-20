@@ -62,7 +62,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         buscar = false;
         aCobrados = new HashMap();
         aPendientes = new HashMap();
-        
+        Turno.cacheTurnos = new HashMap();
         cargarDatos(Tiempo.getFecha());
         FrmPrincipal.nuevaVentana(this);
         setVisible(true);
@@ -121,7 +121,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             }
         }
    
-        ArrayList<Turno> turnos = Turno.getTurnosByFechaAbierto(fecha);
+        ArrayList<Turno> turnos = Turno.getTurnosByFechaAbiertoAuditoria(fecha);
         Iterator<Turno> turnosIterator = turnos.iterator();
         while(turnosIterator.hasNext()){
             Turno turnoTemp = turnosIterator.next();

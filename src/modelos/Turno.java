@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +31,7 @@ public class Turno implements IDBModel {
     private int noBolCobrados;
     private int noBolTurnoS;
     private float total;
+    
     private HashMap<String,Turno> turnosImprimir;
     
     private  ArrayList<DetallesMovimiento> detallesMovimiento;
@@ -83,7 +83,7 @@ public class Turno implements IDBModel {
         horaApertura = Tiempo.getHora();
         folioInicial = Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta() , "BOLETO"));
         folioFinal = folioInicial; 
-        noBolTurnoA = Auto.getAutosPendientes().size();
+        noBolTurnoA = Auto.getAutosPendientes(this).size();
         this.empleado = empleado;
         this.tipoTurno = tipoTurno;
     }
@@ -95,16 +95,16 @@ public class Turno implements IDBModel {
         horaCierre = Tiempo.getHora();
         folioFinal =  Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "BOLETO"));
         noBol =  (int)(folioFinal- folioInicial);
-        noBolTurnoS = Auto.getAutosPendientes().size();
+        noBolTurnoS = Auto.getAutosPendientes(this).size();
         noBolCobrados = Auto.getAutosCobradosTurnoActual(this).size();
         noBolPerdidos = Auto.getAutosBoletoPerdidoTurnoActual(this).size();
         noBolCancelados = Auto.getAutosBoletoCanceladoTurnoActual(this).size();
         //Obtener Detalles de movimiento del turno
-        //detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this),
-        //        Auto.getAutosBoletoPerdidoTurnoActual(this),Auto.getAutosBoletoCanceladoTurnoActual(this),this);
-        //DetallesMovimiento.ordenarPorPU(detallesMovimiento);
+        detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this),
+                Auto.getAutosBoletoPerdidoTurnoActual(this),Auto.getAutosBoletoCanceladoTurnoActual(this),this);
+        DetallesMovimiento.ordenarPorPU(detallesMovimiento);
         //DetallesMovimiento.guardar(detallesMovimiento, this.getId());
-        //total = DetallesMovimiento.calcularTotal(detallesMovimiento);
+        total = DetallesMovimiento.calcularTotal(detallesMovimiento);
         detallesParaImprimir();
     }
     
@@ -119,35 +119,30 @@ public class Turno implements IDBModel {
             turnosImprimir.get(s).fechaApertura = this.getFechaApertura();
             turnosImprimir.get(s).horaApertura = this.getHoraApertura();
             
-            turnosImprimir.get(s).noBolTurnoA = this.getNoBolTurnoA();
             
             turnosImprimir.get(s).fechaCierre = this.getFechaCierre();
             turnosImprimir.get(s).horaCierre = this.getHoraCierre();
             
             turnosImprimir.get(s).folioInicial =  Auto.getPrimerProgresivoPorSerie(this,s);
-            turnosImprimir.get(s).folioFinal =  Auto.getUltimoProgresivoPorSerie(this,s)+1;
-            turnosImprimir.get(s).noBol =  (int)(turnosImprimir.get(s).folioFinal - turnosImprimir.get(s).folioInicial);
+            turnosImprimir.get(s).folioFinal =  Auto.getUltimoProgresivoPorSerie(this,s);
+            turnosImprimir.get(s).noBol =  (int)(folioFinal- folioInicial);
             
             turnosImprimir.get(s).setFechaApertura(this.getFechaApertura());
             if(estacionamiento.getTipo().equals("Autoservicio"))
                 turnosImprimir.get(s).setTipoTurno(this.getTipoTurno()+" - "+ s);
-            //
-            List<Auto> autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(this,s);
-            List<Auto> autosBoletoPerdidoTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(this,s);
-            List<Auto> autosBoletoCanceladoTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(this,s);
-                    
-            turnosImprimir.get(s).noBolTurnoS = Auto.getAutosPendientes(s).size();
-            turnosImprimir.get(s).noBolCobrados = autosCobradosTurnoActual.size();
-            turnosImprimir.get(s).noBolPerdidos = autosBoletoPerdidoTurnoActual.size();
-            turnosImprimir.get(s).noBolCancelados = autosBoletoCanceladoTurnoActual.size();
+            else 
+                turnosImprimir.get(s).setTipoTurno(this.getTipoTurno());
+            turnosImprimir.get(s).noBolTurnoA = this.getNoBolTurnoA();
+            turnosImprimir.get(s).noBolTurnoS = this.getNoBolTurnoS();
+            turnosImprimir.get(s).noBolCobrados = Auto.getAutosCobradosTurnoActual(this,s).size();
+            turnosImprimir.get(s).noBolPerdidos = Auto.getAutosBoletoPerdidoTurnoActual(this,s).size();
+            turnosImprimir.get(s).noBolCancelados = Auto.getAutosBoletoCanceladoTurnoActual(this,s).size();
             //Obtener Detalles de movimiento del turno
-            turnosImprimir.get(s).detallesMovimiento = DetallesMovimiento.generarDetalles(autosCobradosTurnoActual,
-                    autosBoletoPerdidoTurnoActual,autosBoletoCanceladoTurnoActual,this);
-            
+            turnosImprimir.get(s).detallesMovimiento = DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(this,s),
+                    Auto.getAutosBoletoPerdidoTurnoActual(this,s),Auto.getAutosBoletoCanceladoTurnoActual(this,s),this);
             DetallesMovimiento.ordenarPorPU(turnosImprimir.get(s).detallesMovimiento);
             //DetallesMovimiento.guardar(turnosImprimir.get(s).detallesMovimiento, this.getId());
             turnosImprimir.get(s).total = DetallesMovimiento.calcularTotal(turnosImprimir.get(s).detallesMovimiento);
-            this.total+=  turnosImprimir.get(s).total;
         }
     }
     
@@ -169,6 +164,25 @@ public class Turno implements IDBModel {
         }
         return turnos;
     }
+    public static ArrayList<Turno> getTurnosByFechaAbiertoAuditoria(String fecha){
+        ArrayList<Turno> turnos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id_turno FROM turnos where fecha_apertura = ? ");
+            statement.setString(1, fecha);
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                turnos.add(getByIdAuditoria(resultSet.getLong("id_turno")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return turnos;
+    }
+    
     public static ArrayList<Turno> getTurnosByFechaAbierto(String fecha){
         ArrayList<Turno> turnos = new ArrayList<>();
         try {
@@ -188,8 +202,43 @@ public class Turno implements IDBModel {
         return turnos;
     }
     
-    
     public static Turno getById(Long id){
+        Turno turno = new Turno();
+            try {
+                Conexion conexion = new Conexion();
+                Connection connectionDB = conexion.getConnectionDB();
+                PreparedStatement  statement = connectionDB.
+                prepareStatement("SELECT * FROM turnos where id_turno = ?");
+                statement.setLong(1, id);
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()){
+                    turno = new Turno(resultSet.getLong("id_turno"),
+                            Empleado.getById(resultSet.getLong("id_operador")),
+                            resultSet.getString("tipo_turno"),
+                            resultSet.getString("fecha_apertura"), 
+                            resultSet.getString("hora_apertura") ,
+                            resultSet.getString("fecha_cierre"),
+                            resultSet.getString("hora_cierre"),
+                            resultSet.getLong("folio_inicial"),
+                            resultSet.getLong("folio_final"),
+                            resultSet.getInt("no_bol"),
+                            resultSet.getInt("no_bol_turno_a"),
+                            resultSet.getInt("no_bol_cancelados"),
+                            resultSet.getInt("no_bol_perdidos"),
+                            resultSet.getInt("no_bol_cobrados"),      
+                            resultSet.getInt("no_bol_turno_s"),
+                            resultSet.getFloat("Total"),null,
+                            RetiroParcial.getRetirosParcialesByTurnoId(id));
+                }
+                turno.setDetallesMovimiento( DetallesMovimiento.getById(id));
+                turno.setEstacionamiento(Estacionamiento.getDatos());
+                conexion.cerrarConexion();
+            } catch (SQLException ex) {
+                Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return turno;
+    }
+    public static Turno getByIdAuditoria(Long id){
         
         Turno turno = new Turno();
         if(cacheTurnos.containsKey(id)){
@@ -203,17 +252,23 @@ public class Turno implements IDBModel {
                 statement.setLong(1, id);
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()){
-                    turno = new Turno(resultSet.getLong("id_turno"),Empleado.getById(resultSet.getLong("id_operador")),
-                           resultSet.getString("tipo_turno"),
-                    resultSet.getString("fecha_apertura"), resultSet.getString("hora_apertura") ,
-                    resultSet.getString("fecha_cierre"),resultSet.getString("hora_cierre"),
-                    resultSet.getLong("folio_inicial"),resultSet.getLong("folio_final"),
-                    resultSet.getInt("no_bol"),
-                    resultSet.getInt("no_bol_turno_a"),resultSet.getInt("no_bol_cancelados"),
-                    resultSet.getInt("no_bol_perdidos"),resultSet.getInt("no_bol_cobrados"),      
-                    resultSet.getInt("no_bol_turno_s"),
-                    resultSet.getFloat("Total"),null,
-                    RetiroParcial.getRetirosParcialesByTurnoId(id));
+                    turno = new Turno(resultSet.getLong("id_turno"),
+                            Empleado.getById(resultSet.getLong("id_operador")),
+                            resultSet.getString("tipo_turno"),
+                            resultSet.getString("fecha_apertura"), 
+                            resultSet.getString("hora_apertura") ,
+                            resultSet.getString("fecha_cierre"),
+                            resultSet.getString("hora_cierre"),
+                            resultSet.getLong("folio_inicial"),
+                            resultSet.getLong("folio_final"),
+                            resultSet.getInt("no_bol"),
+                            resultSet.getInt("no_bol_turno_a"),
+                            resultSet.getInt("no_bol_cancelados"),
+                            resultSet.getInt("no_bol_perdidos"),
+                            resultSet.getInt("no_bol_cobrados"),      
+                            resultSet.getInt("no_bol_turno_s"),
+                            resultSet.getFloat("Total"),null,
+                            RetiroParcial.getRetirosParcialesByTurnoId(id));
                 }
                 turno.setDetallesMovimiento( DetallesMovimiento.getById(id));
                 turno.setEstacionamiento(Estacionamiento.getDatos());

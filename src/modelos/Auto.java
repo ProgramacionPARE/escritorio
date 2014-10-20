@@ -468,7 +468,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id = ?");
+            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id <= ?");
             statement.setLong(1, turno.getId());
             ResultSet executeQuery = statement.executeQuery();
             while (executeQuery.next()){
@@ -568,7 +568,44 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id = ? and serie = ?");
+            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
+            statement.setLong(1, turno.getId());
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+     public static List<Auto> getAutosPendientesA(Turno turno, String key){
+        ArrayList <Auto> autos = new ArrayList<Auto>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
+            statement.setLong(1, turno.getId());
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }public static List<Auto> getAutosPendientesS(Turno turno, String key){
+        ArrayList <Auto> autos = new ArrayList<Auto>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
             statement.setLong(1, turno.getId());
              statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
