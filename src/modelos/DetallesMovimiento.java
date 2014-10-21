@@ -147,26 +147,22 @@ public class DetallesMovimiento{
       
         //ArrayList<DetallesMovimiento> detallesMovimiento= new ArrayList<DetallesMovimiento>();
    
-        ArrayList<Tarifa> all = Tarifa.getAll();
-        Iterator<Tarifa> iterator = all.iterator();
-        while(iterator.hasNext()){ 
-           Tarifa tarifaNext = iterator.next();
             Iterator<Auto> iteratorAutos = autosCobradosTurnoActual.iterator();
             while (iteratorAutos.hasNext()){
                 Auto next = iteratorAutos.next();
                 
-                //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-                if(next.getTarifa().getId()== tarifaNext.getId()){
-                    DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,next.getTarifa().getDescripcion());
+                    DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetalles, next.getMontoTangible());
+
+                    //DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,next.getTarifa().getDescripcion());
                     if(detalles==null){
                         mapDetalles.add(new DetallesMovimiento(Tarifa.getRangoEstadia(next), next.getTarifa().getDescripcion(), 1, next.getMontoTangible(), next.getMontoTangible()));
                     }else{
                         detalles.setNoBol( detalles.getNoBol()+1);
                         detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
                     }
-                }
+                
             }
-        }
+
        /* 
         Iterator<Auto> iteratorAutosPerdidos = autosBoletoPerdidoTurnoActual.iterator();
         while (iteratorAutosPerdidos.hasNext()){

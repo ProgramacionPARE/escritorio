@@ -20,7 +20,6 @@ import modelos.Empleado;
 import modelos.Operacion;
 import modelos.PropietarioPerdido;
 import modelos.Turno;
-import proyectopare.clases.PARAMETROS;
 
 
 public class FrmObjetoPrenda extends JDialog implements Printable {
@@ -153,14 +152,7 @@ public class FrmObjetoPrenda extends JDialog implements Printable {
     }
     
 
-    private String getProgresivoGeneral() {
-//   
-        String cc = (PARAMETROS.ID_CENTRO_COSTOS < 10) ? ("0" + PARAMETROS.ID_CENTRO_COSTOS):String.valueOf(PARAMETROS.ID_CENTRO_COSTOS);
-        String cas = (PARAMETROS.ID_CASETA < 10) ? ("0" + PARAMETROS.ID_CASETA):String.valueOf(PARAMETROS.ID_CASETA);
-        StringBuffer res = new StringBuffer();
-      
-        return "";
-    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

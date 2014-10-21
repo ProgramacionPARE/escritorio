@@ -31,7 +31,6 @@ import modelos.Turno;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
 import net.sourceforge.barbecue.BarcodeFactory;
-import proyectopare.clases.PARAMETROS;
 
 
 

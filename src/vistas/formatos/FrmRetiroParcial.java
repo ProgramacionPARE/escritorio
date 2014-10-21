@@ -36,7 +36,6 @@ import modelos.Estacionamiento;
 import modelos.Progresivo;
 import modelos.RetiroParcial;
 import modelos.Turno;
-import proyectopare.clases.PARAMETROS;
 import vistas.FrmPrincipal;
 
 /**

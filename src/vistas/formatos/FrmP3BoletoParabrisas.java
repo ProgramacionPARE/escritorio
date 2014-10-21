@@ -25,7 +25,6 @@ import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import modelos.Auto;
 import modelos.Turno;
-import proyectopare.clases.ImprimirForma;
 
 /**
  *

@@ -1,0 +1,9 @@
+ALTER TABLE `paredb`.`autos` 
+CHANGE COLUMN `fecha_entrada` `fecha_entrada` DATE NULL DEFAULT NULL ,
+CHANGE COLUMN `hora_entrada` `hora_entrada` TIME NULL DEFAULT NULL ,
+CHANGE COLUMN `hora_salida` `hora_salida` TIME NULL DEFAULT NULL ,
+ADD COLUMN `boleto_manual` VARCHAR(4) NULL DEFAULT 'NO' AFTER `descuento`,
+ADD COLUMN `fecha_entrada_modificada` DATE NULL DEFAULT NULL AFTER `boleto_manual`,
+ADD COLUMN `fecha_salida_modificada` DATE NULL DEFAULT NULL AFTER `fecha_entrada_modificada`,
+ADD COLUMN `hora_entrada_modificada` TIME NULL DEFAULT NULL AFTER `fecha_salida_modificada`,
+ADD COLUMN `hora_salida_modificada` TIME NULL DEFAULT NULL AFTER `hora_entrada_modificada`;

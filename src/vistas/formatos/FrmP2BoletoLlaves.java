@@ -25,7 +25,6 @@ import javax.print.attribute.standard.MediaSizeName;
 import modelos.Auto;
 import modelos.Empleado;
 import modelos.Turno;
-import proyectopare.clases.ImprimirForma;
 
 
 public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable , Runnable{

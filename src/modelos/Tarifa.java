@@ -94,7 +94,10 @@ public class Tarifa implements IDBModel{
     
     public static String getRangoEstadia(Auto auto){
         int horaI=0,horaF=0,minutoI=0,minutoF=0;
-        
+        if(auto.getHorasTangibles()<auto.getTarifa().getHorasCompletas()){
+            horaF = auto.getTarifa().getHorasCompletas();
+        }
+        else{
         for(int i= 0; i< auto.getTarifa().getFraciones();i++){
             if(auto.getMinutosTangibles()-((60/auto.getTarifa().getFraciones())*(i)) >= 0 &&
                 auto.getMinutosTangibles()-((60/auto.getTarifa().getFraciones())*(i+1))  < 0){
@@ -105,6 +108,7 @@ public class Tarifa implements IDBModel{
                             (auto.getHorasTangibles()+1);
                     break;
             }
+        }
         }
         return String.format("%02d:%02d-%02d:%02d",horaI,minutoI,horaF,minutoF );
     }

@@ -27,6 +27,13 @@ public class Auto {
     String fechaSalida;
     String horaEntrada;
     String horaSalida;
+    
+    String fechaEntradaM;
+    String fechaSalidaM;
+    String horaEntradaM;
+    String horaSalidaM;
+    boolean boletoManual;
+    
     Long turnoEntrada;
     Long turnoSalida;
     int horasTangibles;
@@ -52,10 +59,10 @@ public class Auto {
         this.progresivo = progresivo;
         this.matricula = matricula;
         this.tarifa = tarifa;
-        this.fechaEntrada = fechaEntrada;
-        this.fechaSalida = fechaSalida;
-        this.horaEntrada = horaEntrada;
-        this.horaSalida = horaSalida;
+        this.fechaEntradaM = this.fechaEntrada = fechaEntrada;
+        this.fechaSalidaM = this.fechaSalida = fechaSalida;
+        this.horaEntradaM = this.horaEntrada = horaEntrada;
+        this.horaSalidaM = this.horaSalida = horaSalida;
         this.turnoEntrada = turnoEntrada;
         this.turnoSalida = turnoSalida;
         this.horasTangibles = horasTangibles;
@@ -78,6 +85,48 @@ public class Auto {
         this.reciboImpreso = reciboImpreso;
     }
 
+   
+    public String getFechaEntradaM() {
+        return fechaEntradaM;
+    }
+
+    public void setFechaEntradaM(String fechaEntradaM) {
+        this.fechaEntradaM = fechaEntradaM;
+    }
+
+    public String getFechaSalidaM() {
+        return fechaSalidaM;
+    }
+
+    public void setFechaSalidaM(String fechaSalidaM) {
+        this.fechaSalidaM = fechaSalidaM;
+    }
+
+    public String getHoraEntradaM() {
+        return horaEntradaM;
+    }
+
+    public void setHoraEntradaM(String horaEntradaM) {
+        this.horaEntradaM = horaEntradaM;
+    }
+
+    public String getHoraSalidaM() {
+        return horaSalidaM;
+    }
+
+    public void setHoraSalidaM(String horaSalidaM) {
+        this.horaSalidaM = horaSalidaM;
+    }
+
+    public boolean isBoletoManual() {
+        return boletoManual;
+    }
+
+    public void setBoletoManual(boolean boletoManual) {
+        this.boletoManual = boletoManual;
+    }
+
+  
     public String getSerie() {
         return serie!=null?serie:"0";
     }
@@ -289,7 +338,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where turno_entrada_id = ? and serie = ?");
+            prepareStatement("SELECT id FROM autos where turno_entrada_id = ? and serie = ?");
             statement.setLong(1,turno.getId());
             statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -309,7 +358,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT DISTINCT serie  FROM tbl_entradas_parking ");
+            prepareStatement("SELECT DISTINCT serie  FROM autos ");
             ResultSet executeQuery = statement.executeQuery();
             while (executeQuery.next()){
                 series.add(executeQuery.getString("serie"));
@@ -340,7 +389,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where matricula = ? and entrada_salida = 'E'");
+            prepareStatement("SELECT id FROM autos where matricula = ? and entrada_salida = 'E'");
             statement.setString(1, matricula);
   
             
@@ -360,7 +409,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where progresivo = ?");
+            prepareStatement("SELECT id FROM autos where progresivo = ?");
             statement.setInt(1, id);
             ResultSet executeQuery = statement.executeQuery();
             if (executeQuery.next()){
@@ -379,7 +428,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where clave = ? and serie = ? and progresivo = ? ");
+            prepareStatement("SELECT id FROM autos where clave = ? and serie = ? and progresivo = ? ");
             statement.setString(1, clave.substring(0,5));
             statement.setString(2, clave.substring(5,6));
             statement.setString(3, clave.substring(6,12));
@@ -404,7 +453,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM tbl_entradas_parking where id = ?");
+            prepareStatement("SELECT * FROM autos where id = ?");
             statement.setInt(1, id);
             ResultSet executeQuery = statement.executeQuery();
             if (executeQuery.next()){
@@ -416,7 +465,7 @@ public class Auto {
                 executeQuery.getString("hora_salida"),executeQuery.getLong("turno_entrada_id"),
                 executeQuery.getLong("turno_salida_id"),executeQuery.getInt("horas_estadia"),
                 executeQuery.getInt("minutos_estadia"),Caseta.getById(executeQuery.getInt("id_caseta"))
-                ,executeQuery.getFloat("monto_tangible"),executeQuery.getString("marca"),
+                ,executeQuery.getFloat("monto"),executeQuery.getString("marca"),
                 executeQuery.getString("modelo"),executeQuery.getString("color"),
                 BoletoPerdido.getById(executeQuery.getInt("id_boleto_perdido")),
                 BoletoCancelado.getById(executeQuery.getInt("id_boleto_cancelado")),executeQuery.getFloat("descuento")
@@ -448,7 +497,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E'");
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E'");
             ResultSet executeQuery = statement.executeQuery();
             while (executeQuery.next()){
                 autos.add(Auto.getById(executeQuery.getInt("id")));
@@ -468,7 +517,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' ");
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' ");
             //statement.setLong(1, turno.getId());
             ResultSet executeQuery = statement.executeQuery();
             while (executeQuery.next()){
@@ -489,7 +538,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where turno_salida_id = ? and id_boleto_perdido > 0");
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido > 0");
             statement.setLong(1, turno.getId());
             
             ResultSet executeQuery = statement.executeQuery();
@@ -509,7 +558,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where turno_salida_id = ? and id_boleto_cancelado > 0");
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_cancelado > 0");
             statement.setLong(1, turno.getId());
             
             ResultSet executeQuery = statement.executeQuery();
@@ -529,7 +578,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where turno_salida_id = ? and id_boleto_perdido = 0 and id_boleto_cancelado = 0");
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido = 0 and id_boleto_cancelado = 0");
             statement.setLong(1, turno.getId());
             
             ResultSet executeQuery = statement.executeQuery();
@@ -550,7 +599,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and serie = ?");
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and serie = ?");
             statement.setString(1, key);
             ResultSet executeQuery = statement.executeQuery();
             while (executeQuery.next()){
@@ -569,7 +618,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
             statement.setLong(1, turno.getId());
              statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -588,7 +637,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
             statement.setLong(1, turno.getId());
              statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -606,7 +655,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
             statement.setLong(1, turno.getId());
              statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -625,7 +674,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where turno_salida_id = ? and id_boleto_perdido > 0 and serie = ?");
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido > 0 and serie = ?");
             statement.setLong(1, turno.getId());
              statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -644,7 +693,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where turno_salida_id = ? and id_boleto_cancelado > 0 and serie = ?");
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_cancelado > 0 and serie = ?");
             statement.setLong(1, turno.getId());
              statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -664,7 +713,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where turno_salida_id = ? and id_boleto_perdido = 0 and id_boleto_cancelado = 0 and serie = ?");
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido = 0 and id_boleto_cancelado = 0 and serie = ?");
             statement.setLong(1, turno.getId());
              statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -685,7 +734,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT max(progresivo)  as progresivo FROM tbl_entradas_parking where turno_entrada_id = ? and serie = ?");
+            prepareStatement("SELECT max(progresivo)  as progresivo FROM autos where turno_entrada_id = ? and serie = ?");
             statement.setLong(1, turno.getId());
             statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -706,7 +755,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT min(progresivo) as progresivo FROM tbl_entradas_parking where turno_entrada_id = ? and  serie = ?");
+            prepareStatement("SELECT min(progresivo) as progresivo FROM autos where turno_entrada_id = ? and  serie = ?");
             statement.setLong(1, turno.getId());
             statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -727,7 +776,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             ResultSet resulSet = 
-                    connectionDB.prepareStatement("SELECT MAX(progresivo) AS progresivo FROM tbl_entradas_parking").executeQuery();
+                    connectionDB.prepareStatement("SELECT MAX(progresivo) AS progresivo FROM autos").executeQuery();
             if (resulSet.first())
                 ultimoProgresivo = resulSet.getLong("progresivo");
           
@@ -743,11 +792,11 @@ public class Auto {
              Conexion conexion = new Conexion();
              Connection connectionDB = conexion.getConnectionDB();
              PreparedStatement  statement = connectionDB.
-             prepareStatement("UPDATE tbl_entradas_parking SET `progresivo`=? "+
+             prepareStatement("UPDATE autos SET `progresivo`=? "+
                      ",`matricula` =? , `fecha_entrada` =? ,`fecha_salida` =? "+
                      ",`hora_entrada` =? ,`hora_salida` =?,`marca` =?  "+
                      ",`modelo` =? ,`color` =?,`id_boleto_perdido` =?  "+
-                      ",`horas_estadia` =? ,`minutos_estadia` =?,`monto_tangible` =?  "+
+                      ",`horas_estadia` =? ,`minutos_estadia` =?,`monto` =?  "+
                       ",`turno_salida_id` =? ,`entrada_salida` =? ,`recibo` =? ,"+
                      "`id_boleto_cancelado` =?,`serie` =? ,notas = ?, id_tarifa = ?,descuento = ?  WHERE `id`=?");
              statement.setString(1, progresivo);
@@ -788,7 +837,7 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("INSERT INTO tbl_entradas_parking (`progresivo`, `notas`,`clave`, `matricula`,"+
+            prepareStatement("INSERT INTO autos (`progresivo`, `notas`,`clave`, `matricula`,"+
                             " `id_tarifa`,`fecha_entrada`,`hora_entrada`,"+
                             " `operador_entrada`,`id_caseta`,"+
                             " `turno_entrada_id`,`marca`,`serie` )"+
