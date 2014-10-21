@@ -22,13 +22,13 @@ public class Auto {
     String progresivo;
     String clave;
     String matricula;
-    Tarifa tarifa;
+    Long tarifa;
     String fechaEntrada;
     String fechaSalida;
     String horaEntrada;
     String horaSalida;
-    Turno turnoEntrada;
-    Turno turnoSalida;
+    Long turnoEntrada;
+    Long turnoSalida;
     int horasTangibles;
     int minutosTangibles;
     float montoPago;
@@ -40,9 +40,9 @@ public class Auto {
     BoletoPerdido boletoPerdido;
     BoletoCancelado boletoCancelado;
 
-    public Auto(int id ,String nota,String serie, String progresivo, String clave, String matricula, Tarifa tarifa, 
+    public Auto(int id ,String nota,String serie, String progresivo, String clave, String matricula, Long tarifa, 
             String fechaEntrada, String fechaSalida, String horaEntrada, String horaSalida, 
-            Turno turnoEntrada, Turno turnoSalida,int horasTangibles,int minutosTangibles, 
+            Long turnoEntrada, Long turnoSalida,int horasTangibles,int minutosTangibles, 
             Caseta caseta, float montoTangible, String marca, String modelo, String color,
             BoletoPerdido boletoPerdido, BoletoCancelado boletoCancelado,float descuento) {
         this.id = id;
@@ -204,11 +204,11 @@ public class Auto {
     }
 
     public Tarifa getTarifa() {
-        return tarifa;
+        return Tarifa.getById(tarifa);
     }
 
     public void setTarifa(Tarifa tarifa) {
-        this.tarifa = tarifa;
+        this.tarifa = tarifa.getId();
     }
 
     public String getFechaEntrada() {
@@ -244,19 +244,19 @@ public class Auto {
     }
 
     public Turno getTurnoEntrada() {
-        return turnoEntrada;
+        return Turno.getById(turnoEntrada);
     }
 
     public void setTurnoEntrada(Turno turnoEntrada) {
-        this.turnoEntrada = turnoEntrada;
+        this.turnoEntrada = turnoEntrada.getId();
     }
 
     public Turno getTurnoSalida() {
-        return turnoSalida;
+        return Turno.getById(turnoSalida);
     }
 
     public void setTurnoSalida(Turno turnoSalida) {
-        this.turnoSalida = turnoSalida;
+        this.turnoSalida = turnoSalida.getId();
     }
 
     public Caseta getCaseta() {
@@ -411,10 +411,10 @@ public class Auto {
                 auto = new Auto(executeQuery.getInt("id"),executeQuery.getString("notas"),
                 executeQuery.getString("serie"),executeQuery.getString("progresivo"),
                 executeQuery.getString("clave"),executeQuery.getString("matricula"),
-                Tarifa.getById(executeQuery.getInt("id_tarifa")),executeQuery.getString("fecha_entrada"),
+                executeQuery.getLong("id_tarifa"),executeQuery.getString("fecha_entrada"),
                 executeQuery.getString("fecha_salida"),executeQuery.getString("hora_entrada"),
-                executeQuery.getString("hora_salida"),Turno.getById(executeQuery.getLong("turno_entrada_id")),
-                Turno.getById(executeQuery.getLong("turno_salida_id")),executeQuery.getInt("horas_estadia"),
+                executeQuery.getString("hora_salida"),executeQuery.getLong("turno_entrada_id"),
+                executeQuery.getLong("turno_salida_id"),executeQuery.getInt("horas_estadia"),
                 executeQuery.getInt("minutos_estadia"),Caseta.getById(executeQuery.getInt("id_caseta"))
                 ,executeQuery.getFloat("monto_tangible"),executeQuery.getString("marca"),
                 executeQuery.getString("modelo"),executeQuery.getString("color"),
@@ -468,8 +468,8 @@ public class Auto {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' and turno_entrada_id <= ?");
-            statement.setLong(1, turno.getId());
+            prepareStatement("SELECT id FROM tbl_entradas_parking where entrada_salida = 'E' ");
+            //statement.setLong(1, turno.getId());
             ResultSet executeQuery = statement.executeQuery();
             while (executeQuery.next()){
                 autos.add(Auto.getById(executeQuery.getInt("id")));
@@ -502,6 +502,7 @@ public class Auto {
         }
         return autos;
     }
+     
     public static List<Auto>  getAutosBoletoCanceladoTurnoActual(Turno turno) {
         ArrayList <Auto> autos = new ArrayList<Auto>();
         try {
@@ -762,13 +763,13 @@ public class Auto {
              statement.setFloat(11, horasTangibles);
              statement.setFloat(12, minutosTangibles);
              statement.setFloat(13, montoTangible);
-             statement.setLong(14, turnoSalida.getId());
+             statement.setLong(14, turnoSalida);
              statement.setString(15, dentro ? "E" : "S" );
              statement.setString(16, reciboImpreso ? "SI" : "NO" );
              statement.setInt(17, boletoCancelado != null ? boletoCancelado.getId() : 0 );
              statement.setString(18, serie ); 
              statement.setString(19, nota ); 
-             statement.setInt(20,tarifa.getId() ); 
+             statement.setLong(20,tarifa ); 
              statement.setFloat(21,descuento ); 
              
              
@@ -796,12 +797,12 @@ public class Auto {
             statement.setString(2,nota);
             statement.setString(3, clave);
             statement.setString(4, matricula);
-            statement.setLong(5, tarifa.getId());
+            statement.setLong(5, tarifa);
             statement.setString(6, fechaEntrada); 
             statement.setString(7, horaEntrada);
-            statement.setLong(8, turnoEntrada.getEmpleado().getId());
+            statement.setLong(8, Turno.getById(turnoEntrada).getEmpleado().getId());
             statement.setLong(9, caseta.getId()); 
-            statement.setLong(10, turnoEntrada.getId());
+            statement.setLong(10, turnoEntrada);
             statement.setString(11, marca);
             statement.setString(12, serie);
             

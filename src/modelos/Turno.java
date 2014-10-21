@@ -119,12 +119,11 @@ public class Turno implements IDBModel {
             turnosImprimir.get(s).fechaApertura = this.getFechaApertura();
             turnosImprimir.get(s).horaApertura = this.getHoraApertura();
             
-            
             turnosImprimir.get(s).fechaCierre = this.getFechaCierre();
             turnosImprimir.get(s).horaCierre = this.getHoraCierre();
             
             turnosImprimir.get(s).folioInicial =  Auto.getPrimerProgresivoPorSerie(this,s);
-            turnosImprimir.get(s).folioFinal =  Auto.getUltimoProgresivoPorSerie(this,s);
+            turnosImprimir.get(s).folioFinal =  Auto.getUltimoProgresivoPorSerie(this,s)+1;
             turnosImprimir.get(s).noBol =  (int)(folioFinal- folioInicial);
             
             turnosImprimir.get(s).setFechaApertura(this.getFechaApertura());

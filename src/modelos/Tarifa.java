@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class Tarifa implements IDBModel{
 
    
-    int id;
+    Long id;
     int fraciones;
     float costos[];
     float precioHora;
@@ -39,7 +39,7 @@ public class Tarifa implements IDBModel{
 
 
 
-    public Tarifa(int id, int fraciones, float[] costos, float precioHora, 
+    public Tarifa(long id, int fraciones, float[] costos, float precioHora, 
             float tarifaMaxima, float precioBoletoPerdido, int horasCompletas, 
             String descripcion,float tarifaUnica,float montoInicial ) {
         this.id = id;
@@ -194,7 +194,7 @@ public class Tarifa implements IDBModel{
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if(generatedKeys.next())
-                id = generatedKeys.getInt("GENERATED_KEY");
+                id = generatedKeys.getLong("GENERATED_KEY");
             conexion.cerrarConexion();
        } catch (SQLException ex) {
            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,7 +225,7 @@ public class Tarifa implements IDBModel{
             statement.setString(7, descripcion); 
             statement.setFloat(8, tarifaUnica);
             statement.setFloat(9, montoInicial);
-            statement.setInt(10, id); 
+            statement.setLong(10, id); 
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -261,11 +261,11 @@ public class Tarifa implements IDBModel{
 
     
     
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

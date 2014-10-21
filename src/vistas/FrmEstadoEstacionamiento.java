@@ -152,7 +152,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
                 ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
                 ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-            modelTurno.addRow(new Object[]{turnoAux.getHoraCierre()!=null?"CERRADO":"ABIERTO",turnoAux.getTipoTurno(),
+            modelTurno.addRow(new Object[]{ turnoAux.getHoraCierre()!=null?"CERRADO":"ABIERTO",turnoAux.getTipoTurno(),
                 turnoAux.getHoraApertura(),turnoAux.getHoraCierre(),turnoAux.getEmpleado().getNombre(),
                 turnoAux.getFolioInicial(),turnoAux.getFolioFinal(),turnoAux.getTotal()});
             importeTurnosTabla+=turnoAux.getTotal();
@@ -235,7 +235,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                 }
             }   
             //Autos pendientes
-            if(this.cbxDentro.isSelected()){
+            if(this.cbxDentro.isSelected() && turnoAux.getHoraCierre()== null){
                 List<Auto> autosPendientesTurnoActual = new ArrayList(); 
                 if(fechaCambio){
                     banderaCambio = true;

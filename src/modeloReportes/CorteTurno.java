@@ -1,6 +1,5 @@
 package modeloReportes;
 
-import ModelosAux.Tiempo;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.util.HashMap;
@@ -77,7 +76,6 @@ public class CorteTurno implements Runnable  {
                         selectedService = i;
                         }
                     }
-                JasperExportManager.exportReportToPdfFile(jasperPrint, "cortes/reporte-"+Tiempo.getFecha()+"-"+turno.getTipoTurno()+".pdf");
                 PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
                 printRequestAttributeSet.add(new Copies(1));
                 JRPrintServiceExporter exporter;
@@ -88,7 +86,9 @@ public class CorteTurno implements Runnable  {
                 exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
                 exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
                 exporter.exportReport();
-               
+                
+                JasperExportManager.exportReportToPdfFile(jasperPrint, "/home/empleado/pare/cortes/reporte-"+turno.getFechaApertura()+"-"+turno.getTipoTurno()+".pdf");
+                
 
     //            exporter = new JRPrintServiceExporter();
     //            SimplePrintServiceExporterConfiguration configuration = new SimplePrintServiceExporterConfiguration();
