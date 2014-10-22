@@ -144,34 +144,40 @@
     <Component class="javax.swing.JTextField" name="txtFechaEntradaOriginal">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="txtFechaEntradaOriginal" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtHoraEntradaOriginal">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="txtHoraEntradaOriginal" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtFechaSalidaOriginal">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="txtFechaSalidaOriginal" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtHoraSalidaOriginal">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="txtHoraSalidaOriginal" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtHoraEntradaModificada">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="txtHoraEntradaModificada" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtFechaSalidaModificada">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="txtFechaSalidaModificada" noResource="true"/>
       </Properties>
     </Component>
@@ -183,6 +189,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtFechaEntradaModificada">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="txtFechaEntradaModificada" noResource="true"/>
       </Properties>
     </Component>
@@ -194,6 +201,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtHoraSalidaModificada">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="txtHoraSalidaModificada" noResource="true"/>
       </Properties>
     </Component>

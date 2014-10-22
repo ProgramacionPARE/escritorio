@@ -41,14 +41,15 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
+        this.auto.setHoraSalida(Tiempo.getHora());
+        this.auto.setFechaSalida(Tiempo.getFecha());
+        this.auto.setHoraSalidaM(Tiempo.getHora());
+        this.auto.setFechaSalidaM(Tiempo.getFecha());
+        
         cargarTarifas();
         calcularImporte();
         txtDineroPagado.grabFocus();
         txtCambio.setBackground(Color.red);
-        auto.setHoraSalida(Tiempo.getHora());
-        auto.setFechaSalida(Tiempo.getFecha());
-        auto.setHoraSalidaM(Tiempo.getHora());
-        auto.setFechaSalidaM(Tiempo.getFecha());
         
         btnCobrar.setEnabled(false);
         setVisible(true);
@@ -68,9 +69,14 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         //Completo la informacion de la salida del auto
         txtTiempoEstadia.setText("");
 
+        if(auto.isBoletoManual()){
+            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntradaM(),auto.getHoraEntradaM(),auto.getFechaSalidaM(),auto.getHoraSalidaM()));
+            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntradaM(),auto.getHoraEntradaM(),auto.getFechaSalidaM(),auto.getHoraSalidaM()));
         
-        auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
-        auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
+        }else{
+            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
+            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
+        }
         auto.setTurnoSalida(turno);
         auto.setMontoTangible(Tarifa.getImporteEstadia(auto));
         if(auto.getDescuento()>0){
@@ -408,7 +414,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     }//GEN-LAST:event_formWindowClosing
 
     private void btnCobroManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobroManualActionPerformed
-        //new FrmCobroManual(this,true,turno,auto);
+        new FrmCobroManual(this,true,turno,auto);
     }//GEN-LAST:event_btnCobroManualActionPerformed
 
     @Action

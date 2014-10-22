@@ -32,6 +32,7 @@ public class Auto {
     String fechaSalidaM;
     String horaEntradaM;
     String horaSalidaM;
+    String razonCobroManual;
     boolean boletoManual;
     
     Long turnoEntrada;
@@ -83,6 +84,14 @@ public class Auto {
 
     public void setReciboImpreso(boolean reciboImpreso) {
         this.reciboImpreso = reciboImpreso;
+    }
+
+    public String getRazonCobroManual() {
+        return razonCobroManual;
+    }
+
+    public void setRazonCobroManual(String razonCobroManual) {
+        this.razonCobroManual = razonCobroManual;
     }
 
    
@@ -798,7 +807,10 @@ public class Auto {
                      ",`modelo` =? ,`color` =?,`id_boleto_perdido` =?  "+
                       ",`horas_estadia` =? ,`minutos_estadia` =?,`monto` =?  "+
                       ",`turno_salida_id` =? ,`entrada_salida` =? ,`recibo` =? ,"+
-                     "`id_boleto_cancelado` =?,`serie` =? ,notas = ?, id_tarifa = ?,descuento = ?  WHERE `id`=?");
+                     "`id_boleto_cancelado` =?,`serie` =? ,notas = ?, id_tarifa = ?,descuento = ?"+
+                     ", `fecha_entrada_modificado` =? ,`fecha_salida_modificado` =? "+
+                     ",`hora_entrada_modificado` =? ,`hora_salida_modificado` =?  " +
+                      ",`cobro_manual` =? ,`razon_cobro_manual` =?   WHERE `id`=?");
              statement.setString(1, progresivo);
              statement.setString(2, matricula);
              statement.setString(3, fechaEntrada);
@@ -820,10 +832,15 @@ public class Auto {
              statement.setString(19, nota ); 
              statement.setLong(20,tarifa ); 
              statement.setFloat(21,descuento ); 
+             statement.setString(22, fechaEntradaM);
+             statement.setString(23, fechaSalidaM);
+             statement.setString(24, horaEntradaM);
+             statement.setString(25, horaSalidaM);
+             statement.setString(26, boletoManual ? "SI" : "NO" );
+             statement.setString(27, razonCobroManual);
              
              
-             
-             statement.setInt(22, id);
+             statement.setInt(28, id);
   
              statement.executeUpdate();
              conexion.cerrarConexion();

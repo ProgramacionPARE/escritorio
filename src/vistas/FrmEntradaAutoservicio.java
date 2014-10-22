@@ -5,7 +5,6 @@ import ModelosAux.Seguridad;
 import ModelosAux.Tiempo;
 import java.awt.Color;
 import java.awt.Frame;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modelos.Auto;
@@ -64,8 +63,7 @@ public class FrmEntradaAutoservicio extends javax.swing.JDialog {
             txtHoraEntrada.grabFocus();
             return false;
         }
-        
-        
+
         txtHoraEntrada.setText(txtHoraEntrada.getText()+":00");
         return true;
      }

@@ -5,7 +5,9 @@
  */
 package vistas;
 
+import ModelosAux.Tiempo;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Estacionamiento;
 import modelos.Turno;
@@ -20,22 +22,23 @@ public class FrmCobroManual extends javax.swing.JDialog {
      * Creates new form FrmCobroManual1
      */
     FrmCobro frmCobro;
-    
+    Auto auto;
     public FrmCobroManual(FrmCobro parent, boolean modal, Turno turno, Auto auto) {
         super(parent,"Cobro manual", modal);
         initComponents();
         this.frmCobro = parent;
+        this.auto = auto;
         this.txtFechaEntradaOriginal.setText(auto.getFechaEntrada());
         this.txtFechaSalidaOriginal.setText(auto.getFechaSalida());
         
-        this.txtHoraEntradaOriginal.setText(auto.getHoraEntrada());
-        this.txtHoraSalidaOriginal.setText(auto.getHoraSalida());
+        this.txtHoraEntradaOriginal.setText(auto.getHoraEntrada().substring(0,5));
+        this.txtHoraSalidaOriginal.setText(auto.getHoraSalida().substring(0,5));
                 
-        this.txtFechaEntradaModificada.setText(auto.getFechaEntrada());
-        this.txtFechaSalidaModificada.setText(auto.getFechaSalida());
+        this.txtFechaEntradaModificada.setText(auto.getFechaEntradaM());
+        this.txtFechaSalidaModificada.setText(auto.getFechaSalidaM());
             
-        this.txtHoraEntradaModificada.setText(auto.getHoraEntrada());
-        this.txtHoraSalidaModificada.setText(auto.getHoraSalida());
+        this.txtHoraEntradaModificada.setText(auto.getHoraEntradaM().substring(0,5));
+        this.txtHoraSalidaModificada.setText(auto.getHoraSalidaM().substring(0,5));
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
@@ -43,6 +46,74 @@ public class FrmCobroManual extends javax.swing.JDialog {
                 
     }
     
+    
+         private boolean validaCamposEntrada() {
+
+        if (txtFechaEntradaModificada.getText().equals("")){
+            JOptionPane.showMessageDialog(this,"Introduce la nueva fecha de entrada.",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtFechaEntradaModificada.grabFocus();
+            return false;
+        }
+        if (!this.txtFechaEntradaModificada.getText().matches("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")){
+            JOptionPane.showMessageDialog(this,"La fecha de entrada debe de terner formato 0000-00-00",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtFechaEntradaModificada.grabFocus();
+            return false;
+        }
+        
+        if (txtFechaSalidaModificada.getText().equals("")){
+            JOptionPane.showMessageDialog(this,"Introduce la nueva fecha de entrada.",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtFechaSalidaModificada.grabFocus();
+            return false;
+        }
+        if (!this.txtFechaSalidaModificada.getText().matches("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]")){
+            JOptionPane.showMessageDialog(this,"La fecha de salida debe de terner formato 0000-00-00 ",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtFechaSalidaModificada.grabFocus();
+            return false;
+        }
+
+        
+        if (txtHoraEntradaModificada.getText().equals("")){
+            JOptionPane.showMessageDialog(this,"Introduce la nueva hora de entrada.",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtHoraEntradaModificada.grabFocus();
+            return false;
+        }
+        if (!this.txtHoraEntradaModificada.getText().matches("[0-9][0-9]:[0-9][0-9]")){
+            JOptionPane.showMessageDialog(this,"La hora de entrada debe de tener formato 00:00 ",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtHoraEntradaModificada.grabFocus();
+            return false;
+        }
+       
+         
+        if (txtHoraSalidaModificada.getText().equals("")){
+            JOptionPane.showMessageDialog(this,"Introduce la nueva fecha de salida.",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtHoraSalidaModificada.grabFocus();
+            return false;
+        }
+        if (!this.txtHoraSalidaModificada.getText().matches("[0-9][0-9]:[0-9][0-9]")){
+            JOptionPane.showMessageDialog(this,"La hora de salida debe de terner formato 00:00 ",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtHoraSalidaModificada.grabFocus();
+            return false;
+        }
+        
+        if (txtRazon.getText().equals("")){
+            JOptionPane.showMessageDialog(this,"Introduce la razon del cobro manual.",
+            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+            txtRazon.grabFocus();
+            return false;
+        }
+        
+        txtHoraEntradaModificada.setText(txtHoraEntradaModificada.getText()+":00");
+        txtHoraSalidaModificada.setText(txtHoraSalidaModificada.getText()+":00");
+        return true;
+     }
     
 
     @SuppressWarnings("unchecked")
@@ -84,29 +155,37 @@ public class FrmCobroManual extends javax.swing.JDialog {
         jLabel4.setName("jLabel4"); // NOI18N
 
         txtFechaEntradaOriginal.setEditable(false);
+        txtFechaEntradaOriginal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtFechaEntradaOriginal.setName("txtFechaEntradaOriginal"); // NOI18N
 
         txtHoraEntradaOriginal.setEditable(false);
+        txtHoraEntradaOriginal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtHoraEntradaOriginal.setName("txtHoraEntradaOriginal"); // NOI18N
 
         txtFechaSalidaOriginal.setEditable(false);
+        txtFechaSalidaOriginal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtFechaSalidaOriginal.setName("txtFechaSalidaOriginal"); // NOI18N
 
         txtHoraSalidaOriginal.setEditable(false);
+        txtHoraSalidaOriginal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtHoraSalidaOriginal.setName("txtHoraSalidaOriginal"); // NOI18N
 
+        txtHoraEntradaModificada.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtHoraEntradaModificada.setName("txtHoraEntradaModificada"); // NOI18N
 
+        txtFechaSalidaModificada.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtFechaSalidaModificada.setName("txtFechaSalidaModificada"); // NOI18N
 
         jLabel5.setText("Salida");
         jLabel5.setName("jLabel5"); // NOI18N
 
+        txtFechaEntradaModificada.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtFechaEntradaModificada.setName("txtFechaEntradaModificada"); // NOI18N
 
         jLabel6.setText("Entrada");
         jLabel6.setName("jLabel6"); // NOI18N
 
+        txtHoraSalidaModificada.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtHoraSalidaModificada.setName("txtHoraSalidaModificada"); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -202,9 +281,18 @@ public class FrmCobroManual extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-//        frmCobro.auto.setDescuento();
+        if(this.validaCamposEntrada()){
+        frmCobro.auto.setHoraEntradaM(this.txtHoraEntradaModificada.getText());
+        frmCobro.auto.setHoraSalidaM(this.txtHoraSalidaModificada.getText());
+        frmCobro.auto.setFechaEntradaM(this.txtFechaEntradaModificada.getText());
+        frmCobro.auto.setFechaSalidaM(this.txtFechaSalidaModificada.getText());
+        frmCobro.auto.setRazonCobroManual(this.txtRazon.getText());
+        frmCobro.auto.setBoletoManual(true);
+//frmCobro.auto.setDescuento();
        // frmCobro.auto.actualizar();
         frmCobro.calcularImporte();
+        this.dispose();
+        }
         
     }//GEN-LAST:event_btnAceptarActionPerformed
 
