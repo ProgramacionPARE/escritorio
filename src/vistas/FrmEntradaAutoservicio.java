@@ -105,10 +105,10 @@ public class FrmEntradaAutoservicio extends javax.swing.JDialog {
 
         
         }*/
-        Auto auto= new Auto(0,"",(String)cbxSeries.getSelectedItem(), String.format("%06d",Integer.valueOf(txtProgresivo.getText())),Seguridad.getClave(5), "",
-                    estacionamiento.getCaseta().getTarifas().get(0).getId(),
-                    txtFechaEntrada.getText() ,"", txtHoraEntrada.getText(),"", turno.getId(), null,0,0, 
-                    estacionamiento.getCaseta(),0, "", "", "", null,null,0);
+        Auto auto= new Auto(  String.format("%06d",Integer.valueOf(txtProgresivo.getText())) ,
+                "",txtFechaEntrada.getText() , txtHoraEntrada.getText(),"","","",
+                turno.getId(),(String)cbxSeries.getSelectedItem(),"",Seguridad.getClave(5),
+                estacionamiento.getCaseta().getId());
          //Aumento en uno los boletos generados
         turno.setNoBol(turno.getNoBol()+1);
         //Actualizo el folio final en el turno

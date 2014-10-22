@@ -60,7 +60,7 @@ public class FrmReciboPago extends JDialog implements Printable {
         this.txtIVA.setText(String.format("%.2f", (float) auto.getMontoTangible()*.15));
         this.txtTotal.setText(String.format("%.2f", auto.getMontoTangible()));
         this.txtProgresivo.setText("NO. "+Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO"));
-        this.txtCantidadRecibida.setText(String.valueOf(auto.getMontoPago()));
+        this.txtCantidadRecibida.setText(String.valueOf(auto.getMontoReciboPago()));
         this.txtNotas.setText(String.valueOf(auto.getNota()));
         Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(), "RECIBO_PAGO");
         

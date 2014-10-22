@@ -17,14 +17,14 @@ public class BoletoPerdido {
     PropietarioPerdido propietario;
     Turno turno;
     
-    static BoletoPerdido getById(int id) {
+    static BoletoPerdido getById(long id) {
         BoletoPerdido boletoPerdido = null;
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM boleto_perdido where id = ?");
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             ResultSet executeQuery = statement.executeQuery();
             if (executeQuery.next()){
                 boletoPerdido = new BoletoPerdido(executeQuery.getInt("id")

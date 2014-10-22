@@ -5,11 +5,11 @@
  */
 package vistas;
 
-import ModelosAux.Tiempo;
 import java.awt.Color;
+import java.awt.event.ItemEvent;
 import javax.swing.JOptionPane;
 import modelos.Auto;
-import modelos.Estacionamiento;
+import modelos.BoletoManual;
 import modelos.Turno;
 
 /**
@@ -34,11 +34,11 @@ public class FrmCobroManual extends javax.swing.JDialog {
         this.txtHoraEntradaOriginal.setText(auto.getHoraEntrada().substring(0,5));
         this.txtHoraSalidaOriginal.setText(auto.getHoraSalida().substring(0,5));
                 
-        this.txtFechaEntradaModificada.setText(auto.getFechaEntradaM());
-        this.txtFechaSalidaModificada.setText(auto.getFechaSalidaM());
-            
-        this.txtHoraEntradaModificada.setText(auto.getHoraEntradaM().substring(0,5));
-        this.txtHoraSalidaModificada.setText(auto.getHoraSalidaM().substring(0,5));
+        this.txtFechaEntradaModificada.setText(auto.getFechaEntrada());
+        this.txtFechaSalidaModificada.setText(auto.getFechaSalida());
+        
+        this.txtHoraEntradaModificada.setText(auto.getHoraEntrada().substring(0,5));
+        this.txtHoraSalidaModificada.setText(auto.getHoraSalida().substring(0,5));
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
@@ -103,13 +103,6 @@ public class FrmCobroManual extends javax.swing.JDialog {
             return false;
         }
         
-        if (txtRazon.getText().equals("")){
-            JOptionPane.showMessageDialog(this,"Introduce la razon del cobro manual.",
-            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
-            txtRazon.grabFocus();
-            return false;
-        }
-        
         txtHoraEntradaModificada.setText(txtHoraEntradaModificada.getText()+":00");
         txtHoraSalidaModificada.setText(txtHoraSalidaModificada.getText()+":00");
         return true;
@@ -135,8 +128,11 @@ public class FrmCobroManual extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         txtHoraSalidaModificada = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtRazon = new javax.swing.JTextField();
         btnAceptar = new javax.swing.JButton();
+        cbxRazon = new javax.swing.JComboBox();
+        txtFolioManual = new javax.swing.JTextField();
+        lblFolio = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -192,8 +188,6 @@ public class FrmCobroManual extends javax.swing.JDialog {
         jLabel7.setText("Razon del boleto manual");
         jLabel7.setName("jLabel7"); // NOI18N
 
-        txtRazon.setName("txtRazon"); // NOI18N
-
         btnAceptar.setBackground(new java.awt.Color(255, 255, 255));
         btnAceptar.setText("Continuar con el cobro");
         btnAceptar.setName("btnAceptar"); // NOI18N
@@ -203,39 +197,70 @@ public class FrmCobroManual extends javax.swing.JDialog {
             }
         });
 
+        cbxRazon.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Salida manual, falla del sistema.", "Salida manual, falla de energia.", "Entrada manual, no se expidio el boleto.", " " }));
+        cbxRazon.setName("cbxRazon"); // NOI18N
+        cbxRazon.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxRazonItemStateChanged(evt);
+            }
+        });
+
+        txtFolioManual.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtFolioManual.setName("txtFolioManual"); // NOI18N
+
+        lblFolio.setText("Folio del boleto manual");
+        lblFolio.setName("lblFolio"); // NOI18N
+
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Cancelar");
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6)
-                            .addComponent(txtFechaEntradaModificada)
-                            .addComponent(txtHoraEntradaModificada, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFechaSalidaModificada)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtHoraSalidaModificada)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                             .addComponent(txtFechaEntradaOriginal)
-                            .addComponent(txtHoraEntradaOriginal, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
-                        .addGap(36, 36, 36)
+                            .addComponent(txtHoraEntradaOriginal))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtHoraSalidaOriginal)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtFechaSalidaOriginal)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(txtHoraSalidaOriginal)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblFolio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFolioManual))
+                    .addComponent(cbxRazon, 0, 0, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtRazon)
-                    .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(26, 26, 26))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAceptar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtFechaEntradaModificada)
+                                .addComponent(txtHoraEntradaModificada)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtFechaSalidaModificada, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                                .addComponent(txtHoraSalidaModificada)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,10 +295,16 @@ public class FrmCobroManual extends javax.swing.JDialog {
                     .addComponent(txtHoraSalidaModificada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtRazon, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(cbxRazon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFolio)
+                    .addComponent(txtFolioManual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -282,13 +313,13 @@ public class FrmCobroManual extends javax.swing.JDialog {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         if(this.validaCamposEntrada()){
-        frmCobro.auto.setHoraEntradaM(this.txtHoraEntradaModificada.getText());
-        frmCobro.auto.setHoraSalidaM(this.txtHoraSalidaModificada.getText());
-        frmCobro.auto.setFechaEntradaM(this.txtFechaEntradaModificada.getText());
-        frmCobro.auto.setFechaSalidaM(this.txtFechaSalidaModificada.getText());
-        frmCobro.auto.setRazonCobroManual(this.txtRazon.getText());
-        frmCobro.auto.setBoletoManual(true);
-//frmCobro.auto.setDescuento();
+            BoletoManual boletoManual = new BoletoManual(0,auto.getId(),this.txtFechaEntradaModificada.getText(),
+                    this.txtFechaSalidaModificada.getText(),this.txtHoraEntradaModificada.getText(),
+                    this.txtHoraSalidaModificada.getText(),(String)cbxRazon.getSelectedItem());
+            boletoManual.guardar();
+            frmCobro.auto.setIsBoletoManual(true);
+            frmCobro.auto.setBoletoManual(boletoManual);
+        //frmCobro.auto.setDescuento();
        // frmCobro.auto.actualizar();
         frmCobro.calcularImporte();
         this.dispose();
@@ -296,9 +327,27 @@ public class FrmCobroManual extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnAceptarActionPerformed
 
+    private void cbxRazonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxRazonItemStateChanged
+        if(ItemEvent.SELECTED == evt.getStateChange() ){
+            if(cbxRazon.getSelectedIndex()==2){
+                lblFolio.setVisible(true);
+                this.txtFolioManual.setVisible(true);
+            }else{
+                lblFolio.setVisible(false);
+                this.txtFolioManual.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_cbxRazonItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
+    private javax.swing.JComboBox cbxRazon;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -306,14 +355,15 @@ public class FrmCobroManual extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel lblFolio;
     private javax.swing.JTextField txtFechaEntradaModificada;
     private javax.swing.JTextField txtFechaEntradaOriginal;
     private javax.swing.JTextField txtFechaSalidaModificada;
     private javax.swing.JTextField txtFechaSalidaOriginal;
+    private javax.swing.JTextField txtFolioManual;
     private javax.swing.JTextField txtHoraEntradaModificada;
     private javax.swing.JTextField txtHoraEntradaOriginal;
     private javax.swing.JTextField txtHoraSalidaModificada;
     private javax.swing.JTextField txtHoraSalidaOriginal;
-    private javax.swing.JTextField txtRazon;
     // End of variables declaration//GEN-END:variables
 }

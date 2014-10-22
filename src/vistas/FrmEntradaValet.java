@@ -67,10 +67,12 @@ public class FrmEntradaValet extends javax.swing.JDialog {
         int confirmDialog = JOptionPane.showConfirmDialog(this,"¿Se imprimira el boleto estas seguro?",
                 "Imprimir boleto",JOptionPane.YES_NO_CANCEL_OPTION);
         if(confirmDialog == JOptionPane.YES_OPTION){
-            Auto auto= new Auto(0,txtNotas.getText(),"0",txtProgresivo.getText(),Seguridad.getClave(5), txtMatricula.getText(),
-                    estacionamiento.getCaseta().getTarifas().get(0).getId(),
-                    txtFechaEntrada.getText() ,"", txtHoraEntrada.getText(),"", turno.getId(), null,0,0, 
-                    estacionamiento.getCaseta(),0, "", txtModelo.getText(), "", null,null,0);
+        
+            Auto auto= new Auto(txtProgresivo.getText(), txtMatricula.getText(),
+                    txtFechaEntrada.getText(), txtHoraEntrada.getText()
+                    ,"",txtModelo.getText(),"",turno.getId(), "0",
+                    txtNotas.getText(), Seguridad.getClave(5), 
+                    estacionamiento.getCaseta().getId() );
             //Aumento en uno los boletos generados
             turno.setNoBol(turno.getNoBol()+1);
             //Actualizo el folio final en el turno

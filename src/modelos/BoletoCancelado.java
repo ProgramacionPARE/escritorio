@@ -101,14 +101,14 @@ public class BoletoCancelado implements IDBModel{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    static public BoletoCancelado getById(int id){
+    static public BoletoCancelado getById(long id){
      BoletoCancelado boletoCancelado = null;
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM boleto_cancelado where id = ?");
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             ResultSet executeQuery = statement.executeQuery();
             if (executeQuery.next()){
                 boletoCancelado = new BoletoCancelado(executeQuery.getInt("id")

@@ -107,11 +107,22 @@ public class FrmLeerCodigoBarrasValet extends javax.swing.JDialog {
             if (id.length() ==12 )
                 empleado = Empleado.getByIdClave(id);
                 if (empleado != null){
-                    Auto auto= new Auto(0,"","0",Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"BOLETO"),
-                            Seguridad.getClave(5), "",
-                    estacionamiento.getCaseta().getTarifas().get(0).getId(),
-                   Tiempo.getFecha() ,"",Tiempo.getHora(),"", turno.getId(), null,0,0, 
-                    estacionamiento.getCaseta(),0, "","", "", null,null,0);
+               /*this.progresivo = progresivo;
+                this.matricula = matricula;
+                this.fechaEntrada = fechaEntrada;
+                this.horaEntrada = horaEntrada;
+                this.marca = marca;
+                this.modelo = modelo;
+                this.color = color;
+                this.turnoEntrada = turnoEntrada;
+                this.serie = serie;
+                this.nota = nota;
+                this.clave = clave;
+                this.caseta = caseta;*/
+
+                    Auto auto= new Auto(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"BOLETO"),
+                            "",Tiempo.getFecha(),Tiempo.getHora(),"","","",turno.getId(),"0",
+                            "",Seguridad.getClave(5), estacionamiento.getCaseta().getId());
                     
                     //Aumento en uno los boletos generados
                     turno.setNoBol(turno.getNoBol()+1);

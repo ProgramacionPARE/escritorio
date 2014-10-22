@@ -1,4 +1,3 @@
-
 package modelos;
 
 import java.sql.Connection;
@@ -7,134 +6,119 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Auto {
-    int id;
-    float descuento;
-    boolean dentro;
-    boolean reciboImpreso;  
-    String nota;
-    String serie;
-    String progresivo;
-    String clave;
-    String matricula;
-    Long tarifa;
-    String fechaEntrada;
-    String fechaSalida;
-    String horaEntrada;
-    String horaSalida;
+    private int id;
+    private String progresivo;
+    private String matricula;
+    private String fechaEntrada;
+    private String fechaSalida;
+    private String  horaEntrada;
+    private String horaSalida;
+    private String marca;
+    private String modelo;
+    private String color;
+  
+    private long boletoPerdido;
+    private long boletoCancelado;
+    private long boletoManual;
+    private long boletoContra;
+ 
+    private boolean isDentro;
+    private boolean isReciboImpreso;
+    private boolean isBoletoPerdido;
+    private boolean isBoletoCancelado;
+    private boolean isBoletoManual;
+    private boolean isBoletoContra;
+    private boolean isBoletoPendiente;
+    private int horas;
+    private int minutos;
+    private float monto;
     
-    String fechaEntradaM;
-    String fechaSalidaM;
-    String horaEntradaM;
-    String horaSalidaM;
-    String razonCobroManual;
-    boolean boletoManual;
+    long turnoEntrada;
+    long turnoSalida;
     
-    Long turnoEntrada;
-    Long turnoSalida;
-    int horasTangibles;
-    int minutosTangibles;
-    float montoPago;
-    Caseta caseta;
-    float montoTangible;
-    String marca;
-    String modelo;
-    String color;
-    BoletoPerdido boletoPerdido;
-    BoletoCancelado boletoCancelado;
-
-    public Auto(int id ,String nota,String serie, String progresivo, String clave, String matricula, Long tarifa, 
-            String fechaEntrada, String fechaSalida, String horaEntrada, String horaSalida, 
-            Long turnoEntrada, Long turnoSalida,int horasTangibles,int minutosTangibles, 
-            Caseta caseta, float montoTangible, String marca, String modelo, String color,
-            BoletoPerdido boletoPerdido, BoletoCancelado boletoCancelado,float descuento) {
-        this.id = id;
-        this.clave = clave;
-        this.nota = nota;
-        this.serie = serie;
+    private String serie;
+    private String nota;
+    long tarifa;
+    private float descuento;
+    
+    private String clave;
+    private float montoReciboPago;
+    private long caseta;
+   
+    public Auto() {
+    }
+    
+    //Constructor para nuevo auto
+    public Auto(String progresivo, String matricula, String fechaEntrada,
+            String horaEntrada, String marca, String modelo, String color, 
+            long turnoEntrada, String serie, String nota, 
+            String clave, long caseta) {
         this.progresivo = progresivo;
         this.matricula = matricula;
-        this.tarifa = tarifa;
-        this.fechaEntradaM = this.fechaEntrada = fechaEntrada;
-        this.fechaSalidaM = this.fechaSalida = fechaSalida;
-        this.horaEntradaM = this.horaEntrada = horaEntrada;
-        this.horaSalidaM = this.horaSalida = horaSalida;
+        this.fechaEntrada = fechaEntrada;
+        this.horaEntrada = horaEntrada;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.color = color;
         this.turnoEntrada = turnoEntrada;
-        this.turnoSalida = turnoSalida;
-        this.horasTangibles = horasTangibles;
-        this.minutosTangibles = minutosTangibles;
+        this.serie = serie;
+        this.nota = nota;
+        this.clave = clave;
         this.caseta = caseta;
-        this.montoTangible = montoTangible;
+    }
+    
+    //Constructor para recuperar auto
+
+    public Auto(int id, String progresivo, String matricula, String fechaEntrada, String fechaSalida, String horaEntrada, String horaSalida, String marca, String modelo, String color, long boletoPerdido, long boletoCancelado, long boletoManual, long boletoContra, boolean isDentro, boolean isReciboImpreso, boolean isBoletoPerdido, boolean isBoletoCancelado, boolean isBoletoManual, boolean isBoletoContra, boolean isBoletoPendiente, int horas, int minutos, float monto, long turnoEntrada, long turnoSalida, String serie, String nota, long tarifa, float descuento, String clave, long caseta) {
+        this.id = id;
+        this.progresivo = progresivo;
+        this.matricula = matricula;
+        this.fechaEntrada = fechaEntrada;
+        this.fechaSalida = fechaSalida;
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
         this.marca = marca;
         this.modelo = modelo;
         this.color = color;
         this.boletoPerdido = boletoPerdido;
         this.boletoCancelado = boletoCancelado;
-        this.descuento = descuento;
-    }
-
-    public boolean isReciboImpreso() {
-        return reciboImpreso;
-    }
-
-    public void setReciboImpreso(boolean reciboImpreso) {
-        this.reciboImpreso = reciboImpreso;
-    }
-
-    public String getRazonCobroManual() {
-        return razonCobroManual;
-    }
-
-    public void setRazonCobroManual(String razonCobroManual) {
-        this.razonCobroManual = razonCobroManual;
-    }
-
-   
-    public String getFechaEntradaM() {
-        return fechaEntradaM;
-    }
-
-    public void setFechaEntradaM(String fechaEntradaM) {
-        this.fechaEntradaM = fechaEntradaM;
-    }
-
-    public String getFechaSalidaM() {
-        return fechaSalidaM;
-    }
-
-    public void setFechaSalidaM(String fechaSalidaM) {
-        this.fechaSalidaM = fechaSalidaM;
-    }
-
-    public String getHoraEntradaM() {
-        return horaEntradaM;
-    }
-
-    public void setHoraEntradaM(String horaEntradaM) {
-        this.horaEntradaM = horaEntradaM;
-    }
-
-    public String getHoraSalidaM() {
-        return horaSalidaM;
-    }
-
-    public void setHoraSalidaM(String horaSalidaM) {
-        this.horaSalidaM = horaSalidaM;
-    }
-
-    public boolean isBoletoManual() {
-        return boletoManual;
-    }
-
-    public void setBoletoManual(boolean boletoManual) {
         this.boletoManual = boletoManual;
+        this.boletoContra = boletoContra;
+        this.isDentro = isDentro;
+        this.isReciboImpreso = isReciboImpreso;
+        this.isBoletoPerdido = isBoletoPerdido;
+        this.isBoletoCancelado = isBoletoCancelado;
+        this.isBoletoManual = isBoletoManual;
+        this.isBoletoContra = isBoletoContra;
+        this.isBoletoPendiente = isBoletoPendiente;
+        this.horas = horas;
+        this.minutos = minutos;
+        this.monto = monto;
+        this.turnoEntrada = turnoEntrada;
+        this.turnoSalida = turnoSalida;
+        this.serie = serie;
+        this.nota = nota;
+        this.tarifa = tarifa;
+        this.descuento = descuento;
+        this.clave = clave;
+        this.caseta = caseta;
     }
-
+    
+    
+    
+    
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
   
     public String getSerie() {
         return serie!=null?serie:"0";
@@ -144,64 +128,126 @@ public class Auto {
         this.serie = serie;
     }
 
-    public float getMontoPago() {
-        return montoPago;
+    public float getMontoReciboPago() {
+        return montoReciboPago;
     }
 
-    public void setMontoPago(float montoPago) {
-        this.montoPago = montoPago;
+    public void setMontoReciboPago(float montoPago) {
+        this.montoReciboPago = montoPago;
     }
-
-    
 
     public boolean isDentro() {
-        return dentro;
+        return isDentro;
     }
     public void setDentro(boolean n) {
-        dentro = n;
+        isDentro = n;
+    }
+    
+    public boolean isReciboImpreso() {
+        return isReciboImpreso;
     }
 
+    public void setReciboImpreso(boolean reciboImpreso) {
+        this.isReciboImpreso = reciboImpreso;
+    }
+
+    public boolean isBoletoPerdido() {
+        return isBoletoPerdido;
+    }
+
+    public void setIsBoletoPerdido(boolean isBoletoPerdido) {
+        this.isBoletoPerdido = isBoletoPerdido;
+    }
+
+    public boolean isBoletoCancelado() {
+        return isBoletoCancelado;
+    }
+
+    public void setIsBoletoCancelado(boolean isBoletoCancelado) {
+        this.isBoletoCancelado = isBoletoCancelado;
+    }
+
+    public boolean isBoletoManual() {
+        return isBoletoManual;
+    }
+
+    public void setIsBoletoManual(boolean isBoletoManual) {
+        this.isBoletoManual = isBoletoManual;
+    }
+
+    public boolean isBoletoContra() {
+        return isBoletoContra;
+    }
+
+    public void setIsBoletoContra(boolean isBoletoContra) {
+        this.isBoletoContra = isBoletoContra;
+    }
+
+    public boolean isBoletoPendiente() {
+        return isBoletoPendiente;
+    }
+
+    public void setIsBoletoPendiente(boolean isBoletoPendiente) {
+        this.isBoletoPendiente = isBoletoPendiente;
+    }
+
+    public BoletoContra getBoletoContra() {
+        return BoletoContra.getById(boletoContra);
+    }
+
+    public void setBoletoContra(BoletoContra boletoContra) {
+        this.boletoContra = boletoContra.getId();
+    }
+
+    public BoletoManual getBoletoManual() {
+        return BoletoManual.getById(boletoManual);
+    }
+
+    public void setBoletoManual(BoletoManual boletoManual) {
+        this.boletoManual = boletoManual.getId();
+    }
+    
+    
+    
     public BoletoCancelado getBoletoCancelado() {
-        return boletoCancelado;
+        return BoletoCancelado.getById(boletoCancelado);
     }
 
     public void setBoletoCancelado(BoletoCancelado boletoCancelado) {
-        this.boletoCancelado = boletoCancelado;
+        this.boletoCancelado = boletoCancelado.getId();
     }
     
     
     public int getHorasTangibles() {
-        return horasTangibles;
+        return horas;
     }
 
     public void setHorasTangibles(int horasTangibles) {
-        this.horasTangibles = horasTangibles;
+        this.horas = horasTangibles;
     }
 
     public int getMinutosTangibles() {
-        return minutosTangibles;
+        return minutos;
     }
 
     public void setMinutosTangibles(int minutosTangibles) {
-        this.minutosTangibles = minutosTangibles;
+        this.minutos = minutosTangibles;
     }
-
+    
     public float getDescuento() {
         return descuento;
     }
-
-
-   
     
-    public Auto() {
+    public void setDescuento(float descuento) {
+        this.descuento = descuento;
     }
-
+   
     public BoletoPerdido getBoletoPerdido() {
-        return boletoPerdido;
+        return BoletoPerdido.getById(boletoPerdido);
     }
 
     public void setBoletoPerdido(BoletoPerdido boletoPerdido) {
-        this.boletoPerdido = boletoPerdido;
+        this.boletoPerdido = boletoPerdido.getId();
     }
 
     public String getMarca() {
@@ -229,20 +275,11 @@ public class Auto {
     }
 
     public float getMontoTangible() {
-        return montoTangible;
+        return monto;
     }
 
     public void setMontoTangible(float montoTangible) {
-        this.montoTangible = montoTangible;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.monto = montoTangible;
     }
 
     public String getProgresivo() {
@@ -318,11 +355,11 @@ public class Auto {
     }
 
     public Caseta getCaseta() {
-        return caseta;
+        return Caseta.getById(caseta);
     }
 
     public void setCaseta(Caseta caseta) {
-        this.caseta = caseta;
+        this.caseta = caseta.getId();
     }
 
     public String getClave() {
@@ -340,6 +377,60 @@ public class Auto {
     public void setNota(String nota) {
         this.nota = nota;
     }
+    
+    
+    public static Auto getById(int id){
+        Auto auto = null;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT * FROM autos where id = ?");
+            statement.setInt(1, id);
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()){
+                auto = new Auto(executeQuery.getInt("id"),executeQuery.getString("progresivo"),
+                executeQuery.getString("matricula"),executeQuery.getString("fecha_entrada"),
+                executeQuery.getString("fecha_salida"),executeQuery.getString("hora_entrada"),
+                executeQuery.getString("hora_salida"),executeQuery.getString("marca"),
+                executeQuery.getString("modelo"),executeQuery.getString("color"),
+                executeQuery.getLong("id_boletoPerdido"),executeQuery.getLong("id_boleto_cancelado"),
+                executeQuery.getLong("id_boleto_manual"),executeQuery.getLong("id_boleto_contra"),
+                executeQuery.getString("entrada_salida").equals("E")?true : false ,
+                executeQuery.getString("recibo").equals("SI")?true : false,
+                executeQuery.getString("boleto_perdido").equals("SI")?true : false,
+                executeQuery.getString("boleto_cancelado").equals("SI")?true : false,
+                executeQuery.getString("boleto_manual").equals("SI")?true : false,
+                executeQuery.getString("boleto_contra").equals("SI")?true : false,
+                executeQuery.getString("boleto_pendiente").equals("SI")?true : false,
+                executeQuery.getInt("horas_estadia"),executeQuery.getInt("minutos_estadia"),
+                executeQuery.getFloat("monto"),executeQuery.getLong("turno_entrada_id"),
+                executeQuery.getLong("turno_salida_id"),executeQuery.getString("serie"),
+                executeQuery.getString("nota"),executeQuery.getLong("id_tarifa"),
+                executeQuery.getFloat("descuento"),executeQuery.getString("clave"),
+                executeQuery.getLong("id_caseta"));
+                if(auto.getBoletoPerdido()!=null)
+                    auto.getBoletoPerdido().setAuto(auto);
+            }
+           
+            if (executeQuery.getString("entrada_salida").equals("E")){
+                auto.isDentro = true;
+            }else
+                auto.isDentro = false;
+            
+            if (executeQuery.getString("recibo").equals("NO")){
+                auto.isReciboImpreso = false;
+            }else
+                auto.isReciboImpreso = true;
+            
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return auto;
+    }
+        
+
     
      public static ArrayList <Auto>  getAutosPorSerie(Turno turno, String key) {
         ArrayList <Auto> autos = new ArrayList<Auto>();
@@ -452,54 +543,6 @@ public class Auto {
         }
         return auto;
     }
-
-  
-
-    public static Auto getById(int id){
-        Auto auto = null;
-        System.out.println(new Date().getTime());
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM autos where id = ?");
-            statement.setInt(1, id);
-            ResultSet executeQuery = statement.executeQuery();
-            if (executeQuery.next()){
-                auto = new Auto(executeQuery.getInt("id"),executeQuery.getString("notas"),
-                executeQuery.getString("serie"),executeQuery.getString("progresivo"),
-                executeQuery.getString("clave"),executeQuery.getString("matricula"),
-                executeQuery.getLong("id_tarifa"),executeQuery.getString("fecha_entrada"),
-                executeQuery.getString("fecha_salida"),executeQuery.getString("hora_entrada"),
-                executeQuery.getString("hora_salida"),executeQuery.getLong("turno_entrada_id"),
-                executeQuery.getLong("turno_salida_id"),executeQuery.getInt("horas_estadia"),
-                executeQuery.getInt("minutos_estadia"),Caseta.getById(executeQuery.getInt("id_caseta"))
-                ,executeQuery.getFloat("monto"),executeQuery.getString("marca"),
-                executeQuery.getString("modelo"),executeQuery.getString("color"),
-                BoletoPerdido.getById(executeQuery.getInt("id_boleto_perdido")),
-                BoletoCancelado.getById(executeQuery.getInt("id_boleto_cancelado")),executeQuery.getFloat("descuento")
-                );
-                if(auto.getBoletoPerdido()!=null)
-                    auto.getBoletoPerdido().setAuto(auto);
-            }
-           
-            if (executeQuery.getString("entrada_salida").equals("E")){
-                auto.dentro = true;
-            }else
-                auto.dentro = false;
-            
-            if (executeQuery.getString("recibo").equals("NO")){
-                auto.reciboImpreso = false;
-            }else
-                auto.reciboImpreso = true;
-            
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return auto;
-    }
-        
     public static List<Auto> getAutosPendientes(){
         ArrayList <Auto> autos = new ArrayList<Auto>();
         try {
@@ -798,52 +841,52 @@ public class Auto {
 
     public void actualizar() {
         try {
-             Conexion conexion = new Conexion();
-             Connection connectionDB = conexion.getConnectionDB();
-             PreparedStatement  statement = connectionDB.
-             prepareStatement("UPDATE autos SET `progresivo`=? "+
-                     ",`matricula` =? , `fecha_entrada` =? ,`fecha_salida` =? "+
-                     ",`hora_entrada` =? ,`hora_salida` =?,`marca` =?  "+
-                     ",`modelo` =? ,`color` =?,`id_boleto_perdido` =?  "+
-                      ",`horas_estadia` =? ,`minutos_estadia` =?,`monto` =?  "+
-                      ",`turno_salida_id` =? ,`entrada_salida` =? ,`recibo` =? ,"+
-                     "`id_boleto_cancelado` =?,`serie` =? ,notas = ?, id_tarifa = ?,descuento = ?"+
-                     ", `fecha_entrada_modificado` =? ,`fecha_salida_modificado` =? "+
-                     ",`hora_entrada_modificado` =? ,`hora_salida_modificado` =?  " +
-                      ",`cobro_manual` =? ,`razon_cobro_manual` =?   WHERE `id`=?");
-             statement.setString(1, progresivo);
-             statement.setString(2, matricula);
-             statement.setString(3, fechaEntrada);
-             statement.setString(4, fechaSalida);
-             statement.setString(5, horaEntrada);
-             statement.setString(6, horaSalida);
-             statement.setString(7, marca);
-             statement.setString(8, modelo);
-             statement.setString(9, color);
-             statement.setInt(10, boletoPerdido != null ? boletoPerdido.getId() : 0 );
-             statement.setFloat(11, horasTangibles);
-             statement.setFloat(12, minutosTangibles);
-             statement.setFloat(13, montoTangible);
-             statement.setLong(14, turnoSalida);
-             statement.setString(15, dentro ? "E" : "S" );
-             statement.setString(16, reciboImpreso ? "SI" : "NO" );
-             statement.setInt(17, boletoCancelado != null ? boletoCancelado.getId() : 0 );
-             statement.setString(18, serie ); 
-             statement.setString(19, nota ); 
-             statement.setLong(20,tarifa ); 
-             statement.setFloat(21,descuento ); 
-             statement.setString(22, fechaEntradaM);
-             statement.setString(23, fechaSalidaM);
-             statement.setString(24, horaEntradaM);
-             statement.setString(25, horaSalidaM);
-             statement.setString(26, boletoManual ? "SI" : "NO" );
-             statement.setString(27, razonCobroManual);
-             
-             
-             statement.setInt(28, id);
-  
-             statement.executeUpdate();
-             conexion.cerrarConexion();
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("UPDATE autos SET `progresivo`=? ,`matricula` =? "+
+                    ", `fecha_entrada` =? ,`fecha_salida` =? ,`hora_entrada` =? "+
+                    ",`hora_salida` =?,`marca` =? ,`modelo` =? ,`color` =?"+
+                    ",`id_boleto_perdido` =? ,`id_boleto_cancelado` =?"+ 
+                    ",`id_boleto_manual` =? ,`id_boleto_contra` =? "+
+                    ",`entrada_salida` =? ,`recibo` =?"+ 
+                    ",`boleto_perdido` =? ,`boleto_cancelado` =?"+ 
+                    ",`boleto_manual` =? ,`boleto_contra` =? ,`boleto_pendiente` =? "+
+                    ",`horas_estadia` =? ,`minutos_estadia` =?, `monto` =? "+
+                    ",`turno_salida_id` =? ,`serie` =? ,notas = ?, id_tarifa = ?,"
+                    + "descuento = ? WHERE `id`=?");
+            statement.setString(1, progresivo);
+            statement.setString(2, matricula);
+            statement.setString(3, fechaEntrada);
+            statement.setString(4, fechaSalida);
+            statement.setString(5, horaEntrada);
+            statement.setString(6, horaSalida);
+            statement.setString(7, marca);
+            statement.setString(8, modelo);
+            statement.setString(9, color);
+            statement.setLong(10, boletoPerdido);
+            statement.setLong(11, boletoCancelado );
+            statement.setLong(12, boletoManual);
+            statement.setLong(13, boletoContra );
+            statement.setString(14, isDentro          ? "E" : "S" );
+            statement.setString(15, isReciboImpreso   ? "SI" : "NO" );
+            statement.setString(16, isBoletoPerdido   ? "SI" : "NO" );
+            statement.setString(17, isBoletoCancelado ? "SI" : "NO" );
+            statement.setString(18, isBoletoManual    ? "SI" : "NO" );
+            statement.setString(19, isBoletoContra    ? "SI" : "NO" );
+            statement.setString(20, isBoletoPendiente ? "SI" : "NO" );        
+            statement.setFloat(21, horas);
+            statement.setFloat(22, minutos);
+            statement.setFloat(23, monto);
+            statement.setLong(24, turnoSalida);
+            statement.setString(25, serie ); 
+            statement.setString(26, nota ); 
+            statement.setLong(27,tarifa ); 
+            statement.setFloat(28,descuento ); 
+            statement.setInt(29, id);
+
+            statement.executeUpdate();
+            conexion.cerrarConexion();
          } catch (SQLException ex) {
              Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
          } 
@@ -867,7 +910,7 @@ public class Auto {
             statement.setString(6, fechaEntrada); 
             statement.setString(7, horaEntrada);
             statement.setLong(8, Turno.getById(turnoEntrada).getEmpleado().getId());
-            statement.setLong(9, caseta.getId()); 
+            statement.setLong(9, caseta); 
             statement.setLong(10, turnoEntrada);
             statement.setString(11, marca);
             statement.setString(12, serie);
@@ -885,9 +928,6 @@ public class Auto {
         }
     }
 
-    public void setDescuento(float descuento) {
-        this.descuento = descuento;
-    }
 
     
     

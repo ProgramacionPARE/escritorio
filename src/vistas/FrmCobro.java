@@ -43,8 +43,6 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         setLocationRelativeTo(parent);
         this.auto.setHoraSalida(Tiempo.getHora());
         this.auto.setFechaSalida(Tiempo.getFecha());
-        this.auto.setHoraSalidaM(Tiempo.getHora());
-        this.auto.setFechaSalidaM(Tiempo.getFecha());
         
         cargarTarifas();
         calcularImporte();
@@ -70,12 +68,19 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         txtTiempoEstadia.setText("");
 
         if(auto.isBoletoManual()){
-            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntradaM(),auto.getHoraEntradaM(),auto.getFechaSalidaM(),auto.getHoraSalidaM()));
-            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntradaM(),auto.getHoraEntradaM(),auto.getFechaSalidaM(),auto.getHoraSalidaM()));
-        
+            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getBoletoManual().getFechaEntradaM(),auto.getBoletoManual().getHoraEntradaM(),auto.getBoletoManual().getFechaSalidaM(),auto.getBoletoManual().getHoraSalidaM()));
+            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getBoletoManual().getFechaEntradaM(),auto.getBoletoManual().getHoraEntradaM(),auto.getBoletoManual().getFechaSalidaM(),auto.getBoletoManual().getHoraSalidaM()));
+            txtFechaEntrada.setText(auto.getBoletoManual().getFechaEntradaM());
+            txtFechaSalida.setText(auto.getBoletoManual().getFechaSalidaM());
+            txtHoraEntrada.setText(auto.getBoletoManual().getHoraEntradaM());
+            txtHoraSalida.setText(auto.getBoletoManual().getHoraSalidaM());
         }else{
             auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
             auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
+            txtFechaEntrada.setText(auto.getFechaEntrada());
+            txtFechaSalida.setText(auto.getFechaSalida());
+            txtHoraEntrada.setText(auto.getHoraEntrada());
+            txtHoraSalida.setText(auto.getHoraSalida());
         }
         auto.setTurnoSalida(turno);
         auto.setMontoTangible(Tarifa.getImporteEstadia(auto));
@@ -83,10 +88,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
             lblDescuento.setText("Descuento: $ "+auto.getDescuento());
         }
         // Completo campos del formulario
-        txtFechaEntrada.setText(auto.getFechaEntrada());
-        txtFechaSalida.setText(auto.getFechaSalida());
-        txtHoraEntrada.setText(auto.getHoraEntrada());
-        txtHoraSalida.setText(auto.getHoraSalida());
+        
         if(auto.getHorasTangibles()==1)
              txtTiempoEstadia.setText(auto.getHorasTangibles()+ " hora " );
         else if(auto.getHorasTangibles()>1)
@@ -216,14 +218,14 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
 
         cbxTarifas.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         cbxTarifas.setName("cbxTarifas"); // NOI18N
+        cbxTarifas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                cbxTarifasMouseReleased(evt);
+            }
+        });
         cbxTarifas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbxTarifasItemStateChanged(evt);
-            }
-        });
-        cbxTarifas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxTarifasActionPerformed(evt);
             }
         });
 
@@ -385,10 +387,6 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
      }
     }//GEN-LAST:event_txtDineroPagadoKeyReleased
 
-    private void cbxTarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTarifasActionPerformed
-      
-    }//GEN-LAST:event_cbxTarifasActionPerformed
-
     private void cbxTarifasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTarifasItemStateChanged
         if(ItemEvent.SELECTED == evt.getStateChange() ){
             auto.setTarifa(estacionamiento.getCaseta().getTarifas().get(cbxTarifas.getSelectedIndex()));
@@ -409,13 +407,18 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         String ObjButtons[] = {"Si","No"};
         int PromptResult = JOptionPane.showOptionDialog(null,"Estas seguro de no cobrar este boleto, permanecera abierto.","NO cobrar boleto",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
         if(PromptResult==JOptionPane.YES_OPTION){
-             this.dispose();
+            auto.getBoletoManual().eliminar();
+            this.dispose();
         }
     }//GEN-LAST:event_formWindowClosing
 
     private void btnCobroManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobroManualActionPerformed
         new FrmCobroManual(this,true,turno,auto);
     }//GEN-LAST:event_btnCobroManualActionPerformed
+
+    private void cbxTarifasMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbxTarifasMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxTarifasMouseReleased
 
     @Action
     public void onCobrar() {
@@ -429,7 +432,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         if(showConfirmDialog == JOptionPane.YES_OPTION){
             auto.setReciboImpreso(true);
             auto.actualizar();
-            auto.setMontoPago(Float.valueOf(txtDineroPagado.getText()));
+            auto.setMontoReciboPago(Float.valueOf(txtDineroPagado.getText()));
             new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),turno,auto,estacionamiento);   
         }
         this.dispose();
