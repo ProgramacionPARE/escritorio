@@ -24,12 +24,12 @@ public class DetallesMovimiento{
     private float precioUnitario;
     private float importe;
 
-    public static DetallesMovimiento existePrecioUnitario(ArrayList <DetallesMovimiento> dt,float precioUnitario){
+    public static DetallesMovimiento existePrecioUnitario(ArrayList <DetallesMovimiento> dt,Auto auto,String tipo){
         DetallesMovimiento resp=null;
         Iterator<DetallesMovimiento> iterator = dt.iterator(); 
         while(iterator.hasNext()){
             DetallesMovimiento next = iterator.next();
-            if(next.getPrecioUnitario()== precioUnitario){
+            if(next.getPrecioUnitario()== auto.getMontoTangible() &&  next.getTipo().equals(tipo)){
                 resp = next;
                 break;
             }
@@ -151,7 +151,7 @@ public class DetallesMovimiento{
             while (iteratorAutos.hasNext()){
                 Auto next = iteratorAutos.next();
                 
-                    DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetalles, next.getMontoTangible());
+                    DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetalles, next,next.getTarifa().getDescripcion());
 
                     //DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,next.getTarifa().getDescripcion());
                     if(detalles==null){
@@ -163,13 +163,14 @@ public class DetallesMovimiento{
                 
             }
 
-       /* 
+       
         Iterator<Auto> iteratorAutosPerdidos = autosBoletoPerdidoTurnoActual.iterator();
         while (iteratorAutosPerdidos.hasNext()){
             Auto next = iteratorAutosPerdidos.next();
             
-            //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,"Perdido");
+            DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetalles, next,"Perdido");
+            
+            //DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,"Perdido");
             if(detalles==null){
                 mapDetalles.add(new DetallesMovimiento("", "Perdido", 1, next.getTarifa().getPrecioBoletoPerdido(), 
                 next.getTarifa().getPrecioBoletoPerdido()));
@@ -179,7 +180,7 @@ public class DetallesMovimiento{
             }
            
         }
-        
+        /*
         Iterator<Auto> iteratorAutosCancelados = autosBoletoCanceladoTurnoActual.iterator();
         while (iteratorAutosCancelados.hasNext()){
             Auto next = iteratorAutosCancelados.next();
