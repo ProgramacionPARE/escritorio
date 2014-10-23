@@ -492,14 +492,15 @@ public class Turno implements IDBModel {
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO turnos (`fecha_apertura`, `hora_apertura`,"+
-                            " `folio_inicial`,`no_bol_turno_a`,`id_operador`,`tipo_turno`)"
+                            " `folio_inicial`,`folio_final`,`no_bol_turno_a`,`id_operador`,`tipo_turno`)"
                             + " VALUES (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, fechaApertura);
             statement.setString(2, horaApertura);
             statement.setLong(3, folioInicial);
-            statement.setLong(4, noBolTurnoA); 
-            statement.setLong(5, empleado.getId());
-            statement.setString(6, tipoTurno);
+            statement.setLong(4, folioFinal);
+            statement.setLong(5, noBolTurnoA); 
+            statement.setLong(6, empleado.getId());
+            statement.setString(7, tipoTurno);
     
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();

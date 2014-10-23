@@ -160,7 +160,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         jLabel18.setText(resourceMap.getString("jLabel18.text")); // NOI18N
         jLabel18.setName("jLabel18"); // NOI18N
 
-        jLabPlacas.setFont(resourceMap.getFont("jLabel19.font")); // NOI18N
+        jLabPlacas.setFont(resourceMap.getFont("jLabPlacas2.font")); // NOI18N
         jLabPlacas.setText(resourceMap.getString("jLabPlacas.text")); // NOI18N
         jLabPlacas.setName("jLabPlacas"); // NOI18N
 
@@ -189,7 +189,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
         jLabel7.setName("jLabel7"); // NOI18N
 
-        lblAcomodador.setFont(resourceMap.getFont("jLabel19.font")); // NOI18N
+        lblAcomodador.setFont(resourceMap.getFont("jLabPlacas2.font")); // NOI18N
         lblAcomodador.setText(resourceMap.getString("lblAcomodador.text")); // NOI18N
         lblAcomodador.setName("lblAcomodador"); // NOI18N
 
@@ -208,19 +208,19 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         jLabel8.setIconTextGap(0);
         jLabel8.setName("jLabel8"); // NOI18N
 
-        jLabPlacas1.setFont(resourceMap.getFont("jLabel19.font")); // NOI18N
+        jLabPlacas1.setFont(resourceMap.getFont("jLabPlacas2.font")); // NOI18N
         jLabPlacas1.setText(resourceMap.getString("jLabPlacas1.text")); // NOI18N
         jLabPlacas1.setName("jLabPlacas1"); // NOI18N
 
-        lblPlacas.setFont(resourceMap.getFont("jLabel19.font")); // NOI18N
+        lblPlacas.setFont(resourceMap.getFont("jLabPlacas2.font")); // NOI18N
         lblPlacas.setText(resourceMap.getString("lblPlacas.text")); // NOI18N
         lblPlacas.setName("lblPlacas"); // NOI18N
 
-        jLabPlacas4.setFont(resourceMap.getFont("jLabel19.font")); // NOI18N
+        jLabPlacas4.setFont(resourceMap.getFont("jLabPlacas2.font")); // NOI18N
         jLabPlacas4.setText(resourceMap.getString("jLabPlacas4.text")); // NOI18N
         jLabPlacas4.setName("jLabPlacas4"); // NOI18N
 
-        lblFecha.setFont(resourceMap.getFont("jLabel19.font")); // NOI18N
+        lblFecha.setFont(resourceMap.getFont("jLabPlacas2.font")); // NOI18N
         lblFecha.setText(resourceMap.getString("lblFecha.text")); // NOI18N
         lblFecha.setName("lblFecha"); // NOI18N
 
@@ -229,11 +229,11 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         lblProgresivo.setText(resourceMap.getString("lblProgresivo.text")); // NOI18N
         lblProgresivo.setName("lblProgresivo"); // NOI18N
 
-        jLabPlacas2.setFont(resourceMap.getFont("jLabel19.font")); // NOI18N
+        jLabPlacas2.setFont(resourceMap.getFont("jLabPlacas2.font")); // NOI18N
         jLabPlacas2.setText(resourceMap.getString("jLabPlacas2.text")); // NOI18N
         jLabPlacas2.setName("jLabPlacas2"); // NOI18N
 
-        lblModelo.setFont(resourceMap.getFont("jLabel19.font")); // NOI18N
+        lblModelo.setFont(resourceMap.getFont("jLabPlacas2.font")); // NOI18N
         lblModelo.setText(resourceMap.getString("lblModelo.text")); // NOI18N
         lblModelo.setName("lblModelo"); // NOI18N
 
@@ -276,24 +276,22 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
                                 .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(lblPlacas, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(lblModelo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(97, 97, 97))
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(lblAcomodador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(42, 42, 42)))
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addGap(0, 0, 0)))))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(lblPlacas, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(lblNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(lblModelo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGap(97, 97, 97))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(lblAcomodador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGap(42, 42, 42)))
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -343,7 +341,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
                     .addComponent(jLabPlacas1)
                     .addComponent(lblAcomodador, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel23))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

@@ -1,6 +1,7 @@
 package vistas.formatos;
 
 import ModelosAux.Tiempo;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,7 +14,6 @@ import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.BoletoPerdido;
@@ -23,7 +23,6 @@ import modelos.Operacion;
 import modelos.Progresivo;
 import modelos.PropietarioPerdido;
 import modelos.Turno;
-import vistas.FrmBoletoPerdidoPlaca;
 import vistas.FrmCobro;
 
 
@@ -43,12 +42,13 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
         this.parent = padre;
         this.estacionamiento = estacionamiento;
         initComponents();
+        this.getContentPane().setBackground(Color.white);
+        pack();
         this.setLocationRelativeTo(padre);
         iniciarOtrosComponentes();
         setVisible(true);
     }
-
-   
+    
     private void iniciarOtrosComponentes() {
         if(estacionamiento.getTipo().equals("Valet")){
             txtProgresivo.setText(String.valueOf(auto.getProgresivo()));
@@ -134,10 +134,8 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
         paper.setSize(width, height);
         paper.setImageableArea(margin,0,
                 width - (margin * 2),height);
-        pf.setPaper(paper);
-       
+        pf.setPaper(paper);   
         job.setPrintable(this,pf);
-
         try {
             job.print();
         } catch (PrinterException ex) {
@@ -152,7 +150,6 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
         if (page > 0) { 
             return NO_SUCH_PAGE;
         }
-        
        Graphics2D g2d = (Graphics2D)g;
         g2d.transform(AffineTransform.getScaleInstance(.50,.50));
         g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/1.7,(this).getHeight()/1.7 ));
@@ -162,9 +159,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
         return PAGE_EXISTS;
     
     }
-    
-
-
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -668,7 +663,6 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
     }//GEN-LAST:event_formWindowClosed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
         if (validaCamposEntrada()){
             if(new Operacion(this.parent).requierePermisos(turno.getEmpleado(), "Supervisor",true)){
                 btnGuardar.setVisible(false);
@@ -685,6 +679,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
                 Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(), "PERDIDO");
                 propietario.setBoletoPerdido(boletoPerdido);
                 auto.setBoletoPerdido(boletoPerdido);
+                auto.setIsBoletoPerdido(true);
                 new FrmCobro(parent,true, turno, auto,estacionamiento);
                 if (!auto.isDentro()){
                     propietario.guardar();
@@ -741,6 +736,4 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
     private javax.swing.JTextField txtTipoIdentificacion;
     private javax.swing.JTextField txtTurno;
     // End of variables declaration//GEN-END:variables
-
-  
 }

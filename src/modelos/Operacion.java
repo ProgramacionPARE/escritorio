@@ -1,6 +1,7 @@
 package modelos;
 
 
+import java.awt.Dialog;
 import java.awt.Frame;
 import vistas.FrmLoginTemporal;
 

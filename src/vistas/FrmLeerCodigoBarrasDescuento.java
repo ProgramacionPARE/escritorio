@@ -4,6 +4,7 @@ package vistas;
 import ModelosAux.Seguridad;
 import ModelosAux.Tiempo;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.print.PrinterJob;
 import javax.swing.JFrame;
@@ -33,7 +34,7 @@ public class FrmLeerCodigoBarrasDescuento extends javax.swing.JDialog {
     /**
      * Creates new form FrmLeerCodigoBarras
      */
-    public FrmLeerCodigoBarrasDescuento(java.awt.Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento,FrmCobro frmCobro) {
+    public FrmLeerCodigoBarrasDescuento(Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento,FrmCobro frmCobro) {
         super(parent,"Codigo de barras", modal);
         this.parent = parent;
         initComponents();

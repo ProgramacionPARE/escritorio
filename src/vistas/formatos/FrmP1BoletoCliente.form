@@ -173,7 +173,7 @@
                       <Component id="lblAcomodador" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
                       <Component id="jLabel23" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jPanel3" min="-2" pref="106" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -219,7 +219,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabPlacas">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel19.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabPlacas2.font"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabPlacas.text"/>
             <Property name="name" type="java.lang.String" value="jLabPlacas" noResource="true"/>
           </Properties>
@@ -266,7 +266,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblAcomodador">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel19.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabPlacas2.font"/>
             <Property name="text" type="java.lang.String" resourceKey="lblAcomodador.text"/>
             <Property name="name" type="java.lang.String" value="lblAcomodador" noResource="true"/>
           </Properties>
@@ -300,28 +300,28 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabPlacas1">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel19.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabPlacas2.font"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabPlacas1.text"/>
             <Property name="name" type="java.lang.String" value="jLabPlacas1" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblPlacas">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel19.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabPlacas2.font"/>
             <Property name="text" type="java.lang.String" resourceKey="lblPlacas.text"/>
             <Property name="name" type="java.lang.String" value="lblPlacas" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabPlacas4">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel19.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabPlacas2.font"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabPlacas4.text"/>
             <Property name="name" type="java.lang.String" value="jLabPlacas4" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFecha">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel19.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabPlacas2.font"/>
             <Property name="text" type="java.lang.String" resourceKey="lblFecha.text"/>
             <Property name="name" type="java.lang.String" value="lblFecha" noResource="true"/>
           </Properties>
@@ -336,14 +336,14 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabPlacas2">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel19.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabPlacas2.font"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabPlacas2.text"/>
             <Property name="name" type="java.lang.String" value="jLabPlacas2" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblModelo">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel19.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabPlacas2.font"/>
             <Property name="text" type="java.lang.String" resourceKey="lblModelo.text"/>
             <Property name="name" type="java.lang.String" value="lblModelo" noResource="true"/>
           </Properties>

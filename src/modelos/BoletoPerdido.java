@@ -11,11 +11,11 @@ import java.util.logging.Logger;
 
 
 public class BoletoPerdido {
-    int id;
-    long progresivo;
-    Auto auto;
-    PropietarioPerdido propietario;
-    Turno turno;
+    private int id;
+    private long progresivo;
+    private Auto auto;
+    private PropietarioPerdido propietario;
+    private Turno turno;
     
     static BoletoPerdido getById(long id) {
         BoletoPerdido boletoPerdido = null;

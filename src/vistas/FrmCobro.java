@@ -4,6 +4,7 @@ package vistas;
 import ModelosAux.Sistema;
 import ModelosAux.Tiempo;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.print.PrinterJob;
@@ -407,7 +408,8 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         String ObjButtons[] = {"Si","No"};
         int PromptResult = JOptionPane.showOptionDialog(null,"Estas seguro de no cobrar este boleto, permanecera abierto.","NO cobrar boleto",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
         if(PromptResult==JOptionPane.YES_OPTION){
-            auto.getBoletoManual().eliminar();
+            if(auto.isBoletoManual())
+                auto.getBoletoManual().eliminar();
             this.dispose();
         }
     }//GEN-LAST:event_formWindowClosing

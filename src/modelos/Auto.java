@@ -109,9 +109,6 @@ public class Auto {
         this.caseta = caseta;
     }
     
-    
-    
-    
     public int getId() {
         return id;
     }
@@ -394,35 +391,24 @@ public class Auto {
                 executeQuery.getString("fecha_salida"),executeQuery.getString("hora_entrada"),
                 executeQuery.getString("hora_salida"),executeQuery.getString("marca"),
                 executeQuery.getString("modelo"),executeQuery.getString("color"),
-                executeQuery.getLong("id_boletoPerdido"),executeQuery.getLong("id_boleto_cancelado"),
+                executeQuery.getLong("id_boleto_perdido"),executeQuery.getLong("id_boleto_cancelado"),
                 executeQuery.getLong("id_boleto_manual"),executeQuery.getLong("id_boleto_contra"),
-                executeQuery.getString("entrada_salida").equals("E")?true : false ,
-                executeQuery.getString("recibo").equals("SI")?true : false,
-                executeQuery.getString("boleto_perdido").equals("SI")?true : false,
-                executeQuery.getString("boleto_cancelado").equals("SI")?true : false,
-                executeQuery.getString("boleto_manual").equals("SI")?true : false,
-                executeQuery.getString("boleto_contra").equals("SI")?true : false,
-                executeQuery.getString("boleto_pendiente").equals("SI")?true : false,
+                executeQuery.getString("entrada_salida").equals("E"),
+                executeQuery.getString("recibo").equals("SI"),
+                executeQuery.getString("boleto_perdido").equals("SI"),
+                executeQuery.getString("boleto_cancelado").equals("SI"),
+                executeQuery.getString("boleto_manual").equals("SI"),
+                executeQuery.getString("boleto_contra").equals("SI"),
+                executeQuery.getString("boleto_pendiente").equals("SI"),
                 executeQuery.getInt("horas_estadia"),executeQuery.getInt("minutos_estadia"),
                 executeQuery.getFloat("monto"),executeQuery.getLong("turno_entrada_id"),
                 executeQuery.getLong("turno_salida_id"),executeQuery.getString("serie"),
-                executeQuery.getString("nota"),executeQuery.getLong("id_tarifa"),
+                executeQuery.getString("notas"),executeQuery.getLong("id_tarifa"),
                 executeQuery.getFloat("descuento"),executeQuery.getString("clave"),
                 executeQuery.getLong("id_caseta"));
                 if(auto.getBoletoPerdido()!=null)
                     auto.getBoletoPerdido().setAuto(auto);
             }
-           
-            if (executeQuery.getString("entrada_salida").equals("E")){
-                auto.isDentro = true;
-            }else
-                auto.isDentro = false;
-            
-            if (executeQuery.getString("recibo").equals("NO")){
-                auto.isReciboImpreso = false;
-            }else
-                auto.isReciboImpreso = true;
-            
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
@@ -433,7 +419,7 @@ public class Auto {
 
     
      public static ArrayList <Auto>  getAutosPorSerie(Turno turno, String key) {
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -543,8 +529,30 @@ public class Auto {
         }
         return auto;
     }
+    public static Auto getByProgresivoClaveContra(String clave) {
+       Auto auto = null;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where serie = ? and progresivo = ? ");
+            statement.setString(1, clave.substring(5,6));
+            statement.setString(2, clave.substring(6,12));
+            
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()){
+                auto = Auto.getById(executeQuery.getInt("id"));
+                if(! ( auto.getClave().substring(0,4).equals(clave.substring(0, 4)) && clave.substring(4, 5).equals(".") ))
+                    auto = null;
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return auto;
+    }
     public static List<Auto> getAutosPendientes(){
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -564,7 +572,7 @@ public class Auto {
 
     
     public static List<Auto> getAutosPendientes(Turno turno){
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -585,7 +593,7 @@ public class Auto {
     
     
      public static List<Auto>  getAutosBoletoPerdidoTurnoActual(Turno turno) {
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -605,7 +613,7 @@ public class Auto {
     }
      
     public static List<Auto>  getAutosBoletoCanceladoTurnoActual(Turno turno) {
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -625,7 +633,7 @@ public class Auto {
     }
     
     public static List<Auto> getAutosCobradosTurnoActual(Turno turno){
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -646,7 +654,7 @@ public class Auto {
     
     
     public static List<Auto> getAutosPendientes(String key){
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -665,7 +673,7 @@ public class Auto {
     }
     
      public static List<Auto> getAutosPendientes(Turno turno, String key){
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -684,7 +692,7 @@ public class Auto {
         return autos;
     }
      public static List<Auto> getAutosPendientesA(Turno turno, String key){
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -702,7 +710,7 @@ public class Auto {
         }
         return autos;
     }public static List<Auto> getAutosPendientesS(Turno turno, String key){
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -721,7 +729,7 @@ public class Auto {
         return autos;
     }
     public static List<Auto>  getAutosBoletoPerdidoTurnoActual(Turno turno, String key) {
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -740,7 +748,7 @@ public class Auto {
         return autos;
     }
     public static List<Auto>  getAutosBoletoCanceladoTurnoActual(Turno turno, String key) {
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -760,7 +768,7 @@ public class Auto {
     }
     
     public static List<Auto> getAutosCobradosTurnoActual(Turno turno, String key){
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
@@ -780,7 +788,7 @@ public class Auto {
     }
 
     static long getUltimoProgresivoPorSerie(Turno turno, String key) {
-        ArrayList <Auto> autos = new ArrayList<Auto>();
+        ArrayList <Auto> autos = new ArrayList<>();
         Long progresivo = 0L;
         try {
             Conexion conexion = new Conexion();
@@ -801,7 +809,7 @@ public class Auto {
     }
 
     static long getPrimerProgresivoPorSerie(Turno turno, String key) {
-         ArrayList <Auto> autos = new ArrayList<Auto>();
+         ArrayList <Auto> autos = new ArrayList<>();
         Long progresivo = 0L;
         try {
             Conexion conexion = new Conexion();

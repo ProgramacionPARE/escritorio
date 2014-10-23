@@ -64,7 +64,6 @@ public class FrmPrincipal extends JFrame{
     
     public void initLogin(){
         btnCerrarSesion.setVisible(false);
-        Turno turnoTemp = Turno.existeTurnoAbierto();
         new FrmLogin(this, true);
  
     }

@@ -85,16 +85,15 @@ public class FrmEntradaValet extends javax.swing.JDialog {
             //Imprimo boletos
             PrinterJob job = PrinterJob.getPrinterJob();
             // Boleto al cliente
-            new FrmP1BoletoCliente(this, false,job,turno,auto,estacionamiento,turno.getEmpleado());
+            //new FrmP1BoletoCliente(this, false,job,turno,auto,estacionamiento,turno.getEmpleado());
             //Boleto llaves
-            //new FrmP2BoletoLlaves(this, false,job,turno,auto,turno.getEmpleado());
+            new FrmP2BoletoLlaves(this, false,job,turno,auto,turno.getEmpleado());
             //Boleto Parabrisas
             //new FrmP3BoletoParabrisas(this, false ,job,turno,auto);
-        
+            
             this.setVisible(false);
             this.dispose();
 
-        
         }
     }
 
