@@ -34,7 +34,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
             @Override
             public void valueChanged(ListSelectionEvent event) {
                 if(estado.equals("")){
-                    tarifa = Tarifa.getById((int) tblTarifas.getValueAt(tblTarifas.getSelectedRow(), 0));
+                    tarifa = Tarifa.getById((long) tblTarifas.getValueAt(tblTarifas.getSelectedRow(), 0));
                     btnEliminar.setVisible(true);
                     btnModificar.setVisible(true);
                     cargarDatos();

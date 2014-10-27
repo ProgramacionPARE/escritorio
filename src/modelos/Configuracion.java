@@ -13,10 +13,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static modelos.Estacionamiento.e;
 
-class Configuracion{
+public class Configuracion{
     public static Configuracion DATOS = new Configuracion();
     
-    Configuracion(){
+    private Configuracion(){
         try {
             ConexionDatos conexion = new ConexionDatos();
             Connection connectionDB = conexion.getConnectionDB();
@@ -24,6 +24,7 @@ class Configuracion{
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
                 this.setIp(resultSet.getString("ip"));
+                this.setTerminal(resultSet.getString("terminal"));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -31,10 +32,19 @@ class Configuracion{
         }
     }
     
-    public  String ip;
+    private  String ip;
+    private String terminal;
 
     public Configuracion(String ip) {
         this.ip = ip;
+    }
+
+    public String getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
     }
 
     public String getIp() {

@@ -77,7 +77,7 @@ public class FrmP1BoletoClienteAutoServicio extends JDialog implements Printable
        
         lblProgresivo.setText("No. "+auto.getSerie() + auto.getProgresivo());
         lblFecha.setText(auto.getFechaEntrada()+" "+auto.getHoraEntrada());
-        lblAcomodador.setText(turno.getEmpleado().getNombre());
+        lblAcomodador.setText(turno.getEmpleadoEntrada().getNombre());
         setVisible(true);
         imprimir();
 

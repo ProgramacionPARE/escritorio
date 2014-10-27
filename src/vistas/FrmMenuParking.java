@@ -243,6 +243,7 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
         btnReciboPago.setName("btnReciboPago"); // NOI18N
         getContentPane().add(btnReciboPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 130, 200, -1));
 
+        btnBoletoMaltratado.setAction(actionMap.get("onBoletoIlegible")); // NOI18N
         btnBoletoMaltratado.setBackground(new java.awt.Color(255, 255, 255));
         btnBoletoMaltratado.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnBoletoMaltratado.setText("<html><b>Codigo ilegiblle</b><br><center>(F6)</center></html>");

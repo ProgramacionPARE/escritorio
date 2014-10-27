@@ -1,16 +1,22 @@
 package modeloReportes;
 
 import java.awt.print.PrinterJob;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
+import modelos.DetalleTurno;
 import modelos.DetallesMovimiento;
 import modelos.Estacionamiento;
 import modelos.Turno;
@@ -37,37 +43,51 @@ public class CorteTurno implements Runnable  {
 
     @Override
     public void run() {
-        Iterator<Entry<String, Turno>> iterator = turno.getTurnosImprimir().entrySet().iterator();
+        Iterator<Entry<String, DetalleTurno>> iterator = turno.getDetallesTurno().entrySet().iterator();
         while(iterator.hasNext()){
-            Turno turno = iterator.next().getValue();
-            Map<String, Object> parametros = new HashMap<String, Object>();
+            String serie =  iterator.next().getKey();
+            long totalCobrados = turno.getDetallesTurno().get(serie).getNoBolCobrados() +
+                                turno.getDetallesTurno().get(serie).getNoBolContra() +
+                                turno.getDetallesTurno().get(serie).getNoBolManual();
+            Map<String,Object> parametros = new HashMap<String, Object>();
+            parametros.put("centroCostos",estacionamiento.getDescripcion());
+
             parametros.put("fechaTurno", turno.getFechaApertura());
-            parametros.put("operador", turno.getOperador().getNombre());
+            parametros.put("turno",turno.getTipoTurno());
+            
+            parametros.put("operador", turno.getEmpleadoEntrada().getNombre());
             parametros.put("fecha", turno.getFechaApertura());
             parametros.put("fechaApertura",  turno.getHoraApertura() );
             parametros.put("fechaCierre",    turno.getHoraCierre()  );
-            parametros.put("folioInicial", turno.getFolioInicial());
-            parametros.put("folioFinal",turno.getFolioFinal());
-            parametros.put("numBoletos",turno.getNoBol());
-            parametros.put("pendienteTA",turno.getNoBolTurnoA());
-            parametros.put("cancelados",turno.getNoBolCancelados());
-            parametros.put("perdidos",turno.getNoBolPerdidos());
-            parametros.put("cobrados",turno.getNoBolCobrados());
-            parametros.put("pendientes",turno.getNoBolTurnoS());
-            parametros.put("total",turno.getTotal());
-            parametros.put("turno",turno.getTipoTurno());
+            parametros.put("folioInicial", turno.getDetallesTurno().get(serie).getFolioInicial());
+            parametros.put("folioFinal",turno.getDetallesTurno().get(serie).getFolioFinal());
+            parametros.put("boletoPromedio",turno.getDetallesTurno().get(serie).getTotal());
+            
+            parametros.put("numBoletos",turno.getDetallesTurno().get(serie).getNoBol());
+            parametros.put("pendienteTA",turno.getDetallesTurno().get(serie).getNoBolTurnoA());
+            
+            parametros.put("cobrados",totalCobrados);
+            parametros.put("cobroNormal",turno.getDetallesTurno().get(serie).getNoBolCobrados());
+            parametros.put("cobroContra",turno.getDetallesTurno().get(serie).getNoBolContra());
+            parametros.put("cobroManual",turno.getDetallesTurno().get(serie).getNoBolManual());
+            
+            parametros.put("cancelados",turno.getDetallesTurno().get(serie).getNoBolCancelados());
+            parametros.put("perdidos",turno.getDetallesTurno().get(serie).getNoBolPerdidos());
+            
+            parametros.put("pendientes",turno.getDetallesTurno().get(serie).getNoBolTurnoS());
+            
+            parametros.put("total",turno.getDetallesTurno().get(serie).getTotal());
             //parametros.put("numBoletosCobrados",turno.getNoBolCancelados() +turno.getNoBolCobrados()
              //       + turno.getNoBolPerdidos());
-            parametros.put("centroCostos",estacionamiento.getDescripcion());
-
-            if(turno.getDetallesMovimiento().size()<1){
-                turno.getDetallesMovimiento().add(new DetallesMovimiento());
+            
+            if(turno.getDetallesTurno().get(serie).getDetalleMovimiento().size()<1){
+                turno.getDetallesTurno().get(serie).getDetalleMovimiento().add(new DetallesMovimiento());
             }  
             try {
                 JasperReport reporte = (JasperReport) JRLoader.
                 loadObject(new File("/home/empleado/pare/reportes/corteTurno.jasper"));
                 //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/corteTurno.jasper"));
-                JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getDetallesMovimiento()));
+                JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getDetallesTurno().get(serie).getDetalleMovimiento()));
                 PrinterJob job = PrinterJob.getPrinterJob();
                 PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
                 int selectedService = 0;
@@ -86,9 +106,22 @@ public class CorteTurno implements Runnable  {
                 exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
                 exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
                 exporter.exportReport();
+                try {
+                    String ruta = "/home/empleado/pare/cortes/reporte-"+turno.getFechaApertura()+"-"+turno.getTipoTurno()+".pdf";
+                    File archivo = new File(ruta);
+                    BufferedWriter bw;
+                    if(archivo.exists()) {
+                        bw = new BufferedWriter(new FileWriter(archivo));
+                     } else {
+                        bw = new BufferedWriter(new FileWriter(archivo));
+                      }
+                    bw.close();
+               
                 
-                JasperExportManager.exportReportToPdfFile(jasperPrint, "/home/empleado/pare/cortes/reporte-"+turno.getFechaApertura()+"-"+turno.getTipoTurno()+".pdf");
-                
+                JasperExportManager.exportReportToPdfFile(jasperPrint,ruta );
+                 } catch (IOException ex) {
+                    Logger.getLogger(CorteTurno.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
     //            exporter = new JRPrintServiceExporter();
     //            SimplePrintServiceExporterConfiguration configuration = new SimplePrintServiceExporterConfiguration();

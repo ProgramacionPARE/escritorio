@@ -24,7 +24,7 @@ public class FrmFolios extends javax.swing.JDialog {
          String ser = "";
         for(String s : estacionamiento.getCaseta().getSeries())
             ser+=s+" ";
-        txtBoleto.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "BOLETO"));
+        txtBoleto.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "0"));
         txtRetiro.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RETIRO_PARCIAL"));
         txtPerdido.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "PERDIDO"));
         txtRecibo.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO"));

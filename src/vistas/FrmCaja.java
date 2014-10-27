@@ -158,7 +158,7 @@ public class FrmCaja extends javax.swing.JDialog {
        new FrmRetiroParcial(parent,true,turno,estacionamiento,caja);
        this.setVisible(false);
        if(esCorte){
-            turno.realizarCorte(empleado);
+            turno.realizarCorte(empleado.getId());
             turno.actualizar();
             new CorteTurno(turno, estacionamiento).generarReporte();
             new RetirosParciales(turno, estacionamiento).generarReporte();

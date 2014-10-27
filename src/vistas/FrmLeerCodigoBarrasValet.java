@@ -120,16 +120,16 @@ public class FrmLeerCodigoBarrasValet extends javax.swing.JDialog {
                 this.clave = clave;
                 this.caseta = caseta;*/
 
-                    Auto auto= new Auto(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"BOLETO"),
+                    Auto auto = new Auto(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"0"),
                             "",Tiempo.getFecha(),Tiempo.getHora(),"","","",turno.getId(),"0",
                             "",Seguridad.getClave(5), estacionamiento.getCaseta().getId());
                     
                     //Aumento en uno los boletos generados
-                    turno.setNoBol(turno.getNoBol()+1);
+                    turno.getDetallesTurno().get(auto.getClave()).setNoBol(turno.getDetallesTurno().get(auto.getClave()).getNoBol()+1);
                     //Actualizo el folio final en el turno
-                    turno.setFolioFinal (turno.getFolioFinal()+1); 
+                    turno.getDetallesTurno().get(auto.getClave()).setFolioFinal (turno.getDetallesTurno().get(auto.getClave()).getFolioFinal()+1); 
                    
-                    Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),"BOLETO");
+                    Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),auto.getSerie());
                     //Imprimo boletos
                     PrinterJob job = PrinterJob.getPrinterJob();
                     // Boleto al cliente

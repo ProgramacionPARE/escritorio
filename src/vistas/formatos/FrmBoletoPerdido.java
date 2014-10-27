@@ -58,7 +58,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
             lblProgresivo.setVisible(false);
             txtPlacas.setEditable(true);
         }
-        txtCajero.setText(turno.getEmpleado().getNombre());
+        txtCajero.setText(turno.getEmpleadoEntrada().getNombre());
         txtCaseta.setText(estacionamiento.getCaseta().getDescripcion());
         txtCentroOperativo.setText(estacionamiento.getDescripcion());
         txtFecha.setText(Tiempo.getHora()+"  "+Tiempo.getFecha());
@@ -664,7 +664,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (validaCamposEntrada()){
-            if(new Operacion(this.parent).requierePermisos(turno.getEmpleado(), "Supervisor",true)){
+            if(new Operacion(this.parent).requierePermisos(turno.getEmpleadoEntrada(), "Supervisor",true)){
                 btnGuardar.setVisible(false);
                 auto.setColor(txtColor.getText());
                 auto.setModelo(txtModelo.getText());

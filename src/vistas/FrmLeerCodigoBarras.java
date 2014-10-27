@@ -2,10 +2,15 @@
 package vistas;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.print.PrinterJob;
 import javax.swing.JFrame;
 import modelos.Auto;
+import modelos.Configuracion;
 import modelos.Estacionamiento;
 import modelos.Turno;
 import vistas.formatos.FrmBoletoCancelado;
@@ -30,20 +35,32 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog {
         this.accion = accion;
         this.estacionamiento = estacionamiento;
         this.getContentPane().setBackground(Color.white);
-        pack();
+          pack();
         id ="";
         if(accion.equals("COBRO")){
-            lblMensaje.setText("Coloca el boleto frente al sensor.");
+            lblMensaje.setText("Coloca tu boleto frente al sensor");
         }else if(accion.equals("CANCELAR")){
-                lblMensaje.setText("Coloca el boleto frente al sensor.");
+                lblMensaje.setText("Coloca tu boleto frente al sensor");
         }else if(accion.equals("RECIBO")){
-            lblMensaje.setText("Coloca el boleto frente al sensor.");
+            lblMensaje.setText("Coloca tu boleto frente al sensor");
         }else if(accion.equals("PERDIDO")){
-            lblMensaje.setText("Coloca la contra frente al sensor.");
+            lblMensaje.setText("Coloca la contra en el sensor");
         }else if(accion.equals("CONTRA")){
-            lblMensaje.setText("Coloca la contra frente al sensor.");
+            lblMensaje.setText("Coloca la contra en el sensor");
         }else if(accion.equals("ENTRADA")){
         }
+        if(Configuracion.getDatos().getTerminal().equals(Estacionamiento.CLIENTE)){
+            this.lblMensaje.setFont(new Font("Tahoma", 0, 50));
+            Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
+            System.out.println(screenSize.width);
+            System.out.println(screenSize.height);
+            
+            setBounds(0, 0,  screenSize.width,  screenSize.height); 
+
+
+
+        }
+     
         setLocationRelativeTo(parent);
         setVisible(true);
     }
@@ -51,6 +68,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         lblMensaje = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -61,39 +79,31 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog {
                 formKeyTyped(evt);
             }
         });
+        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
+        layout.columnWidths = new int[] {0, 5, 0};
+        layout.rowHeights = new int[] {0, 20, 0, 20, 0};
+        getContentPane().setLayout(layout);
 
         lblMensaje.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblMensaje.setText("Coloca el codigo del boleto en el sensor");
         lblMensaje.setName("lblMensaje"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        getContentPane().add(lblMensaje, gridBagConstraints);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vistas/resources/codigoBarras.jpg"))); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(139, 139, 139))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblMensaje)
-                .addGap(28, 28, 28)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = -400;
+        gridBagConstraints.ipady = -145;
+        getContentPane().add(jLabel2, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

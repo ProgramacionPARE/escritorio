@@ -74,7 +74,7 @@ public class BoletoCancelado implements IDBModel{
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("INSERT INTO boleto_cancelado (`id_auto`, `id_turno`,"+
+            prepareStatement("INSERT INTO boleto_cancelado (`id_auto`, `id`,"+
                             " `razon`)"+
                             " VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS);
             statement.setLong(1, auto.getId());
@@ -113,7 +113,7 @@ public class BoletoCancelado implements IDBModel{
             if (executeQuery.next()){
                 boletoCancelado = new BoletoCancelado(executeQuery.getInt("id")
                 ,executeQuery.getString("razon") , 
-                 Turno.getById(executeQuery.getLong("id_turno")));
+                 Turno.getById(executeQuery.getLong("id")));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {

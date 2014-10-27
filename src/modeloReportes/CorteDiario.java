@@ -12,6 +12,7 @@ import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
+import modelos.DetalleTurno;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
@@ -39,17 +40,22 @@ public class CorteDiario  {
         int tNoBolCobrados = 0;
         int tNoBolTurnoS = 0;
         float tTotal=0;
-        Iterator<Turno> iterator = turnos.iterator();
-        while(iterator.hasNext()){
-            Turno turnoTemporal = iterator.next();
-            tNoBol += turnoTemporal.getNoBol();
-            tNoBolCancelados += turnoTemporal.getNoBolCancelados();
-            tNoBolPerdidos += turnoTemporal.getNoBolPerdidos();
-            tNoBolCobrados += turnoTemporal.getNoBolCobrados();
-            tTotal += turnoTemporal.getTotal();
+        Iterator<Turno> turnosTemp = turnos.iterator();
+        while(turnosTemp.hasNext()){
+            Turno turnoTemporal = turnosTemp.next();
+            Iterator<Map.Entry<String, DetalleTurno>> detalleTurnoTemp = turnoTemporal.getDetallesTurno().entrySet().iterator();
+            while(detalleTurnoTemp.hasNext()){
+                Map.Entry<String, DetalleTurno> next = detalleTurnoTemp.next();
+                tNoBol += next.getValue().getNoBol();
+                tNoBolCancelados += next.getValue().getNoBolCancelados();
+                tNoBolPerdidos += next.getValue().getNoBolPerdidos();
+                tNoBolCobrados += next.getValue().getNoBolCobrados();
+                tTotal += next.getValue().getTotal();
+            }
+            
         }
-        tFolioInicial = turnos.get(0).getFolioInicial();
-        tFolioFinal = turnos.get(turnos.size()-1).getFolioFinal();
+        //tFolioInicial = turnos.get(0).getFolioInicial();
+        //tFolioFinal = turnos.get(turnos.size()-1).getFolioFinal();
          
            
         parametros.put("fecha",fecha); 

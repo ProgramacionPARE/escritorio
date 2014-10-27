@@ -43,14 +43,14 @@ public class RetirosParciales  {
             total += iterator.next().getMonto();
         }
         parametros.put("fechaTurno", turno.getFechaApertura());
-        parametros.put("operador", turno.getOperador().getNombre());
+        parametros.put("operador", turno.getEmpleadoEntrada().getNombre());
         parametros.put("fecha", Tiempo.getFecha()+" "+Tiempo.getHora() );
         parametros.put("turno",turno.getTipoTurno());
         parametros.put("centroCostos",estacionamiento.getDescripcion());
         parametros.put("total", total);
-            if(turno.getDetallesMovimiento().size()<1){
-                turno.getDetallesMovimiento().add(new DetallesMovimiento());
-            }  
+//            if(turno.getDetallesMovimiento().size()<1){
+//                turno.getDetallesMovimiento().add(new DetallesMovimiento());
+//            }  
             try {
                 JasperReport reporte = (JasperReport) JRLoader.
                 loadObject(new File("/home/empleado/pare/reportes/retirosParciales.jasper"));

@@ -39,7 +39,7 @@ public class FrmNuevoTurno extends javax.swing.JDialog {
         btnEntrar = new javax.swing.JButton();
         cmbTurnos = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setText("Abriendo turno");

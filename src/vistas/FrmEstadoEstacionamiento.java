@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modeloReportes.ReporteFolios;
 import modelos.Auto;
+import modelos.DetalleTurno;
 import modelos.Estacionamiento;
 import modelos.IUseCalendar;
 import modelos.RetiroParcial;
@@ -33,6 +34,7 @@ import modelos.Turno;
 public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUseCalendar {
     Frame parent;
     Turno turno;
+    String serie;
     Estacionamiento estacionamiento;
     List<Auto> autosReporte;
     ArrayList<JCheckBox> cbxSeries;
@@ -43,11 +45,12 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     /**
      * Creates new form FrmEstadoEstacionamiento
      */
-    public FrmEstadoEstacionamiento(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento) {
+    public FrmEstadoEstacionamiento(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento,String serie) {
         super(parent,"Estado de estacionamiento", modal);
         initComponents();
         personalizarTablas();
         this.parent = parent;
+        this.serie = serie;
         this.estacionamiento =  estacionamiento;
         setLocationRelativeTo(parent);
         
@@ -121,7 +124,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             }
         }
    
-        ArrayList<Turno> turnos = Turno.getTurnosByFechaAbiertoAuditoria(fecha);
+        ArrayList<Turno> turnos = Turno.getTurnosByFechaAbierto(fecha);
         Iterator<Turno> turnosIterator = turnos.iterator();
         while(turnosIterator.hasNext()){
             Turno turnoTemp = turnosIterator.next();
@@ -153,9 +156,11 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                 ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
                 ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
             modelTurno.addRow(new Object[]{ turnoAux.getHoraCierre()!=null?"CERRADO":"ABIERTO",turnoAux.getTipoTurno(),
-                turnoAux.getHoraApertura(),turnoAux.getHoraCierre(),turnoAux.getEmpleado().getNombre(),
-                turnoAux.getFolioInicial(),turnoAux.getFolioFinal(),turnoAux.getTotal()});
-            importeTurnosTabla+=turnoAux.getTotal();
+                turnoAux.getHoraApertura(),turnoAux.getHoraCierre(),turnoAux.getEmpleadoEntrada().getNombre(),
+                turnoAux.getDetallesTurno().get(this.serie).getFolioInicial(),
+                turnoAux.getDetallesTurno().get(this.serie).getFolioFinal(),
+                turnoAux.getDetallesTurno().get(this.serie).getTotal()});
+            importeTurnosTabla+=turnoAux.getDetallesTurno().get(this.serie).getTotal();
             }
             this.tblTurnos.setModel(modelTurno);
         }
@@ -202,7 +207,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             if(this.cbxCobrado.isSelected()){
                  List<Auto> autosCobradosTurnoActual = new ArrayList(); 
                 if(fechaCambio){
-                    autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(turnoAux);
+                    autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(turnoAux.getId(),serie);
                     aCobrados.put(turnoAux.getId(), autosCobradosTurnoActual);
                 }else{
                     autosCobradosTurnoActual = aCobrados.get(turnoAux.getId());
@@ -239,7 +244,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                 List<Auto> autosPendientesTurnoActual = new ArrayList(); 
                 if(fechaCambio){
                     banderaCambio = true;
-                    autosPendientesTurnoActual = Auto.getAutosPendientes(turnoAux);  
+                    autosPendientesTurnoActual = Auto.getAutosPendientesS(turnoAux.getId(),serie);  
                     aPendientes.put(turnoAux.getId(), autosPendientesTurnoActual);
                 }else{
                     autosPendientesTurnoActual = aPendientes.get(turnoAux.getId());
@@ -271,7 +276,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             }  
             //Autos Cancelados
             if(this.cbxCancelado.isSelected()){
-                List<Auto> autosCanceladosTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(turnoAux);
+                List<Auto> autosCanceladosTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(turnoAux.getId(),serie);
                 Iterator<Auto> iteratorAutosCancelados = autosCanceladosTurnoActual.iterator();
                 if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
                     ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
@@ -299,7 +304,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
    
             //Autos boleto perdido
             if(this.cbxPerdido.isSelected()){
-                List<Auto> autosPerdidosTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(turnoAux);
+                List<Auto> autosPerdidosTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(turnoAux.getId(),serie);
              
                 Iterator<Auto> iteratorAutosPerdidos = autosPerdidosTurnoActual.iterator();
                  if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
@@ -347,12 +352,16 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             if( ( turnoAux.getTipoTurno().equals("Primer turno") && this.cbxPrimer.isSelected() && this.cbxPrimer.isVisible() ) ||
                 ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
                 ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
-                    boletosEmitidos += turnoAux.getNoBol();
-                    boletosTurnoA += turnoAux.getNoBolTurnoA();
-                    boletosPendientes+= turnoAux.getNoBol() + turnoAux.getNoBolTurnoA() - (turnoAux.getNoBolCobrados() + turnoAux.getNoBolCancelados() +turnoAux.getNoBolPerdidos() );
-                    boletosCobrados += turnoAux.getNoBolCobrados();
-                    boletosPerdidos += turnoAux.getNoBolPerdidos();
-                    boletosCancelados += turnoAux.getNoBolCancelados(); 
+                    boletosEmitidos += turnoAux.getDetallesTurno().get(this.serie).getNoBol();
+                    boletosTurnoA += turnoAux.getDetallesTurno().get(this.serie).getNoBolTurnoA();
+                    boletosPendientes+= turnoAux.getDetallesTurno().get(this.serie).getNoBol() + 
+                            turnoAux.getDetallesTurno().get(this.serie).getNoBolTurnoA() - 
+                            (turnoAux.getDetallesTurno().get(this.serie).getNoBolCobrados() + 
+                            turnoAux.getDetallesTurno().get(this.serie).getNoBolCancelados() +
+                            turnoAux.getDetallesTurno().get(this.serie).getNoBolPerdidos() );
+                    boletosCobrados += turnoAux.getDetallesTurno().get(this.serie).getNoBolCobrados();
+                    boletosPerdidos += turnoAux.getDetallesTurno().get(this.serie).getNoBolPerdidos();
+                    boletosCancelados += turnoAux.getDetallesTurno().get(this.serie).getNoBolCancelados(); 
             }
                 
         }
@@ -1078,7 +1087,12 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     }//GEN-LAST:event_cbxCanceladoActionPerformed
 
     private void btnImprimir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimir1ActionPerformed
-     new FrmArqueo(this.parent,true,turno, estacionamiento);
+        Iterator<Map.Entry<String, DetalleTurno>> iterator = turno.getDetallesTurno().entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<String, DetalleTurno> next = iterator.next();
+            new FrmArqueo(this.parent,true,turno, estacionamiento,next.getKey());
+        }
+        
     }//GEN-LAST:event_btnImprimir1ActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed

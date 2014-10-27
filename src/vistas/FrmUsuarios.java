@@ -65,15 +65,15 @@ public class FrmUsuarios extends javax.swing.JDialog {
         btnCambiarContraseña.setVisible(false);
         btnImprimir.setVisible(false);
         String [] permisos=null;
-        if ( turno.getEmpleado().getTipoPuesto().equals("Cajero") ){  
+        if ( turno.getEmpleadoEntrada().getTipoPuesto().equals("Cajero") ){  
             permisos =  new String[] { "Cajero" };
-        }else if ( turno.getEmpleado().getTipoPuesto().equals( "Encargado") ){
+        }else if ( turno.getEmpleadoEntrada().getTipoPuesto().equals( "Encargado") ){
             permisos =  new String[] { "Cajero","Encargado" };
-        }else if ( turno.getEmpleado().getTipoPuesto().equals(  "Supervisor") ){
+        }else if ( turno.getEmpleadoEntrada().getTipoPuesto().equals(  "Supervisor") ){
             permisos =  new String[] { "Cajero","Encargado","Supervisor" };
-        }else if ( turno.getEmpleado().getTipoPuesto().equals(  "Auditor" )){
+        }else if ( turno.getEmpleadoEntrada().getTipoPuesto().equals(  "Auditor" )){
             permisos =  new String[] { "Cajero","Encargado","Supervisor","Auditor"};
-        }else if ( turno.getEmpleado().getTipoPuesto().equals( "Administrador") ){
+        }else if ( turno.getEmpleadoEntrada().getTipoPuesto().equals( "Administrador") ){
             permisos =  new String[] { "Cajero","Encargado","Supervisor","Auditor","Administrador", };
         } 
        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel(permisos));
@@ -92,7 +92,7 @@ public class FrmUsuarios extends javax.swing.JDialog {
         Iterator<Empleado> iterator = empleados.iterator();
         while (iterator.hasNext()) {
             Empleado next = iterator.next();
-            if(new Operacion(this.parent).requierePermisos( turno.getEmpleado(), next.getTipoPuesto(),false))
+            if(new Operacion(this.parent).requierePermisos( turno.getEmpleadoEntrada(), next.getTipoPuesto(),false))
                 model.addRow(new String[]{String.valueOf(next.getId()), next.getNombre(), next.getTipoPuesto()});
             
         }

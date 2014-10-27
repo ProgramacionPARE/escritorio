@@ -33,7 +33,7 @@ public class FrmEntradaAutoservicio extends javax.swing.JDialog {
         this.getContentPane().setBackground(Color.white);
         txtFechaEntrada.setText(Tiempo.getFecha());
         //txtHoraEntrada.setText(Tiempo.getHora().substring(0, 5));
-        txtCajero.setText(turno.getEmpleado().getNombre());
+        txtCajero.setText(turno.getEmpleadoEntrada().getNombre());
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbxSeries.getModel();
         for (String s: estacionamiento.getCaseta().getSeries() )
             model.addElement(s);
@@ -110,9 +110,9 @@ public class FrmEntradaAutoservicio extends javax.swing.JDialog {
                 turno.getId(),(String)cbxSeries.getSelectedItem(),"",Seguridad.getClave(5),
                 estacionamiento.getCaseta().getId());
          //Aumento en uno los boletos generados
-        turno.setNoBol(turno.getNoBol()+1);
+        turno.getDetallesTurno().get(auto.getSerie()).setNoBol(turno.getDetallesTurno().get(auto.getSerie()).getNoBol()+1);
         //Actualizo el folio final en el turno
-        turno.setFolioFinal (turno.getFolioFinal()+1); 
+        turno.getDetallesTurno().get(auto.getSerie()).setFolioFinal (turno.getDetallesTurno().get(auto.getSerie()).getFolioFinal()+1); 
         turno.actualizar();
         // Guardo entrada y actualizo progresivo
         auto.guardar();

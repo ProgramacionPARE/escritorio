@@ -98,7 +98,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         txtTiempoEstadia.setText(txtTiempoEstadia.getText()+ auto.getMinutosTangibles()+" minutos");
         txtImporteTotal.setText(String.valueOf(auto.getMontoTangible()));
         txtImporteBoletoPerdido.setText(String.valueOf(auto.getTarifa().getPrecioBoletoPerdido()));
-        if(auto.getBoletoPerdido()==null){
+        if(auto.isBoletoPerdido()){
             jLabel5.setVisible(false);
             txtImporteBoletoPerdido.setVisible(false);
         }
@@ -449,13 +449,13 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         caja.actualizar();
         //Reviso si el auto fue boleto perdido, cancelado o cobrado normalmente 
         if(auto.getBoletoCancelado()!= null)
-            turno.setNoBolCancelados(turno.getNoBolCancelados()+1);
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCancelados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCancelados()+1);
         else if(auto.getBoletoPerdido()!= null)
-            turno.setNoBolPerdidos(turno.getNoBolPerdidos()+1);
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolPerdidos(turno.getDetallesTurno().get(auto.getSerie()).getNoBolPerdidos()+1);
         else
-            turno.setNoBolCobrados(turno.getNoBolCobrados()+1);
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCobrados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCobrados()+1);
        
-        turno.setTotal(auto.getMontoTangible());
+        turno.getDetallesTurno().get(auto.getSerie()).setTotal(turno.getDetallesTurno().get(auto.getSerie()).getTotal()+auto.getMontoTangible());
         auto.actualizar();
         
         //turno.setTotal(DetallesMovimiento.calcularTotal(DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(turno),

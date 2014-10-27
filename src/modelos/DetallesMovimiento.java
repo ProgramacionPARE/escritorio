@@ -60,7 +60,7 @@ public class DetallesMovimiento{
                     Connection connectionDB = conexion.getConnectionDB();
                     PreparedStatement  statement = connectionDB.
                     prepareStatement("INSERT INTO detalles_movimiento (`cantidad_boletos`,"+
-                            " `precio_unitario`, `importe`,`id_turno`,`tipo`,`rango_horario`,`serie`)"
+                            " `precio_unitario`, `importe`,`id`,`tipo`,`rango_horario`,`serie`)"
                                     + " VALUES (?,?,?,?,?,?,?)");
                     statement.setInt(1, d.getNoBol());
                     statement.setFloat(2, d.getPrecioUnitario());
@@ -87,7 +87,7 @@ public class DetallesMovimiento{
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM detalles_movimiento where id_turno = ?");
+            prepareStatement("SELECT * FROM detalles_movimiento where id = ?");
             statement.setLong(1, turno_id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
@@ -139,8 +139,9 @@ public class DetallesMovimiento{
         }
     }
     
-    public static ArrayList<DetallesMovimiento> generarDetalles(List<Auto> autosCobradosTurnoActual,
-        List<Auto> autosBoletoPerdidoTurnoActual, List<Auto> autosBoletoCanceladoTurnoActual,Turno turno){
+    public static ArrayList<DetallesMovimiento> generarDetalles(
+            List<Auto> autosCobradosTurnoActual,
+            List<Auto> autosBoletoPerdidoTurnoActual){
         
         ArrayList<DetallesMovimiento> mapDetalles = new ArrayList();
        

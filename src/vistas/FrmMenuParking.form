@@ -161,6 +161,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnBoletoMaltratado">
       <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="vistas.FrmMenuParking" id="onBoletoIlegible" methodName="onBoletoIlegible"/>
+        </Property>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>

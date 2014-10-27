@@ -23,8 +23,9 @@ public class ReporteArqueo  {
     private Turno turno;
     private Arqueo arqueo;
     private Estacionamiento estacionamiento;
+    private String serie;
     
-    public ReporteArqueo(Turno turno, Arqueo arqueo, Estacionamiento estacionamiento) {
+    public ReporteArqueo(Turno turno, Arqueo arqueo, Estacionamiento estacionamiento,String serie) {
         this.turno = turno;
         this.arqueo = arqueo;
         this.estacionamiento =  estacionamiento;
@@ -34,17 +35,18 @@ public class ReporteArqueo  {
     public void generarReporte(){
         Map<String, Object> parametros = new HashMap<String, Object>();
         parametros.put("fechaTurno", turno.getFechaApertura());
-        parametros.put("operador", turno.getOperador().getNombre());
+        parametros.put("operador", turno.getEmpleadoEntrada().getNombre());
         parametros.put("fecha", Tiempo.getFecha()+" "+Tiempo.getHora() );
-        parametros.put("folioInicial", turno.getFolioInicial());
-        parametros.put("folioFinal",turno.getFolioFinal());
-        parametros.put("numBoletos",turno.getNoBol());
-        parametros.put("pendienteTA",turno.getNoBolTurnoA());
-        parametros.put("cancelados",turno.getNoBolCancelados());
-        parametros.put("perdidos",turno.getNoBolPerdidos());
-        parametros.put("cobrados",turno.getNoBolCobrados());
-        parametros.put("boletosTotales",(turno.getNoBolCobrados()+turno.getNoBolPerdidos()));
-        parametros.put("pendientes",turno.getNoBolTurnoS());
+        parametros.put("folioInicial", turno.getDetallesTurno().get(serie).getFolioInicial());
+        parametros.put("folioFinal",turno.getDetallesTurno().get(serie).getFolioFinal());
+        parametros.put("numBoletos",turno.getDetallesTurno().get(serie).getNoBol());
+        parametros.put("pendienteTA",turno.getDetallesTurno().get(serie).getNoBolTurnoA());
+        parametros.put("cancelados",turno.getDetallesTurno().get(serie).getNoBolCancelados());
+        parametros.put("perdidos",turno.getDetallesTurno().get(serie).getNoBolPerdidos());
+        parametros.put("cobrados",turno.getDetallesTurno().get(serie).getNoBolCobrados());
+        parametros.put("boletosTotales",(turno.getDetallesTurno().get(serie).getNoBolCobrados()+
+                                        turno.getDetallesTurno().get(serie).getNoBolPerdidos()));
+        parametros.put("pendientes",turno.getDetallesTurno().get(serie).getNoBolTurnoS());
         parametros.put("turno",turno.getTipoTurno());
         parametros.put("centroCostos",estacionamiento.getDescripcion());
         //Arqueo
@@ -52,7 +54,7 @@ public class ReporteArqueo  {
         parametros.put("subTotalM",arqueo.getSubTotalM());
         parametros.put("subTotalR",arqueo.getSubTotalR());
         parametros.put("total",arqueo.getTotal());
-        parametros.put("diferencia",arqueo.getTotal()-turno.getTotal());
+        parametros.put("diferencia",arqueo.getTotal()-turno.getDetallesTurno().get(serie).getTotal());
         
 
         try {

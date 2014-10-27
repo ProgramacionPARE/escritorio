@@ -76,7 +76,7 @@ public class FrmRetiroParcial extends javax.swing.JDialog implements Printable{
         printRequestAttributeSet.add(mediaSizeName);
         printRequestAttributeSet.add(new Copies(1));
         
-        this.txtCajero.setText(turno.getEmpleado().getNombre());
+        this.txtCajero.setText(turno.getEmpleadoEntrada().getNombre());
         this.txtCaseta.setText(estacionamiento.getCaseta().getDescripcion());
         this.txtCentroOperativo.setText(estacionamiento.getDescripcion());
         this.txtFecha.setText(Tiempo.getFecha());

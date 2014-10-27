@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 package modelos;
 
@@ -15,6 +11,10 @@ import java.util.logging.Logger;
 
 
 public class Estacionamiento implements IDBModel{
+    public static final String CAJA = "caja";
+    public static final String EXPEDIDOR = "expedidor";
+    public static final String CLIENTE = "cliente";
+    
     static Estacionamiento e;
     int id;
     int centroCostos;
@@ -37,8 +37,6 @@ public class Estacionamiento implements IDBModel{
         this.tipo = tipo;
     }
     
-
-
 
     public int getId() {
         return id;
@@ -104,6 +102,8 @@ public class Estacionamiento implements IDBModel{
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+  
 
 
      

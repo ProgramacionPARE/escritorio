@@ -37,8 +37,6 @@ public class Tarifa implements IDBModel{
     
     }
 
-
-
     public Tarifa(long id, int fraciones, float[] costos, float precioHora, 
             float tarifaMaxima, float precioBoletoPerdido, int horasCompletas, 
             String descripcion,float tarifaUnica,float montoInicial ) {
@@ -56,10 +54,10 @@ public class Tarifa implements IDBModel{
 
     public static float getImporteEstadia(Auto auto){
         float importeMinutos=0,importeHoras=0;
-        if( auto.getBoletoPerdido()!=null)
+        if( auto.isBoletoPerdido())
             return auto.getTarifa().getPrecioBoletoPerdido();
         //Calculo del monto por fraccion de hora
-        if(auto.getBoletoCancelado()!=null)
+        if(auto.isBoletoCancelado())
             return 0;
         if (auto.getHorasTangibles() < auto.getTarifa().getHorasCompletas()){
             importeMinutos =  auto.getTarifa().getPrecioHora();

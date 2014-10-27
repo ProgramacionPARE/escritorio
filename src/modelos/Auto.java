@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Auto {
+
     private int id;
     private String progresivo;
     private String matricula;
@@ -415,8 +416,245 @@ public class Auto {
         }
         return auto;
     }
-        
+       
+    //////////////////////////////////////////////////////////////////////////
+    //                                                                      //
+    //        CONSULTAS PARA BOLETOS PENDIENTES TURNO ANTERIOR              //
+    //                                                                      //
+    //////////////////////////////////////////////////////////////////////////
+    
+    public static int getNumAutosPendientesA(long idTurno, String key) {
+        int nAutos = 0;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT count(id) as id FROM autos where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()){
+                nAutos =  executeQuery.getInt("id");
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nAutos;
+    }
+    
+    public static List<Auto> getAutosPendientesA(long idTurno, String key){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+    //////////////////////////////////////////////////////////////////////////
+    //                                                                      //
+    //        CONSULTAS PARA BOLETOS PENDIENTES TURNO SIGUIENTE             //
+    //                                                                      //
+    //////////////////////////////////////////////////////////////////////////
+    
+    public static int getNumAutosPendientesS(long idTurno, String key) {
+        int nAutos = 0;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT count(id) as id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()){
+                nAutos =  executeQuery.getInt("id");
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nAutos;
+    }
+                             
+    public static List<Auto> getAutosPendientesS(long idTurno, String key){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //                                                                      //
+    //            CONSULTAS PARA BOLETOS COBRADOS TURNO ACTUAL              //
+    //                                                                      //
+    //////////////////////////////////////////////////////////////////////////
+    
+    public static int getNumAutosCobradosTurnoActual(long idTurno, String key){
+        int nAutos = 0;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT count(id) as id FROM autos where turno_salida_id = ? and "
+                    + "boleto_perdido = 'NO' and boleto_cancelado = 'NO' and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+             if (executeQuery.next()){
+                nAutos =  executeQuery.getInt("id");
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nAutos;
+    }
+    
+    public static List<Auto> getAutosCobradosTurnoActual(long idTurno, String key){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and "
+                    + "boleto_perdido = 'NO' and boleto_cancelado = 'NO' and serie = ?");
+            statement.setLong(1, idTurno);
+            statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                   autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
 
+    //////////////////////////////////////////////////////////////////////////
+    //                                                                      //
+    //            CONSULTAS PARA BOLETOS CANCELADOS TURNO ACTUAL            //
+    //                                                                      //
+    //////////////////////////////////////////////////////////////////////////
+    
+    public static long  getNumAutosBoletoCanceladoTurnoActual(long idTurno, String key) {
+        long nAutos = 0;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT count(id) as id  FROM autos where turno_salida_id = ? and boleto_cancelado = 'SI' and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()){
+                nAutos =  executeQuery.getInt("id");
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nAutos;
+    }
+    
+    public static List<Auto>  getAutosBoletoCanceladoTurnoActual(long idTurno, String key) {
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and boleto_cancelado = 'SI' and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                   autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //                                                                      //
+    //            CONSULTAS PARA BOLETOS PERDIDOS TURNO ACTUAL              //
+    //                                                                      //
+    //////////////////////////////////////////////////////////////////////////
+    
+    public static long getNumAutosBoletoPerdidoTurnoActual(long idTurno, String key) {
+        long nAutos =0;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT count(id) as id  FROM autos where turno_salida_id = ? and id_boleto_perdido > 0 and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()){
+                nAutos =  executeQuery.getInt("id");
+            }    
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nAutos;
+    }
+    
+    
+    public static List<Auto>  getAutosBoletoPerdidoTurnoActual(long idTurno, String key) {
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido > 0 and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                   autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //                                                                      //
+    
+    //                                                                      //
+    //////////////////////////////////////////////////////////////////////////
+    
     
      public static ArrayList <Auto>  getAutosPorSerie(Turno turno, String key) {
         ArrayList <Auto> autos = new ArrayList<>();
@@ -571,222 +809,34 @@ public class Auto {
     
 
     
-    public static List<Auto> getAutosPendientes(Turno turno){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' ");
-            //statement.setLong(1, turno.getId());
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    
-    
-    
-     public static List<Auto>  getAutosBoletoPerdidoTurnoActual(Turno turno) {
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido > 0");
-            statement.setLong(1, turno.getId());
-            
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                   autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-     
-    public static List<Auto>  getAutosBoletoCanceladoTurnoActual(Turno turno) {
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_cancelado > 0");
-            statement.setLong(1, turno.getId());
-            
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                   autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    
-    public static List<Auto> getAutosCobradosTurnoActual(Turno turno){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido = 0 and id_boleto_cancelado = 0");
-            statement.setLong(1, turno.getId());
-            
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                   autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    
-    
-    public static List<Auto> getAutosPendientes(String key){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and serie = ?");
-            statement.setString(1, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    
-     public static List<Auto> getAutosPendientes(Turno turno, String key){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
-            statement.setLong(1, turno.getId());
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-     public static List<Auto> getAutosPendientesA(Turno turno, String key){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
-            statement.setLong(1, turno.getId());
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }public static List<Auto> getAutosPendientesS(Turno turno, String key){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
-            statement.setLong(1, turno.getId());
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    public static List<Auto>  getAutosBoletoPerdidoTurnoActual(Turno turno, String key) {
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido > 0 and serie = ?");
-            statement.setLong(1, turno.getId());
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                   autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    public static List<Auto>  getAutosBoletoCanceladoTurnoActual(Turno turno, String key) {
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_cancelado > 0 and serie = ?");
-            statement.setLong(1, turno.getId());
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                   autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    
-    public static List<Auto> getAutosCobradosTurnoActual(Turno turno, String key){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido = 0 and id_boleto_cancelado = 0 and serie = ?");
-            statement.setLong(1, turno.getId());
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                   autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
 
+    
+     
+     
+    
+    
+   
+    static long getPrimerProgresivoPorSerie(Turno turno, String key) {
+         ArrayList <Auto> autos = new ArrayList<>();
+        Long progresivo = 0L;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT min(progresivo) as progresivo FROM autos where turno_entrada_id = ? and  serie = ?");
+            statement.setLong(1, turno.getId());
+            statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                   progresivo = executeQuery.getLong("progresivo") ;
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return progresivo;
+    }
+    
     static long getUltimoProgresivoPorSerie(Turno turno, String key) {
         ArrayList <Auto> autos = new ArrayList<>();
         Long progresivo = 0L;
@@ -808,26 +858,7 @@ public class Auto {
         return progresivo;
     }
 
-    static long getPrimerProgresivoPorSerie(Turno turno, String key) {
-         ArrayList <Auto> autos = new ArrayList<>();
-        Long progresivo = 0L;
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT min(progresivo) as progresivo FROM autos where turno_entrada_id = ? and  serie = ?");
-            statement.setLong(1, turno.getId());
-            statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                   progresivo = executeQuery.getLong("progresivo") ;
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return progresivo;
-    }
+    
     
 
     public static long getUltimoProgresivo(){
@@ -917,8 +948,8 @@ public class Auto {
             statement.setLong(5, tarifa);
             statement.setString(6, fechaEntrada); 
             statement.setString(7, horaEntrada);
-            statement.setLong(8, Turno.getById(turnoEntrada).getEmpleado().getId());
-            statement.setLong(9, caseta); 
+            statement.setLong(8, Turno.getById(turnoEntrada).getEmpleadoEntrada().getId());
+            statement.setLong(9, caseta);   
             statement.setLong(10, turnoEntrada);
             statement.setString(11, marca);
             statement.setString(12, serie);
@@ -940,3 +971,123 @@ public class Auto {
     
     
 }
+
+/*
+    public static List<Auto> getAutosPendientes(String key){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and serie = ?");
+            statement.setString(1, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+
+ public static List<Auto> getAutosPendientes(Turno turno, String key){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
+            statement.setLong(1, turno.getId());
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+
+public static List<Auto> getAutosCobradosTurnoActual(Turno turno){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido = 0 and id_boleto_cancelado = 0");
+            statement.setLong(1, turno.getId());
+            
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                   autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+
+
+public static List<Auto>  getAutosBoletoCanceladoTurnoActual(Turno turno) {
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_cancelado > 0");
+            statement.setLong(1, turno.getId());
+            
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                   autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+
+    public static List<Auto> getAutosPendientes(Turno turno){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' ");
+            //statement.setLong(1, turno.getId());
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+    public static List<Auto>  getAutosBoletoPerdidoTurnoActual(Turno turno) {
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where turno_salida_id = ? and id_boleto_perdido > 0");
+            statement.setLong(1, turno.getId());
+            
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                   autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+*/

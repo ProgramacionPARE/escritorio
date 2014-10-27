@@ -23,24 +23,25 @@ import modelos.Turno;
 public class FrmArqueo extends javax.swing.JDialog {
     Estacionamiento estacionamiento;
     Turno turno;
+    String serie;
     /**
      * Creates new form FrmArqueo
      */
-    public FrmArqueo(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento) {
+    public FrmArqueo(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento,String serie) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
         ArrayList<DetallesMovimiento> generarDetalles = DetallesMovimiento.generarDetalles(
-                Auto.getAutosCobradosTurnoActual(turno),Auto.getAutosBoletoPerdidoTurnoActual(turno),
-                Auto.getAutosBoletoCanceladoTurnoActual(turno),turno);
+                Auto.getAutosCobradosTurnoActual(turno.getId(),serie),
+                Auto.getAutosBoletoPerdidoTurnoActual(turno.getId(),serie));
         DetallesMovimiento.ordenarPorPU(generarDetalles);
         llenarTabla(generarDetalles,turno);
         total();
         this.estacionamiento =  estacionamiento;
-        
-        this.txtFolioInicial.setText(String.valueOf(turno.getFolioInicial()));
-        this.txtFolioFinal.setText(String.valueOf(turno.getFolioFinal()));
+        this.txtFolioInicial.setText(String.valueOf(turno.getDetallesTurno().get(serie).getFolioInicial()));
+        this.txtFolioFinal.setText(String.valueOf(turno.getDetallesTurno().get(serie).getFolioFinal()));
         this.turno = turno;
+        this.serie = serie;
         setVisible(true);
     }
     
@@ -1274,12 +1275,12 @@ public class FrmArqueo extends javax.swing.JDialog {
         }
         arqueo.getDetallesArqueo().add(new DetallesArqueo(0,0,0,"SubtotalRetiros" ));
     }
-    turno.setDetallesMovimiento(DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(turno),
-                Auto.getAutosBoletoPerdidoTurnoActual(turno),Auto.getAutosBoletoCanceladoTurnoActual(turno),turno));
+    //turno.setDetallesMovimiento(DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(turno),
+    //            Auto.getAutosBoletoPerdidoTurnoActual(turno),Auto.getAutosBoletoCanceladoTurnoActual(turno),turno));
      
      new CorteTurno(turno, estacionamiento).generarReporte();
 
-    new modeloReportes.ReporteArqueo(turno,arqueo,estacionamiento).generarReporte();
+    new modeloReportes.ReporteArqueo(turno,arqueo,estacionamiento,serie).generarReporte();
 
     }//GEN-LAST:event_btnImprimirArqueoActionPerformed
     

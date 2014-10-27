@@ -30,7 +30,7 @@ public class BoletoPerdido {
                 boletoPerdido = new BoletoPerdido(executeQuery.getInt("id")
                 ,executeQuery.getInt("progresivo") ,null, 
                  PropietarioPerdido.getById(executeQuery.getInt("id_propietario"),null), 
-                 Turno.getById(executeQuery.getLong("id_turno")));
+                 Turno.getById(executeQuery.getLong("id")));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -108,7 +108,7 @@ public class BoletoPerdido {
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO boleto_perdido (`progresivo`, `id_auto`,"+
-                            " `id_turno`,`id_propietario`)"
+                            " `id`,`id_propietario`)"
                             + " VALUES (?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
 
             statement.setLong(1, progresivo);

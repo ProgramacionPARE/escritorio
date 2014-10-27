@@ -6,6 +6,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -16,6 +18,8 @@ import javax.swing.KeyStroke;
 import modeloReportes.CorteTurno;
 import modeloReportes.RetirosParciales;
 import modelos.Caja;
+import modelos.Configuracion;
+import modelos.DetalleTurno;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Rest;
@@ -40,8 +44,12 @@ public class FrmPrincipal extends JFrame{
         iniciaOtrosComponentes();     
        
         Rest.login(estacionamiento);
-      
-        initLogin();
+        if(Configuracion.getDatos().getTerminal().equals(Estacionamiento.CAJA))
+            initLogin();
+        else if(Configuracion.getDatos().getTerminal().equals(Estacionamiento.CLIENTE))
+            this.validaCliente();
+        
+        
     }
     
     public static void nuevaVentana(JDialog ventana){
@@ -141,7 +149,12 @@ public class FrmPrincipal extends JFrame{
     }
          @Action
     public void onAuditoria() {
-        new FrmEstadoEstacionamiento(this,false,turno,estacionamiento);
+        Iterator<Map.Entry<String, DetalleTurno>> iterator = turno.getDetallesTurno().entrySet().iterator();
+        while(iterator.hasNext()){
+            
+            new FrmEstadoEstacionamiento(this,false,turno,estacionamiento,iterator.next().getKey());
+            
+        }
     }
     
          @Action
@@ -168,7 +181,7 @@ public class FrmPrincipal extends JFrame{
                 if(Caja.getByCaseta(estacionamiento.getCaseta().getId()).getFondo()>0 ){
                      new FrmCaja(this,true,turno,true,empleado,estacionamiento);
                 }else{
-                    turno.realizarCorte(empleado);
+                    turno.realizarCorte(empleado.getId());
                     turno.actualizar();
                     new CorteTurno(turno, estacionamiento).generarReporte();    
                     new RetirosParciales(turno, estacionamiento).generarReporte();
@@ -188,7 +201,16 @@ public class FrmPrincipal extends JFrame{
             initLogin();
        }
     }
-
+    
+    public void validaCliente(){
+        Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
+        if(turnoTemp == null){
+            JOptionPane.showMessageDialog(this, "Es necesario que el sistema en casa este activo, reintente de nuevo");
+        }
+        else{
+            new FrmLeerCodigoBarras(this, true,turnoTemp,"COBRO",estacionamiento);
+        }
+    }
    
     public void validaPermisos(Empleado empleado) {
         //Busco turno abierto
@@ -199,14 +221,14 @@ public class FrmPrincipal extends JFrame{
                 "Turno nuevo", JOptionPane.YES_NO_OPTION );
             if(showConfirmDialog == JOptionPane.YES_OPTION){
                 turno = new Turno(estacionamiento);
-                turno.inicializarTurno(empleado,"");
+                turno.inicializarTurno(empleado.getId(),"");
                 new FrmNuevoTurno(this,true,turno,estacionamiento);
-                turno.guardar();
+                turno.actualizar();
                 turnoAbrierto  = true;
             }else{
                 turnoAbrierto  = false;
                 turno = new Turno(estacionamiento);
-                turno.setEmpleado(empleado);
+                turno.setEmpleadoEntrada(empleado);
             }
               
 
@@ -214,8 +236,8 @@ public class FrmPrincipal extends JFrame{
             turnoAbrierto  = true;
             turno = turnoTemp;
             turno.setEstacionamiento(estacionamiento);
-            turno.setEmpleado(empleado);
-            if(turnoTemp.getOperador().getId() != empleado.getId()){
+            turno.setEmpleadoEntrada(empleado);
+            if(turnoTemp.getEmpleadoEntrada().getId() != empleado.getId()){
                 JOptionPane.showMessageDialog(this, "Turno abierto, empleado temporal",
                         "Temporal", JOptionPane.WARNING_MESSAGE);
             }
@@ -284,7 +306,7 @@ public class FrmPrincipal extends JFrame{
     
     @Action
     public void cerrarTurno(){
-        turno.realizarCorte(empleado);
+        turno.realizarCorte(empleado.getId());
         turno.actualizar();
         new CorteTurno(turno, estacionamiento).generarReporte();
         new RetirosParciales(turno, estacionamiento).generarReporte();

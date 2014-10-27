@@ -46,7 +46,7 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
 
    
     private void iniciarOtrosComponentes() {
-        txtCajero.setText(turno.getEmpleado().getNombre());
+        txtCajero.setText(turno.getEmpleadoEntrada().getNombre());
         txtCaseta.setText(estacionamiento.getCaseta().getDescripcion());
         txtCentroOperativo.setText(estacionamiento.getDescripcion());
         txtFecha.setText(Tiempo.getHora()+"  "+Tiempo.getFecha());
@@ -413,7 +413,7 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         if (validaCamposEntrada()){
-            if(new Operacion(this.parent).requierePermisos(turno.getEmpleado(), "Supervisor",true)){
+            if(new Operacion(this.parent).requierePermisos(turno.getEmpleadoEntrada(), "Supervisor",true)){
                 btnGuardar.setVisible(false);
                 boletoCancelado = new BoletoCancelado(0, txtRazon.getText(), turno);
                 boletoCancelado.setAuto(auto);

@@ -169,7 +169,7 @@ public class RetiroParcial implements IDBModel {
                 retiroParcial = new RetiroParcial(resultSet.getLong("id"),
                         resultSet.getLong("progresivo"),resultSet.getString("fecha"),
                         resultSet.getString("hora"),resultSet.getFloat("monto"),
-                        resultSet.getFloat("monto_real"),resultSet.getLong("id_turno"),
+                        resultSet.getFloat("monto_real"),resultSet.getLong("id"),
                         resultSet.getLong("id_caseta"));
             }
             conexion.cerrarConexion();
@@ -185,7 +185,7 @@ public class RetiroParcial implements IDBModel {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM retiro_parcial where id_turno = ?");
+            prepareStatement("SELECT id FROM retiro_parcial where id = ?");
             statement.setLong(1, turno_id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
