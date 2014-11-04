@@ -36,7 +36,7 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
     private Barcode barcode=null;
     /** Creates new form VenBoletoValetParking1 */
     public FrmP2BoletoLlaves(java.awt.Dialog parent, boolean modal, PrinterJob job,
-           Turno turno, Auto auto,Empleado empleado) {
+           Turno turno, Auto auto,Empleado empleado) throws PrinterException {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
@@ -65,11 +65,9 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
                 selectedService = i;
                 }
             }
-        try {
+      
             job.setPrintService(services[selectedService]);
-        } catch (PrinterException ex) {
-            Logger.getLogger(FrmP1BoletoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
        MediaSizeName mediaSizeName = MediaSize.findMedia(4,4,MediaPrintableArea.INCH);
         printRequestAttributeSet.add(mediaSizeName);
@@ -289,7 +287,7 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
 
     }//GEN-LAST:event_formComponentShown
-    private void imprimir(){
+    private void imprimir() throws PrinterException{
         job = PrinterJob.getPrinterJob();
         PageFormat pf  = new PageFormat();
          Paper paper = pf.getPaper();
@@ -303,14 +301,12 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
        
         job.setPrintable(this,pf);
 
-        try {
-            job.print();
-        } catch (PrinterException ex) {
-            ex.printStackTrace();
-        } finally{
-           this.setVisible(false);
-           this.dispose();
-        } 
+       
+        job.print();
+        
+        this.setVisible(false);
+        this.dispose();
+        
     }
     
     @Override

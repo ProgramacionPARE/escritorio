@@ -21,7 +21,10 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import modeloReportes.ReporteCorteTurno;
+import modeloReportes.ReporteDetalleAvanzado;
 import modeloReportes.ReporteFolios;
+import modeloReportes.RetirosParciales;
 import modelos.Auto;
 import modelos.TurnoDetalles;
 import modelos.Estacionamiento;
@@ -461,6 +464,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         btnProgresivoLimpiar = new javax.swing.JButton();
         txtProgresivoBuscar = new javax.swing.JTextField();
         btnProgresivoBuscar = new javax.swing.JButton();
+        btnPrecorte = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -834,6 +838,15 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             }
         });
 
+        btnPrecorte.setBackground(new java.awt.Color(255, 255, 255));
+        btnPrecorte.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnPrecorte.setText("Precorte");
+        btnPrecorte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrecorteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -876,9 +889,12 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                                         .addComponent(txtTotalRetiros, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnImprimir1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnImprimir1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnPrecorte, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -1041,9 +1057,12 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnImprimir)
-                        .addComponent(btnImprimir1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnPrecorte)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnImprimir)
+                            .addComponent(btnImprimir1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
@@ -1137,11 +1156,19 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         cargarDatos(this.txtFecha.getText());
     }//GEN-LAST:event_btnProgresivoLimpiarActionPerformed
 
+    private void btnPrecorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrecorteActionPerformed
+        turno.realizarCorte(turno.getEmpleadoEntrada().getId(),true);
+        turno.actualizar();
+        new ReporteCorteTurno(turno, estacionamiento).generarReporte();
+        new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
+    }//GEN-LAST:event_btnPrecorteActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnImprimir1;
+    private javax.swing.JButton btnPrecorte;
     private javax.swing.JButton btnProgresivoBuscar;
     private javax.swing.JButton btnProgresivoLimpiar;
     private javax.swing.JButton btnSetFecha;

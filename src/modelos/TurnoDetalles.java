@@ -218,12 +218,15 @@ public class TurnoDetalles implements IDBModel{
         this.guardar();
     }
     
-    public void cerrarTurno(){
+    public void cerrarTurno(boolean precorte){
         this.folioFinal =  Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), serie));
         this.noBol = this.folioFinal - this.folioInicial;
-        Auto.guardarAutosPendientes(idTurno);
-        
-        this.noBolTurnoS = Auto.getNumAutosPendientesByTurno(idTurno, serie);
+        if(!precorte){
+            Auto.guardarAutosPendientes(idTurno);
+            this.noBolTurnoS = Auto.getNumAutosPendientesByTurno(idTurno, serie);
+        }else{
+            this.noBolTurnoS = Auto.getNumAutosPendientesTurnoActual(idTurno, serie);
+        }
         this.noBolCobrados = Auto.getNumAutosCobradosTurnoActual(idTurno, serie);
         this.noBolCancelados = Auto.getNumAutosBoletoCanceladoTurnoActual(idTurno, serie);
         this.noBolPerdidos = Auto.getNumAutosBoletoPerdidoTurnoActual(idTurno, serie);
@@ -232,9 +235,13 @@ public class TurnoDetalles implements IDBModel{
         
         
         List<Auto> autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(idTurno, serie);
-       
         List<Auto> autosBoletoCanceladoTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(idTurno, serie);
-        ArrayList<Auto> autosPendientesTurnoActual = Auto.getAutosPendientesByTurno(idTurno, serie);
+        
+        ArrayList<Auto> autosPendientesTurnoActual;
+        if(!precorte) autosPendientesTurnoActual = Auto.getAutosPendientesByTurno(idTurno, serie);
+        else autosPendientesTurnoActual = Auto.getAutosPendientesS(idTurno, serie);
+        
+     
         List<Auto> autosBoletoPerdidoTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(idTurno, serie);
         
         ArrayList<Auto> autosManualesTurnoActual = Auto.getAutosManualesTurnoActual(idTurno, serie);

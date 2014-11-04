@@ -8,10 +8,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Configuracion;
 import modelos.Empleado;
@@ -19,6 +21,7 @@ import modelos.Estacionamiento;
 import modelos.Progresivo;
 import modelos.Rest;
 import modelos.Turno;
+import net.sourceforge.barbecue.BarcodeException;
 import vistas.formatos.FrmBoletoCancelado;
 import vistas.formatos.FrmBoletoPerdido;
 import vistas.formatos.FrmP1BoletoCliente;
@@ -197,28 +200,38 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
                     Empleado empleado = null;
                     empleado = Empleado.getByIdClave(id);
                     if (empleado != null){
-                        Auto newAuto = new Auto(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"0"),
-                                "",Tiempo.getFecha(),Tiempo.getHora(),"","","",turno.getId(),"0",
-                                "",Seguridad.getClave(5), estacionamiento.getCaseta().getId());
-
-                        //Aumento en uno los boletos generados
-                        turno.getDetallesTurno().get(newAuto.getSerie()).setNoBol(turno.getDetallesTurno().get(newAuto.getSerie()).getNoBol()+1);
-                        //Actualizo el folio final en el turno
-                        turno.getDetallesTurno().get(newAuto.getSerie()).setFolioFinal (turno.getDetallesTurno().get(newAuto.getSerie()).getFolioFinal()+1); 
-
-                        Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),newAuto.getSerie());
-                        //Imprimo boletos
-                        PrinterJob job = PrinterJob.getPrinterJob();
-                        // Boleto al cliente
-                        new FrmP1BoletoCliente(this, false,job,turno,newAuto,estacionamiento,empleado);
-                        //Boleto llaves
-                        new FrmP2BoletoLlaves(this, false,job,turno,newAuto,empleado);
-                        //Boleto Parabrisas
-                        new FrmP3BoletoParabrisas(this, false ,job,turno,newAuto);
-                         turno.actualizar();
-                        // Guardo entrada y actualizo progresivo
-                        newAuto.guardar();
-                        Rest.sendAuto(newAuto,estacionamiento);
+                        try {
+                            Auto newAuto = new Auto(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"0"),
+                                    "",Tiempo.getFecha(),Tiempo.getHora(),"","","",turno.getId(),"0",
+                                    "",Seguridad.getClave(5), estacionamiento.getCaseta().getId());
+                            
+                            //Aumento en uno los boletos generados
+                            turno.getDetallesTurno().get(newAuto.getSerie()).setNoBol(turno.getDetallesTurno().get(newAuto.getSerie()).getNoBol()+1);
+                            //Actualizo el folio final en el turno
+                            turno.getDetallesTurno().get(newAuto.getSerie()).setFolioFinal (turno.getDetallesTurno().get(newAuto.getSerie()).getFolioFinal()+1);
+                            
+                            Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),newAuto.getSerie());
+                            //Imprimo boletos
+                            PrinterJob job = PrinterJob.getPrinterJob();
+                            // Boleto al cliente
+                            
+                            new FrmP1BoletoCliente(this, false,job,turno,newAuto,estacionamiento,empleado);
+                            //Boleto llaves
+                            new FrmP2BoletoLlaves(this, false,job,turno,newAuto,empleado);
+                            //Boleto Parabrisas
+                            new FrmP3BoletoParabrisas(this, false ,job,turno,newAuto);
+                            turno.actualizar();
+                            // Guardo entrada y actualizo progresivo
+                            newAuto.guardar();
+                            Rest.sendAuto(newAuto,estacionamiento);
+                        } catch (PrinterException ex) {
+                            JOptionPane.showMessageDialog(this, "Hay un probrema con la impresora, verifica que todo este correctamente conectado e intenta de nuevo.", 
+                                    "Error de impresion",JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(FrmLeerCodigoBarras.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (BarcodeException ex) {
+                            Logger.getLogger(FrmLeerCodigoBarras.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                       
                     }
                 }
                 id = "";

@@ -34,7 +34,7 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
     private PrinterJob job;
 
     /** Creates new form VenBoletoValetParking1 */
-    public FrmP3BoletoParabrisas(java.awt.Dialog parent, boolean modal, PrinterJob job, Turno turno, Auto auto) {
+    public FrmP3BoletoParabrisas(java.awt.Dialog parent, boolean modal, PrinterJob job, Turno turno, Auto auto) throws PrinterException {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
@@ -48,11 +48,9 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
                 selectedService = i;
                 }
             }
-        try {
-            job.setPrintService(services[selectedService]);
-        } catch (PrinterException ex) {
-            Logger.getLogger(FrmP1BoletoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
+        job.setPrintService(services[selectedService]);
+        
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
         MediaSizeName mediaSizeName = MediaSize.findMedia(4,4,MediaPrintableArea.INCH);
         printRequestAttributeSet.add(mediaSizeName);
@@ -177,7 +175,7 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
      
     }//GEN-LAST:event_formComponentShown
- private void imprimir(){
+ private void imprimir() throws PrinterException{
         job = PrinterJob.getPrinterJob();
         PageFormat pf  = new PageFormat();
          Paper paper = pf.getPaper();
@@ -190,15 +188,10 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         pf.setPaper(paper);
        
         job.setPrintable(this,pf);
-
-        try {
-            job.print();
-        } catch (PrinterException ex) {
-            ex.printStackTrace();
-        }  finally{
-           this.setVisible(false);
-           this.dispose();
-        }
+        job.print();
+        this.setVisible(false);
+        this.dispose();
+        
     }
     
     @Override

@@ -4,13 +4,17 @@ package vistas;
 import ModelosAux.Seguridad;
 import ModelosAux.Tiempo;
 import java.awt.Color;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Estacionamiento;
 import modelos.Progresivo;
 import modelos.Rest;
 import modelos.Turno;
+import net.sourceforge.barbecue.BarcodeException;
 import org.jdesktop.application.Action;
 import vistas.formatos.FrmP1BoletoCliente;
 import vistas.formatos.FrmP2BoletoLlaves;
@@ -68,31 +72,39 @@ public class FrmEntradaValet extends javax.swing.JDialog {
                 "Imprimir boleto",JOptionPane.YES_NO_CANCEL_OPTION);
         if(confirmDialog == JOptionPane.YES_OPTION){
         
-            Auto auto= new Auto(txtProgresivo.getText(), txtMatricula.getText(),
-                    txtFechaEntrada.getText(), txtHoraEntrada.getText()
-                    ,"",txtModelo.getText(),"",turno.getId(), "0",
-                    txtNotas.getText(), Seguridad.getClave(5), 
-                    estacionamiento.getCaseta().getId() );
-            //Aumento en uno los boletos generados
-            turno.getDetallesTurno().get(auto.getSerie()).setNoBol(turno.getDetallesTurno().get(auto.getSerie()).getNoBol()+1);
-            //Actualizo el folio final en el turno
-            turno.getDetallesTurno().get(auto.getSerie()).setFolioFinal (turno.getDetallesTurno().get(auto.getSerie()).getFolioFinal()+1); 
-            turno.actualizar();
-            // Guardo entrada y actualizo progresivo
-            auto.guardar();
-            Rest.sendAuto(auto,estacionamiento);
-            Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),auto.getSerie());
-            //Imprimo boletos
-            PrinterJob job = PrinterJob.getPrinterJob();
-            // Boleto al cliente
-            new FrmP1BoletoCliente(this, false,job,turno,auto,estacionamiento,turno.getEmpleadoEntrada());
-            //Boleto llaves
-            new FrmP2BoletoLlaves(this, false,job,turno,auto,turno.getEmpleadoEntrada());
-            //Boleto Parabrisas
-            new FrmP3BoletoParabrisas(this, false ,job,turno,auto);
-            
-            this.setVisible(false);
-            this.dispose();
+            try {
+                Auto auto= new Auto(txtProgresivo.getText(), txtMatricula.getText(),
+                        txtFechaEntrada.getText(), txtHoraEntrada.getText()
+                        ,"",txtModelo.getText(),"",turno.getId(), "0",
+                        txtNotas.getText(), Seguridad.getClave(5),
+                        estacionamiento.getCaseta().getId() );
+                //Aumento en uno los boletos generados
+                turno.getDetallesTurno().get(auto.getSerie()).setNoBol(turno.getDetallesTurno().get(auto.getSerie()).getNoBol()+1);
+                //Actualizo el folio final en el turno
+                turno.getDetallesTurno().get(auto.getSerie()).setFolioFinal (turno.getDetallesTurno().get(auto.getSerie()).getFolioFinal()+1);
+                turno.actualizar();
+                // Guardo entrada y actualizo progresivo
+                auto.guardar();
+                Rest.sendAuto(auto,estacionamiento);
+                Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),auto.getSerie());
+                //Imprimo boletos
+                PrinterJob job = PrinterJob.getPrinterJob();
+                // Boleto al cliente
+                new FrmP1BoletoCliente(this, false,job,turno,auto,estacionamiento,turno.getEmpleadoEntrada());
+                //Boleto llaves
+                new FrmP2BoletoLlaves(this, false,job,turno,auto,turno.getEmpleadoEntrada());
+                //Boleto Parabrisas
+                new FrmP3BoletoParabrisas(this, false ,job,turno,auto);
+                
+                this.setVisible(false);
+                this.dispose();
+            } catch (PrinterException ex) {
+                 JOptionPane.showMessageDialog(this, "Hay un probrema con la impresora, verifica que todo este correctamente conectado e intenta de nuevo.", 
+                                    "Error de impresion",JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(FrmEntradaValet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (BarcodeException ex) {
+                Logger.getLogger(FrmEntradaValet.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
     }

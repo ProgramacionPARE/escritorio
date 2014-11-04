@@ -43,9 +43,8 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
     private PrinterJob job;
     private Barcode barcode=null;
     /** Creates new form VenBoletoValetParking1 */
-    public FrmP1BoletoCliente(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto,Estacionamiento estacionamiento,Empleado empleado) {
+    public FrmP1BoletoCliente(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto,Estacionamiento estacionamiento,Empleado empleado) throws PrinterException, BarcodeException {
         super(parent, modal);
-        try {
         initComponents();
         //barcode = BarcodeFactory.createUPCA(progresivo);
         barcode = BarcodeFactory.createCode128B(auto.getClave()+auto.getSerie()+auto.getProgresivo());
@@ -63,11 +62,9 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
                 selectedService = i;
                 }
             }
-        try {
-            job.setPrintService(services[selectedService]);
-        } catch (PrinterException ex) {
-            Logger.getLogger(FrmP1BoletoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        job.setPrintService(services[selectedService]);
+
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
         MediaSizeName mediaSizeName = MediaSize.findMedia(4,4,MediaPrintableArea.INCH);
         printRequestAttributeSet.add(mediaSizeName);
@@ -84,10 +81,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         setVisible(true);
         imprimir();
 
-        } catch (BarcodeException ex) {
-            ex.printStackTrace();
-            Logger.getLogger(FrmP1BoletoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
  
 
@@ -367,7 +361,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         //this.dispose();
     }//GEN-LAST:event_formComponentShown
     
-    public void imprimir(){
+    public void imprimir() throws PrinterException{
         PageFormat pf  = new PageFormat();
         Paper paper = pf.getPaper();
         double width = 9d * 72d;
@@ -378,14 +372,10 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
                 width - (margin * 2),height);
         pf.setPaper(paper);
         job.setPrintable(this,pf );
-        try {
-            job.print();
-        } catch (PrinterException ex) {
-            ex.printStackTrace();
-        }finally{
-           this.setVisible(false);
-           this.dispose();
-        }
+        job.print();
+        this.setVisible(false);
+        this.dispose();
+
     }
 
     @Override

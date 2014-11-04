@@ -72,12 +72,14 @@ public class Turno implements IDBModel {
         }
     }
     
-    public void realizarCorte(long operador){        
+    public void realizarCorte(long operador,boolean precorte){        
         this.empleadoCierre = operador;
+        if(!precorte){
         fechaCierre = Tiempo.getFecha();
         horaCierre = Tiempo.getHora();
+        }
         for(String serie: this.estacionamiento.getCaseta().getSeries() ){
-            this.detallesTurno.get(serie).cerrarTurno();
+            this.detallesTurno.get(serie).cerrarTurno(precorte);
         }
     }
 

@@ -50,7 +50,8 @@ public class FrmPrincipal extends JFrame implements Runnable{
         lblNombreOperador = new JLabel("");
         initComponents();  
         iniciaOtrosComponentes();     
-       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
         Rest.login(estacionamiento);
         
         if(Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
@@ -191,7 +192,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
                 if(Caja.getByCaseta(estacionamiento.getCaseta().getId()).getMonto()>0 ){
                      new FrmCaja(this,true,turno,true,empleado,estacionamiento);
                 }else{
-                    turno.realizarCorte(empleado.getId());
+                    turno.realizarCorte(empleado.getId(),false);
                     turno.actualizar();
                     new ReporteCorteTurno(turno, estacionamiento).generarReporte();
                     new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();

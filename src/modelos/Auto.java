@@ -495,7 +495,7 @@ public class Auto {
         return nAutos;
     }
     
-    public static List<Auto> getAutosPendientesA(long idTurno, String key){
+    public static ArrayList<Auto> getAutosPendientesA(long idTurno, String key){
         ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
@@ -540,7 +540,7 @@ public class Auto {
         return nAutos;
     }
                              
-    public static List<Auto> getAutosPendientesS(long idTurno, String key){
+    public static ArrayList<Auto> getAutosPendientesS(long idTurno, String key){
         ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
@@ -585,7 +585,7 @@ public class Auto {
         return nAutos;
     }
     
-    public static List<Auto> getAutosPendientesTurnoActual(long idTurno, String key){
+    public static ArrayList<Auto> getAutosPendientesTurnoActual(long idTurno, String key){
         ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();

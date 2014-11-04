@@ -1,24 +1,11 @@
 
 package vistas;
 
-import ModelosAux.Seguridad;
-import ModelosAux.Tiempo;
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Frame;
-import java.awt.print.PrinterJob;
-import javax.swing.JFrame;
-import modelos.Auto;
 import modelos.Descuento;
-import modelos.Empleado;
 import modelos.Estacionamiento;
-import modelos.Progresivo;
 import modelos.Turno;
-import vistas.formatos.FrmBoletoCancelado;
-import vistas.formatos.FrmP1BoletoCliente;
-import vistas.formatos.FrmP2BoletoLlaves;
-import vistas.formatos.FrmP3BoletoParabrisas;
-import vistas.formatos.FrmReciboPago;
 
 /**
  *
