@@ -219,7 +219,7 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
                                 .addGap(18, 18, 18)
                                 .addComponent(lblModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 49, Short.MAX_VALUE)
+                                .addGap(0, 36, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabProgresivo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabPlacas1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -263,7 +263,7 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblEncargado))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -272,7 +272,9 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,8 +321,8 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
         
        Graphics2D g2d = (Graphics2D)g;
         g2d.transform(AffineTransform.getScaleInstance(.45,.45));
-        g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/2.0,(this).getHeight()/2.0 ));
-        g2d.transform(AffineTransform.getTranslateInstance(0,80));
+        g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/2.1,(this).getHeight()/2.1 ));
+        g2d.transform(AffineTransform.getTranslateInstance(30,50));
         
         this.printAll(g2d);
         return PAGE_EXISTS;

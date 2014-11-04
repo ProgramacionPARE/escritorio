@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="corteTurno" language="groovy" pageWidth="210" pageHeight="1440" whenNoDataType="NoDataSection" columnWidth="190" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" whenResourceMissingType="Empty" isIgnorePagination="true" uuid="52038caf-a3be-430e-a6db-a5230bd76111">
+	<property name="ireport.zoom" value="1.9487171000000083"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="style1"/>
+	<parameter name="turno" class="java.lang.String"/>
+	<parameter name="centroCostos" class="java.lang.String"/>
+	<parameter name="fechaTurno" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="progresivo" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="fechaEntrada" class="java.lang.String"/>
+	<field name="horaEntrada" class="java.lang.String"/>
+	<field name="fechaSalida" class="java.lang.String"/>
+	<field name="horaSalida" class="java.lang.String"/>
+	<field name="horas" class="java.lang.String"/>
+	<field name="minutos" class="java.lang.String"/>
+	<field name="monto" class="java.lang.String"/>
+	<title>
+		<band height="34" splitType="Immediate">
+			<line>
+				<reportElement x="0" y="33" width="190" height="1" uuid="538f48ab-55f1-4abd-b592-eccdb94a0ddd"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="20" width="90" height="12" uuid="5f340e66-421b-408c-ba52-0f4c8f726062"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{turno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="190" height="20" uuid="051431cb-3147-4508-8d84-4bec18c13b69"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centroCostos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="105" y="21" width="80" height="11" uuid="77c00a25-2506-45dc-8b9d-bef73820f547"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaTurno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="15">
+			<printWhenExpression><![CDATA[$F{tipo}.substring( 0, 6 ).equals( "Titulo" )]]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="1" width="171" height="12" uuid="67de1b09-b5d2-434b-b44b-70d97fa8cef1"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}.substring( 6, $F{tipo}.length() )]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="14" width="190" height="1" uuid="e8f5cf7f-c313-44c5-af16-b8394e8f173d"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="41" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{tipo}.substring( 0, 6 ).equals( "Titulo" )]]></printWhenExpression>
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="10" uuid="bdcfb6f6-df02-4fa9-bd60-65be180387ba"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Progresivo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="0" width="45" height="10" uuid="7e9556f7-6107-438e-907a-bed8af6398e5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{progresivo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="10" width="50" height="10" uuid="a7fe9b44-b9b6-46bf-abd1-2d980ff16d78"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Entrada]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="10" width="50" height="10" uuid="198c1e74-6b63-4216-b946-48e6dc557585"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaEntrada}.substring( 5, $F{fechaEntrada}.length() )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="10" width="50" height="10" uuid="b88d5f03-f528-47da-9037-17f12c34f3ee"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horaEntrada}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="50" height="10" uuid="3c5717b2-1354-41d9-9420-f70e5b5782b1"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Salida]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="20" width="50" height="10" uuid="9fcdc410-0d02-4599-a189-b16fc8ddc005"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaSalida}.substring( 5, $F{fechaSalida}.length() )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="20" width="50" height="10" uuid="ba6793b2-90e3-4aa6-ba36-64e1e03cdc81"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horaSalida}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="50" height="10" uuid="293abb4f-05c9-44fb-aa3e-a173067d8124"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tiempo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="30" width="50" height="10" uuid="2d7000be-398d-4121-88b8-7a6ada93ce4a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{minutos} + "minutos"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="0" width="50" height="10" uuid="d55b24b0-9482-4363-b7b1-dc2081f3f466"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="0" width="40" height="10" uuid="70e81ccd-f1cd-4612-9e32-11f237bf1dcc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="30" width="50" height="10" uuid="13684712-05c2-4227-bec2-1aac02da709b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horas}+"horas"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="40" width="190" height="1" uuid="367743f2-7cb3-4e47-9d26-b8d961ac1e42"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

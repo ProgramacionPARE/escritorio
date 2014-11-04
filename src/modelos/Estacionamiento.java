@@ -11,9 +11,7 @@ import java.util.logging.Logger;
 
 
 public class Estacionamiento implements IDBModel{
-    public static final String CAJA = "caja";
-    public static final String EXPEDIDOR = "expedidor";
-    public static final String CLIENTE = "cliente";
+   
     
     static Estacionamiento e;
     int id;

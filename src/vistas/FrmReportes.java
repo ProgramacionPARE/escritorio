@@ -7,8 +7,9 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
-import modeloReportes.CorteDiario;
-import modeloReportes.CorteTurno;
+import modeloReportes.ReporteCorteDiario;
+import modeloReportes.ReporteCorteTurno;
+import modeloReportes.ReporteDetalleAvanzado;
 import modeloReportes.RetirosParciales;
 import modelos.Estacionamiento;
 import modelos.Turno;
@@ -64,12 +65,13 @@ public class FrmReportes extends javax.swing.JDialog {
                 Turno turnoActual = turnos.next();
                 // Revisar esto
                 //turnoActual.detallesParaImprimir();
-                new CorteTurno(turnoActual, estacionamiento).generarReporte();
+                new ReporteCorteTurno(turnoActual, estacionamiento).generarReporte();
+                new ReporteDetalleAvanzado(turnoActual, estacionamiento).generarReporte();
                 new RetirosParciales(turnoActual, estacionamiento).generarReporte();
             }
         }
         if(turnosByFecha.size()>0)
-            new CorteDiario(turnosByFecha,reporteDiarioFecha).generarReporte();
+            new ReporteCorteDiario(turnosByFecha,reporteDiarioFecha).generarReporte();
         else
             JOptionPane.showMessageDialog(this, "No hay registros de esta fecha", "Vacio", JOptionPane.WARNING_MESSAGE);
     }

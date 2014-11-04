@@ -63,8 +63,9 @@ public class Tarifa implements IDBModel{
             importeMinutos =  auto.getTarifa().getPrecioHora();
         }else{
             for(int i= 0; i< auto.getTarifa().getFraciones();i++){
-                importeMinutos +=  auto.getTarifa().costos[i];
-                if(auto.getMinutosTangibles()-((60/auto.getTarifa().getFraciones())*(i+1)) <0)
+                if(auto.getMinutosTangibles()>0)
+                    importeMinutos +=  auto.getTarifa().costos[i];
+                if(auto.getMinutosTangibles()-((60/auto.getTarifa().getFraciones())*(i+1)) <=0)
                     break;
             }
         }

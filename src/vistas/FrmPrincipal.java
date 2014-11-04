@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -15,11 +17,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import modeloReportes.CorteTurno;
+import modeloReportes.ReporteCorteTurno;
+import modeloReportes.ReporteDetalleAvanzado;
 import modeloReportes.RetirosParciales;
+import modelos.Auto;
 import modelos.Caja;
 import modelos.Configuracion;
-import modelos.DetalleTurno;
+import modelos.TurnoDetalles;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Rest;
@@ -27,13 +31,17 @@ import modelos.Turno;
 import org.jdesktop.application.Action;
 
 
-public class FrmPrincipal extends JFrame{
+public class FrmPrincipal extends JFrame implements Runnable{
     JLabel lblNombreOperador;
     private Estacionamiento estacionamiento;
     private Empleado empleado;
     private boolean turnoAbrierto;
     private FrmPrincipal frmPrincipal;
     private Turno turno;
+    
+    // Solo para clinete y expedidora
+    private FrmLeerCodigoBarras barras = null;
+    private FrmErrorCarga error= null;
     static private ArrayList<HistorialVentana> ventanas = new ArrayList();
    
 
@@ -42,14 +50,14 @@ public class FrmPrincipal extends JFrame{
         lblNombreOperador = new JLabel("");
         initComponents();  
         iniciaOtrosComponentes();     
-       
+       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Rest.login(estacionamiento);
-        if(Configuracion.getDatos().getTerminal().equals(Estacionamiento.CAJA))
+        
+        if(Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
             initLogin();
-        else if(Configuracion.getDatos().getTerminal().equals(Estacionamiento.CLIENTE))
-            this.validaCliente();
-        
-        
+        }else 
+            new Thread(this).start();
+
     }
     
     public static void nuevaVentana(JDialog ventana){
@@ -149,7 +157,7 @@ public class FrmPrincipal extends JFrame{
     }
          @Action
     public void onAuditoria() {
-        Iterator<Map.Entry<String, DetalleTurno>> iterator = turno.getDetallesTurno().entrySet().iterator();
+        Iterator<Map.Entry<String, TurnoDetalles>> iterator = turno.getDetallesTurno().entrySet().iterator();
         while(iterator.hasNext()){
             
             new FrmEstadoEstacionamiento(this,false,turno,estacionamiento,iterator.next().getKey());
@@ -178,12 +186,15 @@ public class FrmPrincipal extends JFrame{
         if(turnoAbrierto){
             int res =  JOptionPane.showConfirmDialog(this, "Quieres tambien hacer corte de turno?","Cerrar sesion", JOptionPane.YES_NO_CANCEL_OPTION);
             if(res ==  JOptionPane.YES_OPTION){
-                if(Caja.getByCaseta(estacionamiento.getCaseta().getId()).getFondo()>0 ){
+                turno.setActivo(false);
+                turno.actualizarActivo();
+                if(Caja.getByCaseta(estacionamiento.getCaseta().getId()).getMonto()>0 ){
                      new FrmCaja(this,true,turno,true,empleado,estacionamiento);
                 }else{
                     turno.realizarCorte(empleado.getId());
                     turno.actualizar();
-                    new CorteTurno(turno, estacionamiento).generarReporte();    
+                    new ReporteCorteTurno(turno, estacionamiento).generarReporte();
+                    new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
                     new RetirosParciales(turno, estacionamiento).generarReporte();
 
                     empleado = null;
@@ -193,8 +204,11 @@ public class FrmPrincipal extends JFrame{
              }else if(res ==  JOptionPane.NO_OPTION){
                  empleado = null;
                  btnCerrarSesion.setVisible(false);
+                turno.setActivo(false);
+                turno.actualizarActivo();
                  initLogin();
              }
+           
         }else{
             empleado = null;
             btnCerrarSesion.setVisible(false);
@@ -202,16 +216,6 @@ public class FrmPrincipal extends JFrame{
        }
     }
     
-    public void validaCliente(){
-        Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
-        if(turnoTemp == null){
-            JOptionPane.showMessageDialog(this, "Es necesario que el sistema en casa este activo, reintente de nuevo");
-        }
-        else{
-            new FrmLeerCodigoBarras(this, true,turnoTemp,"COBRO",estacionamiento);
-        }
-    }
-   
     public void validaPermisos(Empleado empleado) {
         //Busco turno abierto
         Turno turnoTemp = Turno.existeTurnoAbierto();
@@ -220,11 +224,20 @@ public class FrmPrincipal extends JFrame{
              int showConfirmDialog = JOptionPane.showConfirmDialog(this,"¿Quiere abrir un nuevo turno?", 
                 "Turno nuevo", JOptionPane.YES_NO_OPTION );
             if(showConfirmDialog == JOptionPane.YES_OPTION){
-                turno = new Turno(estacionamiento);
-                turno.inicializarTurno(empleado.getId(),"");
-                new FrmNuevoTurno(this,true,turno,estacionamiento);
-                turno.actualizar();
-                turnoAbrierto  = true;
+                String tipo = Turno.getSiguienteTurno();
+                int showConfirmDialog2 = JOptionPane.showConfirmDialog(this,"Se esta por abrir el " + tipo + ", ¿estas seguro?", 
+                "Turno nuevo", JOptionPane.YES_NO_OPTION );
+                if(showConfirmDialog2 == JOptionPane.YES_OPTION){
+                    turno = new Turno(estacionamiento);
+                    turno.inicializarTurno(empleado.getId(),"");
+                    turno.setTipoTurno(tipo);
+                    turno.actualizar();
+                    turnoAbrierto  = true;
+                }else{
+                    turnoAbrierto  = false;
+                    turno = new Turno(estacionamiento);
+                    turno.setEmpleadoEntrada(empleado);
+                }
             }else{
                 turnoAbrierto  = false;
                 turno = new Turno(estacionamiento);
@@ -233,16 +246,20 @@ public class FrmPrincipal extends JFrame{
               
 
         }else{
+            
             turnoAbrierto  = true;
             turno = turnoTemp;
             turno.setEstacionamiento(estacionamiento);
             turno.setEmpleadoEntrada(empleado);
+            
             if(turnoTemp.getEmpleadoEntrada().getId() != empleado.getId()){
                 JOptionPane.showMessageDialog(this, "Turno abierto, empleado temporal",
                         "Temporal", JOptionPane.WARNING_MESSAGE);
             }
         }
         
+        turno.setActivo(turnoAbrierto);
+        turno.actualizarActivo();
         
         this.empleado = empleado;
         
@@ -294,7 +311,8 @@ public class FrmPrincipal extends JFrame{
                }  break;
        }
         btnCerrarSesion.setText("<html><b>Cerrar sesion de "+empleado.getUsuario()+"</b><br><center>(Esc)</center></html>");
-        btnCerrarSesion.setVisible(true);    
+        btnCerrarSesion.setVisible(true); 
+        new Thread(this).start();
     }
 
     public void setCajaAlarma(boolean requiereRetitroParcial) {
@@ -304,21 +322,102 @@ public class FrmPrincipal extends JFrame{
            btnCaja.setBackground(new Color(255,255,255));
     }
     
-    @Action
-    public void cerrarTurno(){
-        turno.realizarCorte(empleado.getId());
-        turno.actualizar();
-        new CorteTurno(turno, estacionamiento).generarReporte();
-        new RetirosParciales(turno, estacionamiento).generarReporte();
-
-        empleado = null;
-        btnCerrarSesion.setVisible(false);
-        initLogin();
-    }
+//    @Action
+//    public void cerrarTurno(){
+//        turno.realizarCorte(empleado.getId());
+//        turno.actualizar();
+//        new ReporteCorteTurno(turno, estacionamiento).generarReporte();
+//        new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
+//        new RetirosParciales(turno, estacionamiento).generarReporte();
+//
+//        empleado = null;
+//        btnCerrarSesion.setVisible(false);
+//        initLogin();
+//    }
 
     public static void main(String[] args) {
         new FrmPrincipal();
     }    
+    
+        @Override
+    public void run() {
+        while(true){
+            if(Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
+                try {
+                    Auto auto = Auto.getCambioEstadoServidor();
+                    if(auto != null){
+                        if(auto.getEstadoServidor()== 1){
+                            auto.setEstadoServidor(2);
+                            auto.actualizarEstadoServidor();
+                            FrmCobro frmCobro = new FrmCobro(this, true,turno,auto,estacionamiento);
+                        }
+                    }
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else if(Configuracion.getDatos().getTerminal().equals(Configuracion.CLIENTE)){
+                //////////////////////////////////////////////////////////////
+                //                         CLIENTE                          // 
+                //////////////////////////////////////////////////////////////
+                Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
+                if(turnoTemp != null){
+                    if(error!= null){
+                        error.dispose();
+                        error= null;
+                    }
+                    if(turno== null)
+                        turno= turnoTemp;
+                    if(barras == null)
+                        barras = new FrmLeerCodigoBarras(this, true,turnoTemp,"COBRO",estacionamiento);    
+                    
+                    if(turno.getId()!=turnoTemp.getId()){
+                        barras.dispose();
+                        barras = new FrmLeerCodigoBarras(this, true,turnoTemp,"COBRO",estacionamiento);     
+                        turno= turnoTemp;
+                    }
+                }else{
+                    //En espera por un turno
+                    if(barras!=null){
+                        barras.dispose();
+                        barras = null;
+                    }
+                    if(error== null)
+                        error = new FrmErrorCarga(this,false);
+                }
+            }else if(Configuracion.getDatos().getTerminal().equals(Configuracion.EXPEDIDOR)){
+                //////////////////////////////////////////////////////////////
+                //                      EXPEDIDOR                           // 
+                //////////////////////////////////////////////////////////////
+                Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
+                if(turnoTemp != null){
+                    if(error!= null){
+                        error.dispose();
+                        error= null;
+                    }
+                    if(turno== null)
+                        turno= turnoTemp;
+                    if(barras == null)
+                        barras = new FrmLeerCodigoBarras(this, true,turnoTemp,"ENTRADA",estacionamiento);    
+                    
+                    if(turno.getId()!=turnoTemp.getId()){
+                        barras.dispose();
+                        barras = new FrmLeerCodigoBarras(this, true,turnoTemp,"ENTRADA",estacionamiento);     
+                        turno= turnoTemp;
+                    }
+                }else{
+                    //En espera por un turno
+                    if(barras!=null){
+                        barras.dispose();
+                        barras = null;
+                    }
+                    if(error== null)
+                        error = new FrmErrorCarga(this,false);
+                }
+            }            
+        }
+    }
+
     
     
     @SuppressWarnings("unchecked")
@@ -337,6 +436,7 @@ public class FrmPrincipal extends JFrame{
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(FrmPrincipal.class);
         setBackground(resourceMap.getColor("Form.background")); // NOI18N
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -490,5 +590,6 @@ public class FrmPrincipal extends JFrame{
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+
 
 }

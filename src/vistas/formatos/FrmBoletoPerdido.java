@@ -675,7 +675,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
                     txtNumeroIdentificacion.getText());
                 boletoPerdido = new BoletoPerdido(Long.valueOf(
                     Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),
-                        "PERDIDO")), auto, propietario,turno);
+                        "PERDIDO")), auto, propietario,turno.getId());
                 Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(), "PERDIDO");
                 propietario.setBoletoPerdido(boletoPerdido);
                 auto.setBoletoPerdido(boletoPerdido);
@@ -684,6 +684,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
                 if (!auto.isDentro()){
                     propietario.guardar();
                     boletoPerdido.guardar();
+                    auto.setBoletoPerdido(boletoPerdido);
                     auto.actualizar();
                     imprimir();
                }

@@ -152,9 +152,15 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
     
     @Override
     public void run() {
+        int autos=0;
         while(true){
             try {
-                lblNoAutos.setText(String.valueOf(Auto.getAutosPendientes().size()));
+                autos=0;
+                for(String serie : Estacionamiento.getDatos().getCaseta().getSeries()){
+                    autos+= Auto.getNumAutosPendientesS(turno.getId(),serie);
+                
+                }
+                lblNoAutos.setText(String.valueOf(autos));
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(FrmMenuParking.class.getName()).log(Level.SEVERE, null, ex);

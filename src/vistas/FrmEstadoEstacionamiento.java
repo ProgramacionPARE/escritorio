@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modeloReportes.ReporteFolios;
 import modelos.Auto;
-import modelos.DetalleTurno;
+import modelos.TurnoDetalles;
 import modelos.Estacionamiento;
 import modelos.IUseCalendar;
 import modelos.RetiroParcial;
@@ -244,7 +244,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                 List<Auto> autosPendientesTurnoActual = new ArrayList(); 
                 if(fechaCambio){
                     banderaCambio = true;
-                    autosPendientesTurnoActual = Auto.getAutosPendientesS(turnoAux.getId(),serie);  
+                    autosPendientesTurnoActual = Auto.getAutosPendientesTurnoActual(turnoAux.getId(),serie);  
                     aPendientes.put(turnoAux.getId(), autosPendientesTurnoActual);
                 }else{
                     autosPendientesTurnoActual = aPendientes.get(turnoAux.getId());
@@ -1087,9 +1087,9 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     }//GEN-LAST:event_cbxCanceladoActionPerformed
 
     private void btnImprimir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimir1ActionPerformed
-        Iterator<Map.Entry<String, DetalleTurno>> iterator = turno.getDetallesTurno().entrySet().iterator();
+        Iterator<Map.Entry<String, TurnoDetalles>> iterator = turno.getDetallesTurno().entrySet().iterator();
         while(iterator.hasNext()){
-            Map.Entry<String, DetalleTurno> next = iterator.next();
+            Map.Entry<String, TurnoDetalles> next = iterator.next();
             new FrmArqueo(this.parent,true,turno, estacionamiento,next.getKey());
         }
         

@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 
 
 public class Turno implements IDBModel {
+
+
     private long id;
     private long empleadoApertura;
     private long empleadoCierre;
@@ -24,8 +26,9 @@ public class Turno implements IDBModel {
     private String horaApertura;
     private String fechaCierre;
     private String horaCierre;
+    private boolean activo;
     private Estacionamiento estacionamiento;
-    private HashMap<String,DetalleTurno> detallesTurno;
+    private HashMap<String,TurnoDetalles> detallesTurno;
     private ArrayList <RetiroParcial> retirosParciales;
     
     public static  HashMap<Long,Turno> cacheTurnos = new HashMap();
@@ -42,7 +45,8 @@ public class Turno implements IDBModel {
         this.horaCierre = horaCierre;
     }
 
-    public Turno(long id, long empleadoEntrada, long empleadoSalida, String tipoTurno, String fechaApertura, String horaApertura, String fechaCierre, String horaCierre) {
+    public Turno(long id, long empleadoEntrada, long empleadoSalida, String tipoTurno, 
+            String fechaApertura, String horaApertura, String fechaCierre, String horaCierre,boolean activo) {
         this.id = id;
         this.empleadoApertura = empleadoEntrada;
         this.empleadoCierre = empleadoSalida;
@@ -51,11 +55,9 @@ public class Turno implements IDBModel {
         this.horaApertura = horaApertura;
         this.fechaCierre = fechaCierre;
         this.horaCierre = horaCierre;
+        this.activo = activo;
     }
     
-    
-    
-
     public void inicializarTurno(long empleado,String tipoTurno){
         retirosParciales = new ArrayList <RetiroParcial>();
         fechaApertura = Tiempo.getFecha();
@@ -65,7 +67,7 @@ public class Turno implements IDBModel {
         this.detallesTurno = new HashMap();
         this.guardar();
         for(String serie: this.estacionamiento.getCaseta().getSeries() ){
-            this.detallesTurno.put(serie, new DetalleTurno(serie,estacionamiento,this));
+            this.detallesTurno.put(serie, new TurnoDetalles(serie,estacionamiento,this));
             this.detallesTurno.get(serie).inicializarTurno();
         }
     }
@@ -79,7 +81,14 @@ public class Turno implements IDBModel {
         }
     }
 
-   
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
     
     public static ArrayList<Turno> getTurnosByFecha(String fecha){
         ArrayList<Turno> turnos = new ArrayList<>();
@@ -99,7 +108,31 @@ public class Turno implements IDBModel {
         }
         return turnos;
     }
-    
+    public static String getSiguienteTurno() {
+        String tipo = "";
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT tipo_turno FROM turnos where fecha_apertura = ? order by id desc  limit 1");
+            statement.setString(1, Tiempo.getFecha());
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+               if(resultSet.getString("tipo_turno").equals("Primer turno"))
+                   tipo = "Segundo turno";
+               if(resultSet.getString("tipo_turno").equals("Segundo turno"))
+                   tipo = "Tercer turno";
+               if(resultSet.getString("tipo_turno").equals("Tercer turno"))
+                   tipo = "Cuarto turno";
+            }else{
+                tipo = "Primer turno";
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tipo;
+    }
     
     public static ArrayList<Turno> getTurnosByFechaAbierto(String fecha){
         ArrayList<Turno> turnos = new ArrayList<>();
@@ -138,10 +171,12 @@ public class Turno implements IDBModel {
                             resultSet.getString("hora_apertura") ,
                             resultSet.getString("hora_apertura"),
                             resultSet.getString("fecha_cierre"),
-                            resultSet.getString("hora_cierre"));
+                            resultSet.getString("hora_cierre"),
+                            resultSet.getString("activo").equals("SI")
+                    );
                 }
                 turno.setEstacionamiento(Estacionamiento.getDatos());
-                turno.setDetallesTurno(DetalleTurno.getByTurnoId(turno.getId()));
+                turno.setDetallesTurno(TurnoDetalles.getByTurnoId(turno.getId()));
                 conexion.cerrarConexion();
             } catch (SQLException ex) {
                 Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
@@ -265,11 +300,11 @@ public class Turno implements IDBModel {
         this.horaCierre = horaCierre;
     }
 
-    public HashMap<String, DetalleTurno> getDetallesTurno() {
+    public HashMap<String, TurnoDetalles> getDetallesTurno() {
         return detallesTurno;
     }
 
-    public void setDetallesTurno(HashMap<String, DetalleTurno> detallesTurno) {
+    public void setDetallesTurno(HashMap<String, TurnoDetalles> detallesTurno) {
         this.detallesTurno = detallesTurno;
     }
 
@@ -337,12 +372,29 @@ public class Turno implements IDBModel {
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         } 
-        Iterator<Map.Entry<String, DetalleTurno>> iterator = this.detallesTurno.entrySet().iterator();
+        Iterator<Map.Entry<String, TurnoDetalles>> iterator = this.detallesTurno.entrySet().iterator();
         while(iterator.hasNext()){
             iterator.next().getValue().actualizar();
         }
         
     }
+       
+    public void actualizarActivo() {
+         try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("UPDATE turnos SET `activo`  =?  WHERE `id`=?");
+            statement.setString(1, activo?"SI":"NO");
+            statement.setLong(2, id);
+            statement.executeUpdate();
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+    }
+    
 
     @Override
     public void eliminar() {

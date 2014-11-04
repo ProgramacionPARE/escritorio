@@ -1,6 +1,7 @@
 
 package modelos;
 
+import modelosReportesAux.DetallesArqueo;
 import java.util.ArrayList;
 
 

@@ -15,7 +15,7 @@ public class BoletoPerdido {
     private long progresivo;
     private Auto auto;
     private PropietarioPerdido propietario;
-    private Turno turno;
+    private long turno;
     
     static BoletoPerdido getById(long id) {
         BoletoPerdido boletoPerdido = null;
@@ -30,7 +30,7 @@ public class BoletoPerdido {
                 boletoPerdido = new BoletoPerdido(executeQuery.getInt("id")
                 ,executeQuery.getInt("progresivo") ,null, 
                  PropietarioPerdido.getById(executeQuery.getInt("id_propietario"),null), 
-                 Turno.getById(executeQuery.getLong("id")));
+                 executeQuery.getLong("id_turno"));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -44,7 +44,7 @@ public class BoletoPerdido {
     public BoletoPerdido() {
     }
 
-    public BoletoPerdido(int id, long progresivo, Auto auto, PropietarioPerdido propietario, Turno turno) {
+    public BoletoPerdido(int id, long progresivo, Auto auto, PropietarioPerdido propietario, long turno) {
         this.id = id;
         this.progresivo = progresivo;
         this.auto = auto;
@@ -53,7 +53,7 @@ public class BoletoPerdido {
     }
     
 
-    public BoletoPerdido( long progresivo, Auto auto, PropietarioPerdido propietario, Turno turno) {
+    public BoletoPerdido( long progresivo, Auto auto, PropietarioPerdido propietario, long turno) {
         this.progresivo = progresivo;
         this.auto = auto;
         this.propietario = propietario;
@@ -61,11 +61,11 @@ public class BoletoPerdido {
     }
 
     public Turno getTurno() {
-        return turno;
+        return Turno.getById(turno);
     }
 
     public void setTurno(Turno turno) {
-        this.turno = turno;
+        this.turno = turno.getId();
     }
     
     
@@ -108,13 +108,15 @@ public class BoletoPerdido {
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO boleto_perdido (`progresivo`, `id_auto`,"+
-                            " `id`,`id_propietario`)"
+                            " `id_turno`,`id_propietario`)"
                             + " VALUES (?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
 
             statement.setLong(1, progresivo);
             statement.setInt(2, auto.getId());
-            statement.setLong(3, turno.getId());
-            statement.setInt(4, propietario.getId()); 
+            statement.setLong(3, turno);
+            statement.setInt(4, propietario.getId());
+           
+            
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if(generatedKeys.next())

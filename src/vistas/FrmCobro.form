@@ -27,52 +27,51 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel8" min="-2" pref="80" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txtProgresivo" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jLabel5" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel4" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jLabel6" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
+                          <Component id="btnCobroManual" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel5" alignment="0" max="32767" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel4" max="32767" attributes="0"/>
-                                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="btnCobroManual" max="32767" attributes="0"/>
-                                          <Component id="jLabel6" min="-2" pref="152" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                      <Component id="lblDescuento" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtImporteBoletoPerdido" max="32767" attributes="0"/>
-                                  <Component id="txtImporteTotal" max="32767" attributes="0"/>
-                                  <Component id="btnDescuento" alignment="1" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel3" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="197" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
-                              <Component id="txtTiempoEstadia" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="txtImporteTotal" max="32767" attributes="0"/>
+                          <Component id="txtImporteBoletoPerdido" max="32767" attributes="0"/>
+                          <Component id="btnDescuento" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel1" min="-2" pref="80" max="-2" attributes="0"/>
-                          <Component id="jLabel2" min="-2" pref="80" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                      <Component id="jLabel3" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="197" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
+                      <Component id="txtTiempoEstadia" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
+                              <Component id="jLabel2" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel1" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="txtFechaEntrada" min="-2" pref="107" max="-2" attributes="0"/>
                                   <Component id="txtFechaSalida" min="-2" pref="107" max="-2" attributes="0"/>
@@ -87,80 +86,102 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="txtDineroPagado" max="32767" attributes="0"/>
-                  <Component id="jLabel7" pref="199" max="32767" attributes="0"/>
-                  <Component id="txtCambio" alignment="0" max="32767" attributes="0"/>
-                  <Component id="btnCobrar" alignment="1" min="-2" pref="198" max="-2" attributes="0"/>
-              </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txtDineroPagado" max="32767" attributes="0"/>
+                              <Component id="jLabel7" pref="199" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="btnCobrar" alignment="1" min="-2" pref="198" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblDescuento" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="txtCambio" min="-2" pref="199" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="txtFechaEntrada" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                      <Component id="txtFechaSalida" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="txtHoraEntrada" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                      <Component id="txtHoraSalida" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="txtDineroPagado" min="-2" pref="51" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxTarifas" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtTiempoEstadia" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtImporteBoletoPerdido" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="193" max="-2" attributes="0"/>
+                      <Component id="lblDescuento" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtCambio" min="-2" pref="30" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtImporteTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" max="-2" attributes="0">
-                          <Component id="btnDescuento" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                          <Component id="lblDescuento" alignment="3" max="32767" attributes="0"/>
-                          <Component id="btnCobroManual" min="-2" pref="31" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtProgresivo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtHoraEntrada" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="txtFechaEntrada" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFechaSalida" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtHoraSalida" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cbxTarifas" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="txtTiempoEstadia" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtImporteBoletoPerdido" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtImporteTotal" min="-2" pref="20" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" max="-2" attributes="0">
+                                  <Component id="btnDescuento" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                                  <Component id="btnCobroManual" min="-2" pref="31" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="txtDineroPagado" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtCambio" min="-2" pref="30" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnCobrar" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="btnCobrar" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -350,6 +371,19 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCobroManualActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Progresivo"/>
+        <Property name="name" type="java.lang.String" value="jLabel8" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtProgresivo">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="name" type="java.lang.String" value="txtProgresivo" noResource="true"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

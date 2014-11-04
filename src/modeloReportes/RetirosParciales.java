@@ -12,7 +12,7 @@ import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
-import modelos.DetallesMovimiento;
+import modelosReportesAux.DetallesMovimiento;
 import modelos.Estacionamiento;
 import modelos.RetiroParcial;
 import modelos.Turno;

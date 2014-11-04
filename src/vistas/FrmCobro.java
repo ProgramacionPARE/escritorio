@@ -67,7 +67,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     public void calcularImporte() {
         //Completo la informacion de la salida del auto
         txtTiempoEstadia.setText("");
-
+        txtProgresivo.setText(auto.getProgresivo());
         if(auto.isBoletoManual()){
             auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getBoletoManual().getFechaEntradaM(),auto.getBoletoManual().getHoraEntradaM(),auto.getBoletoManual().getFechaSalidaM(),auto.getBoletoManual().getHoraSalidaM()));
             auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getBoletoManual().getFechaEntradaM(),auto.getBoletoManual().getHoraEntradaM(),auto.getBoletoManual().getFechaSalidaM(),auto.getBoletoManual().getHoraSalidaM()));
@@ -98,7 +98,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         txtTiempoEstadia.setText(txtTiempoEstadia.getText()+ auto.getMinutosTangibles()+" minutos");
         txtImporteTotal.setText(String.valueOf(auto.getMontoTangible()));
         txtImporteBoletoPerdido.setText(String.valueOf(auto.getTarifa().getPrecioBoletoPerdido()));
-        if(auto.isBoletoPerdido()){
+        if(!auto.isBoletoPerdido()){
             jLabel5.setVisible(false);
             txtImporteBoletoPerdido.setVisible(false);
         }
@@ -130,6 +130,8 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         btnDescuento = new javax.swing.JButton();
         lblDescuento = new javax.swing.JLabel();
         btnCobroManual = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        txtProgresivo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -250,44 +252,51 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
             }
         });
 
+        jLabel8.setText("Progresivo");
+        jLabel8.setName("jLabel8"); // NOI18N
+
+        txtProgresivo.setEditable(false);
+        txtProgresivo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtProgresivo.setName("txtProgresivo"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(69, 69, 69))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btnCobroManual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, 0)
-                                        .addComponent(lblDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtImporteBoletoPerdido)
-                                    .addComponent(txtImporteTotal)
-                                    .addComponent(btnDescuento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(197, 197, 197))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(158, 158, 158)
-                                .addComponent(txtTiempoEstadia))))
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtProgresivo))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(69, 69, 69))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCobroManual, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
+                            .addComponent(txtImporteTotal)
+                            .addComponent(txtImporteBoletoPerdido)
+                            .addComponent(btnDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(197, 197, 197))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(txtTiempoEstadia))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,64 +307,78 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
                                     .addComponent(txtHoraSalida)
                                     .addComponent(txtHoraEntrada)))
                             .addComponent(cbxTarifas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDineroPagado)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(txtCambio)
-                    .addComponent(btnCobrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtDineroPagado)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                            .addComponent(btnCobrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDescuento))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel1)
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtFechaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtFechaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtHoraEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtHoraSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtDineroPagado, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(cbxTarifas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTiempoEstadia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtImporteBoletoPerdido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                            .addComponent(btnDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCobroManual, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnCobrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(193, 193, 193)
+                        .addComponent(lblDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(txtProgresivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtHoraEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtFechaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel2)
+                                            .addComponent(txtFechaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtHoraSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(cbxTarifas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtTiempoEstadia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtImporteBoletoPerdido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(7, 7, 7)
+                                        .addComponent(jLabel6))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                                    .addComponent(btnDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnCobroManual, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtDineroPagado, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnCobrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(8, 8, 8)))
                 .addContainerGap())
         );
 
@@ -391,7 +414,15 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     private void cbxTarifasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTarifasItemStateChanged
         if(ItemEvent.SELECTED == evt.getStateChange() ){
             auto.setTarifa(estacionamiento.getCaseta().getTarifas().get(cbxTarifas.getSelectedIndex()));
-            calcularImporte();
+            auto.actualizarTarifa();
+            Auto auto = Auto.getCambioEstadoServidor();
+            if(auto != null){
+                if(auto.getEstadoServidor()== 2 && auto.getProgresivo().equals(this.auto.getProgresivo())){
+                    auto.setEstadoServidor(3);
+                    auto.actualizarEstadoServidor();
+                }
+            }
+            calcularImporte();      
         }
     }//GEN-LAST:event_cbxTarifasItemStateChanged
 
@@ -424,10 +455,36 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
 
     @Action
     public void onCobrar() {
-        new Thread(this).start();
-         int showConfirmDialog ;
+       auto.setDentro(false);
+        //Actualizo monto en caja
+        Caja caja= Caja.getByCaseta(estacionamiento.getCaseta().getId());
+        caja.setMonto(caja.getMonto()+auto.getMontoTangible());
+        caja.actualizar();
+        //Reviso si el auto fue boleto perdido, cancelado o cobrado normalmente 
+        if(auto.isBoletoCancelado())
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCancelados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCancelados()+1);
+        else if(auto.isBoletoPerdido())
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolPerdidos(turno.getDetallesTurno().get(auto.getSerie()).getNoBolPerdidos()+1);
+        else
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCobrados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCobrados()+1);
+       
+        turno.getDetallesTurno().get(auto.getSerie()).setTotal(turno.getDetallesTurno().get(auto.getSerie()).getTotal()+auto.getMontoTangible());
+        auto.actualizar();
+        turno.actualizar();
+       Auto autoT = Auto.getCambioEstadoServidor();
+            if(autoT != null){
+                if(autoT.getEstadoServidor()== 2 && autoT.getProgresivo().equals(this.auto.getProgresivo())){
+                    auto.setEstadoServidor(4);
+                    auto.actualizarEstadoServidor();
+                }
+            }
+        
+        //Reviso si activo la alarma
+        ((FrmPrincipal)parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja) );
+        
+        int showConfirmDialog ;
         //Pregunto si imprimo recibo de pago
-        if(auto.getBoletoCancelado()!=null || auto.getBoletoPerdido()!=null)
+        if(auto.isBoletoCancelado() || auto.isBoletoPerdido())
             showConfirmDialog = JOptionPane.YES_OPTION;
         else
             showConfirmDialog = JOptionPane.showConfirmDialog(this, "Quieres imprimir recibo de pago", "Recibo de pago",JOptionPane.YES_NO_OPTION);
@@ -437,33 +494,19 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
             auto.setMontoReciboPago(Float.valueOf(txtDineroPagado.getText()));
             new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),turno,auto,estacionamiento);   
         }
+        autoT = Auto.getCambioEstadoServidor();
+            if(autoT != null){
+                if(autoT.getEstadoServidor()== 6 && autoT.getProgresivo().equals(this.auto.getProgresivo())){
+                    auto.setEstadoServidor(7);
+                    auto.actualizarEstadoServidor();
+                }
+            }
         this.dispose();
     }
     
     @Override
     public void run() {
-        auto.setDentro(false);
-        //Actualizo monto en caja
-        Caja caja= Caja.getByCaseta(estacionamiento.getCaseta().getId());
-        caja.setMonto(caja.getMonto()+auto.getMontoTangible());
-        caja.actualizar();
-        //Reviso si el auto fue boleto perdido, cancelado o cobrado normalmente 
-        if(auto.getBoletoCancelado()!= null)
-            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCancelados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCancelados()+1);
-        else if(auto.getBoletoPerdido()!= null)
-            turno.getDetallesTurno().get(auto.getSerie()).setNoBolPerdidos(turno.getDetallesTurno().get(auto.getSerie()).getNoBolPerdidos()+1);
-        else
-            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCobrados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCobrados()+1);
-       
-        turno.getDetallesTurno().get(auto.getSerie()).setTotal(turno.getDetallesTurno().get(auto.getSerie()).getTotal()+auto.getMontoTangible());
-        auto.actualizar();
         
-        //turno.setTotal(DetallesMovimiento.calcularTotal(DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(turno),
-                //Auto.getAutosBoletoPerdidoTurnoActual(turno),Auto.getAutosBoletoCanceladoTurnoActual(turno),turno) ));
-        turno.actualizar();
-        //Reviso si activo la alarma
-        ((FrmPrincipal)parent).setCajaAlarma(
-                Sistema.requiereRetitroParcial(caja) );
     }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -478,6 +521,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel lblDescuento;
     private javax.swing.JTextField txtCambio;
     private javax.swing.JTextField txtDineroPagado;
@@ -487,6 +531,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     private javax.swing.JTextField txtHoraSalida;
     private javax.swing.JTextField txtImporteBoletoPerdido;
     private javax.swing.JTextField txtImporteTotal;
+    private javax.swing.JTextField txtProgresivo;
     private javax.swing.JTextField txtTiempoEstadia;
     // End of variables declaration//GEN-END:variables
 

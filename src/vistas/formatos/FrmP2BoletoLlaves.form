@@ -29,7 +29,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -75,7 +78,7 @@
                                   <Component id="lblModelo" min="-2" pref="163" max="-2" attributes="2"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="0" pref="49" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="36" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="jLabProgresivo" alignment="0" max="32767" attributes="2"/>
                                       <Component id="jLabPlacas1" alignment="0" max="32767" attributes="2"/>
@@ -132,7 +135,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="90" max="32767" attributes="0"/>
+                  <EmptySpace pref="75" max="32767" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>

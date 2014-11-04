@@ -7,11 +7,13 @@ import java.util.Iterator;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import modeloReportes.CorteTurno;
+import modeloReportes.ReporteArqueo;
+import modeloReportes.ReporteCorteTurno;
+import modeloReportes.ReporteDetalleAvanzado;
 import modelos.Arqueo;
 import modelos.Auto;
-import modelos.DetallesArqueo;
-import modelos.DetallesMovimiento;
+import modelosReportesAux.DetallesArqueo;
+import modelosReportesAux.DetallesMovimiento;
 import modelos.Estacionamiento;
 import modelos.RetiroParcial;
 import modelos.Turno;
@@ -1278,9 +1280,9 @@ public class FrmArqueo extends javax.swing.JDialog {
     //turno.setDetallesMovimiento(DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(turno),
     //            Auto.getAutosBoletoPerdidoTurnoActual(turno),Auto.getAutosBoletoCanceladoTurnoActual(turno),turno));
      
-     new CorteTurno(turno, estacionamiento).generarReporte();
-
-    new modeloReportes.ReporteArqueo(turno,arqueo,estacionamiento,serie).generarReporte();
+    new ReporteCorteTurno(turno, estacionamiento).generarReporte();
+    new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
+    new ReporteArqueo(turno,arqueo,estacionamiento,serie).generarReporte();
 
     }//GEN-LAST:event_btnImprimirArqueoActionPerformed
     

@@ -7,13 +7,10 @@
 package vistas;
 
 import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import modeloReportes.CorteTurno;
+import modeloReportes.ReporteCorteTurno;
+import modeloReportes.ReporteDetalleAvanzado;
 import modeloReportes.RetirosParciales;
 import modelos.Caja;
-import modelos.DetallesMovimiento;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Turno;
@@ -155,12 +152,14 @@ public class FrmCaja extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       new FrmRetiroParcial(parent,true,turno,estacionamiento,caja);
-       this.setVisible(false);
-       if(esCorte){
+       
+        new FrmRetiroParcial(parent,true,turno,estacionamiento,caja);
+        this.setVisible(false);
+        if(esCorte){
             turno.realizarCorte(empleado.getId());
             turno.actualizar();
-            new CorteTurno(turno, estacionamiento).generarReporte();
+            new ReporteCorteTurno(turno, estacionamiento).generarReporte();
+             new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
             new RetirosParciales(turno, estacionamiento).generarReporte();
 
       

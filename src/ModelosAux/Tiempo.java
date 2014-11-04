@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class Tiempo {
     static String [] mesesLetra = {"enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"};
     public static String getHora(){
-        return new SimpleDateFormat("HH:mm:ss").format(new Date()) ;
+        return new SimpleDateFormat("HH:mm").format(new Date()) ;
         }
     
     public static String getFecha(){
@@ -54,7 +54,7 @@ public class Tiempo {
     
     public static int getDirenciaHoras(String fechaEntrada, String horaEntrada, String fechaSalida, String horaSalida) {
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd*HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd*HH:mm");
         Date entrada,salida,estancia=null;
         try {
             entrada = formatter.parse(fechaEntrada+"*"+horaEntrada);
@@ -67,7 +67,7 @@ public class Tiempo {
     }
 
     public static int getDirenciaMinutos(String fechaEntrada, String horaEntrada, String fechaSalida, String horaSalida) {
-         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd*HH:mm:ss");
+         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd*HH:mm");
         Date entrada,salida,estancia=null;
         try {
             entrada = formatter.parse(fechaEntrada+"*"+horaEntrada);

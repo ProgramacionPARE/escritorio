@@ -15,7 +15,9 @@ import static modelos.Estacionamiento.e;
 
 public class Configuracion{
     public static Configuracion DATOS = new Configuracion();
-    
+     public static final String CAJA = "caja";
+    public static final String EXPEDIDOR = "expedidor";
+    public static final String CLIENTE = "cliente";
     private Configuracion(){
         try {
             ConexionDatos conexion = new ConexionDatos();

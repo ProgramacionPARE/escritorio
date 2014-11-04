@@ -57,7 +57,7 @@ public class FrmEntradaAutoservicio extends javax.swing.JDialog {
             txtHoraEntrada.grabFocus();
             return false;
         }
-        if (!Tiempo.horaVsHoraActual(txtFechaEntrada.getText(),txtHoraEntrada.getText()+":00")){
+        if (!Tiempo.horaVsHoraActual(txtFechaEntrada.getText(),txtHoraEntrada.getText())){
             JOptionPane.showMessageDialog(this,"La hora de entrada no puede ser mayor a la hora actual ",
             "Hora incorrecta",JOptionPane.WARNING_MESSAGE);
             txtHoraEntrada.grabFocus();
