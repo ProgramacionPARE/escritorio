@@ -233,6 +233,8 @@ public class FrmPrincipal extends JFrame implements Runnable{
                     turno.inicializarTurno(empleado.getId(),"");
                     turno.setTipoTurno(tipo);
                     turno.actualizar();
+                    turno.setActivo(true);
+                    turno.actualizarActivo();
                     turnoAbrierto  = true;
                 }else{
                     turnoAbrierto  = false;
