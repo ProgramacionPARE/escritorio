@@ -86,17 +86,17 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         jPanel1.setBackground(resourceMap.getColor("jPanel1.background")); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
 
-        jLabel9.setFont(resourceMap.getFont("jLabPlacas1.font")); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
 
-        jLabel18.setFont(resourceMap.getFont("jLabPlacas1.font")); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText(resourceMap.getString("jLabel18.text")); // NOI18N
         jLabel18.setName("jLabel18"); // NOI18N
 
-        jLabPlacas1.setFont(resourceMap.getFont("jLabPlacas1.font")); // NOI18N
+        jLabPlacas1.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabPlacas1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabPlacas1.setText(resourceMap.getString("jLabPlacas1.text")); // NOI18N
         jLabPlacas1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -107,12 +107,12 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         jLabel8.setIconTextGap(0);
         jLabel8.setName("jLabel8"); // NOI18N
 
-        jLabProgresivo.setFont(resourceMap.getFont("jLabPlacas1.font")); // NOI18N
+        jLabProgresivo.setFont(new java.awt.Font("Droid Sans", 0, 28)); // NOI18N
         jLabProgresivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabProgresivo.setText(resourceMap.getString("jLabProgresivo.text")); // NOI18N
         jLabProgresivo.setName("jLabProgresivo"); // NOI18N
 
-        jLabel20.setFont(resourceMap.getFont("jLabPlacas1.font")); // NOI18N
+        jLabel20.setFont(new java.awt.Font("Droid Sans", 1, 20)); // NOI18N
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel20.setText(resourceMap.getString("jLabel20.text")); // NOI18N
         jLabel20.setName("jLabel20"); // NOI18N
@@ -128,20 +128,22 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabPlacas1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabProgresivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabProgresivo, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
@@ -151,22 +153,19 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
                 .addComponent(jLabPlacas1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabProgresivo)
-                .addGap(26, 26, 26)
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(34, 34, 34))
+                .addGap(46, 46, 46)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -202,8 +201,8 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         
        Graphics2D g2d = (Graphics2D)g;
         g2d.transform(AffineTransform.getScaleInstance(.45,.45));
-        g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/2.6,(this).getHeight()/2.6 ));
-        g2d.transform(AffineTransform.getTranslateInstance(0,80));
+        g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/2.5,(this).getHeight()/2.5 ));
+        g2d.transform(AffineTransform.getTranslateInstance(0,55));
         
         this.printAll(g2d);
         return PAGE_EXISTS;

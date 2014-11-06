@@ -29,10 +29,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -58,27 +55,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jLabel22" min="-2" max="-2" attributes="1"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblEncargado" max="32767" attributes="2"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jLabColor" alignment="0" max="32767" attributes="2"/>
-                                      <Component id="jLabPlacas" max="32767" attributes="2"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                  <Component id="lblPlacas" min="-2" pref="163" max="-2" attributes="2"/>
-                              </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jLabModelo" max="32767" attributes="2"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="lblModelo" min="-2" pref="163" max="-2" attributes="2"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="0" pref="36" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="46" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="jLabProgresivo" alignment="0" max="32767" attributes="2"/>
                                       <Component id="jLabPlacas1" alignment="0" max="32767" attributes="2"/>
@@ -86,10 +65,25 @@
                                       <Component id="lbl12" alignment="0" max="32767" attributes="2"/>
                                       <Component id="jLabel9" alignment="0" max="32767" attributes="1"/>
                                   </Group>
+                                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                                  <Component id="lblColor" min="-2" pref="43" max="-2" attributes="2"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel22" min="-2" max="-2" attributes="1"/>
+                                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                  <Component id="lblEncargado" max="32767" attributes="2"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabPlacas" max="32767" attributes="2"/>
+                                  <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                                  <Component id="lblPlacas" min="-2" pref="163" max="-2" attributes="2"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabModelo" max="32767" attributes="2"/>
+                                  <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                                  <Component id="lblModelo" min="-2" pref="163" max="-2" attributes="2"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
-                          <Component id="lblColor" min="-2" pref="43" max="-2" attributes="2"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
@@ -121,23 +115,21 @@
                               <Component id="jLabModelo" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblModelo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabPlacas" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblPlacas" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabColor" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel22" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                               <Component id="lblEncargado" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="33" max="32767" attributes="0"/>
+                  <EmptySpace pref="49" max="32767" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -145,7 +137,9 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel18">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="18" style="0"/>
+            </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabel18.text"/>
             <Property name="verticalAlignment" type="int" value="1"/>
@@ -154,29 +148,26 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabPlacas">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="18" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="jLabPlacas.text"/>
             <Property name="name" type="java.lang.String" value="jLabPlacas" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel22">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" resourceKey="lblEncargado.font"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabel22.text"/>
             <Property name="name" type="java.lang.String" value="jLabel22" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabColor">
-          <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
-            <Property name="text" type="java.lang.String" resourceKey="jLabColor.text"/>
-            <Property name="name" type="java.lang.String" value="jLabColor" noResource="true"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="18" style="0"/>
+            </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabel9.text"/>
             <Property name="verticalAlignment" type="int" value="3"/>
@@ -185,14 +176,18 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabModelo">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="18" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="jLabModelo.text"/>
             <Property name="name" type="java.lang.String" value="jLabModelo" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabProgresivo">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="28" style="0"/>
+            </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabProgresivo.text"/>
             <Property name="name" type="java.lang.String" value="jLabProgresivo" noResource="true"/>
@@ -200,7 +195,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl12">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="20" style="1"/>
+            </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" resourceKey="lbl12.text"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -209,21 +206,27 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblModelo">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="18" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="lblModelo.text"/>
             <Property name="name" type="java.lang.String" value="lblModelo" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblPlacas">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="18" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="lblPlacas.text"/>
             <Property name="name" type="java.lang.String" value="lblPlacas" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblEncargado">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="18" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="lblEncargado.text"/>
             <Property name="name" type="java.lang.String" value="lblEncargado" noResource="true"/>
           </Properties>
@@ -237,7 +240,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabPlacas1">
           <Properties>
-            <Property name="font" type="java.awt.Font" resourceKey="jLabel6.font"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Droid Sans" size="18" style="0"/>
+            </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabPlacas1.text"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>

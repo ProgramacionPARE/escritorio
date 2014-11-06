@@ -65,6 +65,7 @@ public class FrmReportes extends javax.swing.JDialog {
                 Turno turnoActual = turnos.next();
                 // Revisar esto
                 //turnoActual.detallesParaImprimir();
+                turnoActual.realizarCorte(turnoActual.getEmpleadoEntrada().getId(),"reimpresion");
                 new ReporteCorteTurno(turnoActual, estacionamiento).generarReporte();
                 new ReporteDetalleAvanzado(turnoActual, estacionamiento).generarReporte();
                 new RetirosParciales(turnoActual, estacionamiento).generarReporte();

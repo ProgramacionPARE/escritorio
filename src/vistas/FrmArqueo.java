@@ -163,11 +163,9 @@ public class FrmArqueo extends javax.swing.JDialog {
         jSeparator3 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         VENTAS.setText("VENTAS");
         VENTAS.setName("VENTAS"); // NOI18N
-        getContentPane().add(VENTAS, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -204,119 +202,98 @@ public class FrmArqueo extends javax.swing.JDialog {
             tblVenta.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 74, 439, 650));
-
         VENTAS1.setText("ARQUEO");
         VENTAS1.setName("VENTAS1"); // NOI18N
-        getContentPane().add(VENTAS1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, 360, -1));
 
         VENTAS2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS2.setText("$ 500.00");
         VENTAS2.setName("VENTAS2"); // NOI18N
-        getContentPane().add(VENTAS2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 70, 80, -1));
 
         VENTAS3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         VENTAS3.setText("Cantidad");
         VENTAS3.setName("VENTAS3"); // NOI18N
-        getContentPane().add(VENTAS3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 120, -1));
 
         VENTAS4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         VENTAS4.setText("Importe");
         VENTAS4.setName("VENTAS4"); // NOI18N
-        getContentPane().add(VENTAS4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 40, 120, -1));
 
         VENTAS6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS6.setText("Subtotal");
         VENTAS6.setName("VENTAS6"); // NOI18N
-        getContentPane().add(VENTAS6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 510, 193, -1));
 
         VENTAS5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         VENTAS5.setText("Billetes");
         VENTAS5.setMaximumSize(null);
         VENTAS5.setName("VENTAS5"); // NOI18N
-        getContentPane().add(VENTAS5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, 80, -1));
 
         VENTAS7.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS7.setText("$ 200.00");
         VENTAS7.setName("VENTAS7"); // NOI18N
-        getContentPane().add(VENTAS7, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, 80, -1));
 
         VENTAS8.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS8.setText("$ 100.00");
         VENTAS8.setName("VENTAS8"); // NOI18N
-        getContentPane().add(VENTAS8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 130, 80, -1));
 
         VENTAS9.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS9.setText("$ 50.00");
         VENTAS9.setName("VENTAS9"); // NOI18N
-        getContentPane().add(VENTAS9, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 160, 80, -1));
 
         VENTAS10.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS10.setText("$ 20.00");
         VENTAS10.setName("VENTAS10"); // NOI18N
-        getContentPane().add(VENTAS10, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 80, -1));
 
         VENTAS11.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS11.setText("$ 1.00");
         VENTAS11.setName("VENTAS11"); // NOI18N
-        getContentPane().add(VENTAS11, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 390, 80, -1));
 
         VENTAS12.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS12.setText("$ 2.00");
         VENTAS12.setName("VENTAS12"); // NOI18N
-        getContentPane().add(VENTAS12, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, 80, -1));
 
         VENTAS13.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS13.setText("$ 5.00");
         VENTAS13.setName("VENTAS13"); // NOI18N
-        getContentPane().add(VENTAS13, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 330, 80, -1));
 
         VENTAS14.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS14.setText("$ 10.00");
         VENTAS14.setName("VENTAS14"); // NOI18N
-        getContentPane().add(VENTAS14, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 300, 80, -1));
 
         VENTAS15.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS15.setText("$ 20.00");
         VENTAS15.setName("VENTAS15"); // NOI18N
-        getContentPane().add(VENTAS15, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 270, 80, 18));
 
         VENTAS16.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS16.setText("Retiros Parciales");
         VENTAS16.setName("VENTAS16"); // NOI18N
-        getContentPane().add(VENTAS16, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 550, 335, -1));
 
         VENTAS17.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS17.setText("$ 0.20");
         VENTAS17.setName("VENTAS17"); // NOI18N
-        getContentPane().add(VENTAS17, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 450, 80, -1));
 
         VENTAS18.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS18.setText("$ 0.50");
         VENTAS18.setName("VENTAS18"); // NOI18N
-        getContentPane().add(VENTAS18, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 420, 80, -1));
 
         VENTAS19.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         VENTAS19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS19.setText("$ 0.10");
         VENTAS19.setName("VENTAS19"); // NOI18N
-        getContentPane().add(VENTAS19, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 480, 80, -1));
 
         txtNoB500.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoB500.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -339,7 +316,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoB500KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoB500, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 70, 120, -1));
 
         txtNoB200.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoB200.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -362,7 +338,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoB200KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoB200, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 100, 120, -1));
 
         txtNoB100.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoB100.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -385,7 +360,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoB100KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoB100, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 130, 120, -1));
 
         txtNoB50.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoB50.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -408,7 +382,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoB50KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoB50, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 160, 120, -1));
 
         txtNoB20.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoB20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -431,7 +404,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoB20KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoB20, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 190, 120, -1));
 
         txtImporteB500.setEditable(false);
         txtImporteB500.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -439,7 +411,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteB500.setText("0.0");
         txtImporteB500.setToolTipText("");
         txtImporteB500.setName("txtImporteB500"); // NOI18N
-        getContentPane().add(txtImporteB500, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 70, 122, -1));
 
         txtImporteB200.setEditable(false);
         txtImporteB200.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -447,7 +418,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteB200.setText("0.0");
         txtImporteB200.setToolTipText("");
         txtImporteB200.setName("txtImporteB200"); // NOI18N
-        getContentPane().add(txtImporteB200, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 100, 122, -1));
 
         txtImporteB100.setEditable(false);
         txtImporteB100.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -455,7 +425,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteB100.setText("0.0");
         txtImporteB100.setToolTipText("");
         txtImporteB100.setName("txtImporteB100"); // NOI18N
-        getContentPane().add(txtImporteB100, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, 122, -1));
 
         txtImporteB50.setEditable(false);
         txtImporteB50.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -463,7 +432,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteB50.setText("0.0");
         txtImporteB50.setToolTipText("");
         txtImporteB50.setName("txtImporteB50"); // NOI18N
-        getContentPane().add(txtImporteB50, new org.netbeans.lib.awtextra.AbsoluteConstraints(679, 161, 122, -1));
 
         txtImporteB20.setEditable(false);
         txtImporteB20.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -471,7 +439,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteB20.setText("0.0");
         txtImporteB20.setToolTipText("");
         txtImporteB20.setName("txtImporteB20"); // NOI18N
-        getContentPane().add(txtImporteB20, new org.netbeans.lib.awtextra.AbsoluteConstraints(679, 188, 122, -1));
 
         txtNoM20.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoM20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -494,7 +461,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoM20KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoM20, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 270, 120, -1));
 
         txtImporteM20.setEditable(false);
         txtImporteM20.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -502,7 +468,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteM20.setText("0.0");
         txtImporteM20.setToolTipText("");
         txtImporteM20.setName("txtImporteM20"); // NOI18N
-        getContentPane().add(txtImporteM20, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 270, 122, -1));
 
         txtNoM10.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoM10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -525,7 +490,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoM10KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoM10, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 300, 120, -1));
 
         txtImporteM10.setEditable(false);
         txtImporteM10.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -533,7 +497,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteM10.setText("0.0");
         txtImporteM10.setToolTipText("");
         txtImporteM10.setName("txtImporteM10"); // NOI18N
-        getContentPane().add(txtImporteM10, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, 122, -1));
 
         txtNoM5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoM5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -556,7 +519,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoM5KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoM5, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 330, 120, -1));
 
         txtImporteM5.setEditable(false);
         txtImporteM5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -564,7 +526,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteM5.setText("0.0");
         txtImporteM5.setToolTipText("");
         txtImporteM5.setName("txtImporteM5"); // NOI18N
-        getContentPane().add(txtImporteM5, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 330, 122, -1));
 
         txtNoM2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoM2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -587,7 +548,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoM2KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoM2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 360, 120, -1));
 
         txtImporteM2.setEditable(false);
         txtImporteM2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -595,7 +555,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteM2.setText("0.0");
         txtImporteM2.setToolTipText("");
         txtImporteM2.setName("txtImporteM2"); // NOI18N
-        getContentPane().add(txtImporteM2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 360, 122, -1));
 
         txtNoM1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoM1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -618,7 +577,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoM1KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoM1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 390, 120, -1));
 
         txtImporteM1.setEditable(false);
         txtImporteM1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -626,7 +584,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteM1.setText("0.0");
         txtImporteM1.setToolTipText("");
         txtImporteM1.setName("txtImporteM1"); // NOI18N
-        getContentPane().add(txtImporteM1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 390, 122, -1));
 
         txtNoM02.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoM02.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -649,7 +606,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoM02KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoM02, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 450, 120, -1));
 
         txtNoM05.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoM05.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -672,7 +628,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoM05KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoM05, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 420, 120, -1));
 
         txtImporteM05.setEditable(false);
         txtImporteM05.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -680,7 +635,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteM05.setText("0.0");
         txtImporteM05.setToolTipText("");
         txtImporteM05.setName("txtImporteM05"); // NOI18N
-        getContentPane().add(txtImporteM05, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 420, 122, -1));
 
         txtImporteM02.setEditable(false);
         txtImporteM02.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -688,7 +642,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteM02.setText("0.0");
         txtImporteM02.setToolTipText("");
         txtImporteM02.setName("txtImporteM02"); // NOI18N
-        getContentPane().add(txtImporteM02, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 450, 122, -1));
 
         txtImporteMSubtotal.setEditable(false);
         txtImporteMSubtotal.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -696,7 +649,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteMSubtotal.setText("0.0");
         txtImporteMSubtotal.setToolTipText("");
         txtImporteMSubtotal.setName("txtImporteMSubtotal"); // NOI18N
-        getContentPane().add(txtImporteMSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 510, 122, -1));
 
         txtImporteBSubtotal.setEditable(false);
         txtImporteBSubtotal.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -704,29 +656,24 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteBSubtotal.setText("0.0");
         txtImporteBSubtotal.setToolTipText("");
         txtImporteBSubtotal.setName("txtImporteBSubtotal"); // NOI18N
-        getContentPane().add(txtImporteBSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 220, 122, -1));
 
         VENTAS21.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS21.setText("TOTAL");
         VENTAS21.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         VENTAS21.setName("VENTAS21"); // NOI18N
-        getContentPane().add(VENTAS21, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 730, -1, 40));
 
         txtImporteTotal.setEditable(false);
         txtImporteTotal.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtImporteTotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtImporteTotal.setToolTipText("");
         txtImporteTotal.setName("txtImporteTotal"); // NOI18N
-        getContentPane().add(txtImporteTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 730, 122, -1));
 
         jSeparator1.setName("jSeparator1"); // NOI18N
-        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 690, 345, 10));
 
         VENTAS22.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS22.setText("TOTAL");
         VENTAS22.setName("VENTAS22"); // NOI18N
-        getContentPane().add(VENTAS22, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 700, 100, 20));
 
         txtTotal.setEditable(false);
         txtTotal.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -734,7 +681,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtTotal.setText("0.0");
         txtTotal.setToolTipText("");
         txtTotal.setName("txtTotal"); // NOI18N
-        getContentPane().add(txtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 700, 145, 20));
 
         txtNoM01.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoM01.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -757,7 +703,6 @@ public class FrmArqueo extends javax.swing.JDialog {
                 txtNoM01KeyReleased(evt);
             }
         });
-        getContentPane().add(txtNoM01, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 480, 120, -1));
 
         txtImporteM01.setEditable(false);
         txtImporteM01.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -765,7 +710,6 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtImporteM01.setText("0.0");
         txtImporteM01.setToolTipText("");
         txtImporteM01.setName("txtImporteM01"); // NOI18N
-        getContentPane().add(txtImporteM01, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 480, 122, -1));
 
         btnImprimirArqueo.setText("Imprimir");
         btnImprimirArqueo.setName("btnImprimirArqueo"); // NOI18N
@@ -774,27 +718,22 @@ public class FrmArqueo extends javax.swing.JDialog {
                 btnImprimirArqueoActionPerformed(evt);
             }
         });
-        getContentPane().add(btnImprimirArqueo, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 730, 345, -1));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel1.setText("Folio inicial");
         jLabel1.setName("jLabel1"); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 80, -1));
 
         txtFolioInicial.setEditable(false);
         txtFolioInicial.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtFolioInicial.setName("txtFolioInicial"); // NOI18N
-        getContentPane().add(txtFolioInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 143, -1));
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel2.setText("Folio final");
         jLabel2.setName("jLabel2"); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, 80, -1));
 
         txtFolioFinal.setEditable(false);
         txtFolioFinal.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtFolioFinal.setName("txtFolioFinal"); // NOI18N
-        getContentPane().add(txtFolioFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 40, 143, -1));
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -829,37 +768,30 @@ public class FrmArqueo extends javax.swing.JDialog {
             tblRetiros.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 570, 345, 84));
-
         VENTAS23.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS23.setText("Monedas");
         VENTAS23.setMaximumSize(null);
         VENTAS23.setName("VENTAS23"); // NOI18N
-        getContentPane().add(VENTAS23, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 250, 90, -1));
 
         VENTAS24.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS24.setText("Subtotal");
         VENTAS24.setName("VENTAS24"); // NOI18N
-        getContentPane().add(VENTAS24, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 220, 120, -1));
 
         VENTAS25.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS25.setText("Boletos");
         VENTAS25.setName("VENTAS25"); // NOI18N
-        getContentPane().add(VENTAS25, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 730, -1, -1));
 
         txtNoBoletos.setEditable(false);
         txtNoBoletos.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         txtNoBoletos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNoBoletos.setToolTipText("");
         txtNoBoletos.setName("txtNoBoletos"); // NOI18N
-        getContentPane().add(txtNoBoletos, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 730, 111, -1));
 
         VENTAS20.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VENTAS20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         VENTAS20.setText("Subtotal");
         VENTAS20.setName("VENTAS20"); // NOI18N
-        getContentPane().add(VENTAS20, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 660, 193, -1));
 
         txtRetirosSubtotal.setEditable(false);
         txtRetirosSubtotal.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -867,13 +799,309 @@ public class FrmArqueo extends javax.swing.JDialog {
         txtRetirosSubtotal.setText("0.0");
         txtRetirosSubtotal.setToolTipText("");
         txtRetirosSubtotal.setName("txtRetirosSubtotal"); // NOI18N
-        getContentPane().add(txtRetirosSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 660, 122, -1));
 
         jSeparator2.setName("jSeparator2"); // NOI18N
-        getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(456, 246, 345, 10));
 
         jSeparator3.setName("jSeparator3"); // NOI18N
-        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 540, 345, 10));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(230, 230, 230)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(txtFolioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(VENTAS1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(VENTAS)
+                .addGap(167, 167, 167)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(txtFolioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(VENTAS5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(VENTAS3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(VENTAS4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoB500, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteB500, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoB200, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteB200, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoB100, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteB100, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS9, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoB50, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addComponent(txtImporteB50, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS10, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoB20, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addComponent(txtImporteB20, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(VENTAS24, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteBSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS23, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS15, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoM20, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteM20, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS14, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoM10, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteM10, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS13, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoM5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteM5, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS12, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoM2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteM2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS11, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoM1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteM1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS18, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoM05, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteM05, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS17, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoM02, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteM02, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS19, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtNoM01, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtImporteM01, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(VENTAS6, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(txtImporteMSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(VENTAS16, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(VENTAS20, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(txtRetirosSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(VENTAS22, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(VENTAS25)
+                .addGap(11, 11, 11)
+                .addComponent(txtNoBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79)
+                .addComponent(VENTAS21)
+                .addGap(8, 8, 8)
+                .addComponent(txtImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(btnImprimirArqueo, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(txtFolioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(VENTAS1))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(VENTAS))
+                    .addComponent(jLabel2)
+                    .addComponent(txtFolioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(VENTAS5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(VENTAS3)
+                    .addComponent(VENTAS4))
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS2)
+                            .addComponent(txtNoB500, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteB500, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS7)
+                            .addComponent(txtNoB200, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteB200, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS8)
+                            .addComponent(txtNoB100, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteB100, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS9)
+                            .addComponent(txtNoB50, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(txtImporteB50, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtImporteB20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(VENTAS10)
+                                    .addComponent(txtNoB20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS24)
+                            .addComponent(txtImporteBSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(VENTAS23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS15, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNoM20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteM20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS14)
+                            .addComponent(txtNoM10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteM10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS13)
+                            .addComponent(txtNoM5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteM5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS12)
+                            .addComponent(txtNoM2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteM2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS11)
+                            .addComponent(txtNoM1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteM1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS18)
+                            .addComponent(txtNoM05, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteM05, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS17)
+                            .addComponent(txtNoM02, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteM02, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS19)
+                            .addComponent(txtNoM01, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporteM01, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS6)
+                            .addComponent(txtImporteMSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(VENTAS16)
+                        .addGap(3, 3, 3)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS20)
+                            .addComponent(txtRetirosSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(VENTAS22, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(VENTAS25)
+                    .addComponent(txtNoBoletos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(VENTAS21, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtImporteTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImprimirArqueo)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

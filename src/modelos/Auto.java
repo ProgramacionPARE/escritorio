@@ -1,11 +1,13 @@
 package modelos;
 
+import ModelosAux.Tiempo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -467,99 +469,27 @@ public class Auto {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
         return autos;
-    }
-       
+    } 
     //////////////////////////////////////////////////////////////////////////
     //                                                                      //
-    //        CONSULTAS PARA BOLETOS PENDIENTES TURNO ANTERIOR              //
+    //                COBRAR VIRTUALEMTE LOS BOLETOS PENDIENTES             //
     //                                                                      //
     //////////////////////////////////////////////////////////////////////////
-    
-    public static int getNumAutosPendientesA(long idTurno, String key) {
-        int nAutos = 0;
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT count(id) as id FROM autos where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
-            statement.setLong(1, idTurno);
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            if (executeQuery.next()){
-                nAutos =  executeQuery.getInt("id");
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+     public static ArrayList<Auto> calcularMontoAutosPendientes(ArrayList<Auto> autosPendientes){
+        Iterator<Auto> iterator = autosPendientes.iterator();
+        ArrayList<Auto> autosCobradoVirtual = new  ArrayList();
+        while(iterator.hasNext()){
+            Auto auto = iterator.next();
+            auto.setFechaSalida(Tiempo.getFecha());
+            auto.setHoraSalida(Tiempo.getHora());
+            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
+            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
+            auto.setMontoTangible(Tarifa.getImporteEstadia(auto));
+            autosCobradoVirtual.add(auto);
         }
-        return nAutos;
+        return autosCobradoVirtual;
     }
-    
-    public static ArrayList<Auto> getAutosPendientesA(long idTurno, String key){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
-            statement.setLong(1, idTurno);
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    //////////////////////////////////////////////////////////////////////////
-    //                                                                      //
-    //        CONSULTAS PARA BOLETOS PENDIENTES TURNO SIGUIENTE             //
-    //                                                                      //
-    //////////////////////////////////////////////////////////////////////////
-    
-    public static int getNumAutosPendientesS(long idTurno, String key) {
-        int nAutos = 0;
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT count(id) as id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
-            statement.setLong(1, idTurno);
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            if (executeQuery.next()){
-                nAutos =  executeQuery.getInt("id");
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return nAutos;
-    }
-                             
-    public static ArrayList<Auto> getAutosPendientesS(long idTurno, String key){
-        ArrayList <Auto> autos = new ArrayList<>();
-        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
-            statement.setLong(1, idTurno);
-             statement.setString(2, key);
-            ResultSet executeQuery = statement.executeQuery();
-            while (executeQuery.next()){
-                autos.add(Auto.getById(executeQuery.getInt("id")));
-            }
-            conexion.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return autos;
-    }
-    
+   
      //////////////////////////////////////////////////////////////////////////
     //                                                                      //
     //        CONSULTAS PARA BOLETOS PENDIENTES TURNO ANTERIOR              //
@@ -652,8 +582,6 @@ public class Auto {
     }
 
     
-
-    
     //////////////////////////////////////////////////////////////////////////
     //                                                                      //
     //            CONSULTAS PARA BOLETOS MANUALES TURNO ACTUAL            //
@@ -680,7 +608,7 @@ public class Auto {
     }
     
     
-    static ArrayList <Auto> getAutosManualesTurnoActual(long idTurno, String serie) {
+    public static ArrayList <Auto> getAutosManualesTurnoActual(long idTurno, String serie) {
           ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
@@ -726,7 +654,7 @@ public class Auto {
         return nAutos;
     }
     
-    static ArrayList <Auto> getAutosContraTurnoActual(long idTurno, String serie) {
+    public static ArrayList <Auto> getAutosContraTurnoActual(long idTurno, String serie) {
           ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
@@ -760,7 +688,8 @@ public class Auto {
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT count(id) as id FROM autos where turno_salida_id = ? and "
-                    + "boleto_perdido = 'NO' and boleto_cancelado = 'NO' and serie = ?");
+                    + "boleto_perdido = 'NO' and boleto_cancelado = 'NO' "
+                    + "and boleto_manual = 'NO' and boleto_contra = 'NO' and serie = ?");
             statement.setLong(1, idTurno);
              statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -774,14 +703,15 @@ public class Auto {
         return nAutos;
     }
     
-    public static List<Auto> getAutosCobradosTurnoActual(long idTurno, String key){
+    public static ArrayList<Auto> getAutosCobradosTurnoActual(long idTurno, String key){
         ArrayList <Auto> autos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection connectionDB = conexion.getConnectionDB();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM autos where turno_salida_id = ? and "
-                    + "boleto_perdido = 'NO' and boleto_cancelado = 'NO' and serie = ?");
+                    + "boleto_perdido = 'NO' and boleto_cancelado = 'NO' "
+                    + "and boleto_manual = 'NO' and boleto_contra = 'NO' and serie = ?");
             statement.setLong(1, idTurno);
             statement.setString(2, key);
             ResultSet executeQuery = statement.executeQuery();
@@ -1029,13 +959,7 @@ public class Auto {
         return auto;
     }
    
-    
 
-    
-     
-     
-    
-    
    
     static long getPrimerProgresivoPorSerie(Turno turno, String key) {
          ArrayList <Auto> autos = new ArrayList<>();
@@ -1263,6 +1187,54 @@ public class Auto {
 }
 
 /*
+
+ //////////////////////////////////////////////////////////////////////////
+    //                                                                      //
+    //        CONSULTAS PARA BOLETOS PENDIENTES TURNO ANTERIOR              //
+    //                                                                      //
+    //////////////////////////////////////////////////////////////////////////
+    
+    public static int getNumAutosPendientesA(long idTurno, String key) {
+        int nAutos = 0;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT count(id) as id FROM autos where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()){
+                nAutos =  executeQuery.getInt("id");
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nAutos;
+    }
+    
+    public static ArrayList<Auto> getAutosPendientesA(long idTurno, String key){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id < ? and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+
+
  public static List<Auto> getAutosPendientes(){
         ArrayList <Auto> autos = new ArrayList<>();
         try {
@@ -1399,4 +1371,52 @@ public static List<Auto>  getAutosBoletoCanceladoTurnoActual(Turno turno) {
         }
         return autos;
     }
+
+     //////////////////////////////////////////////////////////////////////////
+    //                                                                      //
+    //        CONSULTAS PARA BOLETOS PENDIENTES TURNO SIGUIENTE             //
+    //                                                                      //
+    //////////////////////////////////////////////////////////////////////////
+    
+    public static int getNumAutosPendientesS(long idTurno, String key) {
+        int nAutos = 0;
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT count(id) as id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()){
+                nAutos =  executeQuery.getInt("id");
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nAutos;
+    }
+                             
+    public static ArrayList<Auto> getAutosPendientesS(long idTurno, String key){
+        ArrayList <Auto> autos = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection connectionDB = conexion.getConnectionDB();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM autos where entrada_salida = 'E' and turno_entrada_id <= ? and serie = ?");
+            statement.setLong(1, idTurno);
+             statement.setString(2, key);
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                autos.add(Auto.getById(executeQuery.getInt("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autos;
+    }
+
+
 */

@@ -72,14 +72,14 @@ public class Turno implements IDBModel {
         }
     }
     
-    public void realizarCorte(long operador,boolean precorte){        
+    public void realizarCorte(long operador,String tipoCorte){        
         this.empleadoCierre = operador;
-        if(!precorte){
+        if(tipoCorte.equals("corte")){
         fechaCierre = Tiempo.getFecha();
         horaCierre = Tiempo.getHora();
         }
         for(String serie: this.estacionamiento.getCaseta().getSeries() ){
-            this.detallesTurno.get(serie).cerrarTurno(precorte);
+            this.detallesTurno.get(serie).cerrarTurno(tipoCorte);
         }
     }
 
@@ -110,6 +110,7 @@ public class Turno implements IDBModel {
         }
         return turnos;
     }
+    
     public static String getSiguienteTurno() {
         String tipo = "";
         try {
@@ -170,7 +171,7 @@ public class Turno implements IDBModel {
                             (resultSet.getLong("id_empleado_apertura")),
                             resultSet.getLong("id_empleado_cierre"),
                             resultSet.getString("tipo_turno"), 
-                            resultSet.getString("hora_apertura") ,
+                            resultSet.getString("fecha_apertura") ,
                             resultSet.getString("hora_apertura"),
                             resultSet.getString("fecha_cierre"),
                             resultSet.getString("hora_cierre"),

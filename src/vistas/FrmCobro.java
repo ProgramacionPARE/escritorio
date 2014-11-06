@@ -4,7 +4,6 @@ package vistas;
 import ModelosAux.Sistema;
 import ModelosAux.Tiempo;
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.print.PrinterJob;

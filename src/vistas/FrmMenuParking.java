@@ -157,7 +157,7 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
             try {
                 autos=0;
                 for(String serie : Estacionamiento.getDatos().getCaseta().getSeries()){
-                    autos+= Auto.getNumAutosPendientesS(turno.getId(),serie);
+                    autos+= Auto.getNumAutosPendientesTurnoActual(turno.getId(),serie);
                 
                 }
                 lblNoAutos.setText(String.valueOf(autos));
@@ -200,7 +200,6 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
                 formWindowStateChanged(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(FrmMenuParking.class, this);
         btnEntrada.setAction(actionMap.get("onEntrada")); // NOI18N
@@ -208,46 +207,39 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
         btnEntrada.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnEntrada.setText("<html><b>Entrada</b><br><center>(F2)</center></html>");
         btnEntrada.setName("btnEntrada"); // NOI18N
-        getContentPane().add(btnEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 70, 200, 110));
 
         btnBoletoPerdido.setAction(actionMap.get("onBoletoPerdido")); // NOI18N
         btnBoletoPerdido.setBackground(new java.awt.Color(255, 255, 255));
         btnBoletoPerdido.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnBoletoPerdido.setText("<html><b>Boleto perdido</b><br><center>(F3)</center></html>");
         btnBoletoPerdido.setName("btnBoletoPerdido"); // NOI18N
-        getContentPane().add(btnBoletoPerdido, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 70, 200, 50));
 
         btnBoletoCancelado.setAction(actionMap.get("onBoletoCancelado")); // NOI18N
         btnBoletoCancelado.setBackground(new java.awt.Color(255, 255, 255));
         btnBoletoCancelado.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnBoletoCancelado.setText("<html><b>Boleto cancelado</b><br><center>(F4)</center></html>");
         btnBoletoCancelado.setName("btnBoletoCancelado"); // NOI18N
-        getContentPane().add(btnBoletoCancelado, new org.netbeans.lib.awtextra.AbsoluteConstraints(454, 70, 200, 50));
 
         btnSalida.setAction(actionMap.get("onSalida")); // NOI18N
         btnSalida.setBackground(new java.awt.Color(255, 255, 255));
         btnSalida.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnSalida.setText("<html><b>Salida</b><br><center>(F7)</center></html>");
         btnSalida.setName("btnSalida"); // NOI18N
-        getContentPane().add(btnSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(672, 70, 200, 110));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Autos en estacionamiento:");
         jLabel1.setName("jLabel1"); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 20, 253, 29));
 
         lblNoAutos.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblNoAutos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNoAutos.setText("0");
         lblNoAutos.setName("lblNoAutos"); // NOI18N
-        getContentPane().add(lblNoAutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(277, 17, 65, -1));
 
         btnReciboPago.setAction(actionMap.get("onReciboPago")); // NOI18N
         btnReciboPago.setBackground(new java.awt.Color(255, 255, 255));
         btnReciboPago.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnReciboPago.setText("<html><center><b>Reimpimir recibo</b><br>(F5)</center></html>");
         btnReciboPago.setName("btnReciboPago"); // NOI18N
-        getContentPane().add(btnReciboPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 130, 200, -1));
 
         btnBoletoMaltratado.setAction(actionMap.get("onBoletoIlegible")); // NOI18N
         btnBoletoMaltratado.setBackground(new java.awt.Color(255, 255, 255));
@@ -255,11 +247,59 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
         btnBoletoMaltratado.setText("<html><b>Codigo ilegiblle</b><br><center>(F6)</center></html>");
         btnBoletoMaltratado.setIconTextGap(1);
         btnBoletoMaltratado.setName("btnBoletoMaltratado"); // NOI18N
-        getContentPane().add(btnBoletoMaltratado, new org.netbeans.lib.awtextra.AbsoluteConstraints(454, 129, 200, 50));
 
         jLabel2.setText(" ");
         jLabel2.setName("jLabel2"); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 180, 50, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(lblNoAutos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(btnEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnBoletoPerdido, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReciboPago, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnBoletoCancelado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBoletoMaltratado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(840, 840, 840)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNoAutos))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnBoletoPerdido, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnReciboPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnBoletoCancelado, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addComponent(btnBoletoMaltratado, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel2))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

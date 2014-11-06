@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -51,15 +52,15 @@ public class ReporteCorteTurno implements Runnable  {
                                 turno.getDetallesTurno().get(serie).getNoBolManual();
             Map<String,Object> parametros = new HashMap<String, Object>();
             parametros.put("centroCostos",estacionamiento.getDescripcion());
-            parametros.put("fechaTurno", turno.getFechaApertura());
+            parametros.put("fecha", turno.getFechaApertura());
             parametros.put("turno",turno.getTipoTurno());
             
             parametros.put("operador", turno.getEmpleadoEntrada().getNombre());
-            parametros.put("fechaApertura",  turno.getHoraApertura() );
-            parametros.put("fechaCierre",    turno.getHoraCierre()  );
+            parametros.put("horaApertura",  turno.getHoraApertura() );
+            parametros.put("horaCierre",    turno.getHoraCierre()!=null ? turno.getHoraCierre():"-" );
             parametros.put("folioInicial", turno.getDetallesTurno().get(serie).getFolioInicial());
             parametros.put("folioFinal",turno.getDetallesTurno().get(serie).getFolioFinal());
-            parametros.put("boletoPromedio",turno.getDetallesTurno().get(serie).getTotal()/totalCobrados);
+            parametros.put("boletoPromedio",Math.rint((turno.getDetallesTurno().get(serie).getTotal()/totalCobrados)*100)/100);
             
             parametros.put("numBoletos",turno.getDetallesTurno().get(serie).getNoBol());
             parametros.put("pendienteTA",turno.getDetallesTurno().get(serie).getNoBolTurnoA());

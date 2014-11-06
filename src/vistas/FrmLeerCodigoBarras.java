@@ -62,17 +62,20 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
         }else if(accion.equals("ENTRADA")){
              lblMensaje.setText("Coloca tu gafet contra en el sensor");
         }
-        pack();
-        if(!Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
+       
+         if(!Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
             this.lblMensaje.setFont(new Font("Dialog", 1, 50));
             Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
+            
             setBounds(0, 0,  screenSize.width,  screenSize.height); 
+           // this.setSize(screenSize.width,  screenSize.height);
+           
         }
         if(!Configuracion.getDatos().getTerminal().equals(Configuracion.CLIENTE)){
            this.lblBienvenido.setVisible(false);
         }
         new Thread(this).start();
-        setLocationRelativeTo(parent);
+         setLocationRelativeTo(parent);
         setVisible(true);
     }
 
@@ -86,6 +89,14 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
         lblBienvenido = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 formKeyTyped(evt);
@@ -241,6 +252,18 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
         }else
             id+=evt.getKeyChar();  
     }//GEN-LAST:event_formKeyTyped
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if(!Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
+            parent.setVisible(false);
+            parent.dispose();
+            parent = null;
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+      
+    }//GEN-LAST:event_formWindowOpened
 
   
 

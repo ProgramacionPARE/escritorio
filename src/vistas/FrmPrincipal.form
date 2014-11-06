@@ -31,6 +31,7 @@
         <Property name="background" type="java.awt.Color" resourceKey="btnCaja.background"/>
         <Property name="font" type="java.awt.Font" resourceKey="btnAparcamiento.font"/>
         <Property name="text" type="java.lang.String" resourceKey="btnAparcamiento.text"/>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="btnAparcamiento" noResource="true"/>
       </Properties>
       <Constraints>
@@ -47,6 +48,7 @@
         <Property name="background" type="java.awt.Color" resourceKey="btnCaja.background"/>
         <Property name="font" type="java.awt.Font" resourceKey="btnAparcamiento.font"/>
         <Property name="text" type="java.lang.String" resourceKey="btnCaja.text"/>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="btnCaja" noResource="true"/>
       </Properties>
       <Constraints>
@@ -63,6 +65,7 @@
         <Property name="background" type="java.awt.Color" resourceKey="btnCaja.background"/>
         <Property name="font" type="java.awt.Font" resourceKey="btnAparcamiento.font"/>
         <Property name="text" type="java.lang.String" resourceKey="btnEstacionamiento.text"/>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="btnEstacionamiento" noResource="true"/>
       </Properties>
       <Constraints>
@@ -79,6 +82,7 @@
         <Property name="background" type="java.awt.Color" resourceKey="btnCaja.background"/>
         <Property name="font" type="java.awt.Font" resourceKey="btnAparcamiento.font"/>
         <Property name="text" type="java.lang.String" resourceKey="btnReportes.text"/>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="btnReportes" noResource="true"/>
       </Properties>
       <Constraints>
@@ -95,6 +99,7 @@
         <Property name="background" type="java.awt.Color" resourceKey="btnCaja.background"/>
         <Property name="font" type="java.awt.Font" resourceKey="btnAparcamiento.font"/>
         <Property name="text" type="java.lang.String" resourceKey="btnUsuarios.text"/>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="btnUsuarios" noResource="true"/>
       </Properties>
       <Constraints>
@@ -111,6 +116,7 @@
         <Property name="background" type="java.awt.Color" resourceKey="btnCaja.background"/>
         <Property name="font" type="java.awt.Font" resourceKey="btnAparcamiento.font"/>
         <Property name="text" type="java.lang.String" resourceKey="btnConfiguracion.text"/>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="btnConfiguracion" noResource="true"/>
       </Properties>
       <Constraints>

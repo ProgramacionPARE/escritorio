@@ -33,6 +33,8 @@ public class TurnoDetalles implements IDBModel{
     private long noBolTurnoS;
     private float total;
     
+    private String tipoTurno;
+    
     private ArrayList<DetallesMovimiento> detalleMovimiento;
     private ArrayList<DetallesMovimientoAvanzados> detalleMovimientoAvanzado;
     
@@ -61,6 +63,14 @@ public class TurnoDetalles implements IDBModel{
         this.noBolManual = noBolManual;
         this.noBolTurnoS = noBolTurnoS;
         this.total = total;
+    }
+
+    public String getTipoTurno() {
+        return tipoTurno;
+    }
+
+    public void setTipoTurno(String tipoTurno) {
+        this.tipoTurno = tipoTurno;
     }
     
     
@@ -214,19 +224,35 @@ public class TurnoDetalles implements IDBModel{
     public void inicializarTurno(){
         this.folioInicial  = Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), serie));
         this.folioFinal = folioInicial; 
-        this.noBolTurnoA = Auto.getNumAutosPendientesA(idTurno, serie);
+        this.noBolTurnoA = Auto.getNumAutosPendientesTurnoActual(idTurno, serie);
         this.guardar();
     }
     
-    public void cerrarTurno(boolean precorte){
+    public void cerrarTurno(String tipoCorte){
+        ArrayList<Auto> autosPendientesTurnoActual = null;
+        ArrayList<Auto> autosPendientesTotal = null;
+        
         this.folioFinal =  Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), serie));
         this.noBol = this.folioFinal - this.folioInicial;
-        if(!precorte){
+        if(tipoCorte.equals("corte")){
             Auto.guardarAutosPendientes(idTurno);
             this.noBolTurnoS = Auto.getNumAutosPendientesByTurno(idTurno, serie);
-        }else{
+            autosPendientesTurnoActual = Auto.getAutosPendientesByTurno(idTurno, serie);
+        }else if(tipoCorte.equals("precorte")){
             this.noBolTurnoS = Auto.getNumAutosPendientesTurnoActual(idTurno, serie);
+            autosPendientesTurnoActual =  Auto.calcularMontoAutosPendientes(Auto.getAutosPendientesTurnoActual(idTurno, serie));
+        }else if(tipoCorte.equals("reimpresion")){
+            this.noBolTurnoS = Auto.getNumAutosPendientesByTurno(idTurno, serie);
+            autosPendientesTurnoActual = Auto.getAutosPendientesByTurno(idTurno, serie);
+        }else if(tipoCorte.equals("precorteTotal")){
+             this.noBolTurnoS = 0;
+            autosPendientesTurnoActual = new ArrayList();
+            autosPendientesTotal = Auto.calcularMontoAutosPendientes( Auto.getAutosPendientesTurnoActual(idTurno, serie));
+            
         }
+
+        
+        
         this.noBolCobrados = Auto.getNumAutosCobradosTurnoActual(idTurno, serie);
         this.noBolCancelados = Auto.getNumAutosBoletoCanceladoTurnoActual(idTurno, serie);
         this.noBolPerdidos = Auto.getNumAutosBoletoPerdidoTurnoActual(idTurno, serie);
@@ -234,21 +260,25 @@ public class TurnoDetalles implements IDBModel{
         this.noBolContra =  Auto.getNumAutosContraTurnoActual(idTurno, serie);
         
         
-        List<Auto> autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(idTurno, serie);
         List<Auto> autosBoletoCanceladoTurnoActual = Auto.getAutosBoletoCanceladoTurnoActual(idTurno, serie);
-        
-        ArrayList<Auto> autosPendientesTurnoActual;
-        if(!precorte) autosPendientesTurnoActual = Auto.getAutosPendientesByTurno(idTurno, serie);
-        else autosPendientesTurnoActual = Auto.getAutosPendientesS(idTurno, serie);
-        
-     
         List<Auto> autosBoletoPerdidoTurnoActual = Auto.getAutosBoletoPerdidoTurnoActual(idTurno, serie);
-        
+
+        List<Auto> autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(idTurno, serie);
         ArrayList<Auto> autosManualesTurnoActual = Auto.getAutosManualesTurnoActual(idTurno, serie);
         ArrayList<Auto> autosContraTurnoActual = Auto.getAutosContraTurnoActual(idTurno, serie);
         
+         List<Auto> autosCobradosTotal = new ArrayList();
+         autosCobradosTotal.addAll(autosCobradosTurnoActual);
+         autosCobradosTotal.addAll(autosManualesTurnoActual);
+         autosCobradosTotal.addAll(autosContraTurnoActual);
+         if(tipoCorte.equals("precorteTotal")){
+             autosCobradosTotal.addAll(autosPendientesTotal);
+              this.noBolCobrados+= Auto.getNumAutosPendientesTurnoActual(idTurno, serie);
+         }
+         
+        
         this.detalleMovimiento = DetallesMovimiento.generarDetalles(
-                autosCobradosTurnoActual, autosBoletoPerdidoTurnoActual);
+                autosCobradosTotal, autosBoletoPerdidoTurnoActual);
         
         this.detalleMovimientoAvanzado = DetallesMovimientoAvanzados.generarDetalles(autosPendientesTurnoActual,autosBoletoCanceladoTurnoActual,
                 autosBoletoPerdidoTurnoActual,autosManualesTurnoActual,autosContraTurnoActual);

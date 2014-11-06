@@ -210,7 +210,16 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             if(this.cbxCobrado.isSelected()){
                  List<Auto> autosCobradosTurnoActual = new ArrayList(); 
                 if(fechaCambio){
-                    autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(turnoAux.getId(),serie);
+                    ArrayList<Auto> autosCobradosTurnoActualTemp = Auto.getAutosCobradosTurnoActual(turnoAux.getId(), serie);
+                    ArrayList<Auto> autosManualesTurnoActual = Auto.getAutosManualesTurnoActual(turnoAux.getId(), serie);
+                    ArrayList<Auto> autosContraTurnoActual = Auto.getAutosContraTurnoActual(turnoAux.getId(), serie);
+
+                     autosCobradosTurnoActual = new ArrayList();
+                     autosCobradosTurnoActual.addAll(autosCobradosTurnoActualTemp);
+                     autosCobradosTurnoActual.addAll(autosManualesTurnoActual);
+                     autosCobradosTurnoActual.addAll(autosContraTurnoActual);
+         
+                    //autosCobradosTurnoActual = Auto.getAutosCobradosTurnoActual(turnoAux.getId(),serie);
                     aCobrados.put(turnoAux.getId(), autosCobradosTurnoActual);
                 }else{
                     autosCobradosTurnoActual = aCobrados.get(turnoAux.getId());
@@ -465,6 +474,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         txtProgresivoBuscar = new javax.swing.JTextField();
         btnProgresivoBuscar = new javax.swing.JButton();
         btnPrecorte = new javax.swing.JButton();
+        btnPrecorte1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -847,6 +857,15 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             }
         });
 
+        btnPrecorte1.setBackground(new java.awt.Color(255, 255, 255));
+        btnPrecorte1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnPrecorte1.setText("Precorte");
+        btnPrecorte1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrecorte1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -889,12 +908,15 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                                         .addComponent(txtTotalRetiros, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(btnImprimir1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(btnPrecorte, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnPrecorte, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnPrecorte1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -1058,7 +1080,9 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnPrecorte)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnPrecorte)
+                            .addComponent(btnPrecorte1))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnImprimir)
@@ -1157,11 +1181,18 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     }//GEN-LAST:event_btnProgresivoLimpiarActionPerformed
 
     private void btnPrecorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrecorteActionPerformed
-        turno.realizarCorte(turno.getEmpleadoEntrada().getId(),true);
+        turno.realizarCorte(turno.getEmpleadoEntrada().getId(),"precorte");
         turno.actualizar();
         new ReporteCorteTurno(turno, estacionamiento).generarReporte();
         new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
     }//GEN-LAST:event_btnPrecorteActionPerformed
+
+    private void btnPrecorte1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrecorte1ActionPerformed
+          turno.realizarCorte(turno.getEmpleadoEntrada().getId(),"precorteTotal");
+        turno.actualizar();
+        new ReporteCorteTurno(turno, estacionamiento).generarReporte();
+        new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
+    }//GEN-LAST:event_btnPrecorte1ActionPerformed
 
 
 
@@ -1169,6 +1200,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnImprimir1;
     private javax.swing.JButton btnPrecorte;
+    private javax.swing.JButton btnPrecorte1;
     private javax.swing.JButton btnProgresivoBuscar;
     private javax.swing.JButton btnProgresivoLimpiar;
     private javax.swing.JButton btnSetFecha;

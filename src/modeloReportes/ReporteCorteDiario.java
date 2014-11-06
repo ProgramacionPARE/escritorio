@@ -40,12 +40,15 @@ public class ReporteCorteDiario  {
         int tNoBolCobrados = 0;
         int tNoBolTurnoS = 0;
         float tTotal=0;
+        ArrayList<TurnoDetalles> turnoDetalles = new ArrayList();
         Iterator<Turno> turnosTemp = turnos.iterator();
         while(turnosTemp.hasNext()){
             Turno turnoTemporal = turnosTemp.next();
             Iterator<Map.Entry<String, TurnoDetalles>> detalleTurnoTemp = turnoTemporal.getDetallesTurno().entrySet().iterator();
             while(detalleTurnoTemp.hasNext()){
                 Map.Entry<String, TurnoDetalles> next = detalleTurnoTemp.next();
+                next.getValue().setTipoTurno(turnoTemporal.getTipoTurno());
+                turnoDetalles.add( next.getValue());
                 tNoBol += next.getValue().getNoBol();
                 tNoBolCancelados += next.getValue().getNoBolCancelados();
                 tNoBolPerdidos += next.getValue().getNoBolPerdidos();
@@ -75,7 +78,7 @@ public class ReporteCorteDiario  {
             loadObject(new File("/home/empleado/pare/reportes/corteDiario.jasper"));
             //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/corteDiario.jasper"));
             
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turnos));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turnoDetalles));
             PrinterJob job = PrinterJob.getPrinterJob();
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             int selectedService = 0;

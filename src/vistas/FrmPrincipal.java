@@ -50,7 +50,6 @@ public class FrmPrincipal extends JFrame implements Runnable{
         lblNombreOperador = new JLabel("");
         initComponents();  
         iniciaOtrosComponentes();     
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         Rest.login(estacionamiento);
         
@@ -192,7 +191,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
                 if(Caja.getByCaseta(estacionamiento.getCaseta().getId()).getMonto()>0 ){
                      new FrmCaja(this,true,turno,true,empleado,estacionamiento);
                 }else{
-                    turno.realizarCorte(empleado.getId(),false);
+                    turno.realizarCorte(empleado.getId(),"corte");
                     turno.actualizar();
                     new ReporteCorteTurno(turno, estacionamiento).generarReporte();
                     new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
@@ -265,7 +264,13 @@ public class FrmPrincipal extends JFrame implements Runnable{
         turno.actualizarActivo();
         
         this.empleado = empleado;
-        
+         btnAparcamiento.setEnabled(true);
+        btnCaja.setEnabled(true);
+        btnEstacionamiento.setEnabled(true);
+        btnReportes.setEnabled(true);
+        btnUsuarios.setEnabled(true);
+        btnConfiguracion.setEnabled(true);
+        pack();
         btnAparcamiento.setVisible(true);
         btnCaja.setVisible(true);
         btnEstacionamiento.setVisible(true);
@@ -363,6 +368,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
                 //////////////////////////////////////////////////////////////
                 //                         CLIENTE                          // 
                 //////////////////////////////////////////////////////////////
+               
                 Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
                 if(turnoTemp != null){
                     if(error!= null){
@@ -449,6 +455,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
         btnAparcamiento.setBackground(resourceMap.getColor("btnCaja.background")); // NOI18N
         btnAparcamiento.setFont(resourceMap.getFont("btnAparcamiento.font")); // NOI18N
         btnAparcamiento.setText(resourceMap.getString("btnAparcamiento.text")); // NOI18N
+        btnAparcamiento.setEnabled(false);
         btnAparcamiento.setName("btnAparcamiento"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -464,6 +471,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
         btnCaja.setBackground(resourceMap.getColor("btnCaja.background")); // NOI18N
         btnCaja.setFont(resourceMap.getFont("btnAparcamiento.font")); // NOI18N
         btnCaja.setText(resourceMap.getString("btnCaja.text")); // NOI18N
+        btnCaja.setEnabled(false);
         btnCaja.setName("btnCaja"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -479,6 +487,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
         btnEstacionamiento.setBackground(resourceMap.getColor("btnCaja.background")); // NOI18N
         btnEstacionamiento.setFont(resourceMap.getFont("btnAparcamiento.font")); // NOI18N
         btnEstacionamiento.setText(resourceMap.getString("btnEstacionamiento.text")); // NOI18N
+        btnEstacionamiento.setEnabled(false);
         btnEstacionamiento.setName("btnEstacionamiento"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -494,6 +503,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
         btnReportes.setBackground(resourceMap.getColor("btnCaja.background")); // NOI18N
         btnReportes.setFont(resourceMap.getFont("btnAparcamiento.font")); // NOI18N
         btnReportes.setText(resourceMap.getString("btnReportes.text")); // NOI18N
+        btnReportes.setEnabled(false);
         btnReportes.setName("btnReportes"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -509,6 +519,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
         btnUsuarios.setBackground(resourceMap.getColor("btnCaja.background")); // NOI18N
         btnUsuarios.setFont(resourceMap.getFont("btnAparcamiento.font")); // NOI18N
         btnUsuarios.setText(resourceMap.getString("btnUsuarios.text")); // NOI18N
+        btnUsuarios.setEnabled(false);
         btnUsuarios.setName("btnUsuarios"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -524,6 +535,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
         btnConfiguracion.setBackground(resourceMap.getColor("btnCaja.background")); // NOI18N
         btnConfiguracion.setFont(resourceMap.getFont("btnAparcamiento.font")); // NOI18N
         btnConfiguracion.setText(resourceMap.getString("btnConfiguracion.text")); // NOI18N
+        btnConfiguracion.setEnabled(false);
         btnConfiguracion.setName("btnConfiguracion"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;

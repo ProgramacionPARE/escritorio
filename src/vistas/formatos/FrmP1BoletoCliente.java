@@ -215,7 +215,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         lblFecha.setText(resourceMap.getString("lblFecha.text")); // NOI18N
         lblFecha.setName("lblFecha"); // NOI18N
 
-        lblProgresivo.setFont(resourceMap.getFont("lblProgresivo.font")); // NOI18N
+        lblProgresivo.setFont(new java.awt.Font("Droid Sans", 0, 28)); // NOI18N
         lblProgresivo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblProgresivo.setText(resourceMap.getString("lblProgresivo.text")); // NOI18N
         lblProgresivo.setName("lblProgresivo"); // NOI18N

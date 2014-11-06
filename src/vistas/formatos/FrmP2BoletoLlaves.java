@@ -91,7 +91,6 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
         jLabel18 = new javax.swing.JLabel();
         jLabPlacas = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        jLabColor = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabModelo = new javax.swing.JLabel();
         jLabProgresivo = new javax.swing.JLabel();
@@ -117,55 +116,51 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
         jPanel1.setBackground(resourceMap.getColor("jPanel1.background")); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
 
-        jLabel18.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText(resourceMap.getString("jLabel18.text")); // NOI18N
         jLabel18.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel18.setName("jLabel18"); // NOI18N
 
-        jLabPlacas.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        jLabPlacas.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabPlacas.setText(resourceMap.getString("jLabPlacas.text")); // NOI18N
         jLabPlacas.setName("jLabPlacas"); // NOI18N
 
-        jLabel22.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        jLabel22.setFont(resourceMap.getFont("lblEncargado.font")); // NOI18N
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel22.setText(resourceMap.getString("jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
 
-        jLabColor.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
-        jLabColor.setText(resourceMap.getString("jLabColor.text")); // NOI18N
-        jLabColor.setName("jLabColor"); // NOI18N
-
-        jLabel9.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jLabel9.setName("jLabel9"); // NOI18N
 
-        jLabModelo.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        jLabModelo.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabModelo.setText(resourceMap.getString("jLabModelo.text")); // NOI18N
         jLabModelo.setName("jLabModelo"); // NOI18N
 
-        jLabProgresivo.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        jLabProgresivo.setFont(new java.awt.Font("Droid Sans", 0, 28)); // NOI18N
         jLabProgresivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabProgresivo.setText(resourceMap.getString("jLabProgresivo.text")); // NOI18N
         jLabProgresivo.setName("jLabProgresivo"); // NOI18N
 
-        lbl12.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        lbl12.setFont(new java.awt.Font("Droid Sans", 1, 20)); // NOI18N
         lbl12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl12.setText(resourceMap.getString("lbl12.text")); // NOI18N
         lbl12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lbl12.setName("lbl12"); // NOI18N
 
-        lblModelo.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        lblModelo.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         lblModelo.setText(resourceMap.getString("lblModelo.text")); // NOI18N
         lblModelo.setName("lblModelo"); // NOI18N
 
-        lblPlacas.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        lblPlacas.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         lblPlacas.setText(resourceMap.getString("lblPlacas.text")); // NOI18N
         lblPlacas.setName("lblPlacas"); // NOI18N
 
-        lblEncargado.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        lblEncargado.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         lblEncargado.setText(resourceMap.getString("lblEncargado.text")); // NOI18N
         lblEncargado.setName("lblEncargado"); // NOI18N
 
@@ -173,7 +168,7 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
         lblColor.setText(resourceMap.getString("lblColor.text")); // NOI18N
         lblColor.setName("lblColor"); // NOI18N
 
-        jLabPlacas1.setFont(resourceMap.getFont("jLabel6.font")); // NOI18N
+        jLabPlacas1.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabPlacas1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabPlacas1.setText(resourceMap.getString("jLabPlacas1.text")); // NOI18N
         jLabPlacas1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -201,31 +196,29 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel22)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblEncargado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabColor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabPlacas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addComponent(lblPlacas, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabModelo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 36, Short.MAX_VALUE)
+                                .addGap(0, 46, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabProgresivo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabPlacas1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(lbl12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 0, 0)
-                        .addComponent(lblColor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, 0)
+                                .addComponent(lblColor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel22)
+                                .addGap(49, 49, 49)
+                                .addComponent(lblEncargado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabPlacas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(61, 61, 61)
+                                .addComponent(lblPlacas, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabModelo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(61, 61, 61)
+                                .addComponent(lblModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -251,28 +244,24 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabModelo)
                             .addComponent(lblModelo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabPlacas)
                             .addComponent(lblPlacas))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabColor)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(22, 22, 22)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblEncargado))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                .addGap(38, 38, 38))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,7 +315,6 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabColor;
     private javax.swing.JLabel jLabModelo;
     private javax.swing.JLabel jLabPlacas;
     private javax.swing.JLabel jLabPlacas1;
