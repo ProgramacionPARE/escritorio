@@ -43,6 +43,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
     private FrmLeerCodigoBarras barras = null;
     private FrmErrorCarga error= null;
     static private ArrayList<HistorialVentana> ventanas = new ArrayList();
+    private boolean cerrar;
    
 
     public FrmPrincipal() {
@@ -423,7 +424,8 @@ public class FrmPrincipal extends JFrame implements Runnable{
                     if(error== null)
                         error = new FrmErrorCarga(this,false);
                 }
-            }            
+            }
+            if(cerrar)break;
         }
     }
 
@@ -605,6 +607,10 @@ public class FrmPrincipal extends JFrame implements Runnable{
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+
+    void setCerrar(boolean b) {
+      this.cerrar = b;
+    }
 
 
 }

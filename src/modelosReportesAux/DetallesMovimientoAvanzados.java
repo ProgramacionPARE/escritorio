@@ -200,7 +200,7 @@ public class DetallesMovimientoAvanzados {
         while(iteratorCancelado.hasNext()){
             Auto next = iteratorCancelado.next();
             detalles.add(new DetallesMovimientoAvanzados("Cancelado",next.getProgresivo(),next.getFechaEntrada(),next.getHoraEntrada(),
-            next.getFechaSalida(),next.getHoraSalida(),next.getHorasTangibles(),next.getMinutosTangibles(),next.getMontoTangible(),next.getBoletoCancelado().getRazon()));
+            next.getFechaSalida(),next.getHoraSalida(),next.getHorasTangibles(),next.getMinutosTangibles(),next.getMontoTangible(),""));
         }
          //Detalle de Perdidos
         if(autosBoletoPerdidoTurnoActual.size()>0)
@@ -210,7 +210,7 @@ public class DetallesMovimientoAvanzados {
             Auto next = iteratorPerdido.next();
             detalles.add(new DetallesMovimientoAvanzados("Perdido",next.getProgresivo(),next.getFechaEntrada(),next.getHoraEntrada(),
             next.getFechaSalida(),next.getHoraSalida(),next.getHorasTangibles(),next.getMinutosTangibles(),next.getMontoTangible(),
-            "Tel: " + next.getBoletoPerdido().getPropietario().getTelefono()));
+            ""));
         }
         
         //Detalle de Manuales

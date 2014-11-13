@@ -8,11 +8,11 @@ import modelos.Empleado;
 
 
 public class FrmLogin extends javax.swing.JDialog {
-    JFrame parent ;
+    FrmPrincipal parent ;
     public FrmLogin(JFrame parent, boolean modal) {
         super(parent,"Entrar", modal);
         initComponents();
-        this.parent = parent;
+        this.parent = (FrmPrincipal)parent;
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -101,6 +101,7 @@ public class FrmLogin extends javax.swing.JDialog {
         int showConfirmDialog = JOptionPane.showConfirmDialog(this,"Esto cerrara el sistema. ¿Quieres continuar?", 
                 "Salir", JOptionPane.YES_NO_OPTION );
         if(showConfirmDialog == JOptionPane.YES_OPTION){
+            parent.setCerrar(true);
             parent.dispose();
         }
     }//GEN-LAST:event_formWindowClosing
