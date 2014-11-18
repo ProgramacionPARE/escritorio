@@ -21,6 +21,7 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Turno;
 import modelos.TurnoDetalles;
 import modelosReportesAux.DetallesMovimiento;
@@ -42,9 +43,14 @@ import net.sf.jasperreports.engine.util.JRLoader;
 public class ReporteDetalleAvanzado implements Runnable {
     private Turno turno;
     private Estacionamiento estacionamiento;
-    public ReporteDetalleAvanzado(Turno turno, Estacionamiento estacionamiento){
+    public ReporteDetalleAvanzado(){
+        this.turno = Main.getInstance().getTurnoActual();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
+    }
+    
+     public ReporteDetalleAvanzado(Turno turno){
         this.turno = turno;
-        this.estacionamiento = estacionamiento;
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
     }
     
     public void generarReporte(){

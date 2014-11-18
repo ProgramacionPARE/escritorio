@@ -3,6 +3,7 @@
 package vistas;
 
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Progresivo;
 import modelos.Turno;
 
@@ -16,12 +17,11 @@ public class FrmFolios extends javax.swing.JDialog {
     /** 
      * Creates new form FrmFolios
      */
-    public FrmFolios(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento) {
+    public FrmFolios(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.turno = turno;
-        this.estacionamiento = estacionamiento;
-         String ser = "";
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual(); String ser = "";
         for(String s : estacionamiento.getCaseta().getSeries())
             ser+=s+" ";
         txtBoleto.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "0"));

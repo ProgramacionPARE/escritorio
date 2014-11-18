@@ -12,6 +12,7 @@ import modeloReportes.ReporteCorteTurno;
 import modeloReportes.ReporteDetalleAvanzado;
 import modeloReportes.RetirosParciales;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Turno;
 import org.freixas.jcalendar.DateEvent;
 import org.freixas.jcalendar.DateListener;
@@ -23,10 +24,10 @@ public class FrmReportes extends javax.swing.JDialog {
     String reporteDiarioFecha; 
     private Estacionamiento estacionamiento;
 
-    public FrmReportes(Frame parent, boolean modal,Estacionamiento estacionamiento) {
+    public FrmReportes(Frame parent, boolean modal) {
         super(parent,"Reportes", modal);
         initComponents();
-        this.estacionamiento = estacionamiento;
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
         reporteDiario();
         this.pack();
          FrmPrincipal.nuevaVentana(this);
@@ -65,10 +66,10 @@ public class FrmReportes extends javax.swing.JDialog {
                 Turno turnoActual = turnos.next();
                 // Revisar esto
                 //turnoActual.detallesParaImprimir();
-                turnoActual.realizarCorte(turnoActual.getEmpleadoEntrada().getId(),"reimpresion");
-                new ReporteCorteTurno(turnoActual, estacionamiento).generarReporte();
-                new ReporteDetalleAvanzado(turnoActual, estacionamiento).generarReporte();
-                new RetirosParciales(turnoActual, estacionamiento).generarReporte();
+                turnoActual.realizarCorte("reimpresion");
+                new ReporteCorteTurno(turnoActual).generarReporte();
+                new ReporteDetalleAvanzado(turnoActual).generarReporte();
+                new RetirosParciales(turnoActual).generarReporte();
             }
         }
         if(turnosByFecha.size()>0)

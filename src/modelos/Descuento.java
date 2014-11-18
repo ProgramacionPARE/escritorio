@@ -75,8 +75,8 @@ public class Descuento {
     public static Descuento getByIdClave(String clave){
         Descuento descuento=null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM descuentos where  clave = ? and folio = ? and activo = 'si' ");
             statement.setString(1, clave.substring(0,6 ));
@@ -96,8 +96,8 @@ public class Descuento {
 
     public void guardar() {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO descuentos (`folio`, `descuento`,"+
                             " `activo`,`clave`)"
@@ -118,8 +118,8 @@ public class Descuento {
         
     public void actualizar() {
         try {
-             Conexion conexion = new Conexion();
-             Connection connectionDB = conexion.getConnectionDB();
+            Conexion conexion = Conexion.getInstance();
+             Connection connectionDB = conexion.getConnection();
              PreparedStatement  statement = connectionDB.
              prepareStatement("UPDATE descuentos SET `activo` =?  WHERE `id`=?");
 

@@ -120,8 +120,8 @@ public class RetiroParcial implements IDBModel {
     @Override
     public void guardar() {
        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO retiro_parcial (`progresivo`, `fecha`,"+
                             " `hora`,`id_caseta`,`id_turno`,`monto`,`monto_real`)"
@@ -159,8 +159,8 @@ public class RetiroParcial implements IDBModel {
     private static RetiroParcial getById(long id) {
         RetiroParcial retiroParcial = new RetiroParcial();
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM retiro_parcial where id = ?");
             statement.setLong(1, id);
@@ -182,8 +182,8 @@ public class RetiroParcial implements IDBModel {
     static ArrayList<RetiroParcial> getRetirosParcialesByTurnoId(Long turno_id) {
        ArrayList<RetiroParcial> rp= new ArrayList<RetiroParcial>();
          try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM retiro_parcial where id = ?");
             statement.setLong(1, turno_id);

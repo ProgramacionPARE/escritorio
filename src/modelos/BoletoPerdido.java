@@ -20,8 +20,8 @@ public class BoletoPerdido {
     static BoletoPerdido getById(long id) {
         BoletoPerdido boletoPerdido = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM boleto_perdido where id = ?");
             statement.setLong(1, id);
@@ -104,8 +104,8 @@ public class BoletoPerdido {
 
     public void guardar() {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO boleto_perdido (`progresivo`, `id_auto`,"+
                             " `id_turno`,`id_propietario`)"

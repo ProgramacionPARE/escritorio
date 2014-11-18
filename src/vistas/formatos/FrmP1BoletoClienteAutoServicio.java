@@ -25,6 +25,7 @@ import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JDialog;
 import modelos.Auto;
+import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Turno;
 import net.sourceforge.barbecue.Barcode;
@@ -42,7 +43,7 @@ public class FrmP1BoletoClienteAutoServicio extends JDialog implements Printable
     private PrinterJob job;
     private Barcode barcode=null;
     /** Creates new form VenBoletoValetParking1 */
-    public FrmP1BoletoClienteAutoServicio(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto,Estacionamiento estacionamiento) {
+    public FrmP1BoletoClienteAutoServicio(Dialog parent, boolean modal, PrinterJob job,Auto auto,Empleado empleado) {
         super(parent, modal);
         try {
         initComponents();
@@ -77,7 +78,7 @@ public class FrmP1BoletoClienteAutoServicio extends JDialog implements Printable
        
         lblProgresivo.setText("No. "+auto.getSerie() + auto.getProgresivo());
         lblFecha.setText(auto.getFechaEntrada()+" "+auto.getHoraEntrada());
-        lblAcomodador.setText(turno.getEmpleadoEntrada().getNombre());
+        lblAcomodador.setText(empleado.getNombre());
         setVisible(true);
         imprimir();
 

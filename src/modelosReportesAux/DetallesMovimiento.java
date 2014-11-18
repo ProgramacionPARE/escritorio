@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,117 +14,115 @@ import modelos.Auto;
 import modelos.Conexion;
 import modelos.Tarifa;
 
-public class DetallesMovimiento{
+public class DetallesMovimiento {
+
     private String rangoHorario;
     private String tipo;
     private int noBol;
     private float precioUnitario;
     private float importe;
-    
 
-    public static DetallesMovimiento existePrecioUnitario(ArrayList <DetallesMovimiento> dt,Auto auto,String tipo){
-        DetallesMovimiento resp=null;
-        Iterator<DetallesMovimiento> iterator = dt.iterator(); 
-        while(iterator.hasNext()){
+    public static DetallesMovimiento existePrecioUnitario(ArrayList<DetallesMovimiento> dt, Auto auto, String tipo) {
+        DetallesMovimiento resp = null;
+        Iterator<DetallesMovimiento> iterator = dt.iterator();
+        while (iterator.hasNext()) {
             DetallesMovimiento next = iterator.next();
-            if(next.getPrecioUnitario()== auto.getMontoTangible() &&  next.getTipo().equals(tipo)){
+            if (next.getPrecioUnitario() == auto.getMontoTangible() && next.getTipo().equals(tipo)) {
                 resp = next;
                 break;
             }
         }
-       return resp;
+        return resp;
     }
-    
-    private static DetallesMovimiento existeRangoHorario(ArrayList<DetallesMovimiento> dt, Auto auto,String tipo) {
-        DetallesMovimiento resp=null;
+
+    private static DetallesMovimiento existeRangoHorario(ArrayList<DetallesMovimiento> dt, Auto auto, String tipo) {
+        DetallesMovimiento resp = null;
         String rangoEstadia = Tarifa.getRangoEstadia(auto);
-        Iterator<DetallesMovimiento> iterator = dt.iterator(); 
-        while(iterator.hasNext()){
+        Iterator<DetallesMovimiento> iterator = dt.iterator();
+        while (iterator.hasNext()) {
             DetallesMovimiento next = iterator.next();
-            if((next.getRangoHorario().equals(rangoEstadia) || next.getImporte()==auto.getMontoTangible() ) && next.getTipo().equals(tipo)){
+            if ((next.getRangoHorario().equals(rangoEstadia) || next.getImporte() == auto.getMontoTangible()) && next.getTipo().equals(tipo)) {
                 resp = next;
                 break;
             }
         }
-       return resp;
+        return resp;
     }
-    
-    static void guardar(ArrayList<DetallesMovimiento>  detallesMovimiento, Long id){
 
-            
-            for(DetallesMovimiento d : detallesMovimiento){
-                try {
-                    Conexion conexion = new Conexion();
-                    Connection connectionDB = conexion.getConnectionDB();
-                    PreparedStatement  statement = connectionDB.
-                    prepareStatement("INSERT INTO detalles_movimiento (`cantidad_boletos`,"+
-                            " `precio_unitario`, `importe`,`id`,`tipo`,`rango_horario`,`serie`)"
-                                    + " VALUES (?,?,?,?,?,?,?)");
-                    statement.setInt(1, d.getNoBol());
-                    statement.setFloat(2, d.getPrecioUnitario());
-                    statement.setFloat(3, d.getImporte());
-                    statement.setLong(4, id);
-                    statement.setString(5, d.getTipo());
-                    statement.setString(6, d.getRangoHorario());
-                    //statement.setString(7, next.getKey());
-                    statement.executeUpdate();
-                    conexion.cerrarConexion();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-                }
+    static void guardar(ArrayList<DetallesMovimiento> detallesMovimiento, Long id) {
+
+        for (DetallesMovimiento d : detallesMovimiento) {
+            try {
+                Conexion conexion = Conexion.getInstance();
+                Connection connectionDB = conexion.getConnection();
+                PreparedStatement statement = connectionDB.
+                        prepareStatement("INSERT INTO detalles_movimiento (`cantidad_boletos`,"
+                                + " `precio_unitario`, `importe`,`id`,`tipo`,`rango_horario`,`serie`)"
+                                + " VALUES (?,?,?,?,?,?,?)");
+                statement.setInt(1, d.getNoBol());
+                statement.setFloat(2, d.getPrecioUnitario());
+                statement.setFloat(3, d.getImporte());
+                statement.setLong(4, id);
+                statement.setString(5, d.getTipo());
+                statement.setString(6, d.getRangoHorario());
+                //statement.setString(7, next.getKey());
+                statement.executeUpdate();
+                conexion.cerrarConexion();
+            } catch (SQLException ex) {
+                Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+        }
 
     }
-    
-    public static ArrayList<DetallesMovimiento> getById(Long turno_id){
+
+    public static ArrayList<DetallesMovimiento> getById(Long turno_id) {
         ArrayList<DetallesMovimiento> mapDetalles = new ArrayList();
-         
+
         //ArrayList<DetallesMovimiento> dm= new ArrayList<DetallesMovimiento>();
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM detalles_movimiento where id = ?");
+            Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("SELECT * FROM detalles_movimiento where id = ?");
             statement.setLong(1, turno_id);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 mapDetalles.
                         add(new DetallesMovimiento(resultSet.getString("rango_horario"),
-                        resultSet.getString("tipo"),resultSet.getInt("cantidad_boletos") ,
-                        resultSet.getFloat("precio_unitario"), resultSet.getFloat("importe")));
+                                        resultSet.getString("tipo"), resultSet.getInt("cantidad_boletos"),
+                                        resultSet.getFloat("precio_unitario"), resultSet.getFloat("importe")));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
-         ordenarPorPU(mapDetalles);
-       
-         return mapDetalles;
-     }
-    
-    public static float calcularTotal ( ArrayList<DetallesMovimiento> generarDetalles ){
-        float   total = 0;
 
-        for(DetallesMovimiento d : generarDetalles){
-            total+= d.getImporte();
+        ordenarPorPU(mapDetalles);
+
+        return mapDetalles;
+    }
+
+    public static float calcularTotal(ArrayList<DetallesMovimiento> generarDetalles) {
+        float total = 0;
+
+        for (DetallesMovimiento d : generarDetalles) {
+            total += d.getImporte();
         }
 
         return total;
     }
-    
-    public static void ordenarPorPU(  ArrayList<DetallesMovimiento> detallesMovimiento){
-       
+
+    public static void ordenarPorPU(ArrayList<DetallesMovimiento> detallesMovimiento) {
+
         ArrayList<DetallesMovimiento> value = detallesMovimiento;
-        for(int i =0 ; i< value.size()-1;i++){
-            for(int j =i+1 ; j< value.size();j++){
-                if(value.get(i).getPrecioUnitario()> value.get(j).getPrecioUnitario()
+        for (int i = 0; i < value.size() - 1; i++) {
+            for (int j = i + 1; j < value.size(); j++) {
+                if (value.get(i).getPrecioUnitario() > value.get(j).getPrecioUnitario()
                         || value.get(i).getTipo().equals("Cancelado")
-                        || value.get(i).getTipo().equals("Perdido")){
-                   DetallesMovimiento aux = value.get(i);
-                   value.set(i,value.get(j));
-                   value.set(j,aux);
+                        || value.get(i).getTipo().equals("Perdido")) {
+                    DetallesMovimiento aux = value.get(i);
+                    value.set(i, value.get(j));
+                    value.set(j, aux);
                 }
             }
         }
@@ -137,70 +134,70 @@ public class DetallesMovimiento{
 //            }
 //        }
     }
-    
+
     public static ArrayList<DetallesMovimiento> generarDetalles(List<Auto> autosCobradosTurnoActual,
-        List<Auto> autosBoletoPerdidoTurnoActual){
-        
+            List<Auto> autosBoletoPerdidoTurnoActual) {
+
         ArrayList<DetallesMovimiento> mapDetalles = new ArrayList();
         ArrayList<Tarifa> all = Tarifa.getAll();
         Iterator<Tarifa> iteratorTarifa = all.iterator();
-        while(iteratorTarifa.hasNext()){
+        while (iteratorTarifa.hasNext()) {
             Tarifa tarifa = iteratorTarifa.next();
             Iterator<Auto> iteratorAutos = autosCobradosTurnoActual.iterator();
             ArrayList<DetallesMovimiento> mapDetallesTemp = new ArrayList();
-            while (iteratorAutos.hasNext()){
+            while (iteratorAutos.hasNext()) {
                 Auto next = iteratorAutos.next();
-                    if(next.getTarifa().getId() == tarifa.getId()){
-                        DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetallesTemp, next,next.getTarifa().getDescripcion());
+                if (next.getTarifa().getId() == tarifa.getId()) {
+                    DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetallesTemp, next, next.getTarifa().getDescripcion());
 
-                        //DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,next.getTarifa().getDescripcion());
-                        if(detalles==null){
-                            mapDetallesTemp.add(new DetallesMovimiento(Tarifa.getRangoEstadia(next), next.getTarifa().getDescripcion(), 1, next.getMontoTangible(), next.getMontoTangible()));
-                        }else{
-                            detalles.setNoBol( detalles.getNoBol()+1);
-                            detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
-                        }
+                    //DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,next.getTarifa().getDescripcion());
+                    if (detalles == null) {
+                        mapDetallesTemp.add(new DetallesMovimiento(Tarifa.getRangoEstadia(next), next.getTarifa().getDescripcion(), 1, next.getMontoTangible(), next.getMontoTangible()));
+                    } else {
+                        detalles.setNoBol(detalles.getNoBol() + 1);
+                        detalles.setImporte(detalles.getPrecioUnitario() * detalles.getNoBol());
                     }
+                }
             }
-            if(mapDetallesTemp.size()>0){
+            if (mapDetallesTemp.size() > 0) {
                 DetallesMovimiento.ordenarPorPU(mapDetallesTemp);
-                mapDetalles.add(new DetallesMovimiento("Titulo"+tarifa.getDescripcion()));
+                mapDetalles.add(new DetallesMovimiento("Titulo" + tarifa.getDescripcion()));
                 mapDetalles.addAll(mapDetallesTemp);
             }
-            
+
         }
         Iterator<Auto> iteratorAutosPerdidos = autosBoletoPerdidoTurnoActual.iterator();
-        while (iteratorAutosPerdidos.hasNext()){
+        while (iteratorAutosPerdidos.hasNext()) {
             Auto next = iteratorAutosPerdidos.next();
-            DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetalles, next,"Perdido");
+            DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetalles, next, "Perdido");
             //DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,"Perdido");
-            if(detalles==null){
-                mapDetalles.add(new DetallesMovimiento("", "Perdido", 1, next.getTarifa().getPrecioBoletoPerdido(), 
-                next.getTarifa().getPrecioBoletoPerdido()));
-            }else{
-                detalles.setNoBol( detalles.getNoBol()+1);
-                detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
+            if (detalles == null) {
+                mapDetalles.add(new DetallesMovimiento("", "Perdido", 1, next.getTarifa().getPrecioBoletoPerdido(),
+                        next.getTarifa().getPrecioBoletoPerdido()));
+            } else {
+                detalles.setNoBol(detalles.getNoBol() + 1);
+                detalles.setImporte(detalles.getPrecioUnitario() * detalles.getNoBol());
             }
-           
+
         }
         /*
-        Iterator<Auto> iteratorAutosCancelados = autosBoletoCanceladoTurnoActual.iterator();
-        while (iteratorAutosCancelados.hasNext()){
-            Auto next = iteratorAutosCancelados.next();
+         Iterator<Auto> iteratorAutosCancelados = autosBoletoCanceladoTurnoActual.iterator();
+         while (iteratorAutosCancelados.hasNext()){
+         Auto next = iteratorAutosCancelados.next();
             
-            //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
-            DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next ,"Cancelado");
-            if(detalles==null){
-                mapDetalles.add(new DetallesMovimiento("", "Cancelado", 1, 0 , 0));
-            }else{
-                detalles.setNoBol( detalles.getNoBol()+1);
-                detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
-            }
+         //DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(detallesMovimiento, next.getMontoTangible());
+         DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next ,"Cancelado");
+         if(detalles==null){
+         mapDetalles.add(new DetallesMovimiento("", "Cancelado", 1, 0 , 0));
+         }else{
+         detalles.setNoBol( detalles.getNoBol()+1);
+         detalles.setImporte(detalles.getPrecioUnitario()*detalles.getNoBol());
+         }
            
-        }*/
+         }*/
         return mapDetalles;
     }
-    
+
 //    public static ArrayList<DetallesMovimiento> fusionarDetalles(HashMap<String, ArrayList<DetallesMovimiento>> generarDetalles) {
 //        ArrayList<DetallesMovimiento> fusionarDetalles = new ArrayList<>();
 //        
@@ -239,10 +236,6 @@ public class DetallesMovimiento{
 //    
 //        return fusionarDetalles;
 //    }
-
-    
-    
-    
     public DetallesMovimiento(String rangohorario, String tipo, int noBol, float precioUnitario, float importe) {
         this.rangoHorario = rangohorario;
         this.tipo = tipo;
@@ -257,8 +250,6 @@ public class DetallesMovimiento{
     public DetallesMovimiento(String tipo) {
         this.tipo = tipo;
     }
-    
-    
 
     public String getRangoHorario() {
         return rangoHorario;
@@ -267,8 +258,6 @@ public class DetallesMovimiento{
     public void setRangoHorario(String rangoHorario) {
         this.rangoHorario = rangoHorario;
     }
-
-  
 
     public String getTipo() {
         return tipo;
@@ -307,4 +296,4 @@ public class DetallesMovimiento{
         return "DetallesMoviemiento{" + "rangohorario=" + rangoHorario + ", tipo=" + tipo + ", noBol=" + noBol + ", precioUnitario=" + precioUnitario + ", importe=" + importe + '}';
     }
 
-    }
+}

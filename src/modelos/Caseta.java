@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package modelos;
 
 import java.sql.Connection;
@@ -23,18 +22,16 @@ public class Caseta implements IDBModel {
     private long id;
     private String descripcion;
     private long idEstacionameinto;
-    String [] series;
-    private ArrayList <Tarifa> tarifas;
+    String[] series;
+    private ArrayList<Tarifa> tarifas;
 
-    public Caseta(long id, String descripcion, long idEstacionameinto, String [] series, ArrayList<Tarifa> tarifas) {
+    public Caseta(long id, String descripcion, long idEstacionameinto, String[] series, ArrayList<Tarifa> tarifas) {
         this.id = id;
         this.descripcion = descripcion;
         this.idEstacionameinto = idEstacionameinto;
         this.series = series;
         this.tarifas = tarifas;
     }
-
-
 
     public long getId() {
         return id;
@@ -52,12 +49,10 @@ public class Caseta implements IDBModel {
         this.tarifas = tarifas;
     }
 
-   
     public void setId(int id) {
         this.id = id;
     }
 
-            
     public String getDescripcion() {
         return descripcion;
     }
@@ -82,23 +77,19 @@ public class Caseta implements IDBModel {
         this.series = series;
     }
 
- 
-    
-
-    
     static Caseta getById(long id) {
-       Caseta caseta = null;
+        Caseta caseta = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM caseta where id = ?");
+            Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("SELECT * FROM caseta where id = ?");
             statement.setLong(1, id);
-            
+
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
-                caseta = new Caseta(resultSet.getLong("id"), resultSet.getString("descripcion"), resultSet.getLong("id"), 
-                resultSet.getString("series") != null ?  resultSet.getString("series").split(" ") : new String[0], Tarifa.getAll() );
+            if (resultSet.next()) {
+                caseta = new Caseta(resultSet.getLong("id"), resultSet.getString("descripcion"), resultSet.getLong("id"),
+                        resultSet.getString("series") != null ? resultSet.getString("series").split(" ") : new String[0], Tarifa.getAll());
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -115,28 +106,28 @@ public class Caseta implements IDBModel {
     @Override
     public void actualizar() {
         String ser = "";
-        for(String s : series)
-            ser+=s+" ";
+        for (String s : series) {
+            ser += s + " ";
+        }
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("UPDATE caseta SET `descripcion`=? ,`series` =?  WHERE `id`=?");
+            Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("UPDATE caseta SET `descripcion`=? ,`series` =?  WHERE `id`=?");
             statement.setString(1, descripcion);
             statement.setString(2, ser);
             statement.setLong(3, id);
-            
+
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }    
+        }
     }
 
     @Override
     public void eliminar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-   
-    
+
 }

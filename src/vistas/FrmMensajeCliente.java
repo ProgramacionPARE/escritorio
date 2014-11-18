@@ -19,12 +19,12 @@ import modelos.Turno;
  *
  * @author sistema
  */
-public class FrmMensajeCliente extends javax.swing.JDialog implements Runnable {
+public class FrmMensajeCliente extends javax.swing.JDialog /*implements Runnable*/ {
     private Frame parent;
     private Turno turno;
     private Estacionamiento estacionamiento;
     
-    public FrmMensajeCliente(java.awt.Frame parent, boolean modal,String mensaje,Turno turno,Estacionamiento estacionameinto) {
+    public FrmMensajeCliente(java.awt.Frame parent, boolean modal,String mensaje) {
         super(parent, modal);
         initComponents();
         this.parent = parent;
@@ -39,27 +39,27 @@ public class FrmMensajeCliente extends javax.swing.JDialog implements Runnable {
             
         }
 
-        new Thread(this).start();
+//          new Thread(this).start();
         setVisible(true);
     }
-    public void run() {
-           while(true){
-               try {
-                    Auto auto = Auto.getCambioEstadoServidor();
-                    if(auto != null){
-                        if(auto.getEstadoServidor()== 7){ 
-                            auto.setEstadoServidor(0);
-                            auto.actualizarEstadoServidor();
-                            break;
-                       }
-                   }
-                   Thread.sleep(500);
-               } catch (InterruptedException ex) {
-                   Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-               }
-           }
-            this.dispose();
-    }
+//    public void run() {
+//           while(true){
+//               try {
+//                    Auto auto = Auto.getCambioEstadoServidor();
+//                    if(auto != null){
+//                        if(auto.getEstadoServidor()== 7){ 
+//                            auto.setEstadoServidor(0);
+//                            auto.actualizarEstadoServidor();
+//                            break;
+//                       }
+//                   }
+//                   Thread.sleep(500);
+//               } catch (InterruptedException ex) {
+//                   Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+//               }
+//           }
+//            this.dispose();
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

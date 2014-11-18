@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Frame;
 import modelos.Descuento;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Turno;
 
 /**
@@ -21,12 +22,12 @@ public class FrmLeerCodigoBarrasDescuento extends javax.swing.JDialog {
     /**
      * Creates new form FrmLeerCodigoBarras
      */
-    public FrmLeerCodigoBarrasDescuento(Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento,FrmCobro frmCobro) {
+    public FrmLeerCodigoBarrasDescuento(Frame parent, boolean modal,FrmCobro frmCobro) {
         super(parent,"Codigo de barras", modal);
         this.parent = parent;
         initComponents();
-        this.turno = turno;
-        this.estacionamiento = estacionamiento;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual();
         this.frmCobro = frmCobro;
         this.getContentPane().setBackground(Color.white);
         pack();

@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,80 +17,65 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import modeloReportes.ReporteCorteTurno;
 import modeloReportes.ReporteDetalleAvanzado;
 import modeloReportes.RetirosParciales;
-import modelos.Auto;
+import modelos.AceptarConexionCliente;
 import modelos.Caja;
-import modelos.Configuracion;
 import modelos.TurnoDetalles;
 import modelos.Empleado;
 import modelos.Estacionamiento;
-import modelos.Rest;
+import modelos.Main;
 import modelos.Turno;
 import org.jdesktop.application.Action;
 
+public class FrmPrincipal extends JFrame implements Runnable {
 
-public class FrmPrincipal extends JFrame implements Runnable{
-    JLabel lblNombreOperador;
-    private Estacionamiento estacionamiento;
-    private Empleado empleado;
-    private boolean turnoAbrierto;
-    private FrmPrincipal frmPrincipal;
-    private Turno turno;
-    
-    // Solo para clinete y expedidora
-    private FrmLeerCodigoBarras barras = null;
-    private FrmErrorCarga error= null;
+    private Main m;
+    private Thread t1;
     static private ArrayList<HistorialVentana> ventanas = new ArrayList();
-    private boolean cerrar;
+
+    public FrmPrincipal(Empleado empleado) {
+        super("Sistema PARE");
+        initComponents();
+        m = Main.getInstance();
+        m.setEmpleadoSesion(empleado);
+        iniciaOtrosComponentes();
+        pack();
+
+    }
+
    
 
-    public FrmPrincipal() {
-        super("Sistema PARE");
-        lblNombreOperador = new JLabel("");
-        initComponents();  
-        iniciaOtrosComponentes();     
-        pack();
-        Rest.login(estacionamiento);
-        
-        if(Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
-            initLogin();
-        }else 
-            new Thread(this).start();
+    public static void nuevaVentana(JDialog ventana) {
+        if (ventanas.size() > 0) {
+            ventanas.get(ventanas.size() - 1).getVentana().setSize(300, 40);
+            ventanas.get(ventanas.size() - 1).getVentana().setLocation((ventanas.size() - 1) * 300, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 100));
+        }
+        ventanas.add(new HistorialVentana(ventana, ventana.getBounds()));
+    }
 
-    }
-    
-    public static void nuevaVentana(JDialog ventana){
-        if (ventanas.size()> 0){
-        ventanas.get(ventanas.size()-1).getVentana().setSize(300, 40);
-        ventanas.get(ventanas.size()-1).getVentana().setLocation((ventanas.size()-1)*300, (int)( Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100));
+    public static void restaurarUltimaVentana() {
+        if (ventanas.size() > 1) {
+            ventanas.get(ventanas.size() - 2).getVentana().setBounds(ventanas.get(ventanas.size() - 2).getBordes());
+            ventanas.get(ventanas.size() - 2).getVentana().setLocationRelativeTo(null);
+            ventanas.get(ventanas.size() - 2).getVentana().pack();
+
+            ventanas.remove(ventanas.size() - 1);
         }
-        ventanas.add(new HistorialVentana(ventana,ventana.getBounds()));
     }
-    
-    public static void restaurarUltimaVentana(){
-        if (ventanas.size()> 1){
-            ventanas.get(ventanas.size()-2).getVentana().setBounds( ventanas.get(ventanas.size()-2).getBordes());
-            ventanas.get(ventanas.size()-2).getVentana().setLocationRelativeTo(null);
-            ventanas.get(ventanas.size()-2).getVentana().pack();
-            
-            ventanas.remove(ventanas.size()-1);
-        }
-    }  
-    
-    public void initLogin(){
-        btnCerrarSesion.setVisible(false);
-        new FrmLogin(this, true);
- 
+
+    public void initLogin() {
+        new FrmLogin();
     }
-      
+
     private void iniciaOtrosComponentes() {
-        estacionamiento = Estacionamiento.getDatos();
-        frmPrincipal = this;
+        m.setEstacionamiento(Estacionamiento.getDatos());
+        m.setCaja(Caja.getByCaseta(m.getEstacionamiento().getCaseta().getId()));
+        t1 = new Thread (this);
+        validaPermisos();
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "parking");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "caja");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0), "auditoria");
@@ -95,14 +83,14 @@ public class FrmPrincipal extends JFrame implements Runnable{
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0), "usuarios");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0), "configuracion");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "exit");
-             
+
         getRootPane().getActionMap().put("parking", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onEstacionameinto();
             }
         });
-        
+
         getRootPane().getActionMap().put("caja", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,132 +128,73 @@ public class FrmPrincipal extends JFrame implements Runnable{
             }
         });
 
-        this.setUndecorated(true);
+        //this.setUndecorated(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         setVisible(true);
-     }
-    
+    }
+
     @Action
     public void onEstacionameinto() {
-        new FrmMenuParking(this,false,turno,estacionamiento);
+        new FrmMenuParking(this, false);
     }
-    
-         @Action
-    public void onCaja() {
-        new FrmCaja(this,false,turno,false,empleado,estacionamiento);
-    }
-         @Action
-    public void onAuditoria() {
-        Iterator<Map.Entry<String, TurnoDetalles>> iterator = turno.getDetallesTurno().entrySet().iterator();
-        while(iterator.hasNext()){
-            
-            new FrmEstadoEstacionamiento(this,false,turno,estacionamiento,iterator.next().getKey());
-            
-        }
-    }
-    
-         @Action
-    public void onReportes() {
-        new FrmReportes(this,false,estacionamiento);
-    }
-    
-         @Action
-    public void onUsuarios() {
-        new FrmUsuarios(this,false,turno,estacionamiento);
-    }
-    
-         @Action
-    public void onConfiguracion() {
-        new FrmMenuAdministracion(this,false,turno,estacionamiento);
-    }
-
 
     @Action
-    public void onSalir() {
-        if(turnoAbrierto){
-            int res =  JOptionPane.showConfirmDialog(this, "Quieres tambien hacer corte de turno?","Cerrar sesion", JOptionPane.YES_NO_CANCEL_OPTION);
-            if(res ==  JOptionPane.YES_OPTION){
-                turno.setActivo(false);
-                turno.actualizarActivo();
-                if(Caja.getByCaseta(estacionamiento.getCaseta().getId()).getMonto()>0 ){
-                     new FrmCaja(this,true,turno,true,empleado,estacionamiento);
-                }else{
-                    turno.realizarCorte(empleado.getId(),"corte");
-                    turno.actualizar();
-                    new ReporteCorteTurno(turno, estacionamiento).generarReporte();
-                    new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
-                    new RetirosParciales(turno, estacionamiento).generarReporte();
-
-                    empleado = null;
-                    btnCerrarSesion.setVisible(false);
-                    initLogin();
-                }
-             }else if(res ==  JOptionPane.NO_OPTION){
-                 empleado = null;
-                 btnCerrarSesion.setVisible(false);
-                turno.setActivo(false);
-                turno.actualizarActivo();
-                 initLogin();
-             }
-           
-        }else{
-            empleado = null;
-            btnCerrarSesion.setVisible(false);
-            initLogin();
-       }
+    public void onCaja() {
+        new FrmCaja(this, false,false);
     }
-    
-    public void validaPermisos(Empleado empleado) {
+
+    @Action
+    public void onAuditoria() {
+        Iterator<Map.Entry<String, TurnoDetalles>> iterator = m.getTurnoActual().getDetallesTurno().entrySet().iterator();
+        while (iterator.hasNext()) {
+            new FrmEstadoEstacionamiento(this, false, iterator.next().getKey());
+        }
+    }
+
+    @Action
+    public void onReportes() {
+        new FrmReportes(this, false);
+    }
+
+    @Action
+    public void onUsuarios() {
+        new FrmUsuarios(this, false);
+    }
+
+    @Action
+    public void onConfiguracion() {
+        new FrmMenuAdministracion(this, false);
+    }
+
+    public void validaPermisos() {
         //Busco turno abierto
         Turno turnoTemp = Turno.existeTurnoAbierto();
         //Si no hay turno pregunto si quiere abrir nuevo turno
-        if(turnoTemp == null){
-             int showConfirmDialog = JOptionPane.showConfirmDialog(this,"¿Quiere abrir un nuevo turno?", 
-                "Turno nuevo", JOptionPane.YES_NO_OPTION );
-            if(showConfirmDialog == JOptionPane.YES_OPTION){
+        if (turnoTemp == null) {
+            int msgNuevoTurno = JOptionPane.showConfirmDialog(this, "¿Quiere abrir un nuevo turno?",
+                    "Turno nuevo", JOptionPane.YES_NO_OPTION);
+            if (msgNuevoTurno == JOptionPane.YES_OPTION) {
                 String tipo = Turno.getSiguienteTurno();
-                int showConfirmDialog2 = JOptionPane.showConfirmDialog(this,"Se esta por abrir el " + tipo + ", ¿estas seguro?", 
-                "Turno nuevo", JOptionPane.YES_NO_OPTION );
-                if(showConfirmDialog2 == JOptionPane.YES_OPTION){
-                    turno = new Turno(estacionamiento);
-                    turno.inicializarTurno(empleado.getId(),"");
-                    turno.setTipoTurno(tipo);
-                    turno.actualizar();
-                    turno.setActivo(true);
-                    turno.actualizarActivo();
-                    turnoAbrierto  = true;
-                }else{
-                    turnoAbrierto  = false;
-                    turno = new Turno(estacionamiento);
-                    turno.setEmpleadoEntrada(empleado);
+                int msgConfirmarNuevoTurno = JOptionPane.showConfirmDialog(this, "Se esta por abrir el " + tipo + ", ¿estas seguro?",
+                        "Turno nuevo", JOptionPane.YES_NO_OPTION);
+                if (msgConfirmarNuevoTurno == JOptionPane.YES_OPTION) {
+                    m.setTurnoActual(new Turno());
+                    m.getTurnoActual().inicializarTurno(tipo);
+                    m.getTurnoActual().setTipoTurno(tipo);
+                    m.getTurnoActual().actualizar();
+                    t1.start();
                 }
-            }else{
-                turnoAbrierto  = false;
-                turno = new Turno(estacionamiento);
-                turno.setEmpleadoEntrada(empleado);
+                
             }
-              
-
-        }else{
-            
-            turnoAbrierto  = true;
-            turno = turnoTemp;
-            turno.setEstacionamiento(estacionamiento);
-            turno.setEmpleadoEntrada(empleado);
-            
-            if(turnoTemp.getEmpleadoEntrada().getId() != empleado.getId()){
-                JOptionPane.showMessageDialog(this, "Turno abierto, empleado temporal",
-                        "Temporal", JOptionPane.WARNING_MESSAGE);
-            }
+        }else {
+            m.setTurnoActual(turnoTemp);
+            m.getTurnoActual().setEstacionamiento(m.getEstacionamiento());
+            m.getTurnoActual().setEmpleadoEntrada(m.getEmpleadoSesion());
+            t1.start();
         }
-        
-        turno.setActivo(turnoAbrierto);
-        turno.actualizarActivo();
-        
-        this.empleado = empleado;
-         btnAparcamiento.setEnabled(true);
+        btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
         btnEstacionamiento.setEnabled(true);
         btnReportes.setEnabled(true);
@@ -278,59 +207,115 @@ public class FrmPrincipal extends JFrame implements Runnable{
         btnReportes.setVisible(true);
         btnUsuarios.setVisible(true);
         btnConfiguracion.setVisible(true);
-       
-       switch (empleado.getTipoPuesto()) {
-           case "Cajero":
-                if(!turnoAbrierto){
+/*
+        switch (empleado.getTipoPuesto()) {
+            case "Cajero":
+                if (!turnoAbrierto) {
                     btnAparcamiento.setVisible(false);
                     btnCaja.setVisible(false);
                 }
                 btnUsuarios.setVisible(false);
                 btnReportes.setVisible(false);
                 btnEstacionamiento.setVisible(false);
-                btnConfiguracion.setVisible(false);    
-               break;
-           case "Encargado":
-                if(!turnoAbrierto){
+                btnConfiguracion.setVisible(false);
+                break;
+            case "Encargado":
+                if (!turnoAbrierto) {
                     btnAparcamiento.setVisible(false);
                     btnCaja.setVisible(false);
-                }  
-                btnReportes.setVisible(false);   
-                btnEstacionamiento.setVisible(false); 
+                }
+                btnReportes.setVisible(false);
+                btnEstacionamiento.setVisible(false);
                 btnConfiguracion.setVisible(false);
-               break;
-           case "Supervisor":
-                if(!turnoAbrierto) {
+                break;
+            case "Supervisor":
+                if (!turnoAbrierto) {
                     btnAparcamiento.setVisible(false);
                     btnCaja.setVisible(false);
                 }
                 btnConfiguracion.setVisible(false);
                 break;
             case "Auditor":
-               if(!turnoAbrierto) {
-                   btnAparcamiento.setVisible(false);
-                   btnCaja.setVisible(false);
-               }  
+                if (!turnoAbrierto) {
+                    btnAparcamiento.setVisible(false);
+                    btnCaja.setVisible(false);
+                }
                 btnConfiguracion.setVisible(false);
-               break;
-           case "Administrador":
-               if(!turnoAbrierto){
-                   btnAparcamiento.setVisible(false);
-                   btnCaja.setVisible(false);
-               }  break;
-       }
-        btnCerrarSesion.setText("<html><b>Cerrar sesion de "+empleado.getUsuario()+"</b><br><center>(Esc)</center></html>");
-        btnCerrarSesion.setVisible(true); 
-        new Thread(this).start();
+                break;
+            case "Administrador":
+                if (!turnoAbrierto) {
+                    btnAparcamiento.setVisible(false);
+                    btnCaja.setVisible(false);
+                }
+                break;
+        }
+        btnCerrarSesion.setText("<html><b>Cerrar sesion de " + empleado.getUsuario() + "</b><br><center>(Esc)</center></html>");
+        btnCerrarSesion.setVisible(true);
+        */
+    }
+
+    @Action
+    public void onSalir() {
+        if (m.getTurnoActual() != null) {
+            int res = JOptionPane.showConfirmDialog(this, "Quieres tambien hacer corte de turno?", "Cerrar sesion", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (res == JOptionPane.YES_OPTION) {
+                if (Caja.getByCaseta(m.getEstacionamiento().getCaseta().getId()).getMonto() > 0) {
+                    new FrmCaja(this, true,true);
+                } else {
+                    m.getTurnoActual().realizarCorte( "corte");
+                    m.getTurnoActual().actualizar();
+                    new ReporteCorteTurno().generarReporte();
+                    new ReporteDetalleAvanzado().generarReporte();
+                    new RetirosParciales().generarReporte();
+                    m.setEmpleadoSesion(null);
+                    this.dispose();
+                    initLogin();
+                }
+            } else if (res == JOptionPane.NO_OPTION) {
+                m.setEmpleadoSesion(null);
+                this.dispose();
+                initLogin();
+            }
+            m.setTurnoActual(null);
+        } else {
+            m.setEmpleadoSesion(null);
+            this.dispose();
+            initLogin();
+        }
     }
 
     public void setCajaAlarma(boolean requiereRetitroParcial) {
-       if(requiereRetitroParcial)
-           btnCaja.setBackground(Color.red);
-       else
-           btnCaja.setBackground(new Color(255,255,255));
+        if (requiereRetitroParcial) {
+            btnCaja.setBackground(Color.red);
+        } else {
+            btnCaja.setBackground(new Color(255, 255, 255));
+        }
     }
     
+     @Override
+    public void run() {
+        ////////////////////////////////////Cliente
+        ServerSocket serverSocket = null ;
+        Socket acceptSocket = null;
+        try {
+            serverSocket = new ServerSocket(8123);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+        while(true){    
+            try {
+                acceptSocket = serverSocket.accept();
+                Main.getInstance().setSocketCliente(acceptSocket);
+                System.out.println("Conexion recivida");
+            } catch (IOException ex) {
+                Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            new AceptarConexionCliente(this).start();
+        }
+    }
+
 //    @Action
 //    public void cerrarTurno(){
 //        turno.realizarCorte(empleado.getId());
@@ -343,94 +328,7 @@ public class FrmPrincipal extends JFrame implements Runnable{
 //        btnCerrarSesion.setVisible(false);
 //        initLogin();
 //    }
-
-    public static void main(String[] args) {
-        new FrmPrincipal();
-    }    
-    
-        @Override
-    public void run() {
-        while(true){
-            if(Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
-                try {
-                    Auto auto = Auto.getCambioEstadoServidor();
-                    if(auto != null){
-                        if(auto.getEstadoServidor()== 1){
-                            auto.setEstadoServidor(2);
-                            auto.actualizarEstadoServidor();
-                            FrmCobro frmCobro = new FrmCobro(this, true,turno,auto,estacionamiento);
-                        }
-                    }
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }else if(Configuracion.getDatos().getTerminal().equals(Configuracion.CLIENTE)){
-                //////////////////////////////////////////////////////////////
-                //                         CLIENTE                          // 
-                //////////////////////////////////////////////////////////////
-               
-                Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
-                if(turnoTemp != null){
-                    if(error!= null){
-                        error.dispose();
-                        error= null;
-                    }
-                    if(turno== null)
-                        turno= turnoTemp;
-                    if(barras == null)
-                        barras = new FrmLeerCodigoBarras(this, true,turnoTemp,"COBRO",estacionamiento);    
-                    
-                    if(turno.getId()!=turnoTemp.getId()){
-                        barras.dispose();
-                        barras = new FrmLeerCodigoBarras(this, true,turnoTemp,"COBRO",estacionamiento);     
-                        turno= turnoTemp;
-                    }
-                }else{
-                    //En espera por un turno
-                    if(barras!=null){
-                        barras.dispose();
-                        barras = null;
-                    }
-                    if(error== null)
-                        error = new FrmErrorCarga(this,false);
-                }
-            }else if(Configuracion.getDatos().getTerminal().equals(Configuracion.EXPEDIDOR)){
-                //////////////////////////////////////////////////////////////
-                //                      EXPEDIDOR                           // 
-                //////////////////////////////////////////////////////////////
-                Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
-                if(turnoTemp != null){
-                    if(error!= null){
-                        error.dispose();
-                        error= null;
-                    }
-                    if(turno== null)
-                        turno= turnoTemp;
-                    if(barras == null)
-                        barras = new FrmLeerCodigoBarras(this, true,turnoTemp,"ENTRADA",estacionamiento);    
-                    
-                    if(turno.getId()!=turnoTemp.getId()){
-                        barras.dispose();
-                        barras = new FrmLeerCodigoBarras(this, true,turnoTemp,"ENTRADA",estacionamiento);     
-                        turno= turnoTemp;
-                    }
-                }else{
-                    //En espera por un turno
-                    if(barras!=null){
-                        barras.dispose();
-                        barras = null;
-                    }
-                    if(error== null)
-                        error = new FrmErrorCarga(this,false);
-                }
-            }
-            if(cerrar)break;
-        }
-    }
-
-    
-    
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -608,9 +506,6 @@ public class FrmPrincipal extends JFrame implements Runnable{
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 
-    void setCerrar(boolean b) {
-      this.cerrar = b;
-    }
-
+   
 
 }

@@ -26,6 +26,7 @@ import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JDialog;
 import modelos.Empleado;
+import modelos.Main;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
 import net.sourceforge.barbecue.BarcodeFactory;
@@ -41,8 +42,9 @@ public class FrmInfoUsuario extends JDialog implements Printable {
     private Barcode barcode=null;
 
     /** Creates new form VenBoletoValetParking1 */
-    public FrmInfoUsuario(Dialog parent, boolean modal, PrinterJob job,Empleado empleado) {
+    public FrmInfoUsuario(Dialog parent, boolean modal, PrinterJob job) {
         super(parent, modal);
+        Empleado empleado = Main.getInstance().getEmpleadoSesion();
         try {
             initComponents();
             barcode = BarcodeFactory.createCode128B(empleado.getClave()+ String.format("%06d",empleado.getId() ) );

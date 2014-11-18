@@ -20,6 +20,7 @@ import javax.print.attribute.standard.*;
 import modelos.TurnoDetalles;
 import modelosReportesAux.DetallesMovimiento;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Turno;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -32,12 +33,14 @@ public class ReporteCorteTurno implements Runnable  {
    // private ArrayList<DetallesMovimiento> detalleM;
     private Estacionamiento estacionamiento;
 
-    public ReporteCorteTurno(Turno turno,Estacionamiento estacionamiento) {
-        this.turno = turno;
-        this.estacionamiento = estacionamiento;
-        //this.detalleM =  detalleM;
+    public ReporteCorteTurno() {
+        this.turno = Main.getInstance().getTurnoActual();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
     }
-
+     public ReporteCorteTurno(Turno turno) {
+        this.turno = turno;
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
+    }
     public void generarReporte(){
        new Thread(this).start();
     }

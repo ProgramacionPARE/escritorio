@@ -28,9 +28,9 @@ public class Caja implements IDBModel {
 
      public static Caja getByCaseta(Long id){
         Caja caja = null;
-        Conexion conexion = new Conexion(); 
+       Conexion conexion = Conexion.getInstance(); 
         try {
-            Connection connectionDB = conexion.getConnectionDB();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM caja  where id_caseta = ?");
             statement.setLong(1, id);
@@ -49,9 +49,9 @@ public class Caja implements IDBModel {
     
     public static Caja getById(int id){
         Caja caja = null;
-        Conexion conexion = new Conexion(); 
+       Conexion conexion = Conexion.getInstance(); 
         try {
-            Connection connectionDB = conexion.getConnectionDB();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM caja  where id = ?");
             statement.setInt(1, id);
@@ -107,9 +107,9 @@ public class Caja implements IDBModel {
 
     @Override
     public void actualizar() {
-        Conexion conexion = new Conexion(); 
+       Conexion conexion = Conexion.getInstance(); 
          try {
-            Connection connectionDB = conexion.getConnectionDB();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE caja SET `monto`= ?,`fondo`= ?,`monto_alarma`= ? WHERE `id`= ?");
             statement.setFloat(1, this.monto);
@@ -123,7 +123,7 @@ public class Caja implements IDBModel {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         } finally{
           conexion.cerrarConexion();
-            }
+        }
     }
 
     @Override

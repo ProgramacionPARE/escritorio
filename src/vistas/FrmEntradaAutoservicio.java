@@ -9,6 +9,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Rest;
 import modelos.Turno;
 import org.jdesktop.application.Action;
@@ -24,11 +25,11 @@ public class FrmEntradaAutoservicio extends javax.swing.JDialog {
     /**
      * Creates new form FrmParkingEntrada
      */
-    public FrmEntradaAutoservicio(java.awt.Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento) {
+    public FrmEntradaAutoservicio(java.awt.Frame parent, boolean modal) {
         super(parent,"Entrada nueva", modal);
         initComponents();
-        this.turno = turno;
-        this.estacionamiento = estacionamiento;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual();
         this.parent = parent;
         this.getContentPane().setBackground(Color.white);
         txtFechaEntrada.setText(Tiempo.getFecha());
@@ -118,7 +119,7 @@ public class FrmEntradaAutoservicio extends javax.swing.JDialog {
         auto.guardar();
         Rest.sendAuto(auto,estacionamiento);
         this.setVisible(false);
-        new FrmCobro(parent, true,turno,auto,estacionamiento);
+        new FrmCobro(parent, true,auto);
         this.dispose();
         
         

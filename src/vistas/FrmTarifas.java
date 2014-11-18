@@ -8,6 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Tarifa;
 
 
@@ -18,7 +19,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
     private final ArrayList<JTextField>  txtTarifas = new ArrayList();
 
     
-    public FrmTarifas(java.awt.Frame parent, boolean modal, final Estacionamiento estacionamiento) {
+    public FrmTarifas(java.awt.Frame parent, boolean modal) {
         super(parent,"Tarifas", modal);
         initComponents();
         txtTarifas.add(txtFraccion1);
@@ -27,7 +28,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
         txtTarifas.add(txtFraccion4);
         btnCancelar.setVisible(false);
         btnGuardar.setVisible(false);
-        this.estacionamiento = estacionamiento;
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
         this.setLocationRelativeTo(parent);
         tarifa = estacionamiento.getCaseta().getTarifas().get(0);
         tblTarifas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

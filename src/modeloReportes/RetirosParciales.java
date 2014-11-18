@@ -14,6 +14,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 import modelosReportesAux.DetallesMovimiento;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.RetiroParcial;
 import modelos.Turno;
 import net.sf.jasperreports.engine.*;
@@ -27,10 +28,13 @@ public class RetirosParciales  {
    // private ArrayList<DetallesMovimiento> detalleM;
     private Estacionamiento estacionamiento;
 
-    public RetirosParciales(Turno turno,Estacionamiento estacionamiento) {
+    public RetirosParciales() {
+        this.turno = Main.getInstance().getTurnoActual();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
+    }
+    public RetirosParciales(Turno turno) {
         this.turno = turno;
-        this.estacionamiento = estacionamiento;
-        //this.detalleM =  detalleM;
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
     }
 
     public void generarReporte(){

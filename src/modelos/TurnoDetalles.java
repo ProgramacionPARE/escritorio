@@ -289,8 +289,8 @@ public class TurnoDetalles implements IDBModel{
     static HashMap<String, TurnoDetalles> getByTurnoId(Long id) {
         HashMap<String, TurnoDetalles> detalles= new HashMap();
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM detalle_turno where id_turno = ?");
             statement.setLong(1, id );
@@ -309,8 +309,8 @@ public class TurnoDetalles implements IDBModel{
     static TurnoDetalles getById(Long id){
         TurnoDetalles detalleTurno = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM  detalle_turno where id = ?");
             statement.setLong(1, id);
@@ -344,8 +344,8 @@ public class TurnoDetalles implements IDBModel{
     @Override
     public void guardar() {
          try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO detalle_turno (`id_turno`, `serie`,`folio_inicial`,"
                     + " `folio_final`,`no_bol`,`no_bol_turno_a`,`no_bol_cancelados`,"
@@ -382,8 +382,8 @@ public class TurnoDetalles implements IDBModel{
     @Override
     public void actualizar() {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE detalle_turno SET " 
                     + " `folio_final` = ?,`no_bol` = ?,`no_bol_turno_a` = ?,`no_bol_cancelados` = ?,"

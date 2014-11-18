@@ -94,8 +94,8 @@ public class PropietarioPerdido {
     static PropietarioPerdido getById(int id,BoletoPerdido boleto) {
          PropietarioPerdido propietarioPerdido = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM propietario_perdido where id = ?");
             statement.setInt(1, id);
@@ -115,8 +115,8 @@ public class PropietarioPerdido {
     
     public void guardar() {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO propietario_perdido (`nombre`, `direccion`,"+
                             " `telefono`,`tipo_identificacion`,`numero_identificacion`)"

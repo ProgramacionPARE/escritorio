@@ -22,8 +22,8 @@ public class Progresivo {
     public static String getUltimoProgresivo(Caseta caseta,String tipo) {
          String progresivo = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT LPAD(  MAX(ultimo_progresivo),6, '0') AS ultimo_progresivo " +
             "FROM progresivos where id_cajero = ?  and tipo = ? ");
@@ -45,8 +45,8 @@ public class Progresivo {
         String ultimoProgresivo = Progresivo.getUltimoProgresivo(caseta,tipo);
         Integer progresivo = Integer.valueOf(ultimoProgresivo)+1;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE progresivos SET `ultimo_progresivo`=? where id_cajero = ? "
                     + "and tipo = ?" );
@@ -62,8 +62,8 @@ public class Progresivo {
     
     public static void setProgresivo(Caseta caseta,String tipo,int newProgresivo) {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE progresivos SET `ultimo_progresivo`=? where id_cajero = ? "
                     + "and tipo = ?" );

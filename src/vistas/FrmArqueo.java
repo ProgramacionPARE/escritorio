@@ -15,6 +15,7 @@ import modelos.Auto;
 import modelosReportesAux.DetallesArqueo;
 import modelosReportesAux.DetallesMovimiento;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.RetiroParcial;
 import modelos.Turno;
 
@@ -29,7 +30,7 @@ public class FrmArqueo extends javax.swing.JDialog {
     /**
      * Creates new form FrmArqueo
      */
-    public FrmArqueo(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento,String serie) {
+    public FrmArqueo(java.awt.Frame parent, boolean modal,String serie) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
@@ -39,10 +40,11 @@ public class FrmArqueo extends javax.swing.JDialog {
         DetallesMovimiento.ordenarPorPU(generarDetalles);
         llenarTabla(generarDetalles,turno);
         total();
-        this.estacionamiento =  estacionamiento;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual();
         this.txtFolioInicial.setText(String.valueOf(turno.getDetallesTurno().get(serie).getFolioInicial()));
         this.txtFolioFinal.setText(String.valueOf(turno.getDetallesTurno().get(serie).getFolioFinal()));
-        this.turno = turno;
+        
         this.serie = serie;
         setVisible(true);
     }
@@ -1508,8 +1510,8 @@ public class FrmArqueo extends javax.swing.JDialog {
     //turno.setDetallesMovimiento(DetallesMovimiento.generarDetalles(Auto.getAutosCobradosTurnoActual(turno),
     //            Auto.getAutosBoletoPerdidoTurnoActual(turno),Auto.getAutosBoletoCanceladoTurnoActual(turno),turno));
      
-    new ReporteCorteTurno(turno, estacionamiento).generarReporte();
-    new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
+    new ReporteCorteTurno().generarReporte();
+    new ReporteDetalleAvanzado().generarReporte();
     new ReporteArqueo(turno,arqueo,estacionamiento,serie).generarReporte();
 
     }//GEN-LAST:event_btnImprimirArqueoActionPerformed

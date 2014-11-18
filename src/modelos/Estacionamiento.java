@@ -1,5 +1,3 @@
-
-
 package modelos;
 
 import java.sql.Connection;
@@ -9,32 +7,22 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+public class Estacionamiento implements IDBModel {
 
-public class Estacionamiento implements IDBModel{
-   
-    
-    static Estacionamiento e;
-    int id;
-    int centroCostos;
-    String descripcion;
-    String direccion;
-    Caseta caseta;
-    int numeroCaseta;
-    String tipo;
-    String token;   
+    private static final Estacionamiento estacionamiento = new Estacionamiento();
 
-    
-    public Estacionamiento(int id, int centroCostos, String descripcion, String direccion,
-            Caseta caseta, int numeroCaseta,String tipo) {
-        this.id = id;
-        this.centroCostos = centroCostos;
-        this.descripcion = descripcion;
-        this.direccion = direccion;
-        this.caseta = caseta;
-        this.numeroCaseta = numeroCaseta;
-        this.tipo = tipo;
+    private int id;
+    private int centroCostos;
+    private String descripcion;
+    private String direccion;
+    private Caseta caseta;
+    private String tipo;
+    private String token;
+
+    private Estacionamiento() {
+        inicializarObjeto();
+
     }
-    
 
     public int getId() {
         return id;
@@ -51,7 +39,6 @@ public class Estacionamiento implements IDBModel{
     public void setToken(String token) {
         this.token = token;
     }
-
 
     public int getCentroCostos() {
         return centroCostos;
@@ -85,14 +72,6 @@ public class Estacionamiento implements IDBModel{
         this.caseta = caseta;
     }
 
-    public int getNumeroCaseta() {
-        return numeroCaseta;
-    }
-
-    public void setNumeroCaseta(int numeroCaseta) {
-        this.numeroCaseta = numeroCaseta;
-    }
-
     public String getTipo() {
         return tipo;
     }
@@ -101,88 +80,60 @@ public class Estacionamiento implements IDBModel{
         this.tipo = tipo;
     }
 
-  
-
-
-     
-    
     public static Estacionamiento getDatos() {
-        Estacionamiento estacionamiento = null;
-        if(Estacionamiento.e == null){
-            try {
-                Conexion conexion = new Conexion();
-                Connection connectionDB = conexion.getConnectionDB();
-                PreparedStatement  statement = connectionDB.
-                prepareStatement("SELECT * FROM estacionamiento");
-
-                ResultSet resultSet = statement.executeQuery();
-
-                if (resultSet.next()){
-                    estacionamiento = Estacionamiento.getById(resultSet.getLong("id"),connectionDB);
-                }
-                conexion.cerrarConexion();
-            } catch (SQLException ex) {
-                Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            e = estacionamiento;
-        }
-        return e;
-    
-    }
-    
-    static Estacionamiento getById(long id, Connection cDB) {
-       Estacionamiento centro = null;
-        try {
-           
-            Connection connectionDB = cDB;
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM estacionamiento where id = ?");
-            statement.setLong(1, id);
-            
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
-                centro = new Estacionamiento(resultSet.getInt("id"),
-                resultSet.getInt("centro_costos"), resultSet.getString("descripcion"), resultSet.getString("direccion"),
-                Caseta.getById(resultSet.getLong("caseta_actual")),resultSet.getInt("caseta_actual"),
-                resultSet.getString("tipo"));
-            }
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return centro;
+        return estacionamiento;
     }
 
     @Override
     public void guardar() {
-       
+
     }
 
     @Override
     public void actualizar() {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("UPDATE estacionamiento SET `centro_costos`=? ,`descripcion` =? , `direccion` =?"
-                    +",`caseta_actual` =?  ,`tipo` =?   WHERE `id`=?");
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("UPDATE estacionamiento SET `centro_costos`=? ,`descripcion` =? , `direccion` =?"
+                            + ",`tipo` =?   WHERE `id`=?");
             statement.setInt(1, this.centroCostos);
             statement.setString(2, this.descripcion);
             statement.setString(3, this.direccion);
-            statement.setLong(4, this.numeroCaseta);
-            statement.setString(5, this.tipo);
-
-            statement.setLong(6, this.id);
+            statement.setString(4, this.tipo);
+            statement.setLong(5, this.id);
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
     @Override
     public void eliminar() {
-        
+
     }
-    
+
+    private void inicializarObjeto() {
+        try {
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("SELECT * FROM estacionamiento");
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                this.id = resultSet.getInt("id");
+                this.centroCostos = resultSet.getInt("centro_costos");
+                this.descripcion = resultSet.getString("descripcion");
+                this.direccion = resultSet.getString("direccion");
+                this.caseta = Caseta.getById(resultSet.getLong("caseta_actual"));
+                this.tipo = resultSet.getString("tipo");
+            }
+        conexion.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

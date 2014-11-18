@@ -71,8 +71,8 @@ public class BoletoCancelado implements IDBModel{
     @Override
     public void guardar() {
          try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO boleto_cancelado (`id_auto`, `id`,"+
                             " `razon`)"+
@@ -89,6 +89,9 @@ public class BoletoCancelado implements IDBModel{
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+         
     }
 
     @Override
@@ -104,8 +107,8 @@ public class BoletoCancelado implements IDBModel{
     static public BoletoCancelado getById(long id){
      BoletoCancelado boletoCancelado = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM boleto_cancelado where id = ?");
             statement.setLong(1, id);

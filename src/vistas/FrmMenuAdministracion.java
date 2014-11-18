@@ -5,6 +5,7 @@ package vistas;
 import java.awt.Color;
 import java.awt.Frame;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Turno;
 
 
@@ -13,13 +14,13 @@ public class FrmMenuAdministracion extends javax.swing.JDialog {
     Turno turno;
     Frame parent;
 
-    public FrmMenuAdministracion(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento  estacionamiento) {
+    public FrmMenuAdministracion(java.awt.Frame parent, boolean modal) {
         super(parent,"Administracion", modal);
         initComponents();
         this.getContentPane().setBackground(Color.white);
-        this.turno = turno;
+        this.turno = Main.getInstance().getTurnoActual();
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
         this.parent = parent;
-        this.estacionamiento =  estacionamiento;
          FrmPrincipal.nuevaVentana(this);
         setLocationRelativeTo(parent);
         setVisible(true);
@@ -109,15 +110,15 @@ public class FrmMenuAdministracion extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        new FrmTarifas(this.parent,true,estacionamiento);
+        new FrmTarifas(this.parent,true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new FrmFolios(this.parent,true,turno,estacionamiento);
+        new FrmFolios(this.parent,true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnEstacionamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstacionamientoActionPerformed
-       new FrmConfiguracion(this.parent,true,estacionamiento);
+       new FrmConfiguracion(this.parent,true);
     }//GEN-LAST:event_btnEstacionamientoActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

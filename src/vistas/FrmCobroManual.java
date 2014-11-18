@@ -23,7 +23,7 @@ public class FrmCobroManual extends javax.swing.JDialog {
      */
     FrmCobro frmCobro;
     Auto auto;
-    public FrmCobroManual(FrmCobro parent, boolean modal, Turno turno, Auto auto) {
+    public FrmCobroManual(FrmCobro parent, boolean modal, Auto auto) {
         super(parent,"Cobro manual", modal);
         initComponents();
         this.frmCobro = parent;

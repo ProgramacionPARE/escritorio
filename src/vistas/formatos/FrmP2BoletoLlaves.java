@@ -36,7 +36,7 @@ public class FrmP2BoletoLlaves extends javax.swing.JDialog implements Printable 
     private Barcode barcode=null;
     /** Creates new form VenBoletoValetParking1 */
     public FrmP2BoletoLlaves(java.awt.Dialog parent, boolean modal, PrinterJob job,
-           Turno turno, Auto auto,Empleado empleado) throws PrinterException {
+            Auto auto,Empleado empleado) throws PrinterException {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);

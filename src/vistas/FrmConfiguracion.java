@@ -5,24 +5,23 @@ package vistas;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import modelos.Estacionamiento;
+import modelos.Main;
 
 
 public class FrmConfiguracion extends javax.swing.JDialog {
     Estacionamiento estacionamiento;
     
-    public FrmConfiguracion(java.awt.Frame parent, boolean modal,Estacionamiento estacionamiento) {
+    public FrmConfiguracion(java.awt.Frame parent, boolean modal) {
         super(parent,"Configuracion", modal);
         initComponents();
         ButtonGroup group = new ButtonGroup();
         group.add(this.rbtAutoservicio);
         group.add(this.rbtValet);
         group.add(this.rbtValetMasivo);
-        
-        this.estacionamiento  = estacionamiento;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
         txtEstacionamiento.setText(estacionamiento.getDescripcion());
         txtDireccion.setText(estacionamiento.getDireccion());
         txtCentroCostos.setText(String.valueOf(estacionamiento.getCentroCostos()));
-        txtNumeroCaseta.setText(String.valueOf(estacionamiento.getNumeroCaseta()));
         if(estacionamiento.getTipo().equals("Valet")){
             this.rbtValet.setSelected(true);
             this.rbtAutoservicio.setSelected(false);
@@ -223,7 +222,6 @@ public class FrmConfiguracion extends javax.swing.JDialog {
             estacionamiento.setDescripcion(txtEstacionamiento.getText());
             estacionamiento.setCentroCostos(Integer.valueOf(txtCentroCostos.getText()));
             estacionamiento.setDireccion(txtDireccion.getText());
-            estacionamiento.setNumeroCaseta(Integer.valueOf(txtNumeroCaseta.getText()));
             if(rbtValet.isSelected())
                 estacionamiento.setTipo("Valet");
             if(rbtAutoservicio.isSelected())

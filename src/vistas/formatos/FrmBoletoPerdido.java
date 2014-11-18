@@ -680,7 +680,7 @@ public class FrmBoletoPerdido extends JDialog implements Printable {
                 propietario.setBoletoPerdido(boletoPerdido);
                 auto.setBoletoPerdido(boletoPerdido);
                 auto.setIsBoletoPerdido(true);
-                new FrmCobro(parent,true, turno, auto,estacionamiento);
+                new FrmCobro(parent,true, auto);
                 if (!auto.isDentro()){
                     propietario.guardar();
                     boletoPerdido.guardar();

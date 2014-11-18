@@ -18,6 +18,7 @@ import modelos.Auto;
 import modelos.Configuracion;
 import modelos.Empleado;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Progresivo;
 import modelos.Rest;
 import modelos.Turno;
@@ -30,7 +31,7 @@ import vistas.formatos.FrmP3BoletoParabrisas;
 import vistas.formatos.FrmReciboPago;
 
 
-public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable {
+public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnable*/ {
     String id;
     Turno turno;
     Frame parent;
@@ -39,17 +40,17 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
     /**
      * Creates new form FrmLeerCodigoBarras
      */
-    public FrmLeerCodigoBarras(java.awt.Frame parent, boolean modal,Turno turno,String accion, Estacionamiento estacionamiento) {
+    public FrmLeerCodigoBarras(java.awt.Frame parent, boolean modal,String accion) {
         super(parent,"Codigo de barras", modal);
         this.parent = parent;
         initComponents();
-        this.turno = turno;
+        this.turno = Main.getInstance().getTurnoActual();
         this.accion = accion;
-        this.estacionamiento = estacionamiento;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
         this.getContentPane().setBackground(Color.white);
           pack();
         id ="";
-        if(accion.equals("COBRO")){
+        /*if(accion.equals("COBRO")){
             lblMensaje.setText("coloque su boleto por favor");
         }else if(accion.equals("CANCELAR")){
                 lblMensaje.setText("coloque su boleto por favor");
@@ -63,7 +64,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
              lblMensaje.setText("Coloca tu gafet contra en el sensor");
         }
        
-         if(!Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
+         if(!Configuracion.getInstancia().getTerminal().equals(Configuracion.CAJA)){
             this.lblMensaje.setFont(new Font("Dialog", 1, 50));
             Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
             
@@ -71,10 +72,10 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
            // this.setSize(screenSize.width,  screenSize.height);
            
         }
-        if(!Configuracion.getDatos().getTerminal().equals(Configuracion.CLIENTE)){
+        if(!Configuracion.getInstancia().getTerminal().equals(Configuracion.CLIENTE)){
            this.lblBienvenido.setVisible(false);
-        }
-        new Thread(this).start();
+        }*/
+        //new Thread(this).start();
          setLocationRelativeTo(parent);
         setVisible(true);
     }
@@ -148,14 +149,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
                     auto = Auto.getByProgresivoClave(id);
                     if (auto != null){
                         if(auto.isDentro()){
-                            if(Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
-                                new FrmCobro(parent, true,turno,auto,estacionamiento);   
-                            }
-                            else if(Configuracion.getDatos().getTerminal().equals(Configuracion.CLIENTE)){
-                                auto.setEstadoServidor(1);
-                                auto.actualizarEstadoServidor();
-                                new FrmCobroCliente(parent, true,turno,auto,estacionamiento);  
-                            }
+                            new FrmCobro(parent, true,auto);       
                         }
                       // this.dispose();
                     }else{
@@ -166,9 +160,9 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
                     if (auto != null){
                          if(auto.isDentro()){
                         if(!auto.isBoletoCancelado())
-                            new FrmBoletoCancelado((JFrame) parent, true,turno,auto,estacionamiento);
+                            new FrmBoletoCancelado((JFrame) parent, true,auto);
                         else
-                            new FrmCobro(parent,true, turno, auto,estacionamiento);
+                            new FrmCobro(parent,true, auto);
                         this.dispose();
                     }else{
                         id = "";
@@ -180,7 +174,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
                         if(!auto.isReciboImpreso()){
                             auto.setReciboImpreso(true);
                             auto.actualizar();
-                            new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),turno,auto,estacionamiento);
+                            new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),auto);
                         }
                         this.dispose();
                     }else{
@@ -201,7 +195,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
                     if (auto != null){
                         if(auto.isDentro()){
                             auto.setIsBoletoContra(true);
-                            new FrmCobro(parent,true,turno,auto,estacionamiento);
+                            new FrmCobro(parent,true,auto);
                             this.dispose();
                         }else{
                             id = "";
@@ -226,11 +220,11 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
                             PrinterJob job = PrinterJob.getPrinterJob();
                             // Boleto al cliente
                             
-                            new FrmP1BoletoCliente(this, false,job,turno,newAuto,estacionamiento,empleado);
+                            new FrmP1BoletoCliente(this, false,job,newAuto,empleado);
                             //Boleto llaves
-                            new FrmP2BoletoLlaves(this, false,job,turno,newAuto,empleado);
+                            new FrmP2BoletoLlaves(this, false,job,newAuto,empleado);
                             //Boleto Parabrisas
-                            new FrmP3BoletoParabrisas(this, false ,job,turno,newAuto);
+                            new FrmP3BoletoParabrisas(this, false ,job,newAuto);
                             turno.actualizar();
                             // Guardo entrada y actualizo progresivo
                             newAuto.guardar();
@@ -254,7 +248,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
     }//GEN-LAST:event_formKeyTyped
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if(!Configuracion.getDatos().getTerminal().equals(Configuracion.CAJA)){
+        if(!Configuracion.getInstancia().getTerminal().equals(Configuracion.CAJA)){
             parent.setVisible(false);
             parent.dispose();
             parent = null;
@@ -273,19 +267,19 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog implements Runnable
     private javax.swing.JLabel lblMensaje;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void run() {
-        while(true){
-            Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
-                if(turnoTemp == null){
-                    break;
-                }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(FrmLeerCodigoBarras.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        this.dispose();
-    }
+////    @Override
+////    public void run() {
+////        while(true){
+////            Turno turnoTemp = Turno.existeTurnoAbiertoActivo();
+////                if(turnoTemp == null){
+////                    break;
+////                }
+////            try {
+////                Thread.sleep(500);
+////            } catch (InterruptedException ex) {
+////                Logger.getLogger(FrmLeerCodigoBarras.class.getName()).log(Level.SEVERE, null, ex);
+////            }
+////        }
+////        this.dispose();
+////    }
 }

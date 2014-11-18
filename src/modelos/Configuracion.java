@@ -11,22 +11,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static modelos.Estacionamiento.e;
 
 public class Configuracion{
-    public static Configuracion DATOS = new Configuracion();
-     public static final String CAJA = "caja";
+    private static Configuracion DATOS = new Configuracion();
+    public static final String CAJA = "caja";
     public static final String EXPEDIDOR = "expedidor";
     public static final String CLIENTE = "cliente";
+    
     private Configuracion(){
         try {
-            ConexionDatos conexion = new ConexionDatos();
-            Connection connectionDB = conexion.getConnectionDB();
+            ConexionDatos conexion = ConexionDatos.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.prepareStatement("SELECT * FROM configuracion");
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
-                this.setIp(resultSet.getString("ip"));
-                this.setTerminal(resultSet.getString("terminal"));
+                this.ip = resultSet.getString("ip");
+                this.terminal = resultSet.getString("terminal");
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -58,7 +58,7 @@ public class Configuracion{
     }
 
    
-    public static Configuracion getDatos() {
+    public static Configuracion getInstancia() {
         return DATOS;
     }
     
@@ -73,7 +73,7 @@ public class Configuracion{
 //    public void actualizar() {
 //          try {
 //            ConexionDatos conexion = new ConexionDatos();
-//            Connection connectionDB = conexion.getConnectionDB();
+//            Connection connectionDB = conexion.getConnectionDB().getConnection();
 //            PreparedStatement  statement = connectionDB.
 //            prepareStatement("UPDATE estacionamiento SET `centro_costos`=? ,`descripcion` =? , `direccion` =?"
 //                    +",`caseta_actual` =?  ,`tipo` =?   WHERE `id`=?");

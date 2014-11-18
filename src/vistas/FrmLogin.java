@@ -7,13 +7,13 @@ import javax.swing.JOptionPane;
 import modelos.Empleado;
 
 
-public class FrmLogin extends javax.swing.JDialog {
-    FrmPrincipal parent ;
-    public FrmLogin(JFrame parent, boolean modal) {
-        super(parent,"Entrar", modal);
+public class FrmLogin extends JFrame {
+    
+    
+    public FrmLogin() {
+        super("Entrar");
         initComponents();
-        this.parent = (FrmPrincipal)parent;
-        this.setLocationRelativeTo(parent);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
@@ -101,8 +101,7 @@ public class FrmLogin extends javax.swing.JDialog {
         int showConfirmDialog = JOptionPane.showConfirmDialog(this,"Esto cerrara el sistema. ¿Quieres continuar?", 
                 "Salir", JOptionPane.YES_NO_OPTION );
         if(showConfirmDialog == JOptionPane.YES_OPTION){
-            parent.setCerrar(true);
-            parent.dispose();
+            this.dispose();
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -111,7 +110,7 @@ public class FrmLogin extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
-          login();
+        login();
     }//GEN-LAST:event_txtContraActionPerformed
     
     private void login(){
@@ -123,8 +122,9 @@ public class FrmLogin extends javax.swing.JDialog {
             
         }else{
             this.setVisible(false);
-            ((FrmPrincipal)parent).validaPermisos(empleado);
             this.dispose();
+            new FrmPrincipal(empleado);
+
         }
     }
 

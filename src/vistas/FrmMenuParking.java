@@ -1,5 +1,3 @@
-
-
 package vistas;
 
 import ModelosAux.Tiempo;
@@ -15,6 +13,7 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import modelos.Auto;
 import modelos.Estacionamiento;
+import modelos.Main;
 import org.jdesktop.application.Action;
 import vistas.formatos.FrmBoletoPerdido;
 
@@ -24,13 +23,14 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
     Turno turno;
     Estacionamiento  estacionamiento;
     FrmMenuParking frmMenuParking;
+    private boolean hiloActivo;
     
-    public FrmMenuParking(final java.awt.Frame parent, boolean modal,final Turno turno,   final Estacionamiento  estacionamiento) {
+    public FrmMenuParking(final java.awt.Frame parent, boolean modal) {
         super(parent,"Estacionamiento", modal);
+        Thread thread;
         this.parent = parent;
-        this.turno = turno;
-        this.frmMenuParking = this;
-        this.estacionamiento = estacionamiento;
+        this.turno = Main.getInstance().getTurnoActual();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
         initComponents();
         this.getContentPane().setBackground(Color.white);
         pack();
@@ -98,24 +98,26 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
         /////////////////////////////////
         setLocationRelativeTo(parent);
         setVisible(true);
-        new Thread(this).start();
+        hiloActivo = true;
+        thread =  new Thread(this);
+        thread.start();
     }
     
     @Action
     public void onEntrada() {
         if(estacionamiento.getTipo().equals("Valet"))
-            new FrmEntradaValet(parent,true,turno,estacionamiento);
+            new FrmEntradaValet(parent,true);
         else if(estacionamiento.getTipo().equals("Autoservicio"))
-            new FrmEntradaAutoservicio(parent,true,turno,estacionamiento);
+            new FrmEntradaAutoservicio(parent,true);
         else if(estacionamiento.getTipo().equals("ValetMasivo"))
             //new FrmLeerCodigoBarrasValet(parent,true,turno,estacionamiento);
-            new FrmLeerCodigoBarras(parent,true,turno,"ENTRADA",estacionamiento);
+            new FrmLeerCodigoBarras(parent,true,"ENTRADA");
     }
     
     @Action
     public void onBoletoPerdido() {
         if(!estacionamiento.getTipo().equals("Autoservicio")){
-            new FrmLeerCodigoBarras(parent,true,turno,"PERDIDO",estacionamiento);
+            new FrmLeerCodigoBarras(parent,true,"PERDIDO");
         }else{
             Auto auto = new Auto();
             auto.setHoraEntrada(Tiempo.getHora());
@@ -126,21 +128,21 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
 
     @Action
     public void onBoletoCancelado() {
-         new FrmLeerCodigoBarras(parent, true,turno,"CANCELAR",estacionamiento);
+         new FrmLeerCodigoBarras(parent, true,"CANCELAR");
     }
     @Action
     public void onReciboPago() {
-        new FrmLeerCodigoBarras(parent, true,turno,"RECIBO",estacionamiento);
+        new FrmLeerCodigoBarras(parent, true,"RECIBO");
     }
     
     @Action
     public void onBoletoIlegible() {
-        new FrmLeerCodigoBarras(parent, true,turno,"CONTRA",estacionamiento);
+        new FrmLeerCodigoBarras(parent, true,"CONTRA");
     }
     
     @Action
     public void onSalida() {
-        new FrmLeerCodigoBarras(parent, true,turno,"COBRO",estacionamiento);
+        new FrmLeerCodigoBarras(parent, true,"COBRO");
     }
     
     
@@ -153,15 +155,14 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
     @Override
     public void run() {
         int autos=0;
-        while(true){
+        while(hiloActivo){
             try {
                 autos=0;
                 for(String serie : Estacionamiento.getDatos().getCaseta().getSeries()){
                     autos+= Auto.getNumAutosPendientesTurnoActual(turno.getId(),serie);
-                
                 }
                 lblNoAutos.setText(String.valueOf(autos));
-                Thread.sleep(5000);
+                Thread.sleep(500);
             } catch (InterruptedException ex) {
                 Logger.getLogger(FrmMenuParking.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -314,6 +315,7 @@ public class FrmMenuParking extends javax.swing.JDialog implements Runnable {
     }//GEN-LAST:event_formWindowStateChanged
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        hiloActivo = true;
         FrmPrincipal.restaurarUltimaVentana();
     }//GEN-LAST:event_formWindowClosing
 

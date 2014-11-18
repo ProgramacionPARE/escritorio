@@ -29,6 +29,7 @@ import modelos.Auto;
 import modelos.TurnoDetalles;
 import modelos.Estacionamiento;
 import modelos.IUseCalendar;
+import modelos.Main;
 import modelos.RetiroParcial;
 import modelos.Turno;
 
@@ -48,17 +49,17 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     /**
      * Creates new form FrmEstadoEstacionamiento
      */
-    public FrmEstadoEstacionamiento(java.awt.Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento,String serie) {
+    public FrmEstadoEstacionamiento(java.awt.Frame parent, boolean modal,String serie) {
         super(parent,"Estado de estacionamiento", modal);
         initComponents();
         personalizarTablas();
         this.parent = parent;
         this.serie = serie;
-        this.estacionamiento =  estacionamiento;
-        setLocationRelativeTo(parent);
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual();
+        
         
         this.txtFecha.setText(Tiempo.getFecha());
-        this.turno = turno;
         cbxSeries = new ArrayList();
         cbxSeries.add(cbxSerie1);cbxSeries.add(cbxSerie2);cbxSeries.add(cbxSerie3);cbxSeries.add(cbxSerie4);cbxSeries.add(cbxSerie5);
         Iterator<JCheckBox> iterator = cbxSeries.iterator();
@@ -71,6 +72,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         Turno.cacheTurnos = new HashMap();
         cargarDatos(Tiempo.getFecha());
         FrmPrincipal.nuevaVentana(this);
+        setLocationRelativeTo(parent);
         setVisible(true);
         
         
@@ -1133,7 +1135,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         Iterator<Map.Entry<String, TurnoDetalles>> iterator = turno.getDetallesTurno().entrySet().iterator();
         while(iterator.hasNext()){
             Map.Entry<String, TurnoDetalles> next = iterator.next();
-            new FrmArqueo(this.parent,true,turno, estacionamiento,next.getKey());
+            new FrmArqueo(this.parent,true, next.getKey());
         }
         
     }//GEN-LAST:event_btnImprimir1ActionPerformed
@@ -1181,17 +1183,17 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     }//GEN-LAST:event_btnProgresivoLimpiarActionPerformed
 
     private void btnPrecorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrecorteActionPerformed
-        turno.realizarCorte(turno.getEmpleadoEntrada().getId(),"precorte");
+        turno.realizarCorte("precorte");
         turno.actualizar();
-        new ReporteCorteTurno(turno, estacionamiento).generarReporte();
-        new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
+        new ReporteCorteTurno().generarReporte();
+        new ReporteDetalleAvanzado().generarReporte();
     }//GEN-LAST:event_btnPrecorteActionPerformed
 
     private void btnPrecorte1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrecorte1ActionPerformed
-          turno.realizarCorte(turno.getEmpleadoEntrada().getId(),"precorteTotal");
+          turno.realizarCorte("precorteTotal");
         turno.actualizar();
-        new ReporteCorteTurno(turno, estacionamiento).generarReporte();
-        new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
+        new ReporteCorteTurno().generarReporte();
+        new ReporteDetalleAvanzado().generarReporte();
     }//GEN-LAST:event_btnPrecorte1ActionPerformed
 
 

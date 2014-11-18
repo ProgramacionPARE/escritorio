@@ -107,8 +107,8 @@ public class BoletoManual implements IDBModel{
     public static BoletoManual getById(long id) {
         BoletoManual boletoManual = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM boleto_manual where id = ?");
             statement.setLong(1, id);
@@ -133,8 +133,8 @@ public class BoletoManual implements IDBModel{
     @Override
     public void guardar() {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO boleto_manual (`id_auto`, `fecha_entrada`,`fecha_salida`,"+
                             " `hora_entrada`,  `hora_salida`,`razon`)"+
@@ -159,8 +159,8 @@ public class BoletoManual implements IDBModel{
     @Override
     public void actualizar() {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE boleto_manual SET `fecha_entrada_modificado` =? ,"
                      + "`fecha_salida_modificado` =?,`hora_entrada_modificado` =? ,"
@@ -186,8 +186,8 @@ public class BoletoManual implements IDBModel{
     @Override
     public void eliminar() {
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("DELETE FROM boleto_manual WHERE `id`= ?");
              statement.setLong(1, id);

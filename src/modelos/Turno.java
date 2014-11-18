@@ -33,11 +33,16 @@ public class Turno implements IDBModel {
     
     public static  HashMap<Long,Turno> cacheTurnos = new HashMap();
     
-    public Turno(Estacionamiento e){
-        estacionamiento = e;
-    }
+    private Main m;
 
+    public Turno() {
+         m = Main.getInstance();
+        estacionamiento = m.getEstacionamiento();
+    }
+    
     public Turno(String tipoTurno, String fechaApertura, String horaApertura, String fechaCierre, String horaCierre) {
+        m = Main.getInstance();
+        estacionamiento = m.getEstacionamiento();
         this.tipoTurno = tipoTurno;
         this.fechaApertura = fechaApertura;
         this.horaApertura = horaApertura;
@@ -47,6 +52,8 @@ public class Turno implements IDBModel {
 
     public Turno(long id, long empleadoEntrada, long empleadoSalida, String tipoTurno, 
             String fechaApertura, String horaApertura, String fechaCierre, String horaCierre,boolean activo) {
+        m = Main.getInstance();
+        estacionamiento = m.getEstacionamiento();
         this.id = id;
         this.empleadoApertura = empleadoEntrada;
         this.empleadoCierre = empleadoSalida;
@@ -58,7 +65,8 @@ public class Turno implements IDBModel {
         this.activo = activo;
     }
     
-    public void inicializarTurno(long empleado,String tipoTurno){
+    public void inicializarTurno(String tipoTurno){
+        long empleado = m.getEmpleadoSesion().getId();
         retirosParciales = new ArrayList <RetiroParcial>();
         fechaApertura = Tiempo.getFecha();
         horaApertura = Tiempo.getHora();
@@ -72,8 +80,8 @@ public class Turno implements IDBModel {
         }
     }
     
-    public void realizarCorte(long operador,String tipoCorte){        
-        this.empleadoCierre = operador;
+    public void realizarCorte(String tipoCorte){        
+        this.empleadoCierre = m.getEmpleadoSesion().getId();
         if(tipoCorte.equals("corte")){
         fechaCierre = Tiempo.getFecha();
         horaCierre = Tiempo.getHora();
@@ -95,8 +103,8 @@ public class Turno implements IDBModel {
     public static ArrayList<Turno> getTurnosByFecha(String fecha){
         ArrayList<Turno> turnos = new ArrayList<>();
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM turnos where fecha_apertura = ? and fecha_cierre is not null");
             statement.setString(1, fecha);
@@ -114,8 +122,8 @@ public class Turno implements IDBModel {
     public static String getSiguienteTurno() {
         String tipo = "";
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT tipo_turno FROM turnos where fecha_apertura = ? order by id desc  limit 1");
             statement.setString(1, Tiempo.getFecha());
@@ -140,8 +148,8 @@ public class Turno implements IDBModel {
     public static ArrayList<Turno> getTurnosByFechaAbierto(String fecha){
         ArrayList<Turno> turnos = new ArrayList<>();
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM turnos where fecha_apertura = ? ");
             statement.setString(1, fecha);
@@ -159,8 +167,8 @@ public class Turno implements IDBModel {
     public static Turno getById(Long id){
         Turno turno = null;
             try {
-                Conexion conexion = new Conexion();
-                Connection connectionDB = conexion.getConnectionDB();
+                Conexion conexion = Conexion.getInstance();
+                Connection connectionDB = conexion.getConnection();
                 PreparedStatement  statement = connectionDB.
                 prepareStatement("SELECT * FROM turnos where id = ?");
                 statement.setLong(1, id);
@@ -178,7 +186,7 @@ public class Turno implements IDBModel {
                             resultSet.getString("activo").equals("SI")
                     );
                 }
-                turno.setEstacionamiento(Estacionamiento.getDatos());
+                //turno.setEstacionamiento(Estacionamiento.getDatos());
                 turno.setDetallesTurno(TurnoDetalles.getByTurnoId(turno.getId()));
                 conexion.cerrarConexion();
             } catch (SQLException ex) {
@@ -191,8 +199,8 @@ public class Turno implements IDBModel {
     public static Turno existeTurnoAbierto() {
         Turno turno = null;
           try {
-              Conexion conexion = new Conexion();
-              Connection connectionDB = conexion.getConnectionDB();
+             Conexion conexion = Conexion.getInstance();
+              Connection connectionDB = conexion.getConnection();
               PreparedStatement  statement = connectionDB.
               prepareStatement("SELECT id FROM turnos where  fecha_cierre IS NULL");
               ResultSet resultSet = statement.executeQuery();
@@ -209,8 +217,8 @@ public class Turno implements IDBModel {
        public static Turno existeTurnoAbiertoActivo() {
         Turno turno = null;
           try {
-              Conexion conexion = new Conexion();
-              Connection connectionDB = conexion.getConnectionDB();
+             Conexion conexion = Conexion.getInstance();
+              Connection connectionDB = conexion.getConnection();
               PreparedStatement  statement = connectionDB.
               prepareStatement("SELECT id FROM turnos where  fecha_cierre IS NULL and activo = 'SI'");
               ResultSet resultSet = statement.executeQuery();
@@ -336,8 +344,8 @@ public class Turno implements IDBModel {
     @Override
     public void guardar() {
          try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO turnos (`fecha_apertura`, `hora_apertura`,"+
                             "`id_empleado_apertura`,`id_empleado_cierre`,`tipo_turno`)"
@@ -361,8 +369,8 @@ public class Turno implements IDBModel {
     @Override
     public void actualizar() {
          try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE turnos SET `fecha_cierre`=? ,`hora_cierre` =?, "
                     + "`tipo_turno` =?  WHERE `id`=?");
@@ -384,8 +392,8 @@ public class Turno implements IDBModel {
        
     public void actualizarActivo() {
          try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE turnos SET `activo`  =?  WHERE `id`=?");
             statement.setString(1, activo?"SI":"NO");
@@ -412,8 +420,8 @@ public class Turno implements IDBModel {
             turno = cacheTurnos.get(id);
         }else{
             try {
-                Conexion conexion = new Conexion();
-                Connection connectionDB = conexion.getConnectionDB();
+               Conexion conexion = Conexion.getInstance();
+                Connection connectionDB = conexion.getConnectionDB().getConnection();
                 PreparedStatement  statement = connectionDB.
                 prepareStatement("SELECT * FROM turnos where id = ?");
                 statement.setLong(1, id);
@@ -451,8 +459,8 @@ public class Turno implements IDBModel {
 public static ArrayList<Turno> getTurnosByFechaAbiertoAuditoria(String fecha){
         ArrayList<Turno> turnos = new ArrayList<>();
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnectionDB().getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM turnos where fecha_apertura = ? ");
             statement.setString(1, fecha);

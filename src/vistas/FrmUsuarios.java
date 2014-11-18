@@ -10,7 +10,6 @@ import java.awt.Frame;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -19,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modelos.Empleado;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Operacion;
 import modelos.Turno;
 import vistas.formatos.FrmInfoUsuario;
@@ -37,11 +37,11 @@ public class FrmUsuarios extends javax.swing.JDialog {
     /**
      * Creates new form FrmUsuarios
      */
-    public FrmUsuarios(Frame parent, boolean modal, Turno turno,Estacionamiento estacionamiento) {
+    public FrmUsuarios(Frame parent, boolean modal) {
         super(parent, "Usuarios", modal);
         initComponents(); 
-        this.turno = turno;
-        this.estacionamiento = estacionamiento;
+        this.turno = Main.getInstance().getTurnoActual();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
         this.parent = parent;
         cargarTabla();
         tblUsuario.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -550,7 +550,7 @@ public class FrmUsuarios extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCambiarContraseñaActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-      new FrmInfoUsuario(this,false,PrinterJob.getPrinterJob(),empleado);
+      new FrmInfoUsuario(this,false,PrinterJob.getPrinterJob());
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

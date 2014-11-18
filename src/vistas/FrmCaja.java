@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package vistas;
 
 import java.awt.Frame;
@@ -13,6 +12,7 @@ import modeloReportes.RetirosParciales;
 import modelos.Caja;
 import modelos.Empleado;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Turno;
 import vistas.formatos.FrmRetiroParcial;
 
@@ -21,29 +21,30 @@ import vistas.formatos.FrmRetiroParcial;
  * @author sistema
  */
 public class FrmCaja extends javax.swing.JDialog {
+
     private Caja caja;
     private Turno turno;
     private Frame parent;
     private boolean esCorte;
     private Empleado empleado;
     private Estacionamiento estacionamiento;
-    
 
-    public FrmCaja(java.awt.Frame parent, boolean modal,Turno turno,boolean esCorte,Empleado empleado,Estacionamiento estacionamiento) {
+    public FrmCaja(java.awt.Frame parent, boolean modal, boolean esCorte) {
         super(parent, modal);
         initComponents();
-      
         this.parent = parent;
-        this.turno = turno;
         this.esCorte = esCorte;
-        this.empleado = empleado;
-        this.estacionamiento = estacionamiento;
-        caja = Caja.getByCaseta(estacionamiento.getCaseta().getId());
-        txtTotal.setText(String.valueOf(caja.getMonto()+caja.getFondo()));
+
+        this.turno = Main.getInstance().getTurnoActual();
+        this.empleado = Main.getInstance().getEmpleadoSesion();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
+        this.caja = Main.getInstance().getCaja();
+
+        txtTotal.setText(String.valueOf(caja.getMonto() + caja.getFondo()));
         txtVenta.setText(String.valueOf(caja.getMonto()));
         txtFondo.setText(String.valueOf(caja.getFondo()));
-         FrmPrincipal.nuevaVentana(this);
-          setLocationRelativeTo(parent);
+        FrmPrincipal.nuevaVentana(this);
+        setLocationRelativeTo(parent);
         setVisible(true);
     }
 
@@ -152,30 +153,28 @@ public class FrmCaja extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
-        new FrmRetiroParcial(parent,true,turno,estacionamiento,caja);
-        this.setVisible(false);
-        if(esCorte){
-            turno.realizarCorte(empleado.getId(),"corte");
-            turno.actualizar();
-            new ReporteCorteTurno(turno, estacionamiento).generarReporte();
-            new ReporteDetalleAvanzado(turno, estacionamiento).generarReporte();
-            new RetirosParciales(turno, estacionamiento).generarReporte();
 
-      
-            ((FrmPrincipal)parent).initLogin();
-       }
-       this.dispose();
+        new FrmRetiroParcial(parent, true);
+        this.setVisible(false);
+        if (esCorte) {
+            turno.realizarCorte( "corte");
+            turno.actualizar();
+            new ReporteCorteTurno().generarReporte();
+            new ReporteDetalleAvanzado().generarReporte();
+            new RetirosParciales().generarReporte();
+
+            ((FrmPrincipal) parent).initLogin();
+        }
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        FrmPrincipal.restaurarUltimaVentana();       
+        FrmPrincipal.restaurarUltimaVentana();
     }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

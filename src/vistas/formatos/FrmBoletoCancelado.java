@@ -18,6 +18,7 @@ import modelos.Auto;
 import modelos.BoletoCancelado;
 import modelos.Empleado;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Operacion;
 import modelos.Turno;
 import vistas.FrmCobro;
@@ -32,12 +33,12 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
     private Empleado empleado;
     private JFrame parent;
 
-    public FrmBoletoCancelado(javax.swing.JFrame padre, boolean b, Turno turno,Auto auto,Estacionamiento estacionamiento) {
+    public FrmBoletoCancelado(javax.swing.JFrame padre, boolean b, Auto auto) {
         super(padre,b);
-        this.turno = turno;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual();
         this.auto = auto;
         this.parent = padre;
-        this.estacionamiento = estacionamiento;
         initComponents();
         this.setLocationRelativeTo(padre);
         iniciarOtrosComponentes();
@@ -421,7 +422,7 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
                 auto.setBoletoCancelado(boletoCancelado);
                 auto.setIsBoletoCancelado(true);
                 auto.actualizar();
-                new FrmCobro(parent,true, turno, auto,estacionamiento);
+                new FrmCobro(parent,true, auto);
                 imprimir();
             }
         }

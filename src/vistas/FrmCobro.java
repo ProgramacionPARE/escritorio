@@ -7,13 +7,20 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.print.PrinterJob;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Caja;
 import modelos.Estacionamiento;
+import modelos.Main;
+import modelos.Mensaje;
 import modelos.Tarifa;
 import modelos.Turno;
 import org.jdesktop.application.Action;
@@ -23,20 +30,24 @@ import vistas.formatos.FrmReciboPago;
  *
  * @author Asistente Proyectos2
  */
-public class FrmCobro extends javax.swing.JDialog implements Runnable{
+public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
     Estacionamiento estacionamiento;
     Turno turno;
     Auto auto;
     Frame parent;
+     private ObjectInputStream entrada;
+    private ObjectOutputStream salida;
     /**
      * Creates new form FrmCobro
      */
-    public FrmCobro(Frame parent, boolean modal,Turno turno,Auto auto,Estacionamiento estacionamiento) {
+    public FrmCobro(Frame parent, boolean modal,Auto auto) {
         super(parent,"Cobro de boleto", modal);
         initComponents();
         this.auto = auto;
-        this.turno = turno;
-        this.estacionamiento = estacionamiento;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual();
+        this.entrada = Main.getInstance().getEntradaCliente();
+        this.salida = Main.getInstance().getSalidaCliente();
         this.parent = parent;
         this.getContentPane().setBackground(Color.white);
         pack();
@@ -101,7 +112,11 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
             jLabel5.setVisible(false);
             txtImporteBoletoPerdido.setVisible(false);
         }
-        
+        try {
+            salida.writeObject(new Mensaje("autoCalculo",auto));
+        } catch (IOException ex) {
+            Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
   
     @SuppressWarnings("unchecked")
@@ -431,7 +446,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     }//GEN-LAST:event_txtDineroPagadoActionPerformed
 
     private void btnDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescuentoActionPerformed
-        new FrmLeerCodigoBarrasDescuento(parent,true,turno,estacionamiento,this);        // TODO add your handling code here:
+        new FrmLeerCodigoBarrasDescuento(parent,true,this);        // TODO add your handling code here:
     }//GEN-LAST:event_btnDescuentoActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -445,7 +460,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
     }//GEN-LAST:event_formWindowClosing
 
     private void btnCobroManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobroManualActionPerformed
-        new FrmCobroManual(this,true,turno,auto);
+        new FrmCobroManual(this,true,auto);
     }//GEN-LAST:event_btnCobroManualActionPerformed
 
     private void cbxTarifasMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbxTarifasMouseReleased
@@ -491,7 +506,7 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
             auto.setReciboImpreso(true);
             auto.actualizar();
             auto.setMontoReciboPago(Float.valueOf(txtDineroPagado.getText()));
-            new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),turno,auto,estacionamiento);   
+            new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),auto);   
         }
         autoT = Auto.getCambioEstadoServidor();
             if(autoT != null){
@@ -503,10 +518,10 @@ public class FrmCobro extends javax.swing.JDialog implements Runnable{
         this.dispose();
     }
     
-    @Override
-    public void run() {
-        
-    }    
+//    @Override
+//    public void run() {
+//        
+//    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCobrar;

@@ -114,9 +114,9 @@ public class Tarifa implements IDBModel{
     
     public static Tarifa getById(long id){
         Tarifa tarifa = new Tarifa();
-        Conexion conexion = new Conexion();
+       Conexion conexion = Conexion.getInstance();
         try {
-            Connection connectionDB = conexion.getConnectionDB();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM tarifa where id = ?");
             statement.setLong(1, id);
@@ -151,9 +151,9 @@ public class Tarifa implements IDBModel{
     
     public static ArrayList<Tarifa> getAll() {
        ArrayList<Tarifa> tarifas = new ArrayList<Tarifa>();
-       Conexion conexion = new Conexion(); 
+      Conexion conexion = Conexion.getInstance(); 
        try {
-            Connection connectionDB = conexion.getConnectionDB();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM tarifa");
             ResultSet resultSet = statement.executeQuery();
@@ -178,8 +178,8 @@ public class Tarifa implements IDBModel{
         }
         costosString = costosString.substring(0,costosString.length()-1);
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO tarifa (`fracciones`, `costos`,"+
                             " `precio_hora`,`tarifa_maxima`,`boleto_perdido`,"+
@@ -212,8 +212,8 @@ public class Tarifa implements IDBModel{
         }
          costosString = costosString.substring(0,costosString.length()-1);
          try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE tarifa SET `fracciones`=? ,`costos` =? , "+
                             "`precio_hora` =?,`tarifa_maxima` =? ,`boleto_perdido` =?"+
@@ -248,8 +248,8 @@ public class Tarifa implements IDBModel{
     @Override
     public void eliminar() {
        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("DELETE FROM tarifa WHERE `id`= ?");
              statement.setLong(1, id);

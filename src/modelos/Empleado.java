@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package modelos;
 
@@ -17,10 +12,6 @@ import java.util.logging.Logger;
 
 
 public class Empleado implements IDBModel {
-
-
-
-    
     long id;
     int nivel;
     String nombre;
@@ -44,8 +35,8 @@ public class Empleado implements IDBModel {
        
         Empleado empleado = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT * FROM usuarios where id = ?");
             statement.setLong(1, idEmpleado);
@@ -66,10 +57,10 @@ public class Empleado implements IDBModel {
     }
     
     public static ArrayList<Empleado> getAll() {
-        ArrayList<Empleado> empleados= new ArrayList<Empleado>();
+        ArrayList<Empleado> empleados= new ArrayList<>();
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+            Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM usuarios");
             ResultSet resultSet = statement.executeQuery();
@@ -85,8 +76,8 @@ public class Empleado implements IDBModel {
     public static Empleado getEmpleadoLogin(String usuario,String contraseña){
         Empleado empleado = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM usuarios where nombre = ? and contras= ?");
             statement.setString(1, usuario);
@@ -106,8 +97,8 @@ public class Empleado implements IDBModel {
     public static Empleado getByIdClave(String id) {
         Empleado empleado = null;
         try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("SELECT id FROM usuarios where clave = ? and  id= ?");
             statement.setString(1, id.substring(0,6));
@@ -198,8 +189,8 @@ public class Empleado implements IDBModel {
     @Override
     public void guardar() {
         try {
-           Conexion conexion = new Conexion();
-           Connection connectionDB = conexion.getConnectionDB();
+          Conexion conexion = Conexion.getInstance();
+           Connection connectionDB = conexion.getConnection();
            PreparedStatement  statement = connectionDB.
            prepareStatement("INSERT INTO usuarios (`nombre_completo`, `nivel`,"+
                            " `nombre`,`contras`,`tipo_empleado`,`clave`,`id_caseta`)"
@@ -227,8 +218,8 @@ public class Empleado implements IDBModel {
     @Override
     public void actualizar() {
          try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE usuarios SET `nombre_completo`=? ,`nivel` =? , `nombre` =?"
                     +",`contras` =? ,`tipo_empleado` =? ,`clave` =?    WHERE `id`=?");
@@ -251,8 +242,8 @@ public class Empleado implements IDBModel {
     @Override
     public void eliminar() {
        try {
-            Conexion conexion = new Conexion();
-            Connection connectionDB = conexion.getConnectionDB();
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("DELETE FROM usuarios WHERE `id`= ?");
              statement.setLong(1, id);

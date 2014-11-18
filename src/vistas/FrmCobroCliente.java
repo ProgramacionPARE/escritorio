@@ -31,22 +31,19 @@ import vistas.formatos.FrmReciboPago;
  *
  * @author Asistente Proyectos2
  */
-public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
-    Estacionamiento estacionamiento;
-    Turno turno;
+public class FrmCobroCliente extends javax.swing.JDialog /*implements Runnable*/ {
     Auto auto;
     Frame parent;
     Thread t1;
     /**
      * Creates new form FrmCobro
      */
-    public FrmCobroCliente(Frame parent, boolean modal,Turno turno,Auto auto,Estacionamiento estacionamiento) {
+    public FrmCobroCliente(Frame parent, boolean modal,Auto auto) {
         super(parent,"Cobro de boleto", modal);
         initComponents();
         this.auto = auto;
-        this.turno = turno;
-        this.estacionamiento = estacionamiento;
         this.parent = parent;
+        
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
@@ -55,77 +52,32 @@ public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
         calcularImporte();
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
         setBounds(0, 0,  screenSize.width,  screenSize.height); 
-        t1 = new Thread(this);
-        t1.start();
+        //t1 = new Thread(this);
+        //t1.start();
         setVisible(true);
     }
-    
-    @Override
-    public void run() {
-        while(true){
-            try {
-                Auto auto = Auto.getCambioEstadoServidor();
-                if(auto != null){
-                    if(auto.getEstadoServidor()== 3){
-                        auto.setEstadoServidor(2);
-                        auto.actualizarEstadoServidor();
-                        this.auto.setTarifa(auto.getTarifa());
-                        this.calcularImporte();
-                    }else if(auto.getEstadoServidor()==4){ 
-                        auto.setEstadoServidor(6);
-                        auto.actualizarEstadoServidor();
-                        new FrmMensajeCliente(parent,true,"COBRO",turno,estacionamiento);
-                        break;
-        
-                    }
-                }
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        this.dispose();
+
+    public Auto getAuto() {
+        return auto;
+    }
+
+    public void setAuto(Auto auto) {
+        this.auto = auto;
     }
     
+        
+
     public void calcularImporte() {
         //Completo la informacion de la salida del auto
         txtTiempoEstadia.setText("");
         txtTarifa.setText(auto.getTarifa().getDescripcion());
-        if(auto.isBoletoManual()){
-            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getBoletoManual().getFechaEntradaM(),auto.getBoletoManual().getHoraEntradaM(),auto.getBoletoManual().getFechaSalidaM(),auto.getBoletoManual().getHoraSalidaM()));
-            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getBoletoManual().getFechaEntradaM(),auto.getBoletoManual().getHoraEntradaM(),auto.getBoletoManual().getFechaSalidaM(),auto.getBoletoManual().getHoraSalidaM()));
-            txtFechaEntrada.setText(auto.getBoletoManual().getFechaEntradaM());
-            txtFechaSalida.setText(auto.getBoletoManual().getFechaSalidaM());
-            txtHoraEntrada.setText(auto.getBoletoManual().getHoraEntradaM());
-            txtHoraSalida.setText(auto.getBoletoManual().getHoraSalidaM());
-        }else{
-            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
-            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
-            txtFechaEntrada.setText(auto.getFechaEntrada());
-            txtFechaSalida.setText(auto.getFechaSalida());
-            txtHoraEntrada.setText(auto.getHoraEntrada());
-            txtHoraSalida.setText(auto.getHoraSalida());
-        }
-        auto.setTurnoSalida(turno);
-        auto.setMontoTangible(Tarifa.getImporteEstadia(auto));
-//        if(auto.getDescuento()>0){
-//            lblDescuento.setText("Descuento: $ "+auto.getDescuento());
-//        }
-        // Completo campos del formulario
-        
-        if(auto.getHorasTangibles()==1)
-             txtTiempoEstadia.setText(auto.getHorasTangibles()+ " hora " );
-        else if(auto.getHorasTangibles()>1)
-             txtTiempoEstadia.setText(auto.getHorasTangibles()+ " horas " );
-        
+        txtFechaEntrada.setText(auto.getFechaEntrada());
+        txtFechaSalida.setText(auto.getFechaSalida());
+        txtHoraEntrada.setText(auto.getHoraEntrada());
+        txtHoraSalida.setText(auto.getHoraSalida());
+        txtTiempoEstadia.setText(auto.getHorasTangibles()+ " hora " );
         txtTiempoEstadia.setText(txtTiempoEstadia.getText()+ auto.getMinutosTangibles()+" minutos");
-        txtImporteTotal.setText(String.valueOf(auto.getMontoTangible()));
-//        txtImporteBoletoPerdido.setText(String.valueOf(auto.getTarifa().getPrecioBoletoPerdido()));
-//        if(auto.isBoletoPerdido()){
-//            jLabel5.setVisible(false);
-//            txtImporteBoletoPerdido.setVisible(false);
-//        }
-        
+        txtImporteTotal.setText(String.valueOf(auto.getMontoTangible()));        
     }
   
     @SuppressWarnings("unchecked")

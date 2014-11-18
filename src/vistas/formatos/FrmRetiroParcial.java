@@ -33,6 +33,7 @@ import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JOptionPane;
 import modelos.Caja;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Progresivo;
 import modelos.RetiroParcial;
 import modelos.Turno;
@@ -49,13 +50,13 @@ public class FrmRetiroParcial extends javax.swing.JDialog implements Printable{
     private Frame parent;
     private Caja caja;
     
-    public FrmRetiroParcial(Frame parent, boolean modal,Turno turno,Estacionamiento estacionamiento,Caja caja) {
+    public FrmRetiroParcial(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.turno = turno;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual();
         this.parent = parent;
-        this.estacionamiento = estacionamiento;
-        this.caja = caja;
+        this.caja = Main.getInstance().getCaja();
         this.getContentPane().setBackground(Color.white);
         this.setLocationRelativeTo(parent);
         this.job = PrinterJob.getPrinterJob();

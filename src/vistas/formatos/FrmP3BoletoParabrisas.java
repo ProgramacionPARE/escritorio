@@ -34,7 +34,8 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
     private PrinterJob job;
 
     /** Creates new form VenBoletoValetParking1 */
-    public FrmP3BoletoParabrisas(java.awt.Dialog parent, boolean modal, PrinterJob job, Turno turno, Auto auto) throws PrinterException {
+    public FrmP3BoletoParabrisas(java.awt.Dialog parent, boolean modal,
+            PrinterJob job, Auto auto) throws PrinterException {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);

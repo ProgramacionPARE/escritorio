@@ -1,4 +1,3 @@
-
 package vistas;
 
 import ModelosAux.Seguridad;
@@ -11,6 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Progresivo;
 import modelos.Rest;
 import modelos.Turno;
@@ -25,82 +25,84 @@ import vistas.formatos.FrmP3BoletoParabrisas;
  * @author Asistente Proyectos2
  */
 public class FrmEntradaValet extends javax.swing.JDialog {
+
     Turno turno;
     Estacionamiento estacionamiento;
+
     /**
      * Creates new form FrmParkingEntrada
      */
-    public FrmEntradaValet(java.awt.Frame parent, boolean modal,Turno turno, Estacionamiento estacionamiento) {
-        super(parent,"Entrada nueva", modal);
+    public FrmEntradaValet(java.awt.Frame parent, boolean modal) {
+        super(parent, "Entrada nueva", modal);
         initComponents();
-        this.turno = turno;
-        this.estacionamiento = estacionamiento;
+        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.turno = Main.getInstance().getTurnoActual();
         this.getContentPane().setBackground(Color.white);
         txtFechaEntrada.setText(Tiempo.getFecha());
         txtHoraEntrada.setText(Tiempo.getHora());
         txtCajero.setText(turno.getEmpleadoEntrada().getNombre());
-        txtProgresivo.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"0"));
+        txtProgresivo.setText(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "0"));
         pack();
         setLocationRelativeTo(parent);
         setVisible(true);
     }
-   
-     private boolean validaCamposEntrada() {
-        if (txtMatricula.getText().equals("")){
-            JOptionPane.showMessageDialog(this,"Introduce las placas del auto",
-            "Campo faltante",JOptionPane.WARNING_MESSAGE);
+
+    private boolean validaCamposEntrada() {
+        if (txtMatricula.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Introduce las placas del auto",
+                    "Campo faltante", JOptionPane.WARNING_MESSAGE);
             txtMatricula.grabFocus();
             return false;
         }
-        if (txtMatricula.getText().length()<3){
-            JOptionPane.showMessageDialog(this,"La placa tiene que tener al menos 3 letras",
-            "Formato erroneo",JOptionPane.WARNING_MESSAGE);
+        if (txtMatricula.getText().length() < 3) {
+            JOptionPane.showMessageDialog(this, "La placa tiene que tener al menos 3 letras",
+                    "Formato erroneo", JOptionPane.WARNING_MESSAGE);
             txtMatricula.grabFocus();
             return false;
         }
-          
+
         return true;
-     }
-    
+    }
+
     @Action
-    public void onGuardarAuto() {    
+    public void onGuardarAuto() {
         //Valido campos
-        if(!validaCamposEntrada())
+        if (!validaCamposEntrada()) {
             return;
+        }
         //Confirmo accion
-        int confirmDialog = JOptionPane.showConfirmDialog(this,"¿Se imprimira el boleto estas seguro?",
-                "Imprimir boleto",JOptionPane.YES_NO_CANCEL_OPTION);
-        if(confirmDialog == JOptionPane.YES_OPTION){
-        
+        int confirmDialog = JOptionPane.showConfirmDialog(this, "¿Se imprimira el boleto estas seguro?",
+                "Imprimir boleto", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (confirmDialog == JOptionPane.YES_OPTION) {
+
             try {
-                Auto auto= new Auto(txtProgresivo.getText(), txtMatricula.getText(),
-                        txtFechaEntrada.getText(), txtHoraEntrada.getText()
-                        ,"",txtModelo.getText(),"",turno.getId(), "0",
+                Auto auto = new Auto(txtProgresivo.getText(), txtMatricula.getText(),
+                        txtFechaEntrada.getText(), txtHoraEntrada.getText(), "", txtModelo.getText(), "", turno.getId(), "0",
                         txtNotas.getText(), Seguridad.getClave(5),
-                        estacionamiento.getCaseta().getId() );
+                        estacionamiento.getCaseta().getId());
                 //Aumento en uno los boletos generados
-                turno.getDetallesTurno().get(auto.getSerie()).setNoBol(turno.getDetallesTurno().get(auto.getSerie()).getNoBol()+1);
+                turno.getDetallesTurno().get(auto.getSerie()).setNoBol(turno.getDetallesTurno().get(auto.getSerie()).getNoBol() + 1);
                 //Actualizo el folio final en el turno
-                turno.getDetallesTurno().get(auto.getSerie()).setFolioFinal (turno.getDetallesTurno().get(auto.getSerie()).getFolioFinal()+1);
+                turno.getDetallesTurno().get(auto.getSerie()).setFolioFinal(turno.getDetallesTurno().get(auto.getSerie()).getFolioFinal() + 1);
                 turno.actualizar();
                 // Guardo entrada y actualizo progresivo
                 auto.guardar();
-                Rest.sendAuto(auto,estacionamiento);
-                Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),auto.getSerie());
+                Rest.sendAuto(auto, estacionamiento);
+                Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(), auto.getSerie());
                 //Imprimo boletos
                 PrinterJob job = PrinterJob.getPrinterJob();
                 // Boleto al cliente
-                new FrmP1BoletoCliente(this, false,job,turno,auto,estacionamiento,turno.getEmpleadoEntrada());
+                new FrmP1BoletoCliente(this, false, job, auto, turno.getEmpleadoEntrada());
                 //Boleto llaves
-                new FrmP2BoletoLlaves(this, false,job,turno,auto,turno.getEmpleadoEntrada());
+                new FrmP2BoletoLlaves(this, false,  job, auto, turno.getEmpleadoEntrada());
                 //Boleto Parabrisas
-                new FrmP3BoletoParabrisas(this, false ,job,turno,auto);
-                
+                new FrmP3BoletoParabrisas(this, false, job, auto);
+
                 this.setVisible(false);
                 this.dispose();
             } catch (PrinterException ex) {
-                 JOptionPane.showMessageDialog(this, "Hay un probrema con la impresora, verifica que todo este correctamente conectado e intenta de nuevo.", 
-                                    "Error de impresion",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Hay un probrema con la impresora, verifica que todo este correctamente conectado e intenta de nuevo.",
+                        "Error de impresion", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(FrmEntradaValet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (BarcodeException ex) {
                 Logger.getLogger(FrmEntradaValet.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,7 +111,6 @@ public class FrmEntradaValet extends javax.swing.JDialog {
         }
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -265,8 +266,6 @@ public class FrmEntradaValet extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-   
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrada;

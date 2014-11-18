@@ -27,6 +27,7 @@ import javax.swing.JDialog;
 import modelos.Auto;
 import modelos.Empleado;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Turno;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
@@ -43,7 +44,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
     private PrinterJob job;
     private Barcode barcode=null;
     /** Creates new form VenBoletoValetParking1 */
-    public FrmP1BoletoCliente(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto,Estacionamiento estacionamiento,Empleado empleado) throws PrinterException, BarcodeException {
+    public FrmP1BoletoCliente(Dialog parent, boolean modal, PrinterJob job,Auto auto,Empleado empleado) throws PrinterException, BarcodeException {
         super(parent, modal);
         initComponents();
         //barcode = BarcodeFactory.createUPCA(progresivo);
@@ -52,6 +53,7 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         barcode.setBarWidth(3);
         barcode.setDrawingText(false);
         jPanel3.add(barcode);
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
         this.setLocationRelativeTo(parent);
         
         this.job = PrinterJob.getPrinterJob();

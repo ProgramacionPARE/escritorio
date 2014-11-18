@@ -28,6 +28,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import modelos.Auto;
 import modelos.Estacionamiento;
+import modelos.Main;
 import modelos.Progresivo;
 import modelos.Turno;
 import net.sourceforge.barbecue.Barcode;
@@ -44,9 +45,10 @@ public class FrmReciboPago extends JDialog implements Printable {
     private Barcode barcode=null;
     private Estacionamiento estacionamiento;
     /** Creates new form VenBoletoValetParking1 */
-    public FrmReciboPago(Dialog parent, boolean modal, PrinterJob job,Turno turno,Auto auto,Estacionamiento estacionamiento) {
+    public FrmReciboPago(Dialog parent, boolean modal, PrinterJob job,Auto auto) {
         super(parent, modal);
         initComponents();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
         this.getContentPane().setBackground(Color.white);
         this.setLocationRelativeTo(parent);
         this.job = PrinterJob.getPrinterJob();
