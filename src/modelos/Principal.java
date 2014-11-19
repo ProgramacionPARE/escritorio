@@ -26,7 +26,7 @@ public class Principal {
             new ServerAcept(ServerAcept.PANTALLA).start();
             new FrmLogin();
         }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
-            new ClientePantalla();
+            new ClientePantalla().start();
             //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
         } else  if(datos.getTerminal().equals(Configuracion.EXPEDIDOR)){
             new ClienteBoleto();

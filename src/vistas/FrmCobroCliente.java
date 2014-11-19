@@ -243,7 +243,9 @@ public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
   @Override
     public void run() {
-        while (true){
+
+//        while (true){
+
 //            Mensaje mensaje = null;
 //            try {   
 //                mensaje = (Mensaje)entrada.readObject();
@@ -260,8 +262,9 @@ public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
 //                new FrmMensajeCliente(parent,true,"cancelar");
 //                break;
 //            } 
-        }
+        
         //this.dispose();
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

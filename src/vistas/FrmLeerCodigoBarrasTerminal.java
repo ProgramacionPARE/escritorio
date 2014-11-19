@@ -179,6 +179,7 @@ public class FrmLeerCodigoBarrasTerminal extends JDialog implements Runnable {
             }
             if(mensaje!=null){
                 ////////////////////////Si recivo el auto de regreso muestro cobro cliente
+
 //               if(mensaje.getTipo().equals("autoCalculo")){
 //                    if(frmCobroCliente == null){
 //                        frmCobroCliente = new FrmCobroCliente(parent,true,((Auto)mensaje.getMensaje()));

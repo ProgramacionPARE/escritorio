@@ -9,9 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Mensaje;
 
-
 public class ServerPantalla extends Thread {
     public static final int TURNO_ABIERTO = 0x0;
+
     private Socket socket;
     private ObjectOutputStream salida;
     private ObjectInputStream entrada;

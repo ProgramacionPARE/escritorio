@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -277,6 +277,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
 ////                } catch (IOException ex) {
 ////                    Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
 ////                }
+
 //            }
             m.setTurnoActual(null);
         } else {

@@ -25,8 +25,10 @@ public class AceptarConexionCliente extends Thread {
        
         this.frame = frame;
     }
-    @Override
-    public void run(){
+
+   // @Override
+//    public void run(){
+
 //        try {
 //            if(Main.getInstance().getEntradaCliente()== null &&Main.getInstance().getSalidaCliente()== null){
 //            salida = new ObjectOutputStream (socket.getOutputStream());
@@ -41,9 +43,11 @@ public class AceptarConexionCliente extends Thread {
 //        } catch (IOException ex) {
 //            Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        
-       
-        while (true){
+
+//        
+//       
+//        while (true){
+
 //            Mensaje mensaje = null;
 //            try {
 //                mensaje = (Mensaje)entrada.readObject();
@@ -79,8 +83,10 @@ public class AceptarConexionCliente extends Thread {
 //                    }
 //                }
 //            }         
-        }
-    }
+
+//        }
+//    }
+
 }
 
 

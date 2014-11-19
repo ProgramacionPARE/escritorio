@@ -4,6 +4,7 @@ package vistas;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,28 +13,27 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JFrame;
+import modelos.Configuracion;
+import modelos.Main;
+import modelos.Mensaje;
 
-public class FrmErrorCarga extends javax.swing.JFrame {
-    private Socket socket;
-    private Thread t1;
-    private ObjectInputStream entrada;
-    private ObjectOutputStream salida;
-    private boolean cerrar;
+
+
+public class FrmErrorCarga extends JFrame  {
+
+    
     public FrmErrorCarga() {
         super("Error");
-        this.cerrar = true;
-       
+
         initComponents();
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(null);
-        Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
-        setBounds(0, 0,  screenSize.width,  screenSize.height);
-      
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(true);
     }
-    
-  
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -73,15 +73,7 @@ public class FrmErrorCarga extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        try {
-            cerrar=false;
-            if(socket!=null)  socket.close();
-            if(entrada!=null) entrada.close();
-            if(salida!=null)  salida.close();
-                
-        } catch (IOException ex) {
-            Logger.getLogger(FrmErrorCarga.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_formWindowClosing
 
 

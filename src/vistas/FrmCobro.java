@@ -113,7 +113,8 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         }
 //        try {
 //            salida.reset();
-//            salida.writeObject(new Mensaje("autoCalculo",auto));
+
+//           salida.writeObject(new Mensaje("autoCalculo",auto));
 //        } catch (IOException ex) {
 //            Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
 //        }

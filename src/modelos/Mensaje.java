@@ -12,6 +12,9 @@ import java.io.Serializable;
  * @author oscar
  */
 public class Mensaje implements Serializable{
+
+    static public final int TURNO_ABIERTO = 0x0;
+
     int tipo;
     Object mensaje;
 
