@@ -1,58 +1,53 @@
 
 package vistas;
 
-import ModelosAux.Seguridad;
-import ModelosAux.Tiempo;
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Toolkit;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Configuracion;
-import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Main;
 import modelos.Mensaje;
-import modelos.Progresivo;
-import modelos.Rest;
 import modelos.Turno;
-import net.sourceforge.barbecue.BarcodeException;
-import vistas.formatos.FrmP1BoletoCliente;
-import vistas.formatos.FrmP2BoletoLlaves;
-import vistas.formatos.FrmP3BoletoParabrisas;
 
 
-public class FrmLeerCodigoBarrasTerminal extends JFrame implements Runnable {
-    String id;
-    Turno turno;
-    String accion;
-    Estacionamiento estacionamiento;
-    Socket socket;
-    ObjectInputStream entrada;
-    ObjectOutputStream salida;
-    Thread t1;
-    /**
-     * Creates new form FrmLeerCodigoBarras
-     */
-    public FrmLeerCodigoBarrasTerminal(String accion) {
-        super(accion);
+public class FrmLeerCodigoBarrasTerminal extends JDialog implements Runnable {
+    private String id;
+    private Turno turno;
+    private String accion;
+    private Estacionamiento estacionamiento;
+    private Socket socket;
+    private ObjectInputStream entrada;
+    private ObjectOutputStream salida;
+    private Thread t1;
+    private boolean cerrar;
+    private Frame parent;
+    private boolean cierre;
+
+    
+    public FrmLeerCodigoBarrasTerminal(Frame parent,boolean modal,String accion) {
+        super(parent,accion,modal);
         this.socket = Main.getInstance().getSocket();
         this.entrada = Main.getInstance().getEntrada();
         this.salida = Main.getInstance().getSalida();
         this.turno = Main.getInstance().getTurnoActual();
         this.accion = accion;
         this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.cerrar = true;
+        this.cierre = false;
+        
+        this.parent = parent;
         initComponents();
         this.getContentPane().setBackground(Color.white);
           pack();
@@ -146,7 +141,77 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame implements Runnable {
                     } catch (IOException ex) {
                         Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }else if(accion.equals("EXPEDIDOR")){
+                }
+                id = "";
+            }else{
+                id = "";
+            }
+        }else
+            id+=evt.getKeyChar();  
+    }//GEN-LAST:event_formKeyTyped
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       try{
+           if(!cierre){
+            cerrar=false;
+            if(socket!=null)  socket.close();
+            if(entrada!=null) entrada.close();
+            if(salida!=null)  salida.close();
+           }
+        } catch (IOException ex) {
+            Logger.getLogger(FrmErrorCarga.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+      
+    }//GEN-LAST:event_formWindowOpened
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblBienvenido;
+    private javax.swing.JLabel lblMensaje;
+    // End of variables declaration//GEN-END:variables
+
+
+
+    @Override
+    public void run() {
+        FrmCobroCliente frmCobroCliente=null; 
+        while (cerrar){
+            Mensaje mensaje = null;
+            try {
+               
+                mensaje = (Mensaje)entrada.readObject();
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(mensaje!=null){
+                ////////////////////////Si recivo el auto de regreso muestro cobro cliente
+               if(mensaje.getTipo().equals("autoCalculo")){
+                    if(frmCobroCliente == null){
+                        frmCobroCliente = new FrmCobroCliente(parent,true,((Auto)mensaje.getMensaje()));
+                        frmCobroCliente =null;
+                    }
+                }else if(mensaje.getTipo().equals("autoCobrado")){
+                     new FrmMensajeCliente(parent,true,"cobrado");
+                }else if(mensaje.getTipo().equals("cierreTurno")){
+                     cerrar = false;
+                     cierre = true;
+                     new FrmErrorCarga();
+                } 
+            }
+             
+        }
+       
+        this.dispose();
+    }
+}
+
+/*
+else if(accion.equals("EXPEDIDOR")){
                     Empleado empleado = null;
                     empleado = Empleado.getByIdClave(id);
                     if (empleado != null){
@@ -184,58 +249,4 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame implements Runnable {
                        
                     }
                 }
-                id = "";
-            }else{
-                id = "";
-            }
-        }else
-            id+=evt.getKeyChar();  
-    }//GEN-LAST:event_formKeyTyped
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if(!Configuracion.getInstancia().getTerminal().equals(Configuracion.CAJA)){
-            //parent.setVisible(false);
-            //parent.dispose();
-            //parent = null;
-        }
-    }//GEN-LAST:event_formWindowClosing
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-      
-    }//GEN-LAST:event_formWindowOpened
-
-  
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel lblBienvenido;
-    private javax.swing.JLabel lblMensaje;
-    // End of variables declaration//GEN-END:variables
-
-
-
-    @Override
-    public void run() {
-        FrmCobroCliente frmCobroCliente=null; 
-        while (true){
-            Mensaje mensaje = null;
-            try {
-                mensaje = (Mensaje)entrada.readObject();
-            } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if(mensaje.getTipo().equals("cliente")){
-                //Auto auto;
-                //auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
-            }else  if(mensaje.getTipo().equals("autoCalculo")){
-                if(frmCobroCliente == null){
-                    frmCobroCliente = new FrmCobroCliente(this,false,((Auto)mensaje.getMensaje()));
-                }else{
-                    frmCobroCliente.setAuto(((Auto)mensaje.getMensaje()));
-                    frmCobroCliente.calcularImporte();
-                }
-            }
-             
-        }
-    }
-}
+*/

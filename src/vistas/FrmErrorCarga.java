@@ -23,16 +23,16 @@ public class FrmErrorCarga extends javax.swing.JFrame implements Runnable {
     private ObjectInputStream entrada;
     private ObjectOutputStream salida;
     private boolean cerrar;
-    public FrmErrorCarga(java.awt.Frame parent, boolean modal,Socket socket) {
+    public FrmErrorCarga() {
         super("Error");
         this.cerrar = true;
+        this.socket = Main.getInstance().getSocket();
         initComponents();
         this.getContentPane().setBackground(Color.white);
         pack();
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(null);
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
         setBounds(0, 0,  screenSize.width,  screenSize.height);
-        this.socket = socket;
         this.t1 = new Thread(this);
         t1.start();
         this.setVisible(true);
@@ -40,6 +40,8 @@ public class FrmErrorCarga extends javax.swing.JFrame implements Runnable {
     
     @Override
     public void run() {
+        
+        ///////////////////////////  Verifico la conexion a la caja
         while(cerrar){
             try {
                 if (socket == null){
@@ -58,19 +60,30 @@ public class FrmErrorCarga extends javax.swing.JFrame implements Runnable {
                 }
             }        
         } 
+        
+        /////////////////////////////////////Al obtener el socke genero la entrada y salida
         if(socket!=null){
             try {
-                entrada = new ObjectInputStream( socket.getInputStream());
-                salida = new ObjectOutputStream(socket.getOutputStream());
-                salida.flush();
-                Main.getInstance().setEntrada(entrada);
-                Main.getInstance().setSalida(salida);
+                if(Main.getInstance().getEntrada()== null &&
+                Main.getInstance().getSalida()== null){
+                    entrada = new ObjectInputStream( socket.getInputStream());
+                    salida = new ObjectOutputStream(socket.getOutputStream());
+                    salida.flush();
+                    Main.getInstance().setEntrada(entrada);
+                    Main.getInstance().setSalida(salida);
+                }else{
+                    entrada = Main.getInstance().getEntrada();
+                    salida =Main.getInstance().getSalida();
+                    
+                }
             } catch (IOException ex) {
                 Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
             jLabel1.setText("Error turno cerrado");
             jLabel2.setText("Revisa que exista turno abierto en caja.");
-
+            
+            /////////////////////////////////////  Verifico que existe turno abierto
             while(cerrar){
                 try {
                     salida.writeObject(new Mensaje("turnoAbierto",""));
@@ -85,10 +98,11 @@ public class FrmErrorCarga extends javax.swing.JFrame implements Runnable {
             }
             this.dispose();
             if( Configuracion.getInstancia().getTerminal().equals(Configuracion.CLIENTE)){
-                new FrmLeerCodigoBarrasTerminal("CLIENTE");
+                new FrmLeerCodigoBarrasTerminal(this,true,"CLIENTE");
+                cerrar = false;
             }
         }
-        if(cerrar)
+        if(!cerrar)
             this.dispose();
     }
     
@@ -133,11 +147,10 @@ public class FrmErrorCarga extends javax.swing.JFrame implements Runnable {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
             cerrar=false;
-            if(socket!=null){
-                entrada.close();
-                salida.close();
-                socket.close();
-            }
+            if(socket!=null)  socket.close();
+            if(entrada!=null) entrada.close();
+            if(salida!=null)  salida.close();
+                
         } catch (IOException ex) {
             Logger.getLogger(FrmErrorCarga.class.getName()).log(Level.SEVERE, null, ex);
         }

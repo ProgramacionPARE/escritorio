@@ -1,40 +1,29 @@
 
 package vistas;
 
-import ModelosAux.Sistema;
 import ModelosAux.Tiempo;
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
-import java.awt.event.ItemEvent;
-import java.awt.print.PrinterJob;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import modelos.Auto;
-import modelos.Caja;
-import modelos.Configuracion;
-import modelos.Estacionamiento;
-import modelos.Tarifa;
-import modelos.Turno;
-import org.jdesktop.application.Action;
-import vistas.formatos.FrmReciboPago;
+import modelos.Main;
+import modelos.Mensaje;
 
-/**
- *
- * @author Asistente Proyectos2
- */
-public class FrmCobroCliente extends javax.swing.JDialog /*implements Runnable*/ {
-    Auto auto;
-    Frame parent;
-    Thread t1;
+
+public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
+    private Auto auto;
+    private Frame parent;
+    private Thread t1;
+    private  Socket socket;
+    private ObjectInputStream entrada;
+    private ObjectOutputStream salida;
     /**
      * Creates new form FrmCobro
      */
@@ -43,7 +32,9 @@ public class FrmCobroCliente extends javax.swing.JDialog /*implements Runnable*/
         initComponents();
         this.auto = auto;
         this.parent = parent;
-        
+        this.socket = Main.getInstance().getSocket();
+        this.entrada = Main.getInstance().getEntrada();
+        this.salida = Main.getInstance().getSalida();
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
@@ -52,8 +43,8 @@ public class FrmCobroCliente extends javax.swing.JDialog /*implements Runnable*/
         calcularImporte();
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
         setBounds(0, 0,  screenSize.width,  screenSize.height); 
-        //t1 = new Thread(this);
-        //t1.start();
+        t1 = new Thread(this);
+        t1.start();
         setVisible(true);
     }
 
@@ -64,8 +55,6 @@ public class FrmCobroCliente extends javax.swing.JDialog /*implements Runnable*/
     public void setAuto(Auto auto) {
         this.auto = auto;
     }
-    
-        
 
     public void calcularImporte() {
         //Completo la informacion de la salida del auto
@@ -257,10 +246,28 @@ public class FrmCobroCliente extends javax.swing.JDialog /*implements Runnable*/
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    
-
-   
+  @Override
+    public void run() {
+        while (true){
+            Mensaje mensaje = null;
+            try {   
+                mensaje = (Mensaje)entrada.readObject();
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(mensaje.getTipo().equals("autoCalculo")){
+                this.auto = ((Auto)mensaje.getMensaje());
+                this.calcularImporte();   
+            }else if(mensaje.getTipo().equals("autoCobrado")){
+                new FrmMensajeCliente(parent,true,"ok");
+                break;
+            }else if(mensaje.getTipo().equals("autoCancelado")){
+                new FrmMensajeCliente(parent,true,"cancelar");
+                break;
+            } 
+        }
+        this.dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -278,7 +285,5 @@ public class FrmCobroCliente extends javax.swing.JDialog /*implements Runnable*/
     private javax.swing.JTextField txtTarifa;
     private javax.swing.JTextField txtTiempoEstadia;
     // End of variables declaration//GEN-END:variables
-
-    
 
 }

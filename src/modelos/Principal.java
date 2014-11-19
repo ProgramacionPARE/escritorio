@@ -5,12 +5,8 @@
  */
 package modelos;
 
-import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vistas.FrmErrorCarga;
-import vistas.FrmLeerCodigoBarrasTerminal;
 import vistas.FrmLogin;
 
 
@@ -22,7 +18,7 @@ public class Principal {
         if(datos.getTerminal().equals(Configuracion.CAJA))
             new FrmLogin();
         else{
-            FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
+            FrmErrorCarga frmErrorCarga = new FrmErrorCarga();
           
         }
     }
