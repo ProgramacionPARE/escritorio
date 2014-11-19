@@ -1,8 +1,6 @@
 
 package modelos;
 
-import ModelosAux.Seguridad;
-import ModelosAux.Tiempo;
 import java.awt.Frame;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -30,11 +28,16 @@ public class AceptarConexionCliente extends Thread {
     @Override
     public void run(){
         try {
+            if(Main.getInstance().getEntradaCliente()== null &&Main.getInstance().getSalidaCliente()== null){
             salida = new ObjectOutputStream (socket.getOutputStream());
             salida.flush();
             entrada = new ObjectInputStream(socket.getInputStream());
             Main.getInstance().setEntradaCliente(entrada);
             Main.getInstance().setSalidaCliente(salida);
+            }else{
+            salida = Main.getInstance().getSalidaCliente();
+            entrada = Main.getInstance().getEntradaCliente();
+            }    
         } catch (IOException ex) {
             Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,6 +56,12 @@ public class AceptarConexionCliente extends Thread {
                 if (auto != null){
                     if(auto.isDentro()){
                         new FrmCobro(frame, true,auto);   
+                    }else{
+                        try {
+                            salida.writeObject(new Mensaje("autoCobrado",true));
+                        } catch (IOException ex) {
+                            Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }else if(mensaje.getTipo().equals("turnoAbierto")){

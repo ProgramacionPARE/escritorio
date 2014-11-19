@@ -6,6 +6,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import modelos.TurnoDetalles;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Main;
+import modelos.Mensaje;
 import modelos.Turno;
 import org.jdesktop.application.Action;
 
@@ -46,8 +49,6 @@ public class FrmPrincipal extends JFrame implements Runnable {
         pack();
 
     }
-
-   
 
     public static void nuevaVentana(JDialog ventana) {
         if (ventanas.size() > 0) {
@@ -276,6 +277,14 @@ public class FrmPrincipal extends JFrame implements Runnable {
                 this.dispose();
                 initLogin();
             }
+            ObjectOutputStream salidaCliente = Main.getInstance().getSalidaCliente();
+            if(salidaCliente != null){
+                try {
+                    salidaCliente.writeObject(new Mensaje("cierreTurno",true));
+                } catch (IOException ex) {
+                    Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             m.setTurnoActual(null);
         } else {
             m.setEmpleadoSesion(null);
@@ -294,26 +303,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
     
      @Override
     public void run() {
-        ////////////////////////////////////Cliente
-        ServerSocket serverSocket = null ;
-        Socket acceptSocket = null;
-        try {
-            serverSocket = new ServerSocket(8123);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-                
-        while(true){    
-            try {
-                acceptSocket = serverSocket.accept();
-                Main.getInstance().setSocketCliente(acceptSocket);
-                System.out.println("Conexion recivida");
-            } catch (IOException ex) {
-                Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            new AceptarConexionCliente(this).start();
-        }
+     
     }
 
 //    @Action

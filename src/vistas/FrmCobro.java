@@ -113,6 +113,7 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
             txtImporteBoletoPerdido.setVisible(false);
         }
         try {
+            salida.reset();
             salida.writeObject(new Mensaje("autoCalculo",auto));
         } catch (IOException ex) {
             Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
@@ -429,13 +430,6 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         if(ItemEvent.SELECTED == evt.getStateChange() ){
             auto.setTarifa(estacionamiento.getCaseta().getTarifas().get(cbxTarifas.getSelectedIndex()));
             auto.actualizarTarifa();
-            Auto auto = Auto.getCambioEstadoServidor();
-            if(auto != null){
-                if(auto.getEstadoServidor()== 2 && auto.getProgresivo().equals(this.auto.getProgresivo())){
-                    auto.setEstadoServidor(3);
-                    auto.actualizarEstadoServidor();
-                }
-            }
             calcularImporte();      
         }
     }//GEN-LAST:event_cbxTarifasItemStateChanged
@@ -453,6 +447,12 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         String ObjButtons[] = {"Si","No"};
         int PromptResult = JOptionPane.showOptionDialog(null,"Estas seguro de no cobrar este boleto, permanecera abierto.","NO cobrar boleto",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
         if(PromptResult==JOptionPane.YES_OPTION){
+            try {
+                salida.reset();
+                salida.writeObject(new Mensaje("autoCancelado",""));
+            } catch (IOException ex) {
+                Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if(auto.isBoletoManual())
                 auto.getBoletoManual().eliminar();
             this.dispose();
@@ -471,7 +471,7 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
     public void onCobrar() {
        auto.setDentro(false);
         //Actualizo monto en caja
-        Caja caja= Caja.getByCaseta(estacionamiento.getCaseta().getId());
+        Caja caja= Main.getInstance().getCaja();
         caja.setMonto(caja.getMonto()+auto.getMontoTangible());
         caja.actualizar();
         //Reviso si el auto fue boleto perdido, cancelado o cobrado normalmente 
@@ -485,14 +485,12 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         turno.getDetallesTurno().get(auto.getSerie()).setTotal(turno.getDetallesTurno().get(auto.getSerie()).getTotal()+auto.getMontoTangible());
         auto.actualizar();
         turno.actualizar();
-       Auto autoT = Auto.getCambioEstadoServidor();
-            if(autoT != null){
-                if(autoT.getEstadoServidor()== 2 && autoT.getProgresivo().equals(this.auto.getProgresivo())){
-                    auto.setEstadoServidor(4);
-                    auto.actualizarEstadoServidor();
-                }
+         try {
+                salida.reset();
+                salida.writeObject(new Mensaje("autoCobrado",""));
+            } catch (IOException ex) {
+                Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
         //Reviso si activo la alarma
         ((FrmPrincipal)parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja) );
         
@@ -508,20 +506,11 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
             auto.setMontoReciboPago(Float.valueOf(txtDineroPagado.getText()));
             new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),auto);   
         }
-        autoT = Auto.getCambioEstadoServidor();
-            if(autoT != null){
-                if(autoT.getEstadoServidor()== 6 && autoT.getProgresivo().equals(this.auto.getProgresivo())){
-                    auto.setEstadoServidor(7);
-                    auto.actualizarEstadoServidor();
-                }
-            }
+     
         this.dispose();
     }
     
-//    @Override
-//    public void run() {
-//        
-//    }    
+ 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCobrar;

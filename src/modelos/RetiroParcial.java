@@ -179,14 +179,14 @@ public class RetiroParcial implements IDBModel {
         return retiroParcial;
     }
     
-    static ArrayList<RetiroParcial> getRetirosParcialesByTurnoId(Long turno_id) {
+    static ArrayList<RetiroParcial> getRetirosParcialesByTurnoId(Long idTurno) {
        ArrayList<RetiroParcial> rp= new ArrayList<RetiroParcial>();
          try {
            Conexion conexion = Conexion.getInstance();
             Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM retiro_parcial where id = ?");
-            statement.setLong(1, turno_id);
+            prepareStatement("SELECT id FROM retiro_parcial where id_turno = ?");
+            statement.setLong(1,idTurno);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 rp.add(RetiroParcial.getById(resultSet.getLong("id")));
