@@ -22,63 +22,63 @@ public class AceptarConexionCliente extends Thread {
     private Estacionamiento estacionamiento;
     
     public AceptarConexionCliente(Frame frame){
-        this.socket = Main.getInstance().getSocketCliente();
+       
         this.frame = frame;
     }
     @Override
     public void run(){
-        try {
-            if(Main.getInstance().getEntradaCliente()== null &&Main.getInstance().getSalidaCliente()== null){
-            salida = new ObjectOutputStream (socket.getOutputStream());
-            salida.flush();
-            entrada = new ObjectInputStream(socket.getInputStream());
-            Main.getInstance().setEntradaCliente(entrada);
-            Main.getInstance().setSalidaCliente(salida);
-            }else{
-            salida = Main.getInstance().getSalidaCliente();
-            entrada = Main.getInstance().getEntradaCliente();
-            }    
-        } catch (IOException ex) {
-            Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            if(Main.getInstance().getEntradaCliente()== null &&Main.getInstance().getSalidaCliente()== null){
+//            salida = new ObjectOutputStream (socket.getOutputStream());
+//            salida.flush();
+//            entrada = new ObjectInputStream(socket.getInputStream());
+//            Main.getInstance().setEntradaCliente(entrada);
+//            Main.getInstance().setSalidaCliente(salida);
+//            }else{
+//            salida = Main.getInstance().getSalidaCliente();
+//            entrada = Main.getInstance().getEntradaCliente();
+//            }    
+//        } catch (IOException ex) {
+//            Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         
        
         while (true){
-            Mensaje mensaje = null;
-            try {
-                mensaje = (Mensaje)entrada.readObject();
-            } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if(mensaje.getTipo().equals("cliente")){
-                Auto auto;
-                auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
-                if (auto != null){
-                    if(auto.isDentro()){
-                        new FrmCobro(frame, true,auto);   
-                    }else{
-                        try {
-                            salida.writeObject(new Mensaje("autoCobrado",true));
-                        } catch (IOException ex) {
-                            Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-            }else if(mensaje.getTipo().equals("turnoAbierto")){
-                if(Main.getInstance().getTurnoActual()!=null){
-                    try {
-                        salida.writeObject(new Mensaje("turnoAbierto",true));
-                    } catch (IOException ex) {
-                        Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else{
-                    try {
-                        salida.writeObject(new Mensaje("turnoAbierto",false));
-                    } catch (IOException ex) {
-                        Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }         
+//            Mensaje mensaje = null;
+//            try {
+//                mensaje = (Mensaje)entrada.readObject();
+//            } catch (IOException | ClassNotFoundException ex) {
+//                Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            if(mensaje.getTipo().equals("cliente")){
+//                Auto auto;
+//                auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
+//                if (auto != null){
+//                    if(auto.isDentro()){
+//                        new FrmCobro(frame, true,auto);   
+//                    }else{
+//                        try {
+//                            salida.writeObject(new Mensaje("autoCobrado",true));
+//                        } catch (IOException ex) {
+//                            Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    }
+//                }
+//            }else if(mensaje.getTipo().equals("turnoAbierto")){
+//                if(Main.getInstance().getTurnoActual()!=null){
+//                    try {
+//                        salida.writeObject(new Mensaje("turnoAbierto",true));
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }else{
+//                    try {
+//                        salida.writeObject(new Mensaje("turnoAbierto",false));
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(AceptarConexionCliente.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            }         
         }
     }
 }

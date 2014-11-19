@@ -20,10 +20,8 @@ import modelos.Mensaje;
 public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
     private Auto auto;
     private Frame parent;
-    private Thread t1;
-    private  Socket socket;
-    private ObjectInputStream entrada;
-    private ObjectOutputStream salida;
+
+
     /**
      * Creates new form FrmCobro
      */
@@ -32,9 +30,7 @@ public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
         initComponents();
         this.auto = auto;
         this.parent = parent;
-        this.socket = Main.getInstance().getSocket();
-        this.entrada = Main.getInstance().getEntrada();
-        this.salida = Main.getInstance().getSalida();
+       
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
@@ -43,8 +39,7 @@ public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
         calcularImporte();
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
         setBounds(0, 0,  screenSize.width,  screenSize.height); 
-        t1 = new Thread(this);
-        t1.start();
+
         setVisible(true);
     }
 
@@ -249,24 +244,24 @@ public class FrmCobroCliente extends javax.swing.JDialog implements Runnable {
   @Override
     public void run() {
         while (true){
-            Mensaje mensaje = null;
-            try {   
-                mensaje = (Mensaje)entrada.readObject();
-            } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if(mensaje.getTipo().equals("autoCalculo")){
-                this.auto = ((Auto)mensaje.getMensaje());
-                this.calcularImporte();   
-            }else if(mensaje.getTipo().equals("autoCobrado")){
-                new FrmMensajeCliente(parent,true,"ok");
-                break;
-            }else if(mensaje.getTipo().equals("autoCancelado")){
-                new FrmMensajeCliente(parent,true,"cancelar");
-                break;
-            } 
+//            Mensaje mensaje = null;
+//            try {   
+//                mensaje = (Mensaje)entrada.readObject();
+//            } catch (IOException | ClassNotFoundException ex) {
+//                Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            if(mensaje.getTipo().equals("autoCalculo")){
+//                this.auto = ((Auto)mensaje.getMensaje());
+//                this.calcularImporte();   
+//            }else if(mensaje.getTipo().equals("autoCobrado")){
+//                new FrmMensajeCliente(parent,true,"ok");
+//                break;
+//            }else if(mensaje.getTipo().equals("autoCancelado")){
+//                new FrmMensajeCliente(parent,true,"cancelar");
+//                break;
+//            } 
         }
-        this.dispose();
+        //this.dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

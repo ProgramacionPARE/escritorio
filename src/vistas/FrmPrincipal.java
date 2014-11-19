@@ -5,16 +5,10 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -24,13 +18,11 @@ import javax.swing.KeyStroke;
 import modeloReportes.ReporteCorteTurno;
 import modeloReportes.ReporteDetalleAvanzado;
 import modeloReportes.RetirosParciales;
-import modelos.AceptarConexionCliente;
 import modelos.Caja;
 import modelos.TurnoDetalles;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Main;
-import modelos.Mensaje;
 import modelos.Turno;
 import org.jdesktop.application.Action;
 
@@ -185,15 +177,16 @@ public class FrmPrincipal extends JFrame implements Runnable {
                     m.getTurnoActual().inicializarTurno(tipo);
                     m.getTurnoActual().setTipoTurno(tipo);
                     m.getTurnoActual().actualizar();
-                    t1.start();
+                    Main.getInstance().getServerPantalla().enviarTurnoAbierto();
                 }
                 
             }
+            
         }else {
             m.setTurnoActual(turnoTemp);
             m.getTurnoActual().setEstacionamiento(m.getEstacionamiento());
             m.getTurnoActual().setEmpleadoEntrada(m.getEmpleadoSesion());
-            t1.start();
+            Main.getInstance().getServerPantalla().enviarTurnoAbierto();
         }
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
@@ -277,14 +270,14 @@ public class FrmPrincipal extends JFrame implements Runnable {
                 this.dispose();
                 initLogin();
             }
-            ObjectOutputStream salidaCliente = Main.getInstance().getSalidaCliente();
-            if(salidaCliente != null){
-                try {
-                    salidaCliente.writeObject(new Mensaje("cierreTurno",true));
-                } catch (IOException ex) {
-                    Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+//            ObjectOutputStream salidaCliente = Main.getInstance().getSalidaCliente();
+//            if(salidaCliente != null){
+////                try {
+////                    salidaCliente.writeObject(new Mensaje("cierreTurno",true));
+////                } catch (IOException ex) {
+////                    Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+////                }
+//            }
             m.setTurnoActual(null);
         } else {
             m.setEmpleadoSesion(null);

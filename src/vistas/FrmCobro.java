@@ -46,8 +46,7 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         this.auto = auto;
         this.estacionamiento =  Main.getInstance().getEstacionamiento();
         this.turno = Main.getInstance().getTurnoActual();
-        this.entrada = Main.getInstance().getEntradaCliente();
-        this.salida = Main.getInstance().getSalidaCliente();
+        
         this.parent = parent;
         this.getContentPane().setBackground(Color.white);
         pack();
@@ -112,12 +111,12 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
             jLabel5.setVisible(false);
             txtImporteBoletoPerdido.setVisible(false);
         }
-        try {
-            salida.reset();
-            salida.writeObject(new Mensaje("autoCalculo",auto));
-        } catch (IOException ex) {
-            Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            salida.reset();
+//            salida.writeObject(new Mensaje("autoCalculo",auto));
+//        } catch (IOException ex) {
+//            Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
   
     @SuppressWarnings("unchecked")
@@ -447,12 +446,12 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         String ObjButtons[] = {"Si","No"};
         int PromptResult = JOptionPane.showOptionDialog(null,"Estas seguro de no cobrar este boleto, permanecera abierto.","NO cobrar boleto",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
         if(PromptResult==JOptionPane.YES_OPTION){
-            try {
-                salida.reset();
-                salida.writeObject(new Mensaje("autoCancelado",""));
-            } catch (IOException ex) {
-                Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            try {
+//                salida.reset();
+//                salida.writeObject(new Mensaje("autoCancelado",""));
+//            } catch (IOException ex) {
+//                Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
+//            }
             if(auto.isBoletoManual())
                 auto.getBoletoManual().eliminar();
             this.dispose();
@@ -485,12 +484,12 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         turno.getDetallesTurno().get(auto.getSerie()).setTotal(turno.getDetallesTurno().get(auto.getSerie()).getTotal()+auto.getMontoTangible());
         auto.actualizar();
         turno.actualizar();
-         try {
-                salida.reset();
-                salida.writeObject(new Mensaje("autoCobrado",""));
-            } catch (IOException ex) {
-                Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//         try {
+//                salida.reset();
+//                salida.writeObject(new Mensaje("autoCobrado",""));
+//            } catch (IOException ex) {
+//                Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         //Reviso si activo la alarma
         ((FrmPrincipal)parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja) );
         

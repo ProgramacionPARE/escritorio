@@ -6,12 +6,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelos.AceptarConexionCliente;
 import modelos.Main;
 import vistas.FrmPrincipal;
 
 
-public class ServerAcept implements Runnable {
+public class ServerAcept extends Thread {
     public static final int PANTALLA = 0;
     public static final int BOLETO = 1;
     public static final int NUM_SOCKET = 8050;
@@ -34,10 +33,12 @@ public class ServerAcept implements Runnable {
     public void apagarHilo(){
         cerrarHilo = true;
     }
+    
     @Override
     public void run() {         
         while(!cerrarHilo){    
             try {
+                 System.out.println("Esperando conexion");
                 socket = serverSocket.accept();
                 //Main.getInstance().setSocketCliente(acceptSocket);
                 System.out.println("Conexion recivida");
@@ -45,7 +46,8 @@ public class ServerAcept implements Runnable {
                 Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(tipo == PANTALLA){
-                new ServerPantalla(socket);
+                Main.getInstance().setServerPantalla(new ServerPantalla(socket));
+                Main.getInstance().getServerPantalla().start();
             }else if(tipo == BOLETO){
                 //new ServerBoleto(socket);
             }

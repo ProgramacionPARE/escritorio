@@ -22,8 +22,8 @@ public class Principal {
         Configuracion datos = Configuracion.getInstancia();
         Socket socket = null;
         if(datos.getTerminal().equals(Configuracion.CAJA)){
-            new ServerAcept(ServerAcept.BOLETO);
-            new ServerAcept(ServerAcept.PANTALLA);
+            new ServerAcept(ServerAcept.BOLETO).start();
+            new ServerAcept(ServerAcept.PANTALLA).start();
             new FrmLogin();
         }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
             new ClientePantalla();

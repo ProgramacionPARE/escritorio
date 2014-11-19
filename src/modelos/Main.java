@@ -4,6 +4,7 @@ package modelos;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import sockets.*;
 
 /**
  *
@@ -16,19 +17,15 @@ public class Main {
     private Empleado empleadoSesion;
     private Turno turnoActual;
     private Caja caja;
-    
-    private Socket socket;
-    private ObjectInputStream entrada;
-    private ObjectOutputStream salida;
-    
-    private Socket socketCliente;
-    private ObjectInputStream entradaCliente;
-    private ObjectOutputStream salidaCliente;
+
     
     
-    private Socket socketBoleto;
-    private ObjectInputStream entradaBoleto;
-    private ObjectOutputStream salidaBoleto;
+    private ServerAcept serverAcept;
+    private ServerBoleto serverBoleto;
+    private ServerPantalla serverPantalla;
+    private ClienteBoleto clienteBoleto;
+    private ClientePantalla clientePantalla;
+    
     
     public static Main getInstance(){
         return MAIN;
@@ -70,76 +67,46 @@ public class Main {
         this.caja = caja;
     }
 
-    public Socket getSocket() {
-        return socket;
+   
+
+    public ServerAcept getServerAcept() {
+        return serverAcept;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public void setServerAcept(ServerAcept serverAcept) {
+        this.serverAcept = serverAcept;
     }
 
-    public ObjectInputStream getEntrada() {
-        return entrada;
+    public ServerBoleto getServerBoleto() {
+        return serverBoleto;
     }
 
-    public void setEntrada(ObjectInputStream entrada) {
-        this.entrada = entrada;
+    public void setServerBoleto(ServerBoleto serverBoleto) {
+        this.serverBoleto = serverBoleto;
     }
 
-    public ObjectOutputStream getSalida() {
-        return salida;
+    public ServerPantalla getServerPantalla() {
+        return serverPantalla;
     }
 
-    public void setSalida(ObjectOutputStream salida) {
-        this.salida = salida;
+    public void setServerPantalla(ServerPantalla serverPantalla) {
+        this.serverPantalla = serverPantalla;
     }
 
-    public Socket getSocketCliente() {
-        return socketCliente;
+    public ClienteBoleto getClienteBoleto() {
+        return clienteBoleto;
     }
 
-    public void setSocketCliente(Socket socketCliente) {
-        this.socketCliente = socketCliente;
+    public void setClienteBoleto(ClienteBoleto clienteBoleto) {
+        this.clienteBoleto = clienteBoleto;
     }
 
-    public ObjectInputStream getEntradaCliente() {
-        return entradaCliente;
+    public ClientePantalla getClientePantalla() {
+        return clientePantalla;
     }
 
-    public void setEntradaCliente(ObjectInputStream entradaCliente) {
-        this.entradaCliente = entradaCliente;
-    }
-
-    public ObjectOutputStream getSalidaCliente() {
-        return salidaCliente;
-    }
-
-    public void setSalidaCliente(ObjectOutputStream salidaCliente) {
-        this.salidaCliente = salidaCliente;
-    }
-
-    public Socket getSocketBoleto() {
-        return socketBoleto;
-    }
-
-    public void setSocketBoleto(Socket socketBoleto) {
-        this.socketBoleto = socketBoleto;
-    }
-
-    public ObjectInputStream getEntradaBoleto() {
-        return entradaBoleto;
-    }
-
-    public void setEntradaBoleto(ObjectInputStream entradaBoleto) {
-        this.entradaBoleto = entradaBoleto;
-    }
-
-    public ObjectOutputStream getSalidaBoleto() {
-        return salidaBoleto;
-    }
-
-    public void setSalidaBoleto(ObjectOutputStream salidaBoleto) {
-        this.salidaBoleto = salidaBoleto;
+    public void setClientePantalla(ClientePantalla clientePantalla) {
+        this.clientePantalla = clientePantalla;
     }
     
     

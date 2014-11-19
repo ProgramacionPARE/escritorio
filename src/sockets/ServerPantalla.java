@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package sockets;
 
 import java.io.IOException;
@@ -11,12 +7,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelos.Mensaje;
 
-/**
- *
- * @author sistema
- */
-public class ServerPantalla implements Runnable {
+
+public class ServerPantalla extends Thread {
+    public static final int TURNO_ABIERTO = 0x0;
     private Socket socket;
     private ObjectOutputStream salida;
     private ObjectInputStream entrada;
@@ -32,11 +27,29 @@ public class ServerPantalla implements Runnable {
         }
     }
     
-    
+    public  void enviarTurnoAbierto(){
+        try {
+            salida.writeObject(new Mensaje(TURNO_ABIERTO,true));
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     @Override
     public void run() {
+        try {
+            System.out.println("Esperando comando");
+            Object readObject = entrada.readObject();
+            
+            
     
+            
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
    
     

@@ -11,13 +11,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelos.Configuracion;
-import modelos.Main;
-import modelos.Mensaje;
-import modelos.Principal;
 
 
-public class FrmErrorCarga extends javax.swing.JFrame implements Runnable {
+public class FrmErrorCarga extends javax.swing.JFrame {
     private Socket socket;
     private Thread t1;
     private ObjectInputStream entrada;
@@ -26,86 +22,18 @@ public class FrmErrorCarga extends javax.swing.JFrame implements Runnable {
     public FrmErrorCarga() {
         super("Error");
         this.cerrar = true;
-        this.socket = Main.getInstance().getSocket();
+       
         initComponents();
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(null);
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
         setBounds(0, 0,  screenSize.width,  screenSize.height);
-        this.t1 = new Thread(this);
-        t1.start();
+      
         this.setVisible(true);
     }
     
-    @Override
-    public void run() {
-        
-        ///////////////////////////  Verifico la conexion a la caja
-        while(cerrar){
-            try {
-                if (socket == null){
-                    socket = new Socket(Configuracion.getInstancia().getIp(),8123);
-                    Main.getInstance().setSocket(socket);
-                    break;
-                }
-                else
-                    break;
-            }catch (IOException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                try {
-                    Thread.sleep(5000);
-                }catch (InterruptedException ex1) {
-                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex1);
-                }
-            }        
-        } 
-        
-        /////////////////////////////////////Al obtener el socke genero la entrada y salida
-        if(socket!=null){
-            try {
-                if(Main.getInstance().getEntrada()== null &&
-                Main.getInstance().getSalida()== null){
-                    entrada = new ObjectInputStream( socket.getInputStream());
-                    salida = new ObjectOutputStream(socket.getOutputStream());
-                    salida.flush();
-                    Main.getInstance().setEntrada(entrada);
-                    Main.getInstance().setSalida(salida);
-                }else{
-                    entrada = Main.getInstance().getEntrada();
-                    salida =Main.getInstance().getSalida();
-                    
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            jLabel1.setText("Error turno cerrado");
-            jLabel2.setText("Revisa que exista turno abierto en caja.");
-            
-            /////////////////////////////////////  Verifico que existe turno abierto
-            while(cerrar){
-                try {
-                    salida.writeObject(new Mensaje("turnoAbierto",""));
-                    Mensaje mensaje = (Mensaje)entrada.readObject();
-                    if(mensaje.getTipo().equals("turnoAbierto")){
-                        if((boolean)mensaje.getMensaje())
-                            break;
-                    }
-                } catch (IOException | ClassNotFoundException ex) {
-                    Logger.getLogger(FrmErrorCarga.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            this.dispose();
-            if( Configuracion.getInstancia().getTerminal().equals(Configuracion.CLIENTE)){
-                new FrmLeerCodigoBarrasTerminal(this,true,"CLIENTE");
-                cerrar = false;
-            }
-        }
-        if(!cerrar)
-            this.dispose();
-    }
-    
+  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

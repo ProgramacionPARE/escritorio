@@ -38,9 +38,7 @@ public class FrmLeerCodigoBarrasTerminal extends JDialog implements Runnable {
     
     public FrmLeerCodigoBarrasTerminal(Frame parent,boolean modal,String accion) {
         super(parent,accion,modal);
-        this.socket = Main.getInstance().getSocket();
-        this.entrada = Main.getInstance().getEntrada();
-        this.salida = Main.getInstance().getSalida();
+        
         this.turno = Main.getInstance().getTurnoActual();
         this.accion = accion;
         this.estacionamiento =  Main.getInstance().getEstacionamiento();
@@ -136,11 +134,11 @@ public class FrmLeerCodigoBarrasTerminal extends JDialog implements Runnable {
         if (evt.getKeyChar() == '\n') { 
             if (id.length() ==12 ){
                 if(accion.equals("CLIENTE")){
-                    try {
-                        salida.writeObject(new Mensaje(Mensaje.CLIENTE,id));
-                    } catch (IOException ex) {
-                        Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+//                    try {
+//                        salida.writeObject(new Mensaje(Mensaje.CLIENTE,id));
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
                 }
                 id = "";
             }else{
@@ -151,16 +149,7 @@ public class FrmLeerCodigoBarrasTerminal extends JDialog implements Runnable {
     }//GEN-LAST:event_formKeyTyped
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-       try{
-           if(!cierre){
-            cerrar=false;
-            if(socket!=null)  socket.close();
-            if(entrada!=null) entrada.close();
-            if(salida!=null)  salida.close();
-           }
-        } catch (IOException ex) {
-            Logger.getLogger(FrmErrorCarga.class.getName()).log(Level.SEVERE, null, ex);
-        }
+      
            
     }//GEN-LAST:event_formWindowClosing
 
@@ -190,18 +179,18 @@ public class FrmLeerCodigoBarrasTerminal extends JDialog implements Runnable {
             }
             if(mensaje!=null){
                 ////////////////////////Si recivo el auto de regreso muestro cobro cliente
-               if(mensaje.getTipo().equals("autoCalculo")){
-                    if(frmCobroCliente == null){
-                        frmCobroCliente = new FrmCobroCliente(parent,true,((Auto)mensaje.getMensaje()));
-                        frmCobroCliente =null;
-                    }
-                }else if(mensaje.getTipo().equals("autoCobrado")){
-                     new FrmMensajeCliente(parent,true,"cobrado");
-                }else if(mensaje.getTipo().equals("cierreTurno")){
-                     cerrar = false;
-                     cierre = true;
-                     new FrmErrorCarga();
-                } 
+//               if(mensaje.getTipo().equals("autoCalculo")){
+//                    if(frmCobroCliente == null){
+//                        frmCobroCliente = new FrmCobroCliente(parent,true,((Auto)mensaje.getMensaje()));
+//                        frmCobroCliente =null;
+//                    }
+//                }else if(mensaje.getTipo().equals("autoCobrado")){
+//                     new FrmMensajeCliente(parent,true,"cobrado");
+//                }else if(mensaje.getTipo().equals("cierreTurno")){
+//                     cerrar = false;
+//                     cierre = true;
+//                     new FrmErrorCarga();
+//                } 
             }
              
         }

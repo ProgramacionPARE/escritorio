@@ -12,21 +12,20 @@ import java.io.Serializable;
  * @author oscar
  */
 public class Mensaje implements Serializable{
-    public static String CLIENTE = "cliente";
-    String tipo;
+    int tipo;
     Object mensaje;
 
-    public Mensaje(String tipo, Object mensaje) {
+    public Mensaje(int tipo, Object mensaje) {
         this.tipo = tipo;
         this.mensaje = mensaje;
         System.out.println( toString()); 
     }
     
-  public String getTipo() {
+  public int getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(int tipo) {
         this.tipo = tipo;
     }
 
