@@ -43,7 +43,7 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
         id ="";
         if(accion.equals(Configuracion.CAJA)){
             lblMensaje.setText("Coloque su boleto por favor");
-        }else if(accion.equals("EXPEDIDOR")){
+        }else if(accion.equals(Configuracion.EXPEDIDOR)){
             lblMensaje.setText("Coloque tu gafete");
         }
        

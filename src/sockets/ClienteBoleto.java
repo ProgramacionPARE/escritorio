@@ -5,6 +5,8 @@
  */
 package sockets;
 
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,12 +15,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Auto;
 import modelos.Configuracion;
+import modelos.Empleado;
 import modelos.Mensaje;
 import modelos.Principal;
+import net.sourceforge.barbecue.BarcodeException;
 import vistas.FrmCobroCliente;
 import vistas.FrmErrorCarga;
 import vistas.FrmLeerCodigoBarrasTerminal;
 import vistas.FrmMensajeCliente;
+import vistas.formatos.FrmP1BoletoCliente;
+import vistas.formatos.FrmP2BoletoLlaves;
+import vistas.formatos.FrmP3BoletoParabrisas;
 
 /**
  *
@@ -84,7 +91,7 @@ public class ClienteBoleto extends Thread{
                         if(mensaje.getTipo()== Mensaje.TURNO_ABIERTO){
                             if((boolean)mensaje.getMensaje()){
                                 frmErrorCarga.dispose();
-                                frmCodigoBarras = new FrmLeerCodigoBarrasTerminal(Configuracion.CAJA);
+                                frmCodigoBarras = new FrmLeerCodigoBarrasTerminal(Configuracion.EXPEDIDOR);
                                 System.out.println("Turno abierto");
                             }else{
                                 if(frmCodigoBarras!=null){
@@ -95,8 +102,28 @@ public class ClienteBoleto extends Thread{
                                 }
                                 System.out.println("Turno cerrado");
                             }
-                        }else if(mensaje.getTipo()== Mensaje.AUTO){
-                            
+                        }else if(mensaje.getTipo()== Mensaje.NUEVO_BOLETO){
+                            Auto auto = null; Empleado empleado = null;
+                            mensaje = (Mensaje)entrada.readObject();
+                            if(mensaje.getTipo()== Mensaje.AUTO){
+                                auto = (Auto)mensaje.getMensaje();
+                            }
+                            mensaje = (Mensaje)entrada.readObject();
+                            if(mensaje.getTipo()== Mensaje.EMPLEADO){
+                                empleado = (Empleado)mensaje.getMensaje();
+                            }
+                             PrinterJob job = PrinterJob.getPrinterJob();
+                            // Boleto al cliente
+                        try {                            
+                            new FrmP1BoletoCliente(null, false,job,auto,empleado);
+                             //Boleto llaves
+                            new FrmP2BoletoLlaves(null, false,job,auto,empleado);
+                            //Boleto Parabrisas
+                            new FrmP3BoletoParabrisas(null, false ,job,auto);
+                        } catch (PrinterException | BarcodeException ex) {
+                            Logger.getLogger(ClienteBoleto.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                           
                         }
                 }
             }

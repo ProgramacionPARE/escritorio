@@ -21,6 +21,8 @@ public class Mensaje implements Serializable{
     public static final int ALARMA_CANCELADO = 0X5;
     public static final int AUTO_COBRADO = 0X6;
     public static final int CODIGO_VALET = 0x7;
+    public static int NUEVO_BOLETO = 0x8;
+    public static int EMPLEADO = 0x9;
     int tipo;
     Object mensaje;
 
