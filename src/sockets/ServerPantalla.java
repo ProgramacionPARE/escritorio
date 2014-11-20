@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Main;
 import modelos.Mensaje;
+import vistas.FrmPrincipal;
 
 public class ServerPantalla extends Thread {
     public static final int TURNO_ABIERTO = 0x0;
@@ -20,20 +21,23 @@ public class ServerPantalla extends Thread {
 
     public ServerPantalla(Socket socket) {
         try {
+            this.cerrarHilo = false;
             this.socket = socket;
             salida = new ObjectOutputStream (socket.getOutputStream());
             salida.flush();
             entrada = new ObjectInputStream(socket.getInputStream());
         } catch (IOException ex) {
-            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+            if(ex.getMessage().equals("Socket is closed")||ex.getMessage().equals("Socket closed"))
+                System.out.println("Se cerro el socket en -ServerPantalla-");
+            else   
+                Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public  void enviarTurnoAbierto(){
         try {
-            salida.writeObject(new Mensaje(TURNO_ABIERTO,true));
-            
-            
+            if(salida!=null)
+                salida.writeObject(new Mensaje(TURNO_ABIERTO,true));
         } catch (IOException ex) {
             Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -41,15 +45,44 @@ public class ServerPantalla extends Thread {
     
     public  void enviarTurnoCerrado(){
         try {
-            salida.writeObject(new Mensaje(TURNO_ABIERTO,true));
-            
-            
+            if(salida!=null)
+                salida.writeObject(new Mensaje(TURNO_ABIERTO,false));
         } catch (IOException ex) {
             Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public Socket getSocket() {
+   public void apagarHilo(){
+        cerrarHilo = true;
+    }
+   
+    @Override
+    public void run() {
+        if(Main.getInstance().getTurnoActual()!=null)
+            enviarTurnoAbierto();
+        else
+            enviarTurnoCerrado();
+        
+        try {
+            while(!cerrarHilo){
+            System.out.println("Esperando comando");
+            Object readObject;
+            readObject = entrada.readObject();
+            
+            
+            
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            if(ex.getMessage().equals("Socket closed"))
+                System.out.println("Se cerro el socket en -ServerPantalla-");
+            else   
+                Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
+     public Socket getSocket() {
         return socket;
     }
 
@@ -73,25 +106,6 @@ public class ServerPantalla extends Thread {
         this.entrada = entrada;
     }
     
-    @Override
-    public void run() {
-        if(Main.getInstance().getTurnoActual()!=null)
-            enviarTurnoAbierto();
-        else
-            enviarTurnoCerrado();
-        try {
-            while(cerrarHilo){
-            System.out.println("Esperando comando");
-            Object readObject = entrada.readObject();
-            
-            
-            
-            }
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
    
     
 }

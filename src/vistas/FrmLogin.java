@@ -115,9 +115,12 @@ public class FrmLogin extends JFrame {
                 while(iteratorServerAcept.hasNext()){
                     ServerAcept next = iteratorServerAcept.next();
                     next.apagarHilo();
+                    next.getServerSocket().close();
                 }
                 ServerPantalla serverPantalla = Main.getInstance().getServerPantalla();
                 if(serverPantalla!=null){
+                    serverPantalla.apagarHilo();
+                   
                     if(serverPantalla.getSocket()!=null)
                         serverPantalla.getSocket().close();
                     if(serverPantalla.getEntrada()!=null)

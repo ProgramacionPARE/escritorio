@@ -6,6 +6,8 @@
 package modelos;
 
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import sockets.ClienteBoleto;
 import sockets.ClientePantalla;
@@ -19,8 +21,12 @@ public class Principal {
         Configuracion datos = Configuracion.getInstancia();
         Socket socket = null;
         if(datos.getTerminal().equals(Configuracion.CAJA)){
-            new ServerAcept(ServerAcept.BOLETO).start();
-            new ServerAcept(ServerAcept.PANTALLA).start();
+            Main.getInstance().setServerAcept(new ArrayList());
+   
+            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.BOLETO));
+            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.PANTALLA));
+            Iterator<ServerAcept> iterator = Main.getInstance().getServerAcept().iterator();
+            while(iterator.hasNext())iterator.next().start();
             new FrmLogin();
         }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
             new ClientePantalla().start();

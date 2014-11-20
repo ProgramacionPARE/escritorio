@@ -29,6 +29,14 @@ public class ServerAcept extends Thread {
         }
         
     }
+
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    public void setServerSocket(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
+    }
     
     public void apagarHilo(){
         cerrarHilo = true;
@@ -38,12 +46,15 @@ public class ServerAcept extends Thread {
     public void run() {         
         while(!cerrarHilo){    
             try {
-                 System.out.println("Esperando conexion");
+                System.out.println("Esperando conexion");
                 socket = serverSocket.accept();
                 //Main.getInstance().setSocketCliente(acceptSocket);
                 System.out.println("Conexion recivida");
             }catch (IOException ex){
-                Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                if(ex.getMessage().equals("Socket closed"))
+                    System.out.println("Se cerro el socket en -ServerAcept-");
+                else
+                    Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(tipo == PANTALLA){
                 Main.getInstance().setServerPantalla(new ServerPantalla(socket));
