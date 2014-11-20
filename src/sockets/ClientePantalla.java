@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package sockets;
 
 import java.io.IOException;
@@ -11,9 +7,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelos.Auto;
 import modelos.Configuracion;
 import modelos.Mensaje;
 import modelos.Principal;
+import vistas.FrmCobroCliente;
 import vistas.FrmErrorCarga;
 import vistas.FrmLeerCodigoBarrasTerminal;
 
@@ -25,6 +23,7 @@ public class ClientePantalla extends Thread {
     private boolean cerrarHilo;
     FrmErrorCarga frmErrorCarga;
     FrmLeerCodigoBarrasTerminal frmCodigoBarras;
+    FrmCobroCliente frmCobroCliente;
     
     public ClientePantalla() {
         frmErrorCarga = new FrmErrorCarga();
@@ -84,6 +83,8 @@ public class ClientePantalla extends Thread {
                                 }
                                 System.out.println("Turno cerrado");
                             }
+                        }else if(mensaje.getTipo()== Mensaje.AUTO){
+                            frmCobroCliente = new FrmCobroCliente(frmCodigoBarras,true,(Auto)mensaje.getMensaje());
                         }
                         
                         

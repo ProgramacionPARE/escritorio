@@ -70,22 +70,34 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
                 formKeyTyped(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        java.awt.GridBagLayout layout1 = new java.awt.GridBagLayout();
+        layout1.columnWidths = new int[] {0};
+        layout1.rowHeights = new int[] {0, 20, 0, 20, 0, 20, 0};
+        getContentPane().setLayout(layout1);
 
         lblMensaje.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMensaje.setName("lblMensaje"); // NOI18N
-        getContentPane().add(lblMensaje, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        getContentPane().add(lblMensaje, gridBagConstraints);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vistas/resources/codigoBarras.jpg"))); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-        getContentPane().add(jLabel2, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        getContentPane().add(jLabel2, gridBagConstraints);
 
         lblBienvenido.setFont(new java.awt.Font("Dialog", 1, 50)); // NOI18N
         lblBienvenido.setText("Bienvenido");
         lblBienvenido.setName("lblBienvenido"); // NOI18N
-        getContentPane().add(lblBienvenido, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(lblBienvenido, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -95,7 +107,7 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
         Auto auto=null;
         if (evt.getKeyChar() == '\n') { 
             if (id.length() ==12 ){
-                if(accion.equals("CLIENTE")){
+                if(accion.equals(Configuracion.CAJA)){
                     Main.getInstance().getClientePantalla().enviarCodigo(id);
                 }
                 id = "";

@@ -29,7 +29,8 @@ public class Principal {
             while(iterator.hasNext())iterator.next().start();
             ;
         }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
-            new ClientePantalla().start();
+            Main.getInstance().setClientePantalla(new ClientePantalla());
+            Main.getInstance().getClientePantalla().start();
             //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
         } else  if(datos.getTerminal().equals(Configuracion.EXPEDIDOR)){
             new ClienteBoleto();
