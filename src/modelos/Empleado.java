@@ -1,6 +1,7 @@
 
 package modelos;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Empleado implements IDBModel {
+public class Empleado implements IDBModel,Serializable {
     long id;
     int nivel;
     String nombre;
