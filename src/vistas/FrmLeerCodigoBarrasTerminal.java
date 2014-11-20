@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
 import java.awt.Toolkit;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,6 +30,7 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
     private boolean cerrar;
     private Frame parent;
     private boolean cierre;
+
 
     
     public FrmLeerCodigoBarrasTerminal(String accion) {
@@ -118,7 +120,7 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
             id+=evt.getKeyChar();  
     }//GEN-LAST:event_formKeyTyped
 
-
+    private GridBagConstraints gridBagConstraints;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblBienvenido;
