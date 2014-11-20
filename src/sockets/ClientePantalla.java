@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import modelos.Configuracion;
 import modelos.Mensaje;
 import modelos.Principal;
+import vistas.FrmErrorCarga;
 
 
 public class ClientePantalla extends Thread {
@@ -21,14 +22,17 @@ public class ClientePantalla extends Thread {
     private ObjectInputStream entrada;
     private ObjectOutputStream salida;
     private boolean cerrarHilo;
-    
+    FrmErrorCarga frmErrorCarga;
     public ClientePantalla() {
+        frmErrorCarga = new FrmErrorCarga();
         this.cerrarHilo = false;
          while(!cerrarHilo){
             try {
                 socket = new Socket(Configuracion.getInstancia().getIp(),ServerAcept.NUM_SOCKET+ServerAcept.PANTALLA);
                 if(socket!=null){
                     System.out.println("Conectado con exito");
+                    frmErrorCarga.setLabel1Text("Error turno cerrado");
+                    frmErrorCarga.setLabel2Text("Por favor abre un turno en caja para continuar");   
                     entrada = new ObjectInputStream( socket.getInputStream());
                     salida = new ObjectOutputStream(socket.getOutputStream());
                     salida.flush();
@@ -57,10 +61,14 @@ public class ClientePantalla extends Thread {
                                 System.out.println("Turno abierto");
                             }
                         }
+                        
+                        
+                        
                 }
             }
         }catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
+            
+            Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

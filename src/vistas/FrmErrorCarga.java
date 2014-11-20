@@ -3,20 +3,9 @@
 package vistas;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Toolkit;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import modelos.Configuracion;
-import modelos.Main;
-import modelos.Mensaje;
+import javax.swing.JLabel;
 
 
 
@@ -34,6 +23,16 @@ public class FrmErrorCarga extends JFrame  {
         this.setVisible(true);
     }
 
+
+    public void setLabel1Text(String text) {
+        this.jLabel1.setText(text);
+    }
+
+
+    public void setLabel2Text(String text) {
+        this.jLabel2.setText(text);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
