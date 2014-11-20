@@ -27,7 +27,6 @@ public class Principal {
             Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.PANTALLA,frmLogin));
             Iterator<ServerAcept> iterator = Main.getInstance().getServerAcept().iterator();
             while(iterator.hasNext())iterator.next().start();
-            ;
         }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
             Main.getInstance().setClientePantalla(new ClientePantalla());
             Main.getInstance().getClientePantalla().start();

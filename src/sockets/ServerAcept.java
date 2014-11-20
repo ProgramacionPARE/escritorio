@@ -33,6 +33,14 @@ public class ServerAcept extends Thread {
         
     }
 
+    public Frame getParent() {
+        return parent;
+    }
+
+    public void setParent(Frame parent) {
+        this.parent = parent;
+    }
+
     public ServerSocket getServerSocket() {
         return serverSocket;
     }
@@ -63,7 +71,8 @@ public class ServerAcept extends Thread {
                 Main.getInstance().setServerPantalla(new ServerPantalla(socket,parent));
                 Main.getInstance().getServerPantalla().start();
             }else if(tipo == BOLETO){
-                //new ServerBoleto(socket);
+                Main.getInstance().setServerBoleto(new ServerBoleto(socket,parent));
+                Main.getInstance().getServerBoleto().start();
             }
         }
     }

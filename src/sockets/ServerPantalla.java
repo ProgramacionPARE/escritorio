@@ -76,6 +76,27 @@ public class ServerPantalla extends Thread {
         }
     }
     
+      public void enviaAlarmaCancelado(){
+          try {
+            if(salida!=null)
+                salida.reset();
+                salida.writeObject(new Mensaje(Mensaje.ALARMA_CANCELADO,true));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+      
+      
+      public void enviaAutoCobrado(){
+          try {
+            if(salida!=null)
+                salida.reset();
+                salida.writeObject(new Mensaje(Mensaje.AUTO_COBRADO,true));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+       
    public void apagarHilo(){
         cerrarHilo = true;
     }
@@ -89,23 +110,21 @@ public class ServerPantalla extends Thread {
         
         try {
             while(!cerrarHilo){
-            System.out.println("Esperando comando");
-           Mensaje mensaje;
-            mensaje = (Mensaje)entrada.readObject();
-            if(mensaje.getTipo()==Mensaje.CODIGO){
-                System.out.println("Recibi codigo de auto");
-                Auto auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
-                if (auto != null){
-                        if(auto.isDentro()){
-                           frmCobro = new FrmCobro(parent,true ,auto);    
-                        }else{
-                            enviaAlarmaCobrado();
+                System.out.println("Esperando comando");
+                Mensaje mensaje;
+                mensaje = (Mensaje)entrada.readObject();
+                if(mensaje.getTipo()==Mensaje.CODIGO){
+                    System.out.println("Recibi codigo de auto");
+                    Auto auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
+                    if (auto != null){
+                            if(auto.isDentro()){
+                               frmCobro = new FrmCobro(parent,true ,auto);    
+                            }else{
+                                enviaAlarmaCobrado();
+                            }
+
                         }
-                        
-                    }
-            }
-            
-            
+                }
             }
         } catch (IOException | ClassNotFoundException ex) {
             if(ex.getMessage().equals("Socket closed"))
@@ -115,7 +134,6 @@ public class ServerPantalla extends Thread {
         }
         
     }
-    
     
      public Socket getSocket() {
         return socket;

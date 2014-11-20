@@ -155,8 +155,9 @@ public class FrmLogin extends JFrame {
         }else{
             this.setVisible(false);
             this.dispose();
-            new FrmPrincipal(empleado);
-
+            FrmPrincipal frmPrincipal = new FrmPrincipal(empleado);
+            Iterator<ServerAcept> iterator = Main.getInstance().getServerAcept().iterator();
+            while (iterator.hasNext()) iterator.next().setParent(frmPrincipal);
         }
     }
 
