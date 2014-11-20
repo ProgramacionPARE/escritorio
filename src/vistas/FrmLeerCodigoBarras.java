@@ -50,12 +50,12 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
         this.getContentPane().setBackground(Color.white);
           pack();
         id ="";
-        /*if(accion.equals("COBRO")){
-            lblMensaje.setText("coloque su boleto por favor");
+        if(accion.equals("COBRO")){
+            lblMensaje.setText("Coloca el boleto en el sensor");
         }else if(accion.equals("CANCELAR")){
-                lblMensaje.setText("coloque su boleto por favor");
+                lblMensaje.setText("Coloca el boleto en el sensor");
         }else if(accion.equals("RECIBO")){
-            lblMensaje.setText("coloque su boleto por favor");
+            lblMensaje.setText("Coloca el boleto en el sensor");
         }else if(accion.equals("PERDIDO")){
             lblMensaje.setText("Coloca la contra en el sensor");
         }else if(accion.equals("CONTRA")){
@@ -64,18 +64,10 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
              lblMensaje.setText("Coloca tu gafet contra en el sensor");
         }
        
-         if(!Configuracion.getInstancia().getTerminal().equals(Configuracion.CAJA)){
-            this.lblMensaje.setFont(new Font("Dialog", 1, 50));
-            Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize(); 
-            
-            setBounds(0, 0,  screenSize.width,  screenSize.height); 
-           // this.setSize(screenSize.width,  screenSize.height);
-           
-        }
+
         if(!Configuracion.getInstancia().getTerminal().equals(Configuracion.CLIENTE)){
            this.lblBienvenido.setVisible(false);
-        }*/
-        //new Thread(this).start();
+        }
          setLocationRelativeTo(parent);
         setVisible(true);
     }
@@ -104,7 +96,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
             }
         });
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
-        layout.columnWidths = new int[] {0, 20, 0};
+        layout.columnWidths = new int[] {0, 20, 0, 20, 0};
         layout.rowHeights = new int[] {0, 20, 0, 20, 0, 20, 0};
         getContentPane().setLayout(layout);
 
@@ -125,8 +117,8 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
-        gridBagConstraints.ipadx = -400;
-        gridBagConstraints.ipady = -145;
+        gridBagConstraints.ipadx = -300;
+        gridBagConstraints.ipady = -100;
         getContentPane().add(jLabel2, gridBagConstraints);
 
         lblBienvenido.setFont(new java.awt.Font("Dialog", 1, 50)); // NOI18N

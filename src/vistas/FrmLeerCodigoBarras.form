@@ -50,7 +50,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-          <GridBagConstraints gridX="2" gridY="6" gridWidth="1" gridHeight="1" fill="0" ipadX="-400" ipadY="-145" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+          <GridBagConstraints gridX="2" gridY="6" gridWidth="1" gridHeight="1" fill="0" ipadX="-300" ipadY="-100" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -92,7 +92,7 @@
         <CodeExpression id="2">
           <ExpressionOrigin>
             <Value type="[I" editor="org.netbeans.modules.form.layoutsupport.delegates.GridBagLayoutSupport$IntArrayPropertyEditor">
-              <PropertyValue value="[0, 20, 0]"/>
+              <PropertyValue value="[0, 20, 0, 20, 0]"/>
             </Value>
           </ExpressionOrigin>
         </CodeExpression>
@@ -277,7 +277,7 @@
       <Parameters>
         <CodeExpression id="16">
           <ExpressionOrigin>
-            <Value type="int" value="-400"/>
+            <Value type="int" value="-300"/>
           </ExpressionOrigin>
         </CodeExpression>
       </Parameters>
@@ -290,7 +290,7 @@
       <Parameters>
         <CodeExpression id="17">
           <ExpressionOrigin>
-            <Value type="int" value="-145"/>
+            <Value type="int" value="-100"/>
           </ExpressionOrigin>
         </CodeExpression>
       </Parameters>

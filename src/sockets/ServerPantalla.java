@@ -59,7 +59,18 @@ public class ServerPantalla extends Thread {
     public void enviarAuto(Auto auto){
          try {
             if(salida!=null)
+                salida.reset();
                 salida.writeObject(new Mensaje(Mensaje.AUTO,auto));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void enviaAlarmaCobrado(){
+          try {
+            if(salida!=null)
+                salida.reset();
+                salida.writeObject(new Mensaje(Mensaje.ALARMA_COBRADO,true));
         } catch (IOException ex) {
             Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,7 +95,14 @@ public class ServerPantalla extends Thread {
             if(mensaje.getTipo()==Mensaje.CODIGO){
                 System.out.println("Recibi codigo de auto");
                 Auto auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
-                frmCobro = new FrmCobro(parent,true ,auto);
+                if (auto != null){
+                        if(auto.isDentro()){
+                           frmCobro = new FrmCobro(parent,true ,auto);    
+                        }else{
+                            enviaAlarmaCobrado();
+                        }
+                        
+                    }
             }
             
             
