@@ -2,11 +2,9 @@
 package vistas;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
-import java.awt.Toolkit;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -61,6 +59,7 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         lblMensaje = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -91,6 +90,8 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = -300;
+        gridBagConstraints.ipady = -100;
         getContentPane().add(jLabel2, gridBagConstraints);
 
         lblBienvenido.setFont(new java.awt.Font("Dialog", 1, 50)); // NOI18N
@@ -111,8 +112,12 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
             if (id.length() ==12 ){
                 if(accion.equals(Configuracion.CAJA)){
                     Main.getInstance().getClientePantalla().enviarCodigo(id);
-                }
+                }else if(accion.equals(Configuracion.EXPEDIDOR)){
+                    Main.getInstance().getClienteBoleto().enviarCodigo(id);
+                } 
+                
                 id = "";
+                
             }else{
                 id = "";
             }

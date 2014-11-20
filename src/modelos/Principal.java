@@ -33,7 +33,9 @@ public class Principal {
             Main.getInstance().getClientePantalla().start();
             //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
         } else  if(datos.getTerminal().equals(Configuracion.EXPEDIDOR)){
-            new ClienteBoleto();
+            Main.getInstance().setClienteBoleto(new ClienteBoleto());
+            Main.getInstance().getClienteBoleto().start();
+            
             //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
         }
     }

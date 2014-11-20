@@ -20,7 +20,7 @@ public class Mensaje implements Serializable{
     public static final int ALARMA_COBRADO = 0X4;
     public static final int ALARMA_CANCELADO = 0X5;
     public static final int AUTO_COBRADO = 0X6;
-    
+    public static final int CODIGO_VALET = 0x7;
     int tipo;
     Object mensaje;
 

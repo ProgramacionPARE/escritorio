@@ -14,6 +14,7 @@ import modelos.Principal;
 import vistas.FrmCobroCliente;
 import vistas.FrmErrorCarga;
 import vistas.FrmLeerCodigoBarrasTerminal;
+import vistas.FrmMensajeCliente;
 
 
 public class ClientePantalla extends Thread {
@@ -57,7 +58,8 @@ public class ClientePantalla extends Thread {
     
     public void enviarCodigo(String id){
         try {
-            salida.writeObject(new Mensaje(Mensaje.CODIGO,id));
+            if(salida != null)
+                salida.writeObject(new Mensaje(Mensaje.CODIGO,id));
         } catch (IOException ex) {
             Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,6 +91,20 @@ public class ClientePantalla extends Thread {
                                 frmCobroCliente = null;
                             }
                             frmCobroCliente = new FrmCobroCliente(frmCodigoBarras,false,(Auto)mensaje.getMensaje());
+                        }else if(mensaje.getTipo()== Mensaje.ALARMA_COBRADO){
+                            FrmMensajeCliente frmMensajeCliente = new FrmMensajeCliente(frmCodigoBarras,false,FrmMensajeCliente.REVIRADO);
+                        }else if(mensaje.getTipo()== Mensaje.ALARMA_CANCELADO){
+                            if(frmCobroCliente!=null){
+                                frmCobroCliente.dispose();
+                                frmCobroCliente = null;
+                            }
+                            FrmMensajeCliente frmMensajeCliente = new FrmMensajeCliente(frmCodigoBarras,false,FrmMensajeCliente.CANCELADO);
+                        }else if(mensaje.getTipo()== Mensaje.AUTO_COBRADO){
+                            if(frmCobroCliente!=null){
+                                frmCobroCliente.dispose();
+                                frmCobroCliente = null;
+                            }
+                            FrmMensajeCliente frmMensajeCliente = new FrmMensajeCliente(frmCodigoBarras,false,FrmMensajeCliente.COBRADO);
                         }
                         
                         
