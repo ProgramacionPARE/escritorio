@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class Mensaje implements Serializable{
 
     static public final int TURNO_ABIERTO = 0x0;
-
+    static public final int PREGUNTA_TURNO = 0x1;
     int tipo;
     Object mensaje;
 
@@ -24,6 +24,11 @@ public class Mensaje implements Serializable{
         System.out.println( toString()); 
     }
     
+     public Mensaje(int tipo) {
+        this.tipo = tipo;
+        System.out.println( toString()); 
+    }
+     
   public int getTipo() {
         return tipo;
     }

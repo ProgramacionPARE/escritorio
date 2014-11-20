@@ -1,9 +1,7 @@
 
 package modelos;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.util.ArrayList;
 import sockets.*;
 
 /**
@@ -20,7 +18,7 @@ public class Main {
 
     
     
-    private ServerAcept serverAcept;
+    private ArrayList<ServerAcept> serverAcept;
     private ServerBoleto serverBoleto;
     private ServerPantalla serverPantalla;
     private ClienteBoleto clienteBoleto;
@@ -67,13 +65,11 @@ public class Main {
         this.caja = caja;
     }
 
-   
-
-    public ServerAcept getServerAcept() {
+    public ArrayList<ServerAcept> getServerAcept() {
         return serverAcept;
     }
 
-    public void setServerAcept(ServerAcept serverAcept) {
+    public void setServerAcept(ArrayList<ServerAcept> serverAcept) {
         this.serverAcept = serverAcept;
     }
 

@@ -61,6 +61,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
     }
 
     public void initLogin() {
+        Main.getInstance().getServerPantalla().enviarTurnoCerrado();
         new FrmLogin();
     }
 
@@ -177,7 +178,8 @@ public class FrmPrincipal extends JFrame implements Runnable {
                     m.getTurnoActual().inicializarTurno(tipo);
                     m.getTurnoActual().setTipoTurno(tipo);
                     m.getTurnoActual().actualizar();
-                    Main.getInstance().getServerPantalla().enviarTurnoAbierto();
+                    if(Main.getInstance().getServerPantalla() != null)
+                        Main.getInstance().getServerPantalla().enviarTurnoAbierto();
                 }
                 
             }
@@ -186,7 +188,8 @@ public class FrmPrincipal extends JFrame implements Runnable {
             m.setTurnoActual(turnoTemp);
             m.getTurnoActual().setEstacionamiento(m.getEstacionamiento());
             m.getTurnoActual().setEmpleadoEntrada(m.getEmpleadoSesion());
-            Main.getInstance().getServerPantalla().enviarTurnoAbierto();
+            if(Main.getInstance().getServerPantalla() != null)
+                Main.getInstance().getServerPantalla().enviarTurnoAbierto();
         }
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
@@ -270,15 +273,6 @@ public class FrmPrincipal extends JFrame implements Runnable {
                 this.dispose();
                 initLogin();
             }
-//            ObjectOutputStream salidaCliente = Main.getInstance().getSalidaCliente();
-//            if(salidaCliente != null){
-////                try {
-////                    salidaCliente.writeObject(new Mensaje("cierreTurno",true));
-////                } catch (IOException ex) {
-////                    Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-////                }
-
-//            }
             m.setTurnoActual(null);
         } else {
             m.setEmpleadoSesion(null);

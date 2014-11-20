@@ -2,9 +2,17 @@
 
 package vistas;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import modelos.Empleado;
+import modelos.Main;
+import sockets.ClientePantalla;
+import sockets.ServerAcept;
+import sockets.ServerPantalla;
 
 
 public class FrmLogin extends JFrame {
@@ -101,7 +109,28 @@ public class FrmLogin extends JFrame {
         int showConfirmDialog = JOptionPane.showConfirmDialog(this,"Esto cerrara el sistema. ¿Quieres continuar?", 
                 "Salir", JOptionPane.YES_NO_OPTION );
         if(showConfirmDialog == JOptionPane.YES_OPTION){
-            this.dispose();
+            try {
+                this.dispose();
+                Iterator<ServerAcept> iteratorServerAcept = Main.getInstance().getServerAcept().iterator();
+                while(iteratorServerAcept.hasNext()){
+                    ServerAcept next = iteratorServerAcept.next();
+                    next.apagarHilo();
+                }
+                ServerPantalla serverPantalla = Main.getInstance().getServerPantalla();
+                if(serverPantalla!=null){
+                    if(serverPantalla.getSocket()!=null)
+                        serverPantalla.getSocket().close();
+                    if(serverPantalla.getEntrada()!=null)
+                        serverPantalla.getEntrada().close();
+                    if(serverPantalla.getSalida()!=null)
+                        serverPantalla.getSalida().close();
+                }
+                
+                
+                
+            } catch (IOException ex) {
+                Logger.getLogger(FrmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_formWindowClosing
 
