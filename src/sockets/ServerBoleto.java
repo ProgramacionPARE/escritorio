@@ -1,17 +1,30 @@
 
 package sockets;
 
+import ModelosAux.Seguridad;
+import ModelosAux.Tiempo;
 import java.awt.Frame;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import modelos.Auto;
+import modelos.Empleado;
 import modelos.Main;
 import modelos.Mensaje;
+import modelos.Progresivo;
+import modelos.Rest;
+import net.sourceforge.barbecue.BarcodeException;
 import vistas.FrmCobro;
+import vistas.FrmLeerCodigoBarras;
+import vistas.formatos.FrmP1BoletoCliente;
+import vistas.formatos.FrmP2BoletoLlaves;
+import vistas.formatos.FrmP3BoletoParabrisas;
 
 
 public class ServerBoleto extends Thread {
@@ -36,7 +49,34 @@ public class ServerBoleto extends Thread {
                 Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    public void enviarBoleto(){
+        try {
+            if(salida!=null)
+                salida.writeObject(new Mensaje(Mensaje.NUEVO_BOLETO,true));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void enviarAuto(){
+        try {
+            if(salida!=null)
+                salida.writeObject(new Mensaje(Mensaje.AUTO,true));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void enviarEmpleado(){
+        try {
+            if(salida!=null)
+                salida.writeObject(new Mensaje(Mensaje.EMPLEADO,true));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
      public  void enviarTurnoAbierto(){
         try {
             if(salida!=null)
@@ -67,8 +107,34 @@ public class ServerBoleto extends Thread {
                 System.out.println("Esperando comando");
                 Mensaje mensaje;
                 mensaje = (Mensaje)entrada.readObject();
-                if(mensaje.getTipo()==Mensaje.CODIGO){
-                    
+                if(mensaje.getTipo()==Mensaje.CODIGO_VALET){
+                    Empleado empleado = null;
+                    empleado = Empleado.getByIdClave((String)mensaje.getMensaje());
+                    if (empleado != null){
+                        Auto newAuto = new Auto(Progresivo.getUltimoProgresivo(Main.getInstance().getEstacionamiento().getCaseta(),"0"),
+                                "",Tiempo.getFecha(),Tiempo.getHora(),"","","",Main.getInstance().getTurnoActual().getId(),"0",
+                                "",Seguridad.getClave(5), Main.getInstance().getEstacionamiento().getCaseta().getId());
+
+                        //Aumento en uno los boletos generados
+                        Main.getInstance().getTurnoActual().getDetallesTurno().get(newAuto.getSerie()).setNoBol(Main.getInstance().getTurnoActual().getDetallesTurno().get(newAuto.getSerie()).getNoBol()+1);
+                        //Actualizo el folio final en el turno
+                        Main.getInstance().getTurnoActual().getDetallesTurno().get(newAuto.getSerie()).setFolioFinal (Main.getInstance().getTurnoActual().getDetallesTurno().get(newAuto.getSerie()).getFolioFinal()+1);
+
+                        Progresivo.setProgresivoMasUno(Main.getInstance().getEstacionamiento().getCaseta(),newAuto.getSerie());
+                        //Imprimo boletos
+//                            PrinterJob job = PrinterJob.getPrinterJob();
+//                            // Boleto al cliente
+//                            
+//                            new FrmP1BoletoCliente(this, false,job,newAuto,empleado);
+//                            //Boleto llaves
+//                            new FrmP2BoletoLlaves(this, false,job,newAuto,empleado);
+//                            //Boleto Parabrisas
+//                            new FrmP3BoletoParabrisas(this, false ,job,newAuto);
+                        Main.getInstance().getTurnoActual().actualizar();
+                        // Guardo entrada y actualizo progresivo
+                        newAuto.guardar();
+                        Rest.sendAuto(newAuto,Main.getInstance().getEstacionamiento());
+                    } 
                 }
             }
         } catch (IOException | ClassNotFoundException ex) {
