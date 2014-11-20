@@ -59,7 +59,6 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         lblMensaje = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -71,21 +70,22 @@ public class FrmLeerCodigoBarrasTerminal extends JFrame  {
                 formKeyTyped(evt);
             }
         });
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
         lblMensaje.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMensaje.setName("lblMensaje"); // NOI18N
-        getContentPane().add(lblMensaje, java.awt.BorderLayout.CENTER);
+        getContentPane().add(lblMensaje, new java.awt.GridBagConstraints());
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vistas/resources/codigoBarras.jpg"))); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-        getContentPane().add(jLabel2, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(jLabel2, new java.awt.GridBagConstraints());
 
         lblBienvenido.setFont(new java.awt.Font("Dialog", 1, 50)); // NOI18N
         lblBienvenido.setText("Bienvenido");
         lblBienvenido.setName("lblBienvenido"); // NOI18N
-        getContentPane().add(lblBienvenido, java.awt.BorderLayout.PAGE_END);
+        getContentPane().add(lblBienvenido, new java.awt.GridBagConstraints());
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

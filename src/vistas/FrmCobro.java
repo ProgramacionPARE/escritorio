@@ -111,13 +111,8 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
             jLabel5.setVisible(false);
             txtImporteBoletoPerdido.setVisible(false);
         }
-//        try {
-//            salida.reset();
-
-//           salida.writeObject(new Mensaje("autoCalculo",auto));
-//        } catch (IOException ex) {
-//            Logger.getLogger(FrmCobro.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        if(Main.getInstance().getServerPantalla()!=null)
+            Main.getInstance().getServerPantalla().enviarAuto(auto);
     }
   
     @SuppressWarnings("unchecked")

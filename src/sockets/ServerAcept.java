@@ -1,6 +1,7 @@
 
 package sockets;
     
+import java.awt.Frame;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,9 +20,11 @@ public class ServerAcept extends Thread {
     private ServerSocket serverSocket;
     private Socket socket;
     private boolean cerrarHilo;
-    public ServerAcept(int tipo) {
+    private Frame parent;
+    public ServerAcept(int tipo,Frame parent) {
         this.tipo = tipo;
         this.cerrarHilo = false;
+        this.parent = parent;
         try {
             serverSocket = new ServerSocket(NUM_SOCKET + tipo);
         } catch (IOException ex) {
@@ -57,7 +60,7 @@ public class ServerAcept extends Thread {
                     Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(tipo == PANTALLA){
-                Main.getInstance().setServerPantalla(new ServerPantalla(socket));
+                Main.getInstance().setServerPantalla(new ServerPantalla(socket,parent));
                 Main.getInstance().getServerPantalla().start();
             }else if(tipo == BOLETO){
                 //new ServerBoleto(socket);

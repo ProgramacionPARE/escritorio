@@ -1,28 +1,32 @@
 
 package sockets;
 
+import java.awt.Frame;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelos.Auto;
 import modelos.Main;
 import modelos.Mensaje;
+import vistas.FrmCobro;
 import vistas.FrmPrincipal;
 
 public class ServerPantalla extends Thread {
-    public static final int TURNO_ABIERTO = 0x0;
-
+    private Frame parent;
     private Socket socket;
     private ObjectOutputStream salida;
     private ObjectInputStream entrada;
     private boolean cerrarHilo;
-
-    public ServerPantalla(Socket socket) {
+    private FrmCobro frmCobro;
+    
+    public ServerPantalla(Socket socket,Frame parent) {
         try {
             this.cerrarHilo = false;
             this.socket = socket;
+            this.parent = parent;
             salida = new ObjectOutputStream (socket.getOutputStream());
             salida.flush();
             entrada = new ObjectInputStream(socket.getInputStream());
@@ -37,7 +41,7 @@ public class ServerPantalla extends Thread {
     public  void enviarTurnoAbierto(){
         try {
             if(salida!=null)
-                salida.writeObject(new Mensaje(TURNO_ABIERTO,true));
+                salida.writeObject(new Mensaje(Mensaje.TURNO_ABIERTO,true));
         } catch (IOException ex) {
             Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -46,12 +50,21 @@ public class ServerPantalla extends Thread {
     public  void enviarTurnoCerrado(){
         try {
             if(salida!=null)
-                salida.writeObject(new Mensaje(TURNO_ABIERTO,false));
+                salida.writeObject(new Mensaje(Mensaje.TURNO_ABIERTO,false));
         } catch (IOException ex) {
             Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    public void enviarAuto(Auto auto){
+         try {
+            if(salida!=null)
+                salida.writeObject(new Mensaje(Mensaje.AUTO,auto));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
    public void apagarHilo(){
         cerrarHilo = true;
     }
@@ -66,9 +79,13 @@ public class ServerPantalla extends Thread {
         try {
             while(!cerrarHilo){
             System.out.println("Esperando comando");
-            Object readObject;
-            readObject = entrada.readObject();
-            
+           Mensaje mensaje;
+            mensaje = (Mensaje)entrada.readObject();
+            if(mensaje.getTipo()==Mensaje.CODIGO){
+                System.out.println("Recibi codigo de auto");
+                Auto auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
+                frmCobro = new FrmCobro(parent,true ,auto);
+            }
             
             
             }

@@ -16,6 +16,7 @@ public class Mensaje implements Serializable{
     static public final int TURNO_ABIERTO = 0x0;
     static public final int PREGUNTA_TURNO = 0x1;
     static public final int CODIGO = 0x2;
+    static public final int AUTO = 0x3;
     int tipo;
     Object mensaje;
 

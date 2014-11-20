@@ -22,12 +22,12 @@ public class Principal {
         Socket socket = null;
         if(datos.getTerminal().equals(Configuracion.CAJA)){
             Main.getInstance().setServerAcept(new ArrayList());
-   
-            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.BOLETO));
-            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.PANTALLA));
+            FrmLogin frmLogin = new FrmLogin();
+            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.BOLETO,frmLogin));
+            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.PANTALLA,frmLogin));
             Iterator<ServerAcept> iterator = Main.getInstance().getServerAcept().iterator();
             while(iterator.hasNext())iterator.next().start();
-            new FrmLogin();
+            ;
         }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
             new ClientePantalla().start();
             //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
