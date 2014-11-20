@@ -84,7 +84,11 @@ public class ClientePantalla extends Thread {
                                 System.out.println("Turno cerrado");
                             }
                         }else if(mensaje.getTipo()== Mensaje.AUTO){
-                            frmCobroCliente = new FrmCobroCliente(frmCodigoBarras,true,(Auto)mensaje.getMensaje());
+                            if(frmCobroCliente!=null){
+                                frmCobroCliente.dispose();
+                                frmCobroCliente = null;
+                            }
+                            frmCobroCliente = new FrmCobroCliente(frmCodigoBarras,false,(Auto)mensaje.getMensaje());
                         }
                         
                         
