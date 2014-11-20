@@ -46,7 +46,7 @@ public class ClienteBoleto extends Thread{
         this.cerrarHilo = false;
          while(!cerrarHilo){
             try {
-                socket = new Socket(Configuracion.getInstancia().getIp(),ServerAcept.NUM_SOCKET+ServerAcept.PANTALLA);
+                socket = new Socket(Configuracion.getInstancia().getIp(),ServerAcept.NUM_SOCKET+ServerAcept.BOLETO);
                 if(socket!=null){
                     System.out.println("Conectado con exito");
                     frmErrorCarga.setLabel1Text("Error turno cerrado");
@@ -114,15 +114,15 @@ public class ClienteBoleto extends Thread{
                             }
                              PrinterJob job = PrinterJob.getPrinterJob();
                             // Boleto al cliente
-                        try {                            
-                            new FrmP1BoletoCliente(null, false,job,auto,empleado);
-                             //Boleto llaves
-                            new FrmP2BoletoLlaves(null, false,job,auto,empleado);
-                            //Boleto Parabrisas
-                            new FrmP3BoletoParabrisas(null, false ,job,auto);
-                        } catch (PrinterException | BarcodeException ex) {
-                            Logger.getLogger(ClienteBoleto.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                            try {                            
+                                new FrmP1BoletoCliente(null, false,job,auto,empleado);
+                                 //Boleto llaves
+                                new FrmP2BoletoLlaves(null, false,job,auto,empleado);
+                                //Boleto Parabrisas
+                                new FrmP3BoletoParabrisas(null, false ,job,auto);
+                            } catch (PrinterException | BarcodeException ex) {
+                                Logger.getLogger(ClienteBoleto.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                            
                         }
                 }
@@ -131,7 +131,7 @@ public class ClienteBoleto extends Thread{
             apagarHilo();
             System.out.println("Cerrando cliente y esperando nueva instancia");
             frmErrorCarga.dispose();
-            new ClientePantalla().start();
+            new ClienteBoleto().start();
             //Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
         
