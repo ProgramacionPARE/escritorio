@@ -15,6 +15,7 @@ import modelos.Configuracion;
 import modelos.Mensaje;
 import modelos.Principal;
 import vistas.FrmErrorCarga;
+import vistas.FrmLeerCodigoBarrasTerminal;
 
 
 public class ClientePantalla extends Thread {
@@ -23,6 +24,8 @@ public class ClientePantalla extends Thread {
     private ObjectOutputStream salida;
     private boolean cerrarHilo;
     FrmErrorCarga frmErrorCarga;
+    FrmLeerCodigoBarrasTerminal frmCodigoBarras;
+    
     public ClientePantalla() {
         frmErrorCarga = new FrmErrorCarga();
         this.cerrarHilo = false;
@@ -49,6 +52,17 @@ public class ClientePantalla extends Thread {
         } 
          
     }
+    public void apagarHilo(){
+        cerrarHilo = true;
+    }
+    
+    public void enviarCodigo(String id){
+        try {
+            salida.writeObject(new Mensaje(Mensaje.CODIGO,id));
+        } catch (IOException ex) {
+            Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     @Override
     public void run() {
@@ -58,7 +72,17 @@ public class ClientePantalla extends Thread {
                     Mensaje mensaje = (Mensaje)entrada.readObject();
                         if(mensaje.getTipo()== Mensaje.TURNO_ABIERTO){
                             if((boolean)mensaje.getMensaje()){
+                                frmErrorCarga.dispose();
+                                frmCodigoBarras = new FrmLeerCodigoBarrasTerminal(Configuracion.CAJA);
                                 System.out.println("Turno abierto");
+                            }else{
+                                if(frmCodigoBarras!=null){
+                                    frmCodigoBarras.dispose();
+                                    frmErrorCarga = new FrmErrorCarga();
+                                    frmErrorCarga.setLabel1Text("Error turno cerrado");
+                                    frmErrorCarga.setLabel2Text("Por favor abre un turno en caja para continuar"); 
+                                }
+                                System.out.println("Turno cerrado");
                             }
                         }
                         
@@ -67,8 +91,11 @@ public class ClientePantalla extends Thread {
                 }
             }
         }catch (IOException | ClassNotFoundException ex) {
-            
-            Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
+            apagarHilo();
+            System.out.println("Cerrando cliente y esperando nueva instancia");
+            frmErrorCarga.dispose();
+            new ClientePantalla().start();
+            //Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -14,7 +14,6 @@ public class FrmErrorCarga extends JFrame  {
     
     public FrmErrorCarga() {
         super("Error");
-
         initComponents();
         this.getContentPane().setBackground(Color.white);
         pack();

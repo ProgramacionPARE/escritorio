@@ -7,12 +7,9 @@ package modelos;
 
 import java.net.Socket;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import sockets.ClienteBoleto;
 import sockets.ClientePantalla;
 import sockets.ServerAcept;
-import vistas.FrmErrorCarga;
 import vistas.FrmLogin;
 
 
