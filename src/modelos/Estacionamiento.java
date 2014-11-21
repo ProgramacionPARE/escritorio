@@ -18,6 +18,9 @@ public class Estacionamiento implements IDBModel {
     private Caseta caseta;
     private String tipo;
     private String token;
+    private String correo;
+    private String contra;
+    
 
     private Estacionamiento() {
         inicializarObjeto();
@@ -84,6 +87,22 @@ public class Estacionamiento implements IDBModel {
         return estacionamiento;
     }
 
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getContra() {
+        return contra;
+    }
+
+    public void setContra(String contra) {
+        this.contra = contra;
+    }
+
     @Override
     public void guardar() {
 
@@ -96,12 +115,14 @@ public class Estacionamiento implements IDBModel {
             Connection connectionDB = conexion.getConnection();
             PreparedStatement statement = connectionDB.
                     prepareStatement("UPDATE estacionamiento SET `centro_costos`=? ,`descripcion` =? , `direccion` =?"
-                            + ",`tipo` =?   WHERE `id`=?");
+                            + ",`tipo` =? ,`correo` =?,`contra` =?   WHERE `id`=?");
             statement.setInt(1, this.centroCostos);
             statement.setString(2, this.descripcion);
             statement.setString(3, this.direccion);
             statement.setString(4, this.tipo);
-            statement.setLong(5, this.id);
+            statement.setString(5, this.correo);
+            statement.setString(6, this.contra);
+            statement.setLong(7, this.id);
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -129,6 +150,9 @@ public class Estacionamiento implements IDBModel {
                 this.direccion = resultSet.getString("direccion");
                 this.caseta = Caseta.getById(resultSet.getLong("caseta_actual"));
                 this.tipo = resultSet.getString("tipo");
+                this.correo = resultSet.getString("correo");
+                this.contra = resultSet.getString("contra");
+                
             }
         conexion.getConnection();
         } catch (SQLException ex) {

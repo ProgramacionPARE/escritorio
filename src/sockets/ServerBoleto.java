@@ -77,6 +77,15 @@ public class ServerBoleto extends Thread {
         }
     }
     
+      private void enviarNombreEstacioneminto(String descripcion) {
+        try {
+            if(salida!=null)
+                salida.writeObject(new Mensaje(Mensaje.NOMBRE_ESTACIONAMIENTO,descripcion));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
      public  void enviarTurnoAbierto(){
         try {
             if(salida!=null)
@@ -126,6 +135,7 @@ public class ServerBoleto extends Thread {
                         enviarBoleto();
                         enviarAuto(newAuto);
                         enviarEmpleado(empleado);
+                        enviarNombreEstacioneminto(Main.getInstance().getEstacionamiento().getDescripcion());
                         
                         Main.getInstance().getTurnoActual().actualizar();
                         // Guardo entrada y actualizo progresivo
@@ -141,6 +151,8 @@ public class ServerBoleto extends Thread {
                 Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+  
    
     
 }

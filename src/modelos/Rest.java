@@ -29,55 +29,55 @@ public class Rest {
     
     public static String login(Estacionamiento estacionamiento) {
         HttpClient client = HttpClients.custom().build();
-//        try {
-//            List<NameValuePair> login = new ArrayList<>(1);
-//            login.add(new BasicNameValuePair("email" , "magdalena@pare.com.mx"));
-//            login.add(new BasicNameValuePair("password" ,"Ib1EN0T]7E;R2o-"));
-//        
-//            HttpUriRequest request = RequestBuilder.post().setUri(url+"auth/local")
-//                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-//                .setEntity(new UrlEncodedFormEntity(login)).build();
-//            
-//            HttpResponse response = client.execute(request);
-//            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//            String data = "";
-//            while ((data = rd.readLine()) != null) {
-//              System.out.println(data);
-//              JSONObject token =(JSONObject)JSONValue.parse(data);
-//              estacionamiento.setToken((String)token.get("token"));
-//            }
-//
-//          } catch (IOException e) {
-//            e.printStackTrace();
-//          }
+        try {
+            List<NameValuePair> login = new ArrayList<>(1);
+            login.add(new BasicNameValuePair("email" , estacionamiento.getCorreo()));
+            login.add(new BasicNameValuePair("password" ,estacionamiento.getContra()));
+        
+            HttpUriRequest request = RequestBuilder.post().setUri(url+"auth/local")
+                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                .setEntity(new UrlEncodedFormEntity(login)).build();
+            
+            HttpResponse response = client.execute(request);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String data = "";
+            while ((data = rd.readLine()) != null) {
+              System.out.println(data);
+              JSONObject token =(JSONObject)JSONValue.parse(data);
+              estacionamiento.setToken((String)token.get("token"));
+            }
+
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         return "";
     }
     
-    public static String sendAuto(Auto a,Estacionamiento estacionamiento){
-     //  HttpClient client = HttpClients.custom().build();
+    public static String sendAuto(Auto auto,Estacionamiento estacionamiento){
+       HttpClient client = HttpClients.custom().build();
         
-//        try {
-//            List<NameValuePair> auto = new ArrayList<>(1);
-//            
-//            auto.add(new BasicNameValuePair("serie" , a.getSerie()));
-//            auto.add(new BasicNameValuePair("id_tarifa" ,String.valueOf(a.getTarifa().getId())));
-//            
-//            HttpUriRequest request = RequestBuilder.post().setUri(url+"api/autos")
-//                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-//                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())     
-//                .setEntity(new UrlEncodedFormEntity(auto)).build();
-//            
-//            HttpResponse response = client.execute(request);
-//            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//            String data = "";
-//            while ((data = rd.readLine()) != null) {
-//              System.out.println(data);
-//            }
-//
-//
-//          } catch (IOException e) {
-//            e.printStackTrace();
-//          }
+        try {
+            List<NameValuePair> resp = new ArrayList<>(1);
+            
+            resp.add(new BasicNameValuePair("serie" , auto.getSerie()));
+            resp.add(new BasicNameValuePair("id_tarifa" ,String.valueOf(auto.getTarifa().getId())));
+            
+            HttpUriRequest request = RequestBuilder.post().setUri(url+"api/autos")
+                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())     
+                .setEntity(new UrlEncodedFormEntity(resp)).build();
+            
+            HttpResponse response = client.execute(request);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String data = "";
+            while ((data = rd.readLine()) != null) {
+              System.out.println(data);
+            }
+
+
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         return "";
     }
     

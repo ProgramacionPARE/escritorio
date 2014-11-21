@@ -23,6 +23,7 @@ import modelos.TurnoDetalles;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Main;
+import modelos.Rest;
 import modelos.Turno;
 import org.jdesktop.application.Action;
 
@@ -61,7 +62,10 @@ public class FrmPrincipal extends JFrame implements Runnable {
     }
 
     public void initLogin() {
-        Main.getInstance().getServerPantalla().enviarTurnoCerrado();
+        if(Main.getInstance().getServerPantalla() != null)
+            Main.getInstance().getServerPantalla().enviarTurnoCerrado();
+        if(Main.getInstance().getServerBoleto() != null)
+                Main.getInstance().getServerBoleto().enviarTurnoCerrado();
         new FrmLogin();
     }
 
@@ -69,6 +73,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
         m.setEstacionamiento(Estacionamiento.getDatos());
         m.setCaja(Caja.getByCaseta(m.getEstacionamiento().getCaseta().getId()));
         t1 = new Thread (this);
+        Rest.login(m.getEstacionamiento());
         validaPermisos();
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "parking");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "caja");
@@ -180,6 +185,8 @@ public class FrmPrincipal extends JFrame implements Runnable {
                     m.getTurnoActual().actualizar();
                     if(Main.getInstance().getServerPantalla() != null)
                         Main.getInstance().getServerPantalla().enviarTurnoAbierto();
+                    if(Main.getInstance().getServerBoleto() != null)
+                        Main.getInstance().getServerBoleto().enviarTurnoAbierto();
                 }
                 
             }
@@ -190,6 +197,8 @@ public class FrmPrincipal extends JFrame implements Runnable {
             m.getTurnoActual().setEmpleadoEntrada(m.getEmpleadoSesion());
             if(Main.getInstance().getServerPantalla() != null)
                 Main.getInstance().getServerPantalla().enviarTurnoAbierto();
+            if(Main.getInstance().getServerBoleto() != null)
+                Main.getInstance().getServerBoleto().enviarTurnoAbierto();
         }
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
