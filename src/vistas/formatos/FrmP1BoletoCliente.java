@@ -28,7 +28,6 @@ import modelos.Auto;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Main;
-import modelos.Turno;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
 import net.sourceforge.barbecue.BarcodeFactory;
@@ -82,10 +81,47 @@ public class FrmP1BoletoCliente extends JDialog implements Printable  {
         lblNotas.setText(auto.getNota());
         setVisible(true);
         imprimir();
-
-
     }
  
+    
+     public FrmP1BoletoCliente(Dialog parent, boolean modal, PrinterJob job,Auto auto,Empleado empleado,String nombreEstacionemiento) throws PrinterException, BarcodeException {
+        super(parent, modal);
+        initComponents();
+        //barcode = BarcodeFactory.createUPCA(progresivo);
+        barcode = BarcodeFactory.createCode128B(auto.getClave()+auto.getSerie()+auto.getProgresivo());
+        barcode.setBarHeight(90);
+        barcode.setBarWidth(3);
+        barcode.setDrawingText(false);
+        jPanel3.add(barcode);
+        this.setLocationRelativeTo(parent);
+        
+        this.job = PrinterJob.getPrinterJob();
+        PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+        int selectedService = 0;
+        for(int i = 0; i < services.length;i++){
+            if(services[i].getName().toUpperCase().contains("STAR")){
+                selectedService = i;
+                }
+            }
+
+        job.setPrintService(services[selectedService]);
+
+        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+        MediaSizeName mediaSizeName = MediaSize.findMedia(4,4,MediaPrintableArea.INCH);
+        printRequestAttributeSet.add(mediaSizeName);
+        printRequestAttributeSet.add(new Copies(1));
+        
+        lblLugar.setText(nombreEstacionemiento);
+       
+        lblPlacas.setText(auto.getMatricula());
+        lblProgresivo.setText("No. " + auto.getProgresivo() );
+        lblFecha.setText(auto.getFechaEntrada()+" "+auto.getHoraEntrada());
+        lblAcomodador.setText(empleado.getNombre().toUpperCase());
+        lblModelo.setText(auto.getModelo().toUpperCase());
+        lblNotas.setText(auto.getNota());
+        setVisible(true);
+        imprimir();
+    }
 
 /** This method is called from within the constructor to
      * initialize the form.

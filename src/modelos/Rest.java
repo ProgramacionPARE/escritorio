@@ -20,10 +20,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-/**
- *
- * @author sistema
- */
+
 public class Rest {
     
     static private final String url = "http://localhost:9000/";

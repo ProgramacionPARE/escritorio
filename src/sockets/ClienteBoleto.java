@@ -103,7 +103,7 @@ public class ClienteBoleto extends Thread{
                                 System.out.println("Turno cerrado");
                             }
                         }else if(mensaje.getTipo()== Mensaje.NUEVO_BOLETO){
-                            Auto auto = null; Empleado empleado = null;
+                            Auto auto = null; Empleado empleado = null;String nombre = null;
                             mensaje = (Mensaje)entrada.readObject();
                             if(mensaje.getTipo()== Mensaje.AUTO){
                                 auto = (Auto)mensaje.getMensaje();
@@ -112,10 +112,14 @@ public class ClienteBoleto extends Thread{
                             if(mensaje.getTipo()== Mensaje.EMPLEADO){
                                 empleado = (Empleado)mensaje.getMensaje();
                             }
+                            mensaje = (Mensaje)entrada.readObject();
+                            if(mensaje.getTipo()== Mensaje.NOMBRE_ESTACIONAMIENTO){
+                                nombre = (String)mensaje.getMensaje();
+                            }
                              PrinterJob job = PrinterJob.getPrinterJob();
                             // Boleto al cliente
                             try {                            
-                                new FrmP1BoletoCliente(null, false,job,auto,empleado);
+                                new FrmP1BoletoCliente(null, false,job,auto,empleado,nombre);
                                  //Boleto llaves
                                 new FrmP2BoletoLlaves(null, false,job,auto,empleado);
                                 //Boleto Parabrisas
