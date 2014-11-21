@@ -34,6 +34,7 @@ public class ServerBoleto extends Thread {
     private ObjectInputStream entrada;
     private boolean cerrarHilo;
     private FrmCobro frmCobro;
+    
     ServerBoleto(Socket socket, Frame parent) {
                try {
             this.cerrarHilo = false;
@@ -124,7 +125,7 @@ public class ServerBoleto extends Thread {
                         Auto newAuto = new Auto(Progresivo.getUltimoProgresivo(Main.getInstance().getEstacionamiento().getCaseta(),"0"),
                                 "",Tiempo.getFecha(),Tiempo.getHora(),"","","",Main.getInstance().getTurnoActual().getId(),"0",
                                 "",Seguridad.getClave(5), Main.getInstance().getEstacionamiento().getCaseta().getId());
-
+                        newAuto.setDentro(true);
                         //Aumento en uno los boletos generados
                         Main.getInstance().getTurnoActual().getDetallesTurno().get(newAuto.getSerie()).setNoBol(Main.getInstance().getTurnoActual().getDetallesTurno().get(newAuto.getSerie()).getNoBol()+1);
                         //Actualizo el folio final en el turno

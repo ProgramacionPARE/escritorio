@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 public class Auto implements Serializable{
 
     private int id;
+    private String idRemoto;
     private String progresivo;
     private String matricula;
     private String fechaEntrada;
@@ -86,7 +87,7 @@ public class Auto implements Serializable{
             boolean isBoletoPerdido, boolean isBoletoCancelado, boolean isBoletoManual,
             boolean isBoletoContra, boolean isBoletoPendiente, int horas, int minutos,
             float monto, long turnoEntrada, long turnoSalida, String serie, String nota,
-            long tarifa, float descuento, String clave, long caseta, Long estadoServidor) {
+            long tarifa, float descuento, String clave, long caseta, Long estadoServidor,String idRemoto) {
         this.id = id;
         this.progresivo = progresivo;
         this.matricula = matricula;
@@ -120,6 +121,7 @@ public class Auto implements Serializable{
         this.clave = clave;
         this.caseta = caseta;
         this.estadoServidor = estadoServidor;
+        this.idRemoto = idRemoto;
     }
 
     public int getId() {
@@ -393,6 +395,16 @@ public class Auto implements Serializable{
         this.nota = nota;
     }
 
+    public String getIdRemoto() {
+        return idRemoto;
+    }
+
+    public void setIdRemoto(String idRemoto) {
+        this.idRemoto = idRemoto;
+    }
+    
+    
+
     public static Auto getById(int id) {
         Auto auto = null;
         try {
@@ -422,7 +434,9 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")
+                );
                 if (auto.getBoletoPerdido() != null) {
                     auto.getBoletoPerdido().setAuto(auto);
                 }
@@ -539,7 +553,8 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor")));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -607,7 +622,8 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor")));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")));
             
             }
             conexion.cerrarConexion();
@@ -673,7 +689,8 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor")));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")));
             
             }
             conexion.cerrarConexion();
@@ -739,7 +756,8 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor")));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")));
             
             }
             conexion.cerrarConexion();
@@ -809,7 +827,8 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor")));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -874,7 +893,8 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor")));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")));
             
             }
             conexion.cerrarConexion();
@@ -940,7 +960,8 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor")));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")));
             
             }
             conexion.cerrarConexion();
@@ -985,7 +1006,8 @@ public class Auto implements Serializable{
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
                         executeQuery.getString("notas"), executeQuery.getLong("id_tarifa"),
                         executeQuery.getFloat("descuento"), executeQuery.getString("clave"),
-                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor")));
+                        executeQuery.getLong("id_caseta"), executeQuery.getLong("estado_servidor"),
+                        executeQuery.getString("id_remoto")));
             
             }
             conexion.cerrarConexion();

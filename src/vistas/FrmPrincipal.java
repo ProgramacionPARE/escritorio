@@ -74,6 +74,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
         m.setCaja(Caja.getByCaseta(m.getEstacionamiento().getCaseta().getId()));
         t1 = new Thread (this);
         Rest.login(m.getEstacionamiento());
+        Rest.sendEstacionameinto(m.getEstacionamiento());
         validaPermisos();
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "parking");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "caja");

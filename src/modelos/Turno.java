@@ -185,9 +185,11 @@ public class Turno implements IDBModel {
                             resultSet.getString("hora_cierre"),
                             resultSet.getString("activo").equals("SI")
                     );
+                    
+                    turno.setDetallesTurno(TurnoDetalles.getByTurnoId(turno.getId()));
                 }
                 //turno.setEstacionamiento(Estacionamiento.getDatos());
-                turno.setDetallesTurno(TurnoDetalles.getByTurnoId(turno.getId()));
+                
                 conexion.cerrarConexion();
             } catch (SQLException ex) {
                 Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);

@@ -12,6 +12,7 @@ public class Estacionamiento implements IDBModel {
     private static final Estacionamiento estacionamiento = new Estacionamiento();
 
     private int id;
+    private String idRemoto;
     private int centroCostos;
     private String descripcion;
     private String direccion;
@@ -103,6 +104,14 @@ public class Estacionamiento implements IDBModel {
         this.contra = contra;
     }
 
+    public String getIdRemoto() {
+        return idRemoto;
+    }
+
+    public void setIdRemoto(String idRemoto) {
+        this.idRemoto = idRemoto;
+    }
+
     @Override
     public void guardar() {
 
@@ -115,14 +124,16 @@ public class Estacionamiento implements IDBModel {
             Connection connectionDB = conexion.getConnection();
             PreparedStatement statement = connectionDB.
                     prepareStatement("UPDATE estacionamiento SET `centro_costos`=? ,`descripcion` =? , `direccion` =?"
-                            + ",`tipo` =? ,`correo` =?,`contra` =?   WHERE `id`=?");
+                            + ",`tipo` =? ,`correo` =?,`contra` =?, `id_remoto` =?    WHERE `id`=?");
             statement.setInt(1, this.centroCostos);
             statement.setString(2, this.descripcion);
             statement.setString(3, this.direccion);
             statement.setString(4, this.tipo);
             statement.setString(5, this.correo);
             statement.setString(6, this.contra);
-            statement.setLong(7, this.id);
+            statement.setString(7, this.idRemoto);
+            
+            statement.setLong(8, this.id);
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -152,6 +163,7 @@ public class Estacionamiento implements IDBModel {
                 this.tipo = resultSet.getString("tipo");
                 this.correo = resultSet.getString("correo");
                 this.contra = resultSet.getString("contra");
+                this.idRemoto = resultSet.getString("id_remoto");
                 
             }
         conexion.getConnection();
