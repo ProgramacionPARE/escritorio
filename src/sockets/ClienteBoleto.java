@@ -132,13 +132,12 @@ public class ClienteBoleto extends Thread{
                 }
             }
         }catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
-        
             apagarHilo();
             System.out.println("Cerrando cliente y esperando nueva instancia");
             frmErrorCarga.dispose();
             new ClienteBoleto().start();
-            }
+            //Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
 
