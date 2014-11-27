@@ -27,6 +27,7 @@ public class Configuracion{
             if (resultSet.next()){
                 this.ip = resultSet.getString("ip");
                 this.terminal = resultSet.getString("terminal");
+                this.url = resultSet.getString("url");
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -36,6 +37,7 @@ public class Configuracion{
     
     private  String ip;
     private String terminal;
+    private String url;
 
     public Configuracion(String ip) {
         this.ip = ip;
@@ -55,6 +57,14 @@ public class Configuracion{
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
    

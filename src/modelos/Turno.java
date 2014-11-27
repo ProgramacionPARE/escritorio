@@ -18,6 +18,7 @@ public class Turno implements IDBModel {
 
 
     private long id;
+    private String idRemoto;
     private long empleadoApertura;
     private long empleadoCierre;
     
@@ -51,7 +52,7 @@ public class Turno implements IDBModel {
     }
 
     public Turno(long id, long empleadoEntrada, long empleadoSalida, String tipoTurno, 
-            String fechaApertura, String horaApertura, String fechaCierre, String horaCierre,boolean activo) {
+            String fechaApertura, String horaApertura, String fechaCierre, String horaCierre,boolean activo,String idRemoto) {
         m = Main.getInstance();
         estacionamiento = m.getEstacionamiento();
         this.id = id;
@@ -63,6 +64,7 @@ public class Turno implements IDBModel {
         this.fechaCierre = fechaCierre;
         this.horaCierre = horaCierre;
         this.activo = activo;
+        this.idRemoto = idRemoto;
     }
     
     public void inicializarTurno(String tipoTurno){
@@ -77,6 +79,7 @@ public class Turno implements IDBModel {
         for(String serie: this.estacionamiento.getCaseta().getSeries() ){
             this.detallesTurno.put(serie, new TurnoDetalles(serie,estacionamiento,this));
             this.detallesTurno.get(serie).inicializarTurno();
+            Rest.sendTurnoDetalle(this.detallesTurno.get(serie),estacionamiento);
         }
     }
     
@@ -88,6 +91,10 @@ public class Turno implements IDBModel {
         }
         for(String serie: this.estacionamiento.getCaseta().getSeries() ){
             this.detallesTurno.get(serie).cerrarTurno(tipoCorte);
+             if(tipoCorte.equals("corte")){
+                 Rest.sendTurnoDetalle(this.detallesTurno.get(serie), estacionamiento);
+             }
+             
         }
     }
 
@@ -97,6 +104,14 @@ public class Turno implements IDBModel {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public String getIdRemoto() {
+        return idRemoto;
+    }
+
+    public void setIdRemoto(String idRemoto) {
+        this.idRemoto = idRemoto;
     }
 
     
@@ -183,7 +198,8 @@ public class Turno implements IDBModel {
                             resultSet.getString("hora_apertura"),
                             resultSet.getString("fecha_cierre"),
                             resultSet.getString("hora_cierre"),
-                            resultSet.getString("activo").equals("SI")
+                            resultSet.getString("activo").equals("SI"),
+                            resultSet.getString("id_remoto")
                     );
                     
                     turno.setDetallesTurno(TurnoDetalles.getByTurnoId(turno.getId()));
@@ -375,11 +391,12 @@ public class Turno implements IDBModel {
             Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE turnos SET `fecha_cierre`=? ,`hora_cierre` =?, "
-                    + "`tipo_turno` =?  WHERE `id`=?");
+                    + "`tipo_turno` =? ,`id_remoto` =?  WHERE `id`=?");
             statement.setString(1, fechaCierre);
             statement.setString(2, horaCierre);
             statement.setString(3, tipoTurno);
-            statement.setLong(4, id);
+            statement.setString(4, idRemoto);
+            statement.setLong(5, id);
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {

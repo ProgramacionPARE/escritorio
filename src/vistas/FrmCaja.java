@@ -13,6 +13,7 @@ import modelos.Caja;
 import modelos.Empleado;
 import modelos.Estacionamiento;
 import modelos.Main;
+import modelos.Rest;
 import modelos.Turno;
 import vistas.formatos.FrmRetiroParcial;
 
@@ -159,6 +160,7 @@ public class FrmCaja extends javax.swing.JDialog {
         if (esCorte) {
             turno.realizarCorte( "corte");
             turno.actualizar();
+            Rest.sendTurno(turno, estacionamiento);
             new ReporteCorteTurno().generarReporte();
             new ReporteDetalleAvanzado().generarReporte();
             new RetirosParciales().generarReporte();

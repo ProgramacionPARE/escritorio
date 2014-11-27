@@ -7,20 +7,17 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.print.PrinterJob;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.Caja;
 import modelos.Estacionamiento;
 import modelos.Main;
-import modelos.Mensaje;
+import modelos.Rest;
 import modelos.Tarifa;
 import modelos.Turno;
 import org.jdesktop.application.Action;
@@ -473,10 +470,13 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
             turno.getDetallesTurno().get(auto.getSerie()).setNoBolCobrados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCobrados()+1);
        
         turno.getDetallesTurno().get(auto.getSerie()).setTotal(turno.getDetallesTurno().get(auto.getSerie()).getTotal()+auto.getMontoTangible());
+        
+        Rest.sendTurnoDetalle( turno.getDetallesTurno().get(auto.getSerie()), estacionamiento);
+        
         auto.actualizar();
         turno.actualizar(); 
-        
-        Main.getInstance().getServerPantalla().enviaAutoCobrado();
+        if(Main.getInstance().getServerPantalla()!=null)
+            Main.getInstance().getServerPantalla().enviaAutoCobrado();
         //Reviso si activo la alarma
         ((FrmPrincipal)parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja) );
         
@@ -492,6 +492,7 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
             auto.setMontoReciboPago(Float.valueOf(txtDineroPagado.getText()));
             new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),auto);   
         }
+        Rest.sendAuto(auto, estacionamiento);
      
         this.dispose();
     }

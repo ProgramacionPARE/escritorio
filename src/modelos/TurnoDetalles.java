@@ -9,9 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelosReportesAux.DetallesMovimientoAvanzados;
@@ -19,6 +17,7 @@ import modelosReportesAux.DetallesMovimientoAvanzados;
 public class TurnoDetalles implements IDBModel{
 
     private long id;
+    private String idRemoto;
     private long idTurno;
     private String serie;
     private long folioInicial;
@@ -48,7 +47,10 @@ public class TurnoDetalles implements IDBModel{
         this.estacionamiento = estacionamiento;
     }
 
-    public TurnoDetalles(long id, long idTurno, String serie, long folioInicial, long folioFinal, long noBol, long noBolTurnoA, long noBolCancelados, long noBolPerdidos, long noBolCobrados, long noBolContra, long noBolManual, long noBolTurnoS, float total) {
+    public TurnoDetalles(long id, long idTurno, String serie, long folioInicial,
+            long folioFinal, long noBol, long noBolTurnoA, long noBolCancelados, 
+            long noBolPerdidos, long noBolCobrados, long noBolContra, long noBolManual, 
+            long noBolTurnoS, float total, String idRemoto) {
         this.id = id;
         this.idTurno = idTurno;
         this.serie = serie;
@@ -63,6 +65,7 @@ public class TurnoDetalles implements IDBModel{
         this.noBolManual = noBolManual;
         this.noBolTurnoS = noBolTurnoS;
         this.total = total;
+        this.idRemoto = idRemoto;
     }
 
     public String getTipoTurno() {
@@ -84,6 +87,15 @@ public class TurnoDetalles implements IDBModel{
         this.id = id;
     }
 
+    public String getIdRemoto() {
+        return idRemoto;
+    }
+
+    public void setIdRemoto(String idRemoto) {
+        this.idRemoto = idRemoto;
+    }
+
+        
     public long getIdTurno() {
         return idTurno;
     }
@@ -330,7 +342,8 @@ public class TurnoDetalles implements IDBModel{
                     executeQuery.getLong("no_bol_contra"),
                     executeQuery.getLong("no_bol_manual"),
                     executeQuery.getLong("no_bol_turno_s"),
-                    executeQuery.getFloat("total"));
+                    executeQuery.getFloat("total"),
+                    executeQuery.getString("id_remoto"));
                 
             }
             detalleTurno.setEstacionamiento(Estacionamiento.getDatos());
@@ -388,7 +401,7 @@ public class TurnoDetalles implements IDBModel{
             prepareStatement("UPDATE detalle_turno SET " 
                     + " `folio_final` = ?,`no_bol` = ?,`no_bol_turno_a` = ?,`no_bol_cancelados` = ?,"
                     + " `no_bol_perdidos` = ?,`no_bol_cobrados` = ?, `no_bol_contra` = ?,"
-                    + "`no_bol_manual` = ?,`no_bol_turno_s` = ?,`total`= ?  WHERE `id`=?");
+                    + "`no_bol_manual` = ?,`no_bol_turno_s` = ?,`total`= ? ,`id_remoto`= ?  WHERE `id`=?");
             statement.setLong(1, folioFinal);
             statement.setLong(2, noBol);
             statement.setLong(3, noBolTurnoA);
@@ -399,7 +412,8 @@ public class TurnoDetalles implements IDBModel{
             statement.setLong(8, noBolManual);
             statement.setLong(9, noBolTurnoS);
             statement.setFloat(10, total);
-            statement.setLong(11, id);
+            statement.setString(11,idRemoto);
+            statement.setLong(12, id);
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {

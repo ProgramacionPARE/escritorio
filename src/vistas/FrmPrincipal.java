@@ -184,6 +184,8 @@ public class FrmPrincipal extends JFrame implements Runnable {
                     m.getTurnoActual().inicializarTurno(tipo);
                     m.getTurnoActual().setTipoTurno(tipo);
                     m.getTurnoActual().actualizar();
+                    Rest.sendTurno( m.getTurnoActual(),  m.getEstacionamiento());
+                  
                     if(Main.getInstance().getServerPantalla() != null)
                         Main.getInstance().getServerPantalla().enviarTurnoAbierto();
                     if(Main.getInstance().getServerBoleto() != null)
@@ -201,6 +203,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
             if(Main.getInstance().getServerBoleto() != null)
                 Main.getInstance().getServerBoleto().enviarTurnoAbierto();
         }
+        Rest.sendAutosOffline(m.getEstacionamiento());
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
         btnEstacionamiento.setEnabled(true);
@@ -271,6 +274,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
                 } else {
                     m.getTurnoActual().realizarCorte( "corte");
                     m.getTurnoActual().actualizar();
+                    Rest.sendTurno( m.getTurnoActual(),m.getEstacionamiento());
                     new ReporteCorteTurno().generarReporte();
                     new ReporteDetalleAvanzado().generarReporte();
                     new RetirosParciales().generarReporte();

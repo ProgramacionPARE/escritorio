@@ -4,10 +4,8 @@ package vistas;
 import ModelosAux.Seguridad;
 import ModelosAux.Tiempo;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Toolkit;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.logging.Level;
@@ -218,6 +216,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
                             //Boleto Parabrisas
                             new FrmP3BoletoParabrisas(this, false ,job,newAuto);
                             turno.actualizar();
+                            
                             // Guardo entrada y actualizo progresivo
                             newAuto.guardar();
                             Rest.sendAuto(newAuto,estacionamiento);

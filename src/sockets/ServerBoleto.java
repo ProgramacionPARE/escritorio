@@ -133,12 +133,15 @@ public class ServerBoleto extends Thread {
 
                         Progresivo.setProgresivoMasUno(Main.getInstance().getEstacionamiento().getCaseta(),newAuto.getSerie());
                         
+                        
+                        
                         enviarBoleto();
                         enviarAuto(newAuto);
                         enviarEmpleado(empleado);
                         enviarNombreEstacioneminto(Main.getInstance().getEstacionamiento().getDescripcion());
                         
                         Main.getInstance().getTurnoActual().actualizar();
+                        Rest.sendTurnoDetalle( Main.getInstance().getTurnoActual().getDetallesTurno().get(newAuto.getSerie()), Main.getInstance().getEstacionamiento());
                         // Guardo entrada y actualizo progresivo
                         newAuto.guardar();
                         Rest.sendAuto(newAuto,Main.getInstance().getEstacionamiento());

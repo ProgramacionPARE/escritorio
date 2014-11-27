@@ -80,14 +80,14 @@ public class FrmEntradaValet extends javax.swing.JDialog {
                         txtFechaEntrada.getText(), txtHoraEntrada.getText(), "", txtModelo.getText(), "", turno.getId(), "0",
                         txtNotas.getText(), Seguridad.getClave(5),
                         estacionamiento.getCaseta().getId());
+                auto.setDentro(true);
                 //Aumento en uno los boletos generados
                 turno.getDetallesTurno().get(auto.getSerie()).setNoBol(turno.getDetallesTurno().get(auto.getSerie()).getNoBol() + 1);
                 //Actualizo el folio final en el turno
                 turno.getDetallesTurno().get(auto.getSerie()).setFolioFinal(turno.getDetallesTurno().get(auto.getSerie()).getFolioFinal() + 1);
-                turno.actualizar();
+               
                 // Guardo entrada y actualizo progresivo
-                auto.guardar();
-                Rest.sendAuto(auto, estacionamiento);
+                
                 Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(), auto.getSerie());
                 //Imprimo boletos
                 PrinterJob job = PrinterJob.getPrinterJob();
@@ -97,7 +97,11 @@ public class FrmEntradaValet extends javax.swing.JDialog {
                 new FrmP2BoletoLlaves(this, false,  job, auto, turno.getEmpleadoEntrada());
                 //Boleto Parabrisas
                 new FrmP3BoletoParabrisas(this, false, job, auto);
-
+               
+                turno.actualizar();
+                Rest.sendTurnoDetalle(  turno.getDetallesTurno().get(auto.getSerie()), Main.getInstance().getEstacionamiento());
+                auto.guardar();
+                Rest.sendAuto(auto, estacionamiento);
                 this.setVisible(false);
                 this.dispose();
             } catch (PrinterException ex) {
