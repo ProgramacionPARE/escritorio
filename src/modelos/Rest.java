@@ -261,9 +261,25 @@ public class Rest {
         while(iterator.hasNext()){
             sendAuto(iterator.next(),estacionamiento);
         }
+    }
+        
+    public static void sendTurnosOffline(Estacionamiento estacionamiento){
+        ArrayList<Turno> turnosOffline = Turno.getTurnosOffline();
+        Iterator<Turno> iterator = turnosOffline.iterator();
+        while(iterator.hasNext()){
+            sendTurno(iterator.next(),estacionamiento);
+        }
         
     }
     
+     public static void sendTurnoDetalleOffline(Estacionamiento estacionamiento){
+        ArrayList<TurnoDetalles> turnosOffline = TurnoDetalles.getTurnoDetalleOffline();
+        Iterator<TurnoDetalles> iterator = turnosOffline.iterator();
+        while(iterator.hasNext()){
+            sendTurnoDetalle(iterator.next(),estacionamiento);
+        }
+        
+    }
 }
 
 

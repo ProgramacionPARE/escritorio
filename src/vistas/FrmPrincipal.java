@@ -204,6 +204,8 @@ public class FrmPrincipal extends JFrame implements Runnable {
                 Main.getInstance().getServerBoleto().enviarTurnoAbierto();
         }
         Rest.sendAutosOffline(m.getEstacionamiento());
+        Rest.sendTurnosOffline(m.getEstacionamiento());
+        Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
         btnEstacionamiento.setEnabled(true);

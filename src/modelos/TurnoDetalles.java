@@ -16,6 +16,26 @@ import modelosReportesAux.DetallesMovimientoAvanzados;
 
 public class TurnoDetalles implements IDBModel{
 
+    
+    static ArrayList<TurnoDetalles> getTurnoDetalleOffline() {
+       ArrayList <TurnoDetalles> detalles= new ArrayList();
+        try {
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT * FROM detalle_turno where id_remoto is NULL");
+            ResultSet executeQuery = statement.executeQuery();
+            while (executeQuery.next()){
+                TurnoDetalles dt = TurnoDetalles.getById(executeQuery.getLong("id"));
+                detalles.add(dt);
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return detalles;
+    }
+
     private long id;
     private String idRemoto;
     private long idTurno;

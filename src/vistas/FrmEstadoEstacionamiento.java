@@ -177,7 +177,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
         modelRetiros.getDataVector().removeAllElements();
         modelRetiros.fireTableDataChanged();
         iterator = turnos.iterator();
-        while(iterator.hasNext()){
+       /* while(iterator.hasNext()){
             Turno turnoAux = iterator.next();
             
             ArrayList<RetiroParcial> retirosParciales = turnoAux.getRetirosParciales();
@@ -195,7 +195,7 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
             }
             this.tblRetiros.setModel(modelRetiros);
         }
-        
+                */
    
         //Autos
         int noAutosTabla=0;

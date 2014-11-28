@@ -16,6 +16,26 @@ import java.util.logging.Logger;
 
 public class Turno implements IDBModel {
 
+    static ArrayList<Turno> getTurnosOffline() {
+         ArrayList<Turno> turnos = new ArrayList<>();
+        try {
+           Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement  statement = connectionDB.
+            prepareStatement("SELECT id FROM turnos where id_remoto is NULL");
+        
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                turnos.add(getById(resultSet.getLong("id")));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return turnos;
+        
+    }
+
 
     private long id;
     private String idRemoto;
