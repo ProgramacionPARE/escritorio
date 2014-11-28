@@ -89,169 +89,198 @@ public class Rest {
         return "";
     }
 
-    public static String sendAuto(Auto auto, Estacionamiento estacionamiento) {
-        HttpClient client = HttpClients.custom().build();
+    public static String sendAuto(final Auto auto,final Estacionamiento estacionamiento) {
+          new Thread(new Runnable() {
 
-        try {
-            List<NameValuePair> resp = new ArrayList<>(1);
-            resp.add(new BasicNameValuePair("id", String.valueOf(auto.getId())));
-            resp.add(new BasicNameValuePair("serie", auto.getSerie()));
-            resp.add(new BasicNameValuePair("tarifa", String.valueOf(auto.getTarifa().getId())));
-            resp.add(new BasicNameValuePair("progresivo", auto.getProgresivo()));
-            resp.add(new BasicNameValuePair("entrada_salida", auto.isDentro() ? "E" : "S"));
-            resp.add(new BasicNameValuePair("fecha_entrada", auto.getFechaEntrada()));
-            resp.add(new BasicNameValuePair("hora_entrada", auto.getHoraEntrada()));
-            resp.add(new BasicNameValuePair("fecha_salida", auto.getFechaSalida()));
-            resp.add(new BasicNameValuePair("hora_salida", auto.getHoraSalida()));
-            resp.add(new BasicNameValuePair("id_caseta", String.valueOf(auto.getCaseta().getId())));
-            resp.add(new BasicNameValuePair("id_estacionamiento", estacionamiento.getIdRemoto()));
-            resp.add(new BasicNameValuePair("monto", String.valueOf(auto.getMontoTangible())));
-            resp.add(new BasicNameValuePair("horas", String.valueOf(auto.getHorasTangibles())));
-            resp.add(new BasicNameValuePair("minutos", String.valueOf(auto.getMinutosTangibles())));
-            resp.add(new BasicNameValuePair("id_turno_entrada", String.valueOf(auto.getTurnoEntrada().getId())));
-            if (!auto.isDentro()) {
-                resp.add(new BasicNameValuePair("id_turno_salida", String.valueOf(auto.getTurnoSalida().getId())));
-            }
-            resp.add(new BasicNameValuePair("boleto_perdido", auto.isBoletoPerdido() ? "SI" : "NO"));
-            resp.add(new BasicNameValuePair("boleto_cancelado", auto.isBoletoCancelado() ? "SI" : "NO"));
-            resp.add(new BasicNameValuePair("boleto_manual", auto.isBoletoManual() ? "SI" : "NO"));
-            resp.add(new BasicNameValuePair("boleto_contra", auto.isBoletoContra() ? "SI" : "NO"));
-            resp.add(new BasicNameValuePair("marca", auto.getMarca()));
-            resp.add(new BasicNameValuePair("modelo", auto.getModelo()));
-            HttpUriRequest request;
-            if (auto.getIdRemoto() == null) {
-                request = RequestBuilder.post().setUri(url + "api/autos")
-                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
-                        .setEntity(new UrlEncodedFormEntity(resp)).build();
-            } else {
-                request = RequestBuilder.put().setUri(url + "api/autos/" + auto.getIdRemoto())
-                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
-                        .setEntity(new UrlEncodedFormEntity(resp)).build();
-            }
-
-            HttpResponse response = client.execute(request);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String data = "";
-            JSONParser parser = new JSONParser();
-            while ((data = rd.readLine()) != null) {
+            @Override
+            public void run() {
+                HttpClient client = HttpClients.custom().build();
                 try {
-                    JSONObject e = (JSONObject) parser.parse(data);
-                    auto.setIdRemoto((String) e.get("_id"));
-                    auto.actualizar();
+                    List<NameValuePair> resp = new ArrayList<>(1);
+                    resp.add(new BasicNameValuePair("id", String.valueOf(auto.getId())));
+                    resp.add(new BasicNameValuePair("serie", auto.getSerie()));
+                    resp.add(new BasicNameValuePair("tarifa", String.valueOf(auto.getTarifa().getId())));
+                    resp.add(new BasicNameValuePair("progresivo", auto.getProgresivo()));
+                    resp.add(new BasicNameValuePair("entrada_salida", auto.isDentro() ? "E" : "S"));
+                    resp.add(new BasicNameValuePair("fecha_entrada", auto.getFechaEntrada()));
+                    resp.add(new BasicNameValuePair("hora_entrada", auto.getHoraEntrada()));
+                    resp.add(new BasicNameValuePair("fecha_salida", auto.getFechaSalida()));
+                    resp.add(new BasicNameValuePair("hora_salida", auto.getHoraSalida()));
+                    resp.add(new BasicNameValuePair("id_caseta", String.valueOf(auto.getCaseta().getId())));
+                    resp.add(new BasicNameValuePair("id_estacionamiento", estacionamiento.getIdRemoto()));
+                    resp.add(new BasicNameValuePair("monto", String.valueOf(auto.getMontoTangible())));
+                    resp.add(new BasicNameValuePair("horas", String.valueOf(auto.getHorasTangibles())));
+                    resp.add(new BasicNameValuePair("minutos", String.valueOf(auto.getMinutosTangibles())));
+                    resp.add(new BasicNameValuePair("id_turno_entrada", String.valueOf(auto.getTurnoEntrada().getId())));
+                    if (!auto.isDentro()) {
+                        resp.add(new BasicNameValuePair("id_turno_salida", String.valueOf(auto.getTurnoSalida().getId())));
+                    }
+                    resp.add(new BasicNameValuePair("boleto_perdido", auto.isBoletoPerdido() ? "SI" : "NO"));
+                    resp.add(new BasicNameValuePair("boleto_cancelado", auto.isBoletoCancelado() ? "SI" : "NO"));
+                    resp.add(new BasicNameValuePair("boleto_manual", auto.isBoletoManual() ? "SI" : "NO"));
+                    resp.add(new BasicNameValuePair("boleto_contra", auto.isBoletoContra() ? "SI" : "NO"));
+                    resp.add(new BasicNameValuePair("marca", auto.getMarca()));
+                    resp.add(new BasicNameValuePair("modelo", auto.getModelo()));
+                    HttpUriRequest request;
+                    if (auto.getIdRemoto() == null) {
+                        request = RequestBuilder.post().setUri(url + "api/autos")
+                                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
+                                .setEntity(new UrlEncodedFormEntity(resp)).build();
+                    } else {
+                        request = RequestBuilder.put().setUri(url + "api/autos/" + auto.getIdRemoto())
+                                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
+                                .setEntity(new UrlEncodedFormEntity(resp)).build();
+                    }
 
-                } catch (ParseException ex) {
-                    Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+                    HttpResponse response = client.execute(request);
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                    String data = "";
+                    JSONParser parser = new JSONParser();
+                    while ((data = rd.readLine()) != null) {
+                        try {
+                            JSONObject e = (JSONObject) parser.parse(data);
+                            auto.setIdRemoto((String) e.get("_id"));
+                            if(auto.isDentro())
+                                auto.setEstadoServidor(1);
+                            else 
+                                auto.setEstadoServidor(2);
+                            auto.actualizar();
+
+                        } catch (ParseException ex) {
+                            Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        System.out.println(data);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                System.out.println(data);
+
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }).start();
+         return "";
+    }
+
+    public static String sendTurno(final Turno turno,final Estacionamiento estacionamiento) {
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+               HttpClient client = HttpClients.custom().build();
+                try {
+                    List<NameValuePair> resp = new ArrayList<>(1);
+
+                    resp.add(new BasicNameValuePair("id", String.valueOf(turno.getId())));
+                    resp.add(new BasicNameValuePair("tipo_turno", turno.getTipoTurno()));
+                    resp.add(new BasicNameValuePair("fecha_apertura", turno.getFechaApertura()));
+                    resp.add(new BasicNameValuePair("hora_apertura", turno.getHoraApertura()));
+                    resp.add(new BasicNameValuePair("fecha_cierre", turno.getFechaCierre()));
+                    resp.add(new BasicNameValuePair("hora_cierre", turno.getHoraCierre()));
+                    resp.add(new BasicNameValuePair("id_estacionamiento", estacionamiento.getIdRemoto()));
+                    resp.add(new BasicNameValuePair("abierto_cerrado", turno.getHoraCierre()==null?"Abierto":"Cerrado"));
+
+                    HttpUriRequest request;
+                    if (turno.getIdRemoto() == null) {
+                        request = RequestBuilder.post().setUri(url + "api/turnos")
+                                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
+                                .setEntity(new UrlEncodedFormEntity(resp)).build();
+                    } else {
+                        request = RequestBuilder.put().setUri(url + "api/turnos/" + turno.getIdRemoto())
+                                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
+                                .setEntity(new UrlEncodedFormEntity(resp)).build();
+                    }
+
+                    HttpResponse response = client.execute(request);
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                    String data = "";
+                    JSONParser parser = new JSONParser();
+                    while ((data = rd.readLine()) != null) {
+                        try {
+                            JSONObject e = (JSONObject) parser.parse(data);
+                            turno.setIdRemoto((String) e.get("_id"));
+                            if(turno.getFechaCierre()==null)
+                                turno.setEstadoServidor(1);
+                            else 
+                                turno.setEstadoServidor(2);
+                            turno.actualizar();
+
+                        } catch (ParseException ex) {
+                            Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        System.out.println(data);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        
         return "";
     }
 
-    public static String sendTurno(Turno turno, Estacionamiento estacionamiento) {
-        HttpClient client = HttpClients.custom().build();
-        try {
-            List<NameValuePair> resp = new ArrayList<>(1);
+    public static String sendTurnoDetalle(final TurnoDetalles turnoDetalle,final Estacionamiento estacionamiento) {
+          new Thread(new Runnable() {
 
-            resp.add(new BasicNameValuePair("id", String.valueOf(turno.getId())));
-            resp.add(new BasicNameValuePair("tipo_turno", turno.getTipoTurno()));
-            resp.add(new BasicNameValuePair("fecha_apertura", turno.getFechaApertura()));
-            resp.add(new BasicNameValuePair("hora_apertura", turno.getHoraApertura()));
-            resp.add(new BasicNameValuePair("fecha_cierre", turno.getFechaCierre()));
-            resp.add(new BasicNameValuePair("hora_cierre", turno.getHoraCierre()));
-            resp.add(new BasicNameValuePair("id_estacionamiento", estacionamiento.getIdRemoto()));
-            resp.add(new BasicNameValuePair("abierto_cerrado", turno.getHoraCierre()==null?"Abierto":"Cerrado"));
-            
-            HttpUriRequest request;
-            if (turno.getIdRemoto() == null) {
-                request = RequestBuilder.post().setUri(url + "api/turnos")
-                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
-                        .setEntity(new UrlEncodedFormEntity(resp)).build();
-            } else {
-                request = RequestBuilder.put().setUri(url + "api/turnos/" + turno.getIdRemoto())
-                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
-                        .setEntity(new UrlEncodedFormEntity(resp)).build();
-            }
-
-            HttpResponse response = client.execute(request);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String data = "";
-            JSONParser parser = new JSONParser();
-            while ((data = rd.readLine()) != null) {
+            @Override
+            public void run() {
+                HttpClient client = HttpClients.custom().build();
                 try {
-                    JSONObject e = (JSONObject) parser.parse(data);
-                    turno.setIdRemoto((String) e.get("_id"));
-                    turno.actualizar();
+                    List<NameValuePair> resp = new ArrayList<>(1);
 
-                } catch (ParseException ex) {
-                    Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+                    resp.add(new BasicNameValuePair("id", String.valueOf(turnoDetalle.getId())));
+                    resp.add(new BasicNameValuePair("id_turno", String.valueOf(turnoDetalle.getIdTurno())));
+                    resp.add(new BasicNameValuePair("serie", turnoDetalle.getSerie()));
+                    resp.add(new BasicNameValuePair("folio_inicial", String.valueOf(turnoDetalle.getFolioInicial())));
+                    resp.add(new BasicNameValuePair("folio_final", String.valueOf(turnoDetalle.getFolioFinal())));
+                    resp.add(new BasicNameValuePair("no_bol", String.valueOf(turnoDetalle.getNoBol())));
+                    resp.add(new BasicNameValuePair("no_bol_turno_a", String.valueOf(turnoDetalle.getNoBolTurnoA())));
+                    resp.add(new BasicNameValuePair("no_bol_cancelados", String.valueOf(turnoDetalle.getNoBolCancelados())));
+                    resp.add(new BasicNameValuePair("no_bol_perdidos", String.valueOf(turnoDetalle.getNoBolPerdidos())));
+                    resp.add(new BasicNameValuePair("no_bol_cobrados", String.valueOf(turnoDetalle.getNoBolCobrados())));
+                    resp.add(new BasicNameValuePair("no_bol_contra", String.valueOf(turnoDetalle.getNoBolContra())));
+
+                    resp.add(new BasicNameValuePair("no_bol_turno_s", String.valueOf(turnoDetalle.getNoBolTurnoS())));
+                    resp.add(new BasicNameValuePair("total", String.valueOf(turnoDetalle.getTotal())));
+                    resp.add(new BasicNameValuePair("id_estacionamiento", estacionamiento.getIdRemoto()));
+
+                    HttpUriRequest request;
+                    if (turnoDetalle.getIdRemoto() == null) {
+                        request = RequestBuilder.post().setUri(url + "api/detalleTurnos")
+                                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
+                                .setEntity(new UrlEncodedFormEntity(resp)).build();
+                    } else {
+                        request = RequestBuilder.put().setUri(url + "api/detalleTurnos/" + turnoDetalle.getIdRemoto())
+                                .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
+                                .setEntity(new UrlEncodedFormEntity(resp)).build();
+                    }
+
+                    HttpResponse response = client.execute(request);
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                    String data = "";
+                    JSONParser parser = new JSONParser();
+                    while ((data = rd.readLine()) != null) {
+                        try {
+                            JSONObject e = (JSONObject) parser.parse(data);
+                            turnoDetalle.setIdRemoto((String) e.get("_id"));
+
+                            turnoDetalle.actualizar();
+
+                        } catch (ParseException ex) {
+                            Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        System.out.println(data);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                System.out.println(data);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    public static String sendTurnoDetalle(TurnoDetalles turnoDetalle, Estacionamiento estacionamiento) {
-        HttpClient client = HttpClients.custom().build();
-        try {
-            List<NameValuePair> resp = new ArrayList<>(1);
-
-            resp.add(new BasicNameValuePair("id", String.valueOf(turnoDetalle.getId())));
-            resp.add(new BasicNameValuePair("id_turno", String.valueOf(turnoDetalle.getIdTurno())));
-            resp.add(new BasicNameValuePair("serie", turnoDetalle.getSerie()));
-            resp.add(new BasicNameValuePair("folio_inicial", String.valueOf(turnoDetalle.getFolioInicial())));
-            resp.add(new BasicNameValuePair("folio_final", String.valueOf(turnoDetalle.getFolioFinal())));
-            resp.add(new BasicNameValuePair("no_bol", String.valueOf(turnoDetalle.getNoBol())));
-            resp.add(new BasicNameValuePair("no_bol_turno_a", String.valueOf(turnoDetalle.getNoBolTurnoA())));
-            resp.add(new BasicNameValuePair("no_bol_cancelados", String.valueOf(turnoDetalle.getNoBolCancelados())));
-            resp.add(new BasicNameValuePair("no_bol_perdidos", String.valueOf(turnoDetalle.getNoBolPerdidos())));
-            resp.add(new BasicNameValuePair("no_bol_cobrados", String.valueOf(turnoDetalle.getNoBolCobrados())));
-            resp.add(new BasicNameValuePair("no_bol_contra", String.valueOf(turnoDetalle.getNoBolContra())));
-
-            resp.add(new BasicNameValuePair("no_bol_turno_s", String.valueOf(turnoDetalle.getNoBolTurnoS())));
-            resp.add(new BasicNameValuePair("total", String.valueOf(turnoDetalle.getTotal())));
-            resp.add(new BasicNameValuePair("id_estacionamiento", estacionamiento.getIdRemoto()));
-
-            HttpUriRequest request;
-            if (turnoDetalle.getIdRemoto() == null) {
-                request = RequestBuilder.post().setUri(url + "api/detalleTurnos")
-                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
-                        .setEntity(new UrlEncodedFormEntity(resp)).build();
-            } else {
-                request = RequestBuilder.put().setUri(url + "api/detalleTurnos/" + turnoDetalle.getIdRemoto())
-                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + estacionamiento.getToken())
-                        .setEntity(new UrlEncodedFormEntity(resp)).build();
-            }
-
-            HttpResponse response = client.execute(request);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String data = "";
-            JSONParser parser = new JSONParser();
-            while ((data = rd.readLine()) != null) {
-                try {
-                    JSONObject e = (JSONObject) parser.parse(data);
-                    turnoDetalle.setIdRemoto((String) e.get("_id"));
-                    turnoDetalle.actualizar();
-
-                } catch (ParseException ex) {
-                    Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                System.out.println(data);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }).start();
+        
         return "";
     }
     
@@ -259,7 +288,12 @@ public class Rest {
         ArrayList<Auto> autosOffline = Auto.getAutosOffline();
         Iterator<Auto> iterator = autosOffline.iterator();
         while(iterator.hasNext()){
-            sendAuto(iterator.next(),estacionamiento);
+            try {
+                sendAuto(iterator.next(),estacionamiento);
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
         
@@ -267,7 +301,12 @@ public class Rest {
         ArrayList<Turno> turnosOffline = Turno.getTurnosOffline();
         Iterator<Turno> iterator = turnosOffline.iterator();
         while(iterator.hasNext()){
-            sendTurno(iterator.next(),estacionamiento);
+             try {
+                 sendTurno(iterator.next(),estacionamiento);
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
     }
@@ -276,9 +315,13 @@ public class Rest {
         ArrayList<TurnoDetalles> turnosOffline = TurnoDetalles.getTurnoDetalleOffline();
         Iterator<TurnoDetalles> iterator = turnosOffline.iterator();
         while(iterator.hasNext()){
-            sendTurnoDetalle(iterator.next(),estacionamiento);
-        }
-        
+            try {
+                sendTurnoDetalle(iterator.next(),estacionamiento);
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+        }    
     }
 }
 

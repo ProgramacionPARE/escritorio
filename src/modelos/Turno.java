@@ -48,6 +48,7 @@ public class Turno implements IDBModel {
     private String fechaCierre;
     private String horaCierre;
     private boolean activo;
+    private int estadoServidor;
     private Estacionamiento estacionamiento;
     private HashMap<String,TurnoDetalles> detallesTurno;
     private ArrayList <RetiroParcial> retirosParciales;
@@ -72,7 +73,8 @@ public class Turno implements IDBModel {
     }
 
     public Turno(long id, long empleadoEntrada, long empleadoSalida, String tipoTurno, 
-            String fechaApertura, String horaApertura, String fechaCierre, String horaCierre,boolean activo,String idRemoto) {
+            String fechaApertura, String horaApertura, String fechaCierre, String horaCierre,
+            boolean activo,String idRemoto,int estado_servidor) {
         m = Main.getInstance();
         estacionamiento = m.getEstacionamiento();
         this.id = id;
@@ -85,6 +87,7 @@ public class Turno implements IDBModel {
         this.horaCierre = horaCierre;
         this.activo = activo;
         this.idRemoto = idRemoto;
+        this.estadoServidor = estadoServidor;
     }
     
     public void inicializarTurno(String tipoTurno){
@@ -219,7 +222,9 @@ public class Turno implements IDBModel {
                             resultSet.getString("fecha_cierre"),
                             resultSet.getString("hora_cierre"),
                             resultSet.getString("activo").equals("SI"),
-                            resultSet.getString("id_remoto")
+                            resultSet.getString("id_remoto"),
+                            resultSet.getInt("estado_servidor")
+                            
                     );
                     
                     turno.setDetallesTurno(TurnoDetalles.getByTurnoId(turno.getId()));
@@ -379,6 +384,16 @@ public class Turno implements IDBModel {
         this.retirosParciales = retirosParciales;
     }
 
+    public int getEstadoServidor() {
+        return estadoServidor;
+    }
+
+    public void setEstadoServidor(int estadoServidor) {
+        this.estadoServidor = estadoServidor;
+    }
+    
+    
+    
     @Override
     public void guardar() {
          try {
@@ -411,12 +426,13 @@ public class Turno implements IDBModel {
             Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE turnos SET `fecha_cierre`=? ,`hora_cierre` =?, "
-                    + "`tipo_turno` =? ,`id_remoto` =?  WHERE `id`=?");
+                    + "`tipo_turno` =? ,`id_remoto` =?,`estado_servidor` =?,`id_remoto` =?  WHERE `id`=?");
             statement.setString(1, fechaCierre);
             statement.setString(2, horaCierre);
             statement.setString(3, tipoTurno);
-            statement.setString(4, idRemoto);
-            statement.setLong(5, id);
+            statement.setInt(4, estadoServidor);
+            statement.setString(5, idRemoto);
+            statement.setLong(6, id);
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -450,8 +466,8 @@ public class Turno implements IDBModel {
     public void eliminar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }
+ 
 
 /*  public static Turno getByIdAuditoria(Long id){
         Turno turno = new Turno();

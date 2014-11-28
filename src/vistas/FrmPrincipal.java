@@ -31,6 +31,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
 
     private Main m;
     private Thread t1;
+    private boolean turnoAbierto;
     static private ArrayList<HistorialVentana> ventanas = new ArrayList();
 
     public FrmPrincipal(Empleado empleado) {
@@ -73,6 +74,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
         m.setEstacionamiento(Estacionamiento.getDatos());
         m.setCaja(Caja.getByCaseta(m.getEstacionamiento().getCaseta().getId()));
         t1 = new Thread (this);
+        turnoAbierto = false;
         Rest.login(m.getEstacionamiento());
         Rest.sendEstacionameinto(m.getEstacionamiento());
         validaPermisos();
@@ -185,7 +187,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
                     m.getTurnoActual().setTipoTurno(tipo);
                     m.getTurnoActual().actualizar();
                     Rest.sendTurno( m.getTurnoActual(),  m.getEstacionamiento());
-                  
+                    turnoAbierto = true;
                     if(Main.getInstance().getServerPantalla() != null)
                         Main.getInstance().getServerPantalla().enviarTurnoAbierto();
                     if(Main.getInstance().getServerBoleto() != null)
@@ -219,10 +221,10 @@ public class FrmPrincipal extends JFrame implements Runnable {
         btnReportes.setVisible(true);
         btnUsuarios.setVisible(true);
         btnConfiguracion.setVisible(true);
-/*
-        switch (empleado.getTipoPuesto()) {
+
+        switch ( m.getEmpleadoSesion().getTipoPuesto()) {
             case "Cajero":
-                if (!turnoAbrierto) {
+                if (!turnoAbierto) {
                     btnAparcamiento.setVisible(false);
                     btnCaja.setVisible(false);
                 }
@@ -232,7 +234,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
                 btnConfiguracion.setVisible(false);
                 break;
             case "Encargado":
-                if (!turnoAbrierto) {
+                if (!turnoAbierto) {
                     btnAparcamiento.setVisible(false);
                     btnCaja.setVisible(false);
                 }
@@ -241,29 +243,29 @@ public class FrmPrincipal extends JFrame implements Runnable {
                 btnConfiguracion.setVisible(false);
                 break;
             case "Supervisor":
-                if (!turnoAbrierto) {
+                if (!turnoAbierto) {
                     btnAparcamiento.setVisible(false);
                     btnCaja.setVisible(false);
                 }
                 btnConfiguracion.setVisible(false);
                 break;
             case "Auditor":
-                if (!turnoAbrierto) {
+                if (!turnoAbierto) {
                     btnAparcamiento.setVisible(false);
                     btnCaja.setVisible(false);
                 }
                 btnConfiguracion.setVisible(false);
                 break;
             case "Administrador":
-                if (!turnoAbrierto) {
+                if (!turnoAbierto) {
                     btnAparcamiento.setVisible(false);
                     btnCaja.setVisible(false);
                 }
                 break;
         }
-        btnCerrarSesion.setText("<html><b>Cerrar sesion de " + empleado.getUsuario() + "</b><br><center>(Esc)</center></html>");
+        btnCerrarSesion.setText("<html><b>Cerrar sesion de " + m.getEmpleadoSesion().getUsuario() + "</b><br><center>(Esc)</center></html>");
         btnCerrarSesion.setVisible(true);
-        */
+        
     }
 
     @Action
