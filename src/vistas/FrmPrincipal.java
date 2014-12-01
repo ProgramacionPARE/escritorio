@@ -205,9 +205,7 @@ public class FrmPrincipal extends JFrame implements Runnable {
             if(Main.getInstance().getServerBoleto() != null)
                 Main.getInstance().getServerBoleto().enviarTurnoAbierto();
         }
-        Rest.sendAutosOffline(m.getEstacionamiento());
-        Rest.sendTurnosOffline(m.getEstacionamiento());
-        Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
+        new Thread(this).start();
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
         btnEstacionamiento.setEnabled(true);
@@ -309,7 +307,9 @@ public class FrmPrincipal extends JFrame implements Runnable {
     
      @Override
     public void run() {
-     
+         Rest.sendAutosOffline(m.getEstacionamiento());
+         Rest.sendTurnosOffline(m.getEstacionamiento());
+         Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
     }
 
 //    @Action

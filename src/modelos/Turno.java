@@ -426,12 +426,12 @@ public class Turno implements IDBModel {
             Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
             prepareStatement("UPDATE turnos SET `fecha_cierre`=? ,`hora_cierre` =?, "
-                    + "`tipo_turno` =? ,`id_remoto` =?,`estado_servidor` =?,`id_remoto` =?  WHERE `id`=?");
+                    + "`tipo_turno` =? ,`id_remoto` =?,`estado_servidor` =?  WHERE `id`=?");
             statement.setString(1, fechaCierre);
             statement.setString(2, horaCierre);
             statement.setString(3, tipoTurno);
-            statement.setInt(4, estadoServidor);
-            statement.setString(5, idRemoto);
+            statement.setString(4, idRemoto);
+            statement.setInt(5, estadoServidor);
             statement.setLong(6, id);
             statement.executeUpdate();
             conexion.cerrarConexion();

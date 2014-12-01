@@ -90,10 +90,10 @@ public class Rest {
     }
 
     public static String sendAuto(final Auto auto,final Estacionamiento estacionamiento) {
-          new Thread(new Runnable() {
-
-            @Override
-            public void run() {
+//          new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
                 HttpClient client = HttpClients.custom().build();
                 try {
                     List<NameValuePair> resp = new ArrayList<>(1);
@@ -156,17 +156,17 @@ public class Rest {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-            }
-        }).start();
+//
+//            }
+//        }).start();
          return "";
     }
 
     public static String sendTurno(final Turno turno,final Estacionamiento estacionamiento) {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
+//        new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
                HttpClient client = HttpClients.custom().build();
                 try {
                     List<NameValuePair> resp = new ArrayList<>(1);
@@ -215,17 +215,17 @@ public class Rest {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
+//            }
+//        }).start();
         
         return "";
     }
 
     public static String sendTurnoDetalle(final TurnoDetalles turnoDetalle,final Estacionamiento estacionamiento) {
-          new Thread(new Runnable() {
-
-            @Override
-            public void run() {
+//          new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
                 HttpClient client = HttpClients.custom().build();
                 try {
                     List<NameValuePair> resp = new ArrayList<>(1);
@@ -278,50 +278,64 @@ public class Rest {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
+//            }
+//        }).start();
         
         return "";
     }
     
-    public static void sendAutosOffline(Estacionamiento estacionamiento){
-        ArrayList<Auto> autosOffline = Auto.getAutosOffline();
-        Iterator<Auto> iterator = autosOffline.iterator();
-        while(iterator.hasNext()){
-            try {
-                sendAuto(iterator.next(),estacionamiento);
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+    public static void sendAutosOffline(final Estacionamiento estacionamiento){
+        
+//        new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+                ArrayList<Auto> autosOffline = Auto.getAutosOffline();
+                Iterator<Auto> iterator = autosOffline.iterator();
+                while(iterator.hasNext()){
+//                    try {
+                        sendAuto(iterator.next(),estacionamiento);
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException ex) {
+//                        Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+                }
+//                }}).start();
     }
         
-    public static void sendTurnosOffline(Estacionamiento estacionamiento){
-        ArrayList<Turno> turnosOffline = Turno.getTurnosOffline();
-        Iterator<Turno> iterator = turnosOffline.iterator();
-        while(iterator.hasNext()){
-             try {
-                 sendTurno(iterator.next(),estacionamiento);
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
+    public static void sendTurnosOffline(final Estacionamiento estacionamiento){
+//        new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+                ArrayList<Turno> turnosOffline = Turno.getTurnosOffline();
+                Iterator<Turno> iterator = turnosOffline.iterator();
+                while(iterator.hasNext()){
+                     try {
+                         sendTurno(iterator.next(),estacionamiento);
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+//         }}).start();
     }
     
-     public static void sendTurnoDetalleOffline(Estacionamiento estacionamiento){
-        ArrayList<TurnoDetalles> turnosOffline = TurnoDetalles.getTurnoDetalleOffline();
-        Iterator<TurnoDetalles> iterator = turnosOffline.iterator();
-        while(iterator.hasNext()){
-            try {
-                sendTurnoDetalle(iterator.next(),estacionamiento);
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
-            }  
-        }    
+     public static void sendTurnoDetalleOffline( final Estacionamiento estacionamiento){
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+                ArrayList<TurnoDetalles> turnosOffline = TurnoDetalles.getTurnoDetalleOffline();
+               Iterator<TurnoDetalles> iterator = turnosOffline.iterator();
+               while(iterator.hasNext()){
+                   try {
+                       sendTurnoDetalle(iterator.next(),estacionamiento);
+                       Thread.sleep(500);
+                   } catch (InterruptedException ex) {
+                       Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
+                   }  
+               }  
+//         }}).start();
     }
 }
 

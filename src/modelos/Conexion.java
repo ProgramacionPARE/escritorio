@@ -8,15 +8,17 @@ import java.util.logging.Logger;
 
 public class Conexion {
 
-    private static Conexion CONEXION = new Conexion();
     private  Connection connection;
-
+    private static int no = 0;
+    
     private Conexion() {
-        
     }
 
     public static Conexion getInstance() {
-        return CONEXION;
+        no++;
+       
+        return  new Conexion();
+       
     }
 
     public  Connection getConnection() {
@@ -25,7 +27,10 @@ public class Conexion {
             String servidor = "jdbc:mysql://" + Configuracion.getInstancia().getIp() + "/paredb";
             String usuarioDB = "root";
             String passwordDB = "#parePROGRAMACIONdb";
+            
             this.connection = DriverManager.getConnection(servidor, usuarioDB, passwordDB);
+
+          
         } catch (ClassNotFoundException | SQLException ex) {
             ex.printStackTrace();
         } 
@@ -36,9 +41,18 @@ public class Conexion {
         this.connection = connection;
     }
     
+
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize(); //To change body of generated methods, choose Tools | Templates.
+         no--;
+    }
+    
     public void cerrarConexion(){
         try {
             this.connection.close();
+
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
