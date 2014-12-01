@@ -9,13 +9,13 @@ import java.util.logging.Logger;
 public class Conexion {
 
     private  Connection connection;
-    private static int no = 0;
+    //private static int no = 0;
     
     private Conexion() {
     }
 
     public static Conexion getInstance() {
-        no++;
+        //no++;
        
         return  new Conexion();
        
@@ -43,11 +43,11 @@ public class Conexion {
     
 
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize(); //To change body of generated methods, choose Tools | Templates.
-         no--;
-    }
+//    @Override
+//    protected void finalize() throws Throwable {
+//        super.finalize(); //To change body of generated methods, choose Tools | Templates.
+//         no--;
+//    }
     
     public void cerrarConexion(){
         try {

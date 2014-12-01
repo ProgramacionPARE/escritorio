@@ -1035,7 +1035,7 @@ public class Auto implements Serializable{
             Conexion conexion = Conexion.getInstance();
             Connection connectionDB = conexion.getConnection();
             PreparedStatement statement = connectionDB.
-                    prepareStatement("SELECT * FROM autos where id_remoto is null");
+                    prepareStatement("SELECT * FROM autos where (id_remoto is null) or (id_remoto = 1 and entrada_salida = 'S') ");
 
             ResultSet executeQuery = statement.executeQuery();
             while (executeQuery.next()) {

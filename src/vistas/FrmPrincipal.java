@@ -27,7 +27,7 @@ import modelos.Rest;
 import modelos.Turno;
 import org.jdesktop.application.Action;
 
-public class FrmPrincipal extends JFrame implements Runnable {
+public class FrmPrincipal extends JFrame {
 
     private Main m;
     private Thread t1;
@@ -73,7 +73,6 @@ public class FrmPrincipal extends JFrame implements Runnable {
     private void iniciaOtrosComponentes() {
         m.setEstacionamiento(Estacionamiento.getDatos());
         m.setCaja(Caja.getByCaseta(m.getEstacionamiento().getCaseta().getId()));
-        t1 = new Thread (this);
         turnoAbierto = false;
         Rest.login(m.getEstacionamiento());
         Rest.sendEstacionameinto(m.getEstacionamiento());
@@ -205,7 +204,9 @@ public class FrmPrincipal extends JFrame implements Runnable {
             if(Main.getInstance().getServerBoleto() != null)
                 Main.getInstance().getServerBoleto().enviarTurnoAbierto();
         }
-        new Thread(this).start();
+        Rest.sendAutosOffline(m.getEstacionamiento());
+        Rest.sendTurnosOffline(m.getEstacionamiento());
+        Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
         btnEstacionamiento.setEnabled(true);
@@ -305,12 +306,12 @@ public class FrmPrincipal extends JFrame implements Runnable {
         }
     }
     
-     @Override
-    public void run() {
-         Rest.sendAutosOffline(m.getEstacionamiento());
-         Rest.sendTurnosOffline(m.getEstacionamiento());
-         Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
-    }
+//     @Override
+//    public void run() {
+//         Rest.sendAutosOffline(m.getEstacionamiento());
+//         Rest.sendTurnosOffline(m.getEstacionamiento());
+//         Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
+//    }
 
 //    @Action
 //    public void cerrarTurno(){
