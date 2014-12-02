@@ -76,6 +76,9 @@ public class FrmPrincipal extends JFrame {
         turnoAbierto = false;
         Rest.login(m.getEstacionamiento());
         Rest.sendEstacionameinto(m.getEstacionamiento());
+        Rest.sendAutosOffline(m.getEstacionamiento());
+        Rest.sendTurnosOffline(m.getEstacionamiento());
+        Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
         validaPermisos();
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "parking");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "caja");
@@ -203,10 +206,9 @@ public class FrmPrincipal extends JFrame {
                 Main.getInstance().getServerPantalla().enviarTurnoAbierto();
             if(Main.getInstance().getServerBoleto() != null)
                 Main.getInstance().getServerBoleto().enviarTurnoAbierto();
+            turnoAbierto = true;
         }
-        Rest.sendAutosOffline(m.getEstacionamiento());
-        Rest.sendTurnosOffline(m.getEstacionamiento());
-        Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
+        
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
         btnEstacionamiento.setEnabled(true);
