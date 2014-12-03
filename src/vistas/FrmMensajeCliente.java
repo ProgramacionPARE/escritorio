@@ -12,7 +12,6 @@ import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
-import modelos.Auto;
 import modelos.Estacionamiento;
 import modelos.Turno;
 

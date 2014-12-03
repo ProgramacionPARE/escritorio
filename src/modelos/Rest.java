@@ -45,7 +45,6 @@ public class Rest {
                 JSONObject token = (JSONObject) JSONValue.parse(data);
                 estacionamiento.setToken((String) token.get("token"));
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -140,14 +139,18 @@ public class Rest {
                     JSONParser parser = new JSONParser();
                     while ((data = rd.readLine()) != null) {
                         try {
-                            JSONObject e = (JSONObject) parser.parse(data);
-                            auto.setIdRemoto((String) e.get("_id"));
-                            if(auto.isDentro())
-                                auto.setEstadoServidor(1);
-                            else 
-                                auto.setEstadoServidor(2);
-                            auto.actualizar();
-
+                            if(data.equals("Unauthorized")){
+                                login(estacionamiento);
+                                sendAuto(auto,estacionamiento);
+                            }else{
+                                JSONObject e = (JSONObject) parser.parse(data);
+                                auto.setIdRemoto((String) e.get("_id"));
+                                if(auto.isDentro())
+                                    auto.setEstadoServidor(1);
+                                else 
+                                    auto.setEstadoServidor(2);
+                                auto.actualizar();
+                            }
                         } catch (ParseException ex) {
                             Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -199,6 +202,10 @@ public class Rest {
                     JSONParser parser = new JSONParser();
                     while ((data = rd.readLine()) != null) {
                         try {
+                             if(data.equals("Unauthorized")){
+                                login(estacionamiento);
+                                sendTurno( turno, estacionamiento);
+                            }else{
                             JSONObject e = (JSONObject) parser.parse(data);
                             turno.setIdRemoto((String) e.get("_id"));
                             if(turno.getFechaCierre()==null)
@@ -206,7 +213,7 @@ public class Rest {
                             else 
                                 turno.setEstadoServidor(2);
                             turno.actualizar();
-
+                             }
                         } catch (ParseException ex) {
                             Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -265,11 +272,15 @@ public class Rest {
                     JSONParser parser = new JSONParser();
                     while ((data = rd.readLine()) != null) {
                         try {
-                            JSONObject e = (JSONObject) parser.parse(data);
-                            turnoDetalle.setIdRemoto((String) e.get("_id"));
+                            if(data.equals("Unauthorized")){
+                                login(estacionamiento);
+                                sendTurnoDetalle(turnoDetalle,estacionamiento);
+                            }else{
+                                JSONObject e = (JSONObject) parser.parse(data);
+                                turnoDetalle.setIdRemoto((String) e.get("_id"));
 
-                            turnoDetalle.actualizar();
-
+                                turnoDetalle.actualizar();
+                            }
                         } catch (ParseException ex) {
                             Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
                         }

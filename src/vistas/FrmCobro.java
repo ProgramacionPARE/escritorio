@@ -432,7 +432,7 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
     }//GEN-LAST:event_txtDineroPagadoActionPerformed
 
     private void btnDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescuentoActionPerformed
-        new FrmLeerCodigoBarrasDescuento(parent,true,this);        // TODO add your handling code here:
+        new FrmLeerCodigoBarrasDescuento(parent,true,this);       
     }//GEN-LAST:event_btnDescuentoActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
