@@ -21,6 +21,8 @@ public class Main {
     private ArrayList<ServerAcept> serverAcept;
     private ServerBoleto serverBoleto;
     private ServerPantalla serverPantalla;
+    
+    private ArrayList<ClienteMonitor> clienteMonitor;
     private ClienteBoleto clienteBoleto;
     private ClientePantalla clientePantalla;
     
@@ -103,6 +105,14 @@ public class Main {
 
     public void setClientePantalla(ClientePantalla clientePantalla) {
         this.clientePantalla = clientePantalla;
+    }
+
+    public ArrayList<ClienteMonitor> getClienteMonitor() {
+        return clienteMonitor;
+    }
+
+    public void setClienteMonitor(ArrayList<ClienteMonitor> clienteMonitor) {
+        this.clienteMonitor = clienteMonitor;
     }
     
     

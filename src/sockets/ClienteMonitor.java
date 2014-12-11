@@ -30,7 +30,7 @@ import vistas.formatos.FrmP3BoletoParabrisas;
  *
  * @author sistema
  */
-public class ClienteBoleto extends Thread{
+public class ClienteMonitor extends Thread{
 
     Socket socket;
     private ObjectInputStream entrada;
@@ -40,12 +40,11 @@ public class ClienteBoleto extends Thread{
     FrmLeerCodigoBarrasTerminal frmCodigoBarras;
     FrmCobroCliente frmCobroCliente;
     
-    public ClienteBoleto() {
-        frmErrorCarga = new FrmErrorCarga();
+    public ClienteMonitor(String ip) {
         this.cerrarHilo = false;
          while(!cerrarHilo){
             try {
-                socket = new Socket(Configuracion.getInstancia().getIp(),ServerAcept.NUM_SOCKET+ServerAcept.BOLETO);
+                socket = new Socket(ip,ServerAcept.NUM_SOCKET+ServerAcept.MONITOR);
                 if(socket!=null){
                     System.out.println("Conectado con exito");
                     frmErrorCarga.setLabel1Text("Error turno cerrado");
@@ -124,7 +123,7 @@ public class ClienteBoleto extends Thread{
                                 //Boleto Parabrisas
                                 new FrmP3BoletoParabrisas(null, false ,job,auto);
                             } catch (PrinterException | BarcodeException ex) {
-                                Logger.getLogger(ClienteBoleto.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(ClienteMonitor.class.getName()).log(Level.SEVERE, null, ex);
                             }
                            
                         }
@@ -134,7 +133,7 @@ public class ClienteBoleto extends Thread{
             apagarHilo();
             System.out.println("Cerrando cliente y esperando nueva instancia");
             frmErrorCarga.dispose();
-            new ClienteBoleto().start();
+            //new ClienteMonitor().start();
             //Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
         

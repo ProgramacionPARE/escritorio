@@ -9,66 +9,74 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Configuracion{
-    private static Configuracion DATOS = new Configuracion();
+public class Monitor{
+    private static Monitor DATOS = new Monitor();
     public static final String CAJA = "caja";
     public static final String EXPEDIDOR = "expedidor";
     public static final String CLIENTE = "cliente";
     public static final String MONITOR = "monitor";
-    private Configuracion(){
+    private ArrayList<MonitorEstacionameinto> estacionamientos;
+    
+    private Monitor(){
         try {
+            estacionamientos = new ArrayList();
             ConexionDatos conexion = ConexionDatos.getInstance();
             Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.prepareStatement("SELECT * FROM configuracion");
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
-                this.ip = resultSet.getString("ip");
-                this.terminal = resultSet.getString("terminal");
-                this.url = resultSet.getString("url");
+            while (resultSet.next()){
+                this.estacionamientos.add(new  MonitorEstacionameinto(resultSet.getString("ip"),resultSet.getString("nombre")));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public ArrayList<MonitorEstacionameinto> getEstacionamientos() {
+        return estacionamientos;
+    }
+
+    public void setEstacionamientos(ArrayList<MonitorEstacionameinto> estacionamientos) {
+        this.estacionamientos = estacionamientos;
+    }
     
-    private  String ip;
-    private String terminal;
-    private String url;
+           
+    class MonitorEstacionameinto{
+        private  String ip;
+        private String nombre;
 
-    public Configuracion(String ip) {
-        this.ip = ip;
-    }
+        public MonitorEstacionameinto(String ip, String nombre) {
+            this.ip = ip;
+            this.nombre = nombre;
+        }
 
-    public String getTerminal() {
-        return terminal;
-    }
+        public String getIp() {
+            return ip;
+        }
 
-    public void setTerminal(String terminal) {
-        this.terminal = terminal;
-    }
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
 
-    public String getIp() {
-        return ip;
-    }
+        public String getNombre() {
+            return nombre;
+        }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
+        public void setNombre(String nombre) {
+            this.nombre = nombre;
+        }
+        
+        
+    }        
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
+    
    
-    public static Configuracion getInstancia() {
+    public static Monitor getInstancia() {
         return DATOS;
     }
     

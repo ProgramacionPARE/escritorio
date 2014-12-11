@@ -32,6 +32,13 @@ public class Descuento {
         this.activo = activo;
         this.clave = Seguridad.getClave(6);
     }
+    public Descuento(long folio, float descuento, boolean activo,String clave) {
+        this.id = id;
+        this.folio = folio;
+        this.descuento = descuento;
+        this.activo = activo;
+        this.clave = clave;
+    }
 
     public String getClave() {
         return clave;

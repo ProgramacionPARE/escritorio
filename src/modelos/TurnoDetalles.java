@@ -263,8 +263,9 @@ public class TurnoDetalles implements IDBModel{
     public void cerrarTurno(String tipoCorte){
         ArrayList<Auto> autosPendientesTurnoActual = null;
         ArrayList<Auto> autosPendientesTotal = null;
+        if(tipoCorte.equals("corte"))
+            this.folioFinal =  Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), serie));
         
-        this.folioFinal =  Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), serie));
         this.noBol = this.folioFinal - this.folioInicial;
         if(tipoCorte.equals("corte")){
             Auto.guardarAutosPendientes(idTurno);

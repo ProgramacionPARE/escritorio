@@ -109,8 +109,8 @@ public class Turno implements IDBModel {
     public void realizarCorte(String tipoCorte){        
         this.empleadoCierre = m.getEmpleadoSesion().getId();
         if(tipoCorte.equals("corte")){
-        fechaCierre = Tiempo.getFecha();
-        horaCierre = Tiempo.getHora();
+            fechaCierre = Tiempo.getFecha();
+            horaCierre = Tiempo.getHora();
         }
         for(String serie: this.estacionamiento.getCaseta().getSeries() ){
             this.detallesTurno.get(serie).cerrarTurno(tipoCorte);

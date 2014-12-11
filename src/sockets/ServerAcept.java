@@ -14,6 +14,8 @@ import vistas.FrmPrincipal;
 public class ServerAcept extends Thread {
     public static final int PANTALLA = 0;
     public static final int BOLETO = 1;
+    public static final int MONITOR = 2;
+    
     public static final int NUM_SOCKET = 8050;
     
     private int tipo;
