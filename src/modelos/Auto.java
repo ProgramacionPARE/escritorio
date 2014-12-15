@@ -1164,6 +1164,27 @@ public class Auto implements Serializable{
         }
         return auto;
     }
+    
+      public static Auto getByProgresivo(String clave) {
+        Auto auto = null;
+        try {
+            Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("SELECT id FROM autos where  progresivo = ? ");
+            statement.setString(1, clave);
+           
+
+            ResultSet executeQuery = statement.executeQuery();
+            if (executeQuery.next()) {
+                auto = Auto.getById(executeQuery.getInt("id"));
+            }
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return auto;
+    }
 
     public static Auto getByProgresivoClaveContra(String clave) {
         Auto auto = null;

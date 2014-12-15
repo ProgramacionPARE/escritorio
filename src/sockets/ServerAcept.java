@@ -75,6 +75,9 @@ public class ServerAcept extends Thread {
             }else if(tipo == BOLETO){
                 Main.getInstance().setServerBoleto(new ServerBoleto(socket,parent));
                 Main.getInstance().getServerBoleto().start();
+            }else if(tipo == MONITOR){
+                Main.getInstance().setServerMonitor(new ServerMonitor(socket,parent));
+                Main.getInstance().getServerMonitor().start();
             }
         }
     }

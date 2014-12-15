@@ -24,7 +24,8 @@ public class Mensaje implements Serializable{
     public static int NUEVO_BOLETO = 0x8;
     public static int EMPLEADO = 0x9;
     public static int NOMBRE_ESTACIONAMIENTO = 0x10;
-
+    public static int PROGRESIVO = 0x11;
+    public static int AUTO_NO_ENCONTRADO=0x12;
     int tipo;
     Object mensaje;
 
