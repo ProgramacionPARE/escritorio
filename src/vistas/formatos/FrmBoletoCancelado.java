@@ -422,7 +422,7 @@ public class FrmBoletoCancelado extends JDialog implements Printable {
                 auto.setBoletoCancelado(boletoCancelado);
                 auto.setIsBoletoCancelado(true);
                 auto.actualizar();
-                new FrmCobro(parent,true, auto);
+                new FrmCobro(parent,true, auto,true);
                 imprimir();
             }
         }

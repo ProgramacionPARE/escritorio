@@ -118,7 +118,7 @@ public class ServerPantalla extends Thread {
                     Auto auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
                     if (auto != null){
                             if(auto.isDentro()){
-                               frmCobro = new FrmCobro(parent,true ,auto);    
+                               frmCobro = new FrmCobro(parent,true ,auto,true);    
                             }else{
                                 enviaAlarmaCobrado();
                             }

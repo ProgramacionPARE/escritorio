@@ -105,7 +105,7 @@ public class FrmBoletoPerdidoPlaca extends javax.swing.JDialog {
                 if(auto.getBoletoPerdido()==null)
                      new FrmBoletoPerdido((JFrame) parent,true, turno, auto,estacionamiento);
                 else
-                    new FrmCobro(parent,true , auto);
+                    new FrmCobro(parent,true , auto,true);
                 this.dispose();
                 }
             else

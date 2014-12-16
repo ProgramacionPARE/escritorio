@@ -1,6 +1,7 @@
 package modelos;
 
 import ModelosAux.Tiempo;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Turno implements IDBModel {
+public class Turno implements IDBModel,Serializable {
 
     static ArrayList<Turno> getTurnosOffline() {
          ArrayList<Turno> turnos = new ArrayList<>();

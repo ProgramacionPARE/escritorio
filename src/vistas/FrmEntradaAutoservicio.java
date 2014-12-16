@@ -119,7 +119,7 @@ public class FrmEntradaAutoservicio extends javax.swing.JDialog {
         auto.guardar();
         Rest.sendAuto(auto,estacionamiento);
         this.setVisible(false);
-        new FrmCobro(parent, true,auto);
+        new FrmCobro(parent, true,auto,true);
         this.dispose();
         
         

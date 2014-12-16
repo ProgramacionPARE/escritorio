@@ -37,7 +37,7 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
     /**
      * Creates new form FrmCobro
      */
-    public FrmCobro(Frame parent, boolean modal,Auto auto) {
+    public FrmCobro(Frame parent, boolean modal,Auto auto,boolean visible) {
         super(parent,"Cobro de boleto", modal);
         initComponents();
         this.auto = auto;
@@ -57,7 +57,9 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         txtCambio.setBackground(Color.red);
         
         btnCobrar.setEnabled(false);
-        setVisible(true);
+        if(visible){
+            setVisible(true);
+        }    
     }
     
     private void cargarTarifas(){

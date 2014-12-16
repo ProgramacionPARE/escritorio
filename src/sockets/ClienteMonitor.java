@@ -8,12 +8,9 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Auto;
-import modelos.Configuracion;
 import modelos.Mensaje;
 import modelos.MonitorEstacionamiento;
 import modelos.Principal;
-import vistas.FrmCobroCliente;
-import vistas.FrmErrorCarga;
 import vistas.FrmLeerCodigoBarrasTerminal;
 import vistas.FrmMonitor;
 import vistas.FrmMonitorDetalle;
@@ -65,7 +62,14 @@ public class ClienteMonitor extends Thread{
         }
    }
 
-
+    public void actualizarAuto(Auto auto) {
+          try {
+            if(salida != null)
+                salida.writeObject(new Mensaje(Mensaje.ACTUALIZAR_AUTO,auto));
+        } catch (IOException ex) {
+            Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     
     @Override
@@ -129,6 +133,8 @@ public class ClienteMonitor extends Thread{
         } 
         
     }
+
+    
 
    
     

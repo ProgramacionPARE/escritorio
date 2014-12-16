@@ -139,7 +139,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
                     auto = Auto.getByProgresivoClave(id);
                     if (auto != null){
                         if(auto.isDentro()){
-                            new FrmCobro(parent, true,auto);       
+                            new FrmCobro(parent, true,auto,true);       
                         }
                       // this.dispose();
                     }else{
@@ -152,7 +152,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
                         if(!auto.isBoletoCancelado())
                             new FrmBoletoCancelado((JFrame) parent, true,auto);
                         else
-                            new FrmCobro(parent,true, auto);
+                            new FrmCobro(parent,true, auto,true);
                         this.dispose();
                     }else{
                         id = "";
@@ -185,7 +185,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
                     if (auto != null){
                         if(auto.isDentro()){
                             auto.setIsBoletoContra(true);
-                            new FrmCobro(parent,true,auto);
+                            new FrmCobro(parent,true,auto,true);
                             this.dispose();
                         }else{
                             id = "";
