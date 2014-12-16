@@ -5,7 +5,8 @@
  */
 package vistas;
 
-import java.net.Socket;
+import ModelosAux.Tiempo;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -29,6 +30,10 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
         tblDetalle.setDefaultRenderer(String.class, centerRenderer);
         this.auto = auto;
         this.clienteMonitor = clienteMonitor;
+        this.btnCobrar.setEnabled(auto.isDentro());
+        this.btnCancelado.setEnabled(auto.isDentro());
+        this.btnPerdido.setEnabled(auto.isDentro());
+        
         llenarTabla();
         this.setLocationRelativeTo(parent);
     }
@@ -40,6 +45,7 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
     public void setAuto(Auto auto) {
         this.auto = auto;
         llenarTabla();
+        this.pack();
     }
     
     
@@ -59,10 +65,10 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDetalle = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnCobrar = new javax.swing.JButton();
+        btnCancelado = new javax.swing.JButton();
+        btnPerdido = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -110,19 +116,20 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
             tblDetalle.getColumnModel().getColumn(12).setResizable(false);
         }
 
-        jButton1.setText("Cobrar");
-        jButton1.setName("jButton1"); // NOI18N
+        btnCobrar.setText("Cobrar");
+        btnCobrar.setName("btnCobrar"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(FrmMonitorDetalle.class, this);
-        jButton2.setAction(actionMap.get("onCancelar")); // NOI18N
-        jButton2.setText("Cancelado");
-        jButton2.setName("jButton2"); // NOI18N
+        btnCancelado.setAction(actionMap.get("onCancelar")); // NOI18N
+        btnCancelado.setText("Cancelado");
+        btnCancelado.setName("btnCancelado"); // NOI18N
 
-        jButton3.setText("Perdido");
-        jButton3.setName("jButton3"); // NOI18N
+        btnPerdido.setAction(actionMap.get("onPerdido")); // NOI18N
+        btnPerdido.setText("Perdido");
+        btnPerdido.setName("btnPerdido"); // NOI18N
 
-        jButton4.setText("Actualizar remoto");
-        jButton4.setName("jButton4"); // NOI18N
+        btnActualizar.setText("Actualizar remoto");
+        btnActualizar.setName("btnActualizar"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,13 +141,13 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(240, 240, 240)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCancelado, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPerdido, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(229, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -150,10 +157,10 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnCobrar)
+                    .addComponent(btnCancelado)
+                    .addComponent(btnPerdido)
+                    .addComponent(btnActualizar))
                 .addContainerGap())
         );
 
@@ -162,19 +169,42 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
 
     @Action
     public void onCancelar() {
-        auto.setIsBoletoCancelado(true);
-        auto.setHoraSalida(auto.getHoraEntrada());
-        auto.setFechaSalida(auto.getFechaSalida());
-        clienteMonitor.actualizarAuto(auto);
+        int showConfirmDialog;
+        showConfirmDialog = JOptionPane.showConfirmDialog(this, "Estas seguro de cancelar este boleto",
+        "Cancelar boleto",JOptionPane.YES_NO_OPTION);
+        if(showConfirmDialog == JOptionPane.YES_OPTION){
+            auto.setIsBoletoOficina(true);
+            auto.setIsBoletoCancelado(true);
+            auto.setHoraSalida(Tiempo.getHora());
+            auto.setFechaSalida(Tiempo.getFecha());
+            clienteMonitor.actualizarAuto(auto);
+            JOptionPane.showMessageDialog(this, "El boleto se cancelo con exito");
+        }
+        
+    }
+
+    @Action
+    public void onPerdido() {
+        int showConfirmDialog;
+        showConfirmDialog = JOptionPane.showConfirmDialog(this, "Estas seguro de guardar este boleto como perdido",
+        "Boleto perdido",JOptionPane.YES_NO_OPTION);
+        if(showConfirmDialog == JOptionPane.YES_OPTION){
+            auto.setIsBoletoOficina(true);
+            auto.setIsBoletoPerdido(true);
+            auto.setHoraSalida(Tiempo.getHora());
+            auto.setFechaSalida(Tiempo.getFecha());
+            clienteMonitor.actualizarAuto(auto);
+            JOptionPane.showMessageDialog(this, "El boleto se cancelo con exito");
+        }
     }
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnCancelado;
+    private javax.swing.JButton btnCobrar;
+    private javax.swing.JButton btnPerdido;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDetalle;
     // End of variables declaration//GEN-END:variables

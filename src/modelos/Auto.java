@@ -39,6 +39,7 @@ public class Auto implements Serializable{
     private boolean isBoletoManual;
     private boolean isBoletoContra;
     private boolean isBoletoPendiente;
+    private boolean isBoletoOficina;
     private int horas;
     private int minutos;
     private float monto;
@@ -85,7 +86,7 @@ public class Auto implements Serializable{
             String modelo, String color, long boletoPerdido, long boletoCancelado,
             long boletoManual, long boletoContra, boolean isDentro, boolean isReciboImpreso,
             boolean isBoletoPerdido, boolean isBoletoCancelado, boolean isBoletoManual,
-            boolean isBoletoContra, boolean isBoletoPendiente, int horas, int minutos,
+            boolean isBoletoContra, boolean isBoletoPendiente, boolean isBoletoOficina, int horas, int minutos,
             float monto, long turnoEntrada, long turnoSalida, String serie, String nota,
             long tarifa, float descuento, String clave, long caseta, String idRemoto,int estadoServidor ) {
         this.id = id;
@@ -109,6 +110,7 @@ public class Auto implements Serializable{
         this.isBoletoManual = isBoletoManual;
         this.isBoletoContra = isBoletoContra;
         this.isBoletoPendiente = isBoletoPendiente;
+        this.isBoletoOficina = isBoletoOficina;
         this.horas = horas;
         this.minutos = minutos;
         this.monto = monto;
@@ -404,6 +406,14 @@ public class Auto implements Serializable{
     public void setIdRemoto(String idRemoto) {
         this.idRemoto = idRemoto;
     }
+
+    public boolean isIsBoletoOficina() {
+        return isBoletoOficina;
+    }
+
+    public void setIsBoletoOficina(boolean isBoletoOficina) {
+        this.isBoletoOficina = isBoletoOficina;
+    }
     
     
 
@@ -431,6 +441,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -551,6 +562,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -621,6 +633,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -689,6 +702,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -757,6 +771,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -829,6 +844,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -896,6 +912,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -964,6 +981,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -1011,6 +1029,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),
@@ -1054,6 +1073,7 @@ public class Auto implements Serializable{
                         executeQuery.getString("boleto_manual").equals("SI"),
                         executeQuery.getString("boleto_contra").equals("SI"),
                         executeQuery.getString("boleto_pendiente").equals("SI"),
+                        executeQuery.getString("boleto_oficina").equals("SI"),
                         executeQuery.getInt("horas_estadia"), executeQuery.getInt("minutos_estadia"),
                         executeQuery.getFloat("monto"), executeQuery.getLong("turno_entrada_id"),
                         executeQuery.getLong("turno_salida_id"), executeQuery.getString("serie"),

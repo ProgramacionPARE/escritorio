@@ -53,7 +53,7 @@ public class Principal {
                 clienteMonitor.start();
             }
             frmMonitor.setVisible(true);
-            frmMonitor.actualizarCentros();
+            //frmMonitor.actualizarCentros();
         }
     }
     

@@ -107,7 +107,7 @@ public class ClienteMonitor extends Thread{
                             System.out.println("Turno cerrado");
                         }
                     }else if(mensaje.getTipo()== Mensaje.AUTO){
-                        frmMonitorDetalle = new FrmMonitorDetalle(this.frmMonitor,true,(Auto)mensaje.getMensaje(),this);
+                        frmMonitorDetalle = new FrmMonitorDetalle(this.frmMonitor,false,(Auto)mensaje.getMensaje(),this);
                         frmMonitorDetalle.setVisible(true);
                     }else if(mensaje.getTipo()== Mensaje.AUTO_NO_ENCONTRADO){
                         frmMonitor.autoNoEncontrado();
