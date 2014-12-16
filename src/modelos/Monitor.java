@@ -13,23 +13,24 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Monitor{
+public class Monitor {
+
     private static Monitor DATOS = new Monitor();
     public static final String CAJA = "caja";
     public static final String EXPEDIDOR = "expedidor";
     public static final String CLIENTE = "cliente";
     public static final String MONITOR = "monitor";
-    private ArrayList<MonitorEstacionameinto> estacionamientos;
-    
-    private Monitor(){
+    private ArrayList<MonitorEstacionamiento> estacionamientos;
+
+    private Monitor() {
         try {
             estacionamientos = new ArrayList();
             ConexionDatos conexion = ConexionDatos.getInstance();
             Connection connectionDB = conexion.getConnection();
-            PreparedStatement  statement = connectionDB.prepareStatement("SELECT * FROM configuracion");
+            PreparedStatement statement = connectionDB.prepareStatement("SELECT * FROM estacionamientos");
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
-                this.estacionamientos.add(new  MonitorEstacionameinto(resultSet.getString("ip"),resultSet.getString("nombre")));
+            while (resultSet.next()) {
+                this.estacionamientos.add(new MonitorEstacionamiento(resultSet.getString("ip"), resultSet.getString("nombre")));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -37,51 +38,20 @@ public class Monitor{
         }
     }
 
-    public ArrayList<MonitorEstacionameinto> getEstacionamientos() {
+    public ArrayList<MonitorEstacionamiento> getEstacionamientos() {
         return estacionamientos;
     }
 
-    public void setEstacionamientos(ArrayList<MonitorEstacionameinto> estacionamientos) {
+    public void setEstacionamientos(ArrayList<MonitorEstacionamiento> estacionamientos) {
         this.estacionamientos = estacionamientos;
     }
-    
-           
-    class MonitorEstacionameinto{
-        private  String ip;
-        private String nombre;
 
-        public MonitorEstacionameinto(String ip, String nombre) {
-            this.ip = ip;
-            this.nombre = nombre;
-        }
-
-        public String getIp() {
-            return ip;
-        }
-
-        public void setIp(String ip) {
-            this.ip = ip;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        public void setNombre(String nombre) {
-            this.nombre = nombre;
-        }
-        
-        
-    }        
-
-    
    
+
     public static Monitor getInstancia() {
         return DATOS;
     }
-    
-    
-  
+
 //    @Override
 //    public void guardar() {
 //       
@@ -113,5 +83,4 @@ public class Monitor{
 //    public void eliminar() {
 //        
 //    }
-    
 }

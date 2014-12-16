@@ -17,6 +17,7 @@ import sockets.ClienteMonitor;
 import sockets.ClientePantalla;
 import sockets.ServerAcept;
 import vistas.FrmLogin;
+import vistas.FrmMonitor;
 
 
 public class Principal {
@@ -46,53 +47,54 @@ public class Principal {
         }else if(datos.getTerminal().equals(Configuracion.MONITOR)){
             Monitor monitor = Monitor.getInstancia();
             Main.getInstance().setClienteMonitor(new ArrayList());
-            
-            Iterator<Monitor.MonitorEstacionameinto> iterator = monitor.getEstacionamientos().iterator();
+            FrmMonitor frmMonitor = new FrmMonitor();
+            Iterator<MonitorEstacionamiento> iterator = monitor.getEstacionamientos().iterator();
             while(iterator.hasNext()){
-                Monitor.MonitorEstacionameinto next = iterator.next();
-                ClienteMonitor clienteMonitor = new ClienteMonitor(next.getIp());
+                MonitorEstacionamiento next = iterator.next();
+                ClienteMonitor clienteMonitor = new ClienteMonitor(next,frmMonitor);
                 Main.getInstance().getClienteMonitor().add(clienteMonitor );
                 clienteMonitor.start();
             }
-          
+            frmMonitor.setVisible(true);
+            frmMonitor.actualizarCentros();
         }
     }
     
-    public void cargarDescuentos(){
-         File archivo = null;
-      FileReader fr = null;
-      BufferedReader br = null;
- 
-      try {
-         // Apertura del fichero y creacion de BufferedReader para poder
-         // hacer una lectura comoda (disponer del metodo readLine()).
-         archivo = new File ("/home/sistema/Escritorio/codigos");
-         fr = new FileReader (archivo);
-         br = new BufferedReader(fr);
- 
-         // Lectura del fichero
-         String linea;
-         while((linea=br.readLine())!=null){
-           // public Descuento(long folio, float descuento, boolean activo,String clave) {
-             System.out.println(linea);
-             System.out.println(linea.substring(6, 12));
-              System.out.println(linea.substring(0, 6));
-             new Descuento(Long.valueOf(linea.substring(6, 12)) ,16L,true,linea.substring(0,6)).guardar();
-         }
-      }
-      catch(Exception e){
-         e.printStackTrace();
-      }finally{
-         // En el finally cerramos el fichero, para asegurarnos
-         // que se cierra tanto si todo va bien como si salta
-         // una excepcion.
-         try{                   
-            if( null != fr ){  
-               fr.close();    
-            }                 
-         }catch (Exception e2){
-            e2.printStackTrace();
-         }
-      }
-    }
+//    public void cargarDescuentos(){
+//         File archivo = null;
+//      FileReader fr = null;
+//      BufferedReader br = null;
+// 
+//      try {
+//         // Apertura del fichero y creacion de BufferedReader para poder
+//         // hacer una lectura comoda (disponer del metodo readLine()).
+//         archivo = new File ("/home/sistema/Escritorio/codigos");
+//         fr = new FileReader (archivo);
+//         br = new BufferedReader(fr);
+// 
+//         // Lectura del fichero
+//         String linea;
+//         while((linea=br.readLine())!=null){
+//           // public Descuento(long folio, float descuento, boolean activo,String clave) {
+//             System.out.println(linea);
+//             System.out.println(linea.substring(6, 12));
+//              System.out.println(linea.substring(0, 6));
+//             new Descuento(Long.valueOf(linea.substring(6, 12)) ,16L,true,linea.substring(0,6)).guardar();
+//         }
+//      }
+//      catch(Exception e){
+//         e.printStackTrace();
+//      }finally{
+//         // En el finally cerramos el fichero, para asegurarnos
+//         // que se cierra tanto si todo va bien como si salta
+//         // una excepcion.
+//         try{                   
+//            if( null != fr ){  
+//               fr.close();    
+//            }                 
+//         }catch (Exception e2){
+//            e2.printStackTrace();
+//         }
+//      }
+//    }
 }

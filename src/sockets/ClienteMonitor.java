@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package sockets;
 
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,130 +9,126 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Auto;
 import modelos.Configuracion;
-import modelos.Empleado;
 import modelos.Mensaje;
+import modelos.MonitorEstacionamiento;
 import modelos.Principal;
-import net.sourceforge.barbecue.BarcodeException;
 import vistas.FrmCobroCliente;
 import vistas.FrmErrorCarga;
 import vistas.FrmLeerCodigoBarrasTerminal;
-import vistas.formatos.FrmP1BoletoCliente;
-import vistas.formatos.FrmP2BoletoLlaves;
-import vistas.formatos.FrmP3BoletoParabrisas;
+import vistas.FrmMonitor;
+import vistas.FrmMonitorDetalle;
 
 /**
  *
  * @author sistema
  */
 public class ClienteMonitor extends Thread{
-
-    Socket socket;
+    private Socket socket;
     private ObjectInputStream entrada;
     private ObjectOutputStream salida;
     private boolean cerrarHilo;
-    FrmErrorCarga frmErrorCarga;
-    FrmLeerCodigoBarrasTerminal frmCodigoBarras;
-    FrmCobroCliente frmCobroCliente;
+    MonitorEstacionamiento estacionamiento;
+    FrmMonitor frmMonitor;
     
-    public ClienteMonitor(String ip) {
+    public ClienteMonitor(MonitorEstacionamiento estacionamiento,FrmMonitor frmMonitor) {
         this.cerrarHilo = false;
-         while(!cerrarHilo){
-            try {
-                socket = new Socket(ip,ServerAcept.NUM_SOCKET+ServerAcept.MONITOR);
-                if(socket!=null){
-                    System.out.println("Conectado con exito");
-                    frmErrorCarga.setLabel1Text("Error turno cerrado");
-                    frmErrorCarga.setLabel2Text("Por favor abre un turno en caja para continuar");   
-                    entrada = new ObjectInputStream( socket.getInputStream());
-                    salida = new ObjectOutputStream(socket.getOutputStream());
-                    salida.flush();
-                    break;
-                }
-            }catch (IOException ex) {
-                System.out.println("Intentando conectar");
-                try {
-                    Thread.sleep(5000);
-                }catch (InterruptedException ex1) {
-                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex1);
-                }
-            }        
-        } 
+        this.estacionamiento = estacionamiento;
+        this.frmMonitor = frmMonitor;    
     }
 
      public void apagarHilo(){
         cerrarHilo = true;
     }
-     
-     
-    public void enviarCodigo(String id) {
-        try {
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public MonitorEstacionamiento getEstacionamiento() {
+        return estacionamiento;
+    }
+
+    public void setEstacionamiento(MonitorEstacionamiento estacionamiento) {
+        this.estacionamiento = estacionamiento;
+    } 
+        
+    public void enviarProgresivo(String progresivo) {
+         try {
             if(salida != null)
-                salida.writeObject(new Mensaje(Mensaje.CODIGO_VALET,id));
+                salida.writeObject(new Mensaje(Mensaje.PROGRESIVO,progresivo));
         } catch (IOException ex) {
             Logger.getLogger(FrmLeerCodigoBarrasTerminal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+   }
+
+
     
     
     @Override
     public void run(){
-        try {
+        while(!cerrarHilo){
+            try {
+                while(!cerrarHilo){
+                    try {
+                        socket = new Socket(estacionamiento.getIp(),ServerAcept.NUM_SOCKET+ServerAcept.MONITOR);
+                        if(socket!=null){
+                            System.out.println("Conectado con exito");
+                            frmMonitor.actualizarCentros();
+                            entrada = new ObjectInputStream( socket.getInputStream());
+                            salida = new ObjectOutputStream(socket.getOutputStream());
+                            salida.flush();
+                            break;
+                        }
+                    }catch (IOException ex) {
+                        System.out.println("Intentando conectar");
+                        try {
+                            Thread.sleep(5000);
+                        }catch (InterruptedException ex1) {
+                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                    }        
+               }
             while(!cerrarHilo){
                 if(socket!=null){
                     Mensaje mensaje = (Mensaje)entrada.readObject();
-                        if(mensaje.getTipo()== Mensaje.TURNO_ABIERTO){
-                            if((boolean)mensaje.getMensaje()){
-                                frmErrorCarga.dispose();
-                                frmCodigoBarras = new FrmLeerCodigoBarrasTerminal(Configuracion.EXPEDIDOR);
-                                System.out.println("Turno abierto");
-                            }else{
-                                if(frmCodigoBarras!=null){
-                                    frmCodigoBarras.dispose();
-                                    frmErrorCarga = new FrmErrorCarga();
-                                    frmErrorCarga.setLabel1Text("Error turno cerrado");
-                                    frmErrorCarga.setLabel2Text("Por favor abre un turno en caja para continuar"); 
-                                }
-                                System.out.println("Turno cerrado");
-                            }
-                        }else if(mensaje.getTipo()== Mensaje.NUEVO_BOLETO){
-                            Auto auto = null; Empleado empleado = null;String nombre = null;
-                            mensaje = (Mensaje)entrada.readObject();
-                            if(mensaje.getTipo()== Mensaje.AUTO){
-                                auto = (Auto)mensaje.getMensaje();
-                            }
-                            mensaje = (Mensaje)entrada.readObject();
-                            if(mensaje.getTipo()== Mensaje.EMPLEADO){
-                                empleado = (Empleado)mensaje.getMensaje();
-                            }
-                            mensaje = (Mensaje)entrada.readObject();
-                            if(mensaje.getTipo()== Mensaje.NOMBRE_ESTACIONAMIENTO){
-                                nombre = (String)mensaje.getMensaje();
-                            }
-                             PrinterJob job = PrinterJob.getPrinterJob();
-                            // Boleto al cliente
-                            try {                            
-                                new FrmP1BoletoCliente(null, false,job,auto,empleado,nombre);
-                                 //Boleto llaves
-                                new FrmP2BoletoLlaves(null, false,job,auto,empleado);
-                                //Boleto Parabrisas
-                                new FrmP3BoletoParabrisas(null, false ,job,auto);
-                            } catch (PrinterException | BarcodeException ex) {
-                                Logger.getLogger(ClienteMonitor.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                           
+                    if(mensaje.getTipo()== Mensaje.TURNO_ABIERTO){
+                        if((boolean)mensaje.getMensaje()){
+                           System.out.println("Turno abierto");
+                        }else{
+                            System.out.println("Turno cerrado");
                         }
+                    }else if(mensaje.getTipo()== Mensaje.AUTO){
+                        new FrmMonitorDetalle(this.frmMonitor,true,(Auto)mensaje.getMensaje(),this).setVisible(true);
+                    }else if(mensaje.getTipo()== Mensaje.AUTO_NO_ENCONTRADO){
+                        frmMonitor.autoNoEncontrado();
+                    }
                 }
             }
         }catch (IOException | ClassNotFoundException ex) {
-            apagarHilo();
-            System.out.println("Cerrando cliente y esperando nueva instancia");
-            frmErrorCarga.dispose();
-            //new ClienteMonitor().start();
-            //Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    System.out.println("Cerrando cliente y esperando nueva instancia");
+                    if(socket.isConnected())
+                        socket.close();
+                    socket = null;
+                    entrada.close();
+                    entrada = null;
+                    salida.close();
+                    salida=null;
+                    if(!cerrarHilo)
+                        frmMonitor.actualizarCentros();
+                    //new ClienteMonitor().start();
+                    //Logger.getLogger(ClientePantalla.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex1) {
+                    Logger.getLogger(ClienteMonitor.class.getName()).log(Level.SEVERE, null, ex1);
+                }
         }
+        } 
         
     }
-
 
    
     
