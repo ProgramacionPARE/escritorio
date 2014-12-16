@@ -28,6 +28,7 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
         centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );     
         tblDetalle.setDefaultRenderer(String.class, centerRenderer);
         this.auto = auto;
+        this.clienteMonitor = clienteMonitor;
         llenarTabla();
         this.setLocationRelativeTo(parent);
     }

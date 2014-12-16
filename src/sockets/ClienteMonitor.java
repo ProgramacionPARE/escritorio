@@ -26,6 +26,7 @@ public class ClienteMonitor extends Thread{
     private boolean cerrarHilo;
     MonitorEstacionamiento estacionamiento;
     FrmMonitor frmMonitor;
+    FrmMonitorDetalle frmMonitorDetalle;
     
     public ClienteMonitor(MonitorEstacionamiento estacionamiento,FrmMonitor frmMonitor) {
         this.cerrarHilo = false;
@@ -106,10 +107,14 @@ public class ClienteMonitor extends Thread{
                             System.out.println("Turno cerrado");
                         }
                     }else if(mensaje.getTipo()== Mensaje.AUTO){
-                        new FrmMonitorDetalle(this.frmMonitor,true,(Auto)mensaje.getMensaje(),this).setVisible(true);
+                        frmMonitorDetalle = new FrmMonitorDetalle(this.frmMonitor,true,(Auto)mensaje.getMensaje(),this);
+                        frmMonitorDetalle.setVisible(true);
                     }else if(mensaje.getTipo()== Mensaje.AUTO_NO_ENCONTRADO){
                         frmMonitor.autoNoEncontrado();
+                    }else if(mensaje.getTipo()== Mensaje.ACTUALIZAR_AUTO){
+                        frmMonitorDetalle.setAuto((Auto)mensaje.getMensaje());
                     }
+                    
                 }
             }
         }catch (IOException | ClassNotFoundException ex) {
