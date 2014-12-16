@@ -28,11 +28,12 @@ import vistas.formatos.FrmReciboPago;
  * @author Asistente Proyectos2
  */
 public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
-    Estacionamiento estacionamiento;
-    Turno turno;
-    Auto auto;
-    Frame parent;
-     private ObjectInputStream entrada;
+    private Estacionamiento estacionamiento;
+    private Turno turno;
+    private Auto auto;
+    private Frame parent;
+    private boolean visible;
+    private ObjectInputStream entrada;
     private ObjectOutputStream salida;
     /**
      * Creates new form FrmCobro
@@ -45,12 +46,14 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         this.turno = Main.getInstance().getTurnoActual();
         
         this.parent = parent;
+        this.visible = visible;
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
-        this.auto.setHoraSalida(Tiempo.getHora());
-        this.auto.setFechaSalida(Tiempo.getFecha());
-        
+        if(visible){
+            this.auto.setHoraSalida(Tiempo.getHora());
+            this.auto.setFechaSalida(Tiempo.getFecha());
+        }
         cargarTarifas();
         calcularImporte();
         txtDineroPagado.grabFocus();
@@ -481,25 +484,30 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         if(Main.getInstance().getServerPantalla()!=null)
             Main.getInstance().getServerPantalla().enviaAutoCobrado();
         //Reviso si activo la alarma
-        ((FrmPrincipal)parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja) );
+        if(visible){
+            ((FrmPrincipal)parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja) );
         
-        int showConfirmDialog ;
-        //Pregunto si imprimo recibo de pago
-        if(auto.isBoletoCancelado() || auto.isBoletoPerdido())
-            showConfirmDialog = JOptionPane.YES_OPTION;
-        else
-            showConfirmDialog = JOptionPane.showConfirmDialog(this, "Quieres imprimir recibo de pago", "Recibo de pago",JOptionPane.YES_NO_OPTION);
-        if(showConfirmDialog == JOptionPane.YES_OPTION){
-            auto.setReciboImpreso(true);
-            auto.actualizar();
-            auto.setMontoReciboPago(Float.valueOf(txtDineroPagado.getText()));
-            new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),auto);   
+            int showConfirmDialog ;
+            //Pregunto si imprimo recibo de pago
+            if(auto.isBoletoCancelado() || auto.isBoletoPerdido())
+                showConfirmDialog = JOptionPane.YES_OPTION;
+            else
+                showConfirmDialog = JOptionPane.showConfirmDialog(this, "Quieres imprimir recibo de pago", "Recibo de pago",JOptionPane.YES_NO_OPTION);
+            if(showConfirmDialog == JOptionPane.YES_OPTION){
+                auto.setReciboImpreso(true);
+                auto.actualizar();
+                auto.setMontoReciboPago(Float.valueOf(txtDineroPagado.getText()));
+                new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),auto);   
+            }
         }
         Rest.sendAuto(auto, estacionamiento);
-     
+         if(visible){
         this.dispose();
+         }
     }
-    
+    public Auto getAuto() {
+       return auto;
+    }
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -527,5 +535,7 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
     private javax.swing.JTextField txtProgresivo;
     private javax.swing.JTextField txtTiempoEstadia;
     // End of variables declaration//GEN-END:variables
+
+  
 
 }

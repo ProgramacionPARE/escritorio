@@ -100,8 +100,8 @@ public class FrmLeerCodigoBarrasDescuento extends javax.swing.JDialog {
             if (id.length() ==12 )
                 descuento = Descuento.getByIdClave(id);
                 if (descuento != null){
-                    frmCobro.auto.setDescuento( frmCobro.auto.getDescuento()+descuento.getDescuento() );
-                    frmCobro.auto.actualizar();
+                    frmCobro.getAuto().setDescuento( frmCobro.getAuto().getDescuento()+descuento.getDescuento() );
+                    frmCobro.getAuto().actualizar();
                     frmCobro.calcularImporte();
                     descuento.setActivo(false);
                     descuento.actualizar();

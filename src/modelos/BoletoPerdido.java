@@ -119,8 +119,9 @@ public class BoletoPerdido {
             
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
-            if(generatedKeys.next())
+            if(generatedKeys.next()){
                 id = generatedKeys.getInt("GENERATED_KEY");
+            }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);

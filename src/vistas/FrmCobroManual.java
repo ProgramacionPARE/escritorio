@@ -342,8 +342,8 @@ public class FrmCobroManual extends javax.swing.JDialog {
                     this.txtFechaSalidaModificada.getText(),this.txtHoraEntradaModificada.getText(),
                     this.txtHoraSalidaModificada.getText(),(String)cbxRazon.getSelectedItem());
             boletoManual.guardar();
-            frmCobro.auto.setIsBoletoManual(true);
-            frmCobro.auto.setBoletoManual(boletoManual);
+            frmCobro.getAuto().setIsBoletoManual(true);
+            frmCobro.getAuto().setBoletoManual(boletoManual);
         //frmCobro.auto.setDescuento();
        // frmCobro.auto.actualizar();
         frmCobro.calcularImporte();

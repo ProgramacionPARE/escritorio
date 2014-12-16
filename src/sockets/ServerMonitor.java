@@ -25,7 +25,6 @@ public class ServerMonitor extends Thread {
     private ObjectOutputStream salida;
     private ObjectInputStream entrada;
     private boolean cerrarHilo;
-    private FrmCobro frmCobro;
     
     ServerMonitor(Socket socket, Frame parent) {
                try {
@@ -48,6 +47,14 @@ public class ServerMonitor extends Thread {
         try {
             if(salida!=null)
                 salida.writeObject(new Mensaje(Mensaje.AUTO,auto));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void enviarAutoActualizado(Auto auto){
+        try {
+            if(salida!=null)
+                salida.writeObject(new Mensaje(Mensaje.ACTUALIZAR_AUTO,auto));
         } catch (IOException ex) {
             Logger.getLogger(ServerPantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -95,12 +102,19 @@ public class ServerMonitor extends Thread {
                 mensaje = (Mensaje)entrada.readObject();
                 if(mensaje.getTipo()==Mensaje.PROGRESIVO){
                     System.out.println("Buscar progresivo");
-                    Auto auto = Auto.getByProgresivoClave((String)mensaje.getMensaje());
+                    Auto auto = Auto.getByProgresivo((String)mensaje.getMensaje());
                     if(auto!= null){
-                        enviarAuto(auto);
+                        enviarAuto(auto);   
                     }else{
                         enviarAutoNoEncontrado();
                     }
+                }else if(mensaje.getTipo()==Mensaje.ACTUALIZAR_AUTO){
+                    FrmCobro frmCobro = new FrmCobro(new Frame(),true,(Auto)mensaje.getMensaje(),false);
+                    frmCobro.calcularImporte();
+                    frmCobro.onCobrar();
+                    this.enviarAutoActualizado(frmCobro.getAuto());
+                    frmCobro.dispose();
+                   
                 }
             }
         } catch (IOException | ClassNotFoundException ex) {
