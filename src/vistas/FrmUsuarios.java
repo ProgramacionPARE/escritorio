@@ -550,7 +550,7 @@ public class FrmUsuarios extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCambiarContraseñaActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-      new FrmInfoUsuario(this,false,PrinterJob.getPrinterJob());
+      new FrmInfoUsuario(this,false,PrinterJob.getPrinterJob(),empleado);
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

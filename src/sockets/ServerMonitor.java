@@ -1,8 +1,6 @@
 
 package sockets;
 
-import ModelosAux.Seguridad;
-import ModelosAux.Tiempo;
 import java.awt.Frame;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,11 +9,8 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Auto;
-import modelos.Empleado;
 import modelos.Main;
 import modelos.Mensaje;
-import modelos.Progresivo;
-import modelos.Rest;
 import vistas.FrmCobro;
 
 
@@ -112,7 +107,7 @@ public class ServerMonitor extends Thread {
                     FrmCobro frmCobro = new FrmCobro(new Frame(),true,(Auto)mensaje.getMensaje(),false);
                     frmCobro.calcularImporte();
                     frmCobro.onCobrar();
-                    this.enviarAutoActualizado(frmCobro.getAuto());
+                    enviarAutoActualizado(frmCobro.getAuto());
                     frmCobro.dispose();
                    
                 }

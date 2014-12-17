@@ -42,9 +42,9 @@ public class FrmInfoUsuario extends JDialog implements Printable {
     private Barcode barcode=null;
 
     /** Creates new form VenBoletoValetParking1 */
-    public FrmInfoUsuario(Dialog parent, boolean modal, PrinterJob job) {
+    public FrmInfoUsuario(Dialog parent, boolean modal, PrinterJob job,Empleado empleado) {
         super(parent, modal);
-        Empleado empleado = Main.getInstance().getEmpleadoSesion();
+
         try {
             initComponents();
             barcode = BarcodeFactory.createCode128B(empleado.getClave()+ String.format("%06d",empleado.getId() ) );

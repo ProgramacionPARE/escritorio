@@ -118,6 +118,7 @@ public class Rest {
                     resp.add(new BasicNameValuePair("boleto_cancelado", auto.isBoletoCancelado() ? "SI" : "NO"));
                     resp.add(new BasicNameValuePair("boleto_manual", auto.isBoletoManual() ? "SI" : "NO"));
                     resp.add(new BasicNameValuePair("boleto_contra", auto.isBoletoContra() ? "SI" : "NO"));
+                    resp.add(new BasicNameValuePair("boleto_oficina", auto.isIsBoletoOficina() ? "SI" : "NO"));
                     resp.add(new BasicNameValuePair("marca", auto.getMarca()));
                     resp.add(new BasicNameValuePair("modelo", auto.getModelo()));
                     HttpUriRequest request;

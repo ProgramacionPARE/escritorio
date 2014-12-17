@@ -1321,7 +1321,7 @@ public class Auto implements Serializable{
                             + ",`entrada_salida` =? ,`recibo` =?"
                             + ",`boleto_perdido` =? ,`boleto_cancelado` =?"
                             + ",`boleto_manual` =? ,`boleto_contra` =? ,`boleto_pendiente` =? "
-                            + ",`horas_estadia` =? ,`minutos_estadia` =?, `monto` =? "
+                            + ",`boleto_oficina` =? ,`horas_estadia` =? ,`minutos_estadia` =?, `monto` =? "
                             + ",`turno_salida_id` =? ,`serie` =? ,notas = ?, id_tarifa = ?,"
                             + "descuento = ? , id_remoto = ?  , estado_servidor = ?  WHERE `id`=?");
             statement.setString(1, progresivo);
@@ -1344,19 +1344,18 @@ public class Auto implements Serializable{
             statement.setString(18, isBoletoManual ? "SI" : "NO");
             statement.setString(19, isBoletoContra ? "SI" : "NO");
             statement.setString(20, isBoletoPendiente ? "SI" : "NO");
-            statement.setFloat(21, horas);
-            statement.setFloat(22, minutos);
-            statement.setFloat(23, monto);
-            statement.setLong(24, turnoSalida);
-            statement.setString(25, serie);
-            statement.setString(26, nota);
-            statement.setLong(27, tarifa);
-            statement.setFloat(28, descuento);
-            statement.setString(29, idRemoto);
-            statement.setInt(30, estadoServidor);
-            
-            
-            statement.setInt(31, id);
+            statement.setString(21, isBoletoOficina ? "SI" : "NO");
+            statement.setFloat(22, horas);
+            statement.setFloat(23, minutos);
+            statement.setFloat(24, monto);
+            statement.setLong(25, turnoSalida);
+            statement.setString(26, serie);
+            statement.setString(27, nota);
+            statement.setLong(28, tarifa);
+            statement.setFloat(29, descuento);
+            statement.setString(30, idRemoto);
+            statement.setInt(31, estadoServidor);
+            statement.setInt(32, id);
 
             statement.executeUpdate();
             conexion.cerrarConexion();
@@ -1371,13 +1370,15 @@ public class Auto implements Serializable{
             Connection connectionDB = conexion.getConnection();
             PreparedStatement statement = connectionDB.
                     prepareStatement("UPDATE autos SET `boleto_perdido` =? ,`boleto_cancelado` =?"
-                            + ",`boleto_manual` =? ,`boleto_contra` =? ,`boleto_pendiente` = ? WHERE `id` =?");
+                            + ",`boleto_manual` =? ,`boleto_contra` =? ,`boleto_pendiente` = ?"
+                            + ",`boleto_oficina` = ? WHERE `id` =?");
             statement.setString(1, isBoletoPerdido ? "SI" : "NO");
             statement.setString(2, isBoletoCancelado ? "SI" : "NO");
             statement.setString(3, isBoletoManual ? "SI" : "NO");
             statement.setString(4, isBoletoContra ? "SI" : "NO");
             statement.setString(5, isBoletoPendiente ? "SI" : "NO");
-            statement.setInt(6, id);
+            statement.setString(6, isBoletoOficina ? "SI" : "NO");
+            statement.setInt(7, id);
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {
