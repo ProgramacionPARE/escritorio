@@ -487,7 +487,7 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         if(visible){
             ((FrmPrincipal)parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja) );
         
-            int showConfirmDialog ;
+            int showConfirmDialog;
             //Pregunto si imprimo recibo de pago
             if(auto.isBoletoCancelado() || auto.isBoletoPerdido())
                 showConfirmDialog = JOptionPane.YES_OPTION;

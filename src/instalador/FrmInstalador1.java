@@ -16,12 +16,12 @@ import java.io.OutputStreamWriter;
  *
  * @author sistema
  */
-public class FrmInstalador extends javax.swing.JFrame {
+public class FrmInstalador1 extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmInstalador
      */
-    public FrmInstalador() {
+    public FrmInstalador1() {
         initComponents();
         
         
@@ -81,11 +81,6 @@ public class FrmInstalador extends javax.swing.JFrame {
 
         jButton1.setText("Siguiente");
         jButton1.setName("jButton1"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jLabel4.setText("en su equipo.");
         jLabel4.setName("jLabel4"); // NOI18N
@@ -127,11 +122,6 @@ public class FrmInstalador extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        FrmInstalador1 frmInstalador1 = new FrmInstalador1 ();
-        frmInstalador1.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
 
    
 

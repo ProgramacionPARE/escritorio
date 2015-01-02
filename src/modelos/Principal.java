@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package modelos;
 
-import instalador.FrmInstalador;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,42 +17,44 @@ public class Principal {
     
     public static void main(String[] args) {
         //new Principal().cargarDescuentos();
-        new FrmInstalador().setVisible(true);
         
-//        Configuracion datos = Configuracion.getInstancia();
-//        Socket socket = null;
-//        if(datos.getTerminal().equals(Configuracion.CAJA)){
-//            Main.getInstance().setServerAcept(new ArrayList());
-//            FrmLogin frmLogin = new FrmLogin();
-//            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.BOLETO,frmLogin));
-//            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.PANTALLA,frmLogin));
-//            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.MONITOR,frmLogin));
-//            
-//            Iterator<ServerAcept> iterator = Main.getInstance().getServerAcept().iterator();
-//            while(iterator.hasNext())iterator.next().start();
-//        }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
-//            Main.getInstance().setClientePantalla(new ClientePantalla());
-//            Main.getInstance().getClientePantalla().start();
-//            //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
-//        } else  if(datos.getTerminal().equals(Configuracion.EXPEDIDOR)){
-//            Main.getInstance().setClienteBoleto(new ClienteBoleto());
-//            Main.getInstance().getClienteBoleto().start();
-//            
-//            //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
-//        }else if(datos.getTerminal().equals(Configuracion.MONITOR)){
-//            Monitor monitor = Monitor.getInstancia();
-//            Main.getInstance().setClienteMonitor(new ArrayList());
-//            FrmMonitor frmMonitor = new FrmMonitor();
-//            Iterator<MonitorEstacionamiento> iterator = monitor.getEstacionamientos().iterator();
-//            while(iterator.hasNext()){
-//                MonitorEstacionamiento next = iterator.next();
-//                ClienteMonitor clienteMonitor = new ClienteMonitor(next,frmMonitor);
-//                Main.getInstance().getClienteMonitor().add(clienteMonitor );
-//                clienteMonitor.start();
-//            }
-//            frmMonitor.setVisible(true);
-//            //frmMonitor.actualizarCentros();
-//        }
+        //FrmInstalador frmInstalador = new FrmInstalador();
+        //frmInstalador.setVisible(true);
+        
+        Configuracion datos = Configuracion.getInstancia();
+        Socket socket = null;
+        if(datos.getTerminal().equals(Configuracion.CAJA)){
+            Main.getInstance().setServerAcept(new ArrayList());
+            FrmLogin frmLogin = new FrmLogin();
+            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.BOLETO,frmLogin));
+            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.PANTALLA,frmLogin));
+            Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.MONITOR,frmLogin));
+            
+            Iterator<ServerAcept> iterator = Main.getInstance().getServerAcept().iterator();
+            while(iterator.hasNext())iterator.next().start();
+        }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
+            Main.getInstance().setClientePantalla(new ClientePantalla());
+            Main.getInstance().getClientePantalla().start();
+            //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
+        } else  if(datos.getTerminal().equals(Configuracion.EXPEDIDOR)){
+            Main.getInstance().setClienteBoleto(new ClienteBoleto());
+            Main.getInstance().getClienteBoleto().start();
+            
+            //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
+        }else if(datos.getTerminal().equals(Configuracion.MONITOR)){
+            Monitor monitor = Monitor.getInstancia();
+            Main.getInstance().setClienteMonitor(new ArrayList());
+            FrmMonitor frmMonitor = new FrmMonitor();
+            Iterator<MonitorEstacionamiento> iterator = monitor.getEstacionamientos().iterator();
+            while(iterator.hasNext()){
+                MonitorEstacionamiento next = iterator.next();
+                ClienteMonitor clienteMonitor = new ClienteMonitor(next,frmMonitor);
+                Main.getInstance().getClienteMonitor().add(clienteMonitor );
+                clienteMonitor.start();
+            }
+            frmMonitor.setVisible(true);
+            //frmMonitor.actualizarCentros();
+        }
     }
     
 //    public void cargarDescuentos(){

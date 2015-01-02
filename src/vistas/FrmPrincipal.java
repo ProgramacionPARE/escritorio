@@ -171,7 +171,7 @@ public class FrmPrincipal extends JFrame {
     public void onConfiguracion() {
         new FrmMenuAdministracion(this, false);
     }
-
+    
     public void validaPermisos() {
         //Busco turno abierto
         Turno turnoTemp = Turno.existeTurnoAbierto();

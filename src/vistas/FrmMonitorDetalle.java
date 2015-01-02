@@ -6,6 +6,7 @@
 package vistas;
 
 import ModelosAux.Tiempo;
+import java.awt.Frame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -21,7 +22,7 @@ import sockets.ClienteMonitor;
 public class FrmMonitorDetalle extends javax.swing.JDialog {
     private Auto auto;
     private ClienteMonitor clienteMonitor;
-            
+    private Frame parent;
     public FrmMonitorDetalle(java.awt.Frame parent, boolean modal,Auto auto,ClienteMonitor clienteMonitor) {
         super(parent,"Detalle de auto", modal);
         initComponents();
@@ -29,11 +30,8 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
         centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );     
         tblDetalle.setDefaultRenderer(String.class, centerRenderer);
         this.auto = auto;
+        this.parent = parent;
         this.clienteMonitor = clienteMonitor;
-        this.btnCobrar.setEnabled(auto.isDentro());
-        this.btnCancelado.setEnabled(auto.isDentro());
-        this.btnPerdido.setEnabled(auto.isDentro());
-        
         llenarTabla();
         this.setLocationRelativeTo(parent);
     }
@@ -49,7 +47,6 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
     }
     
     
-    
     public void llenarTabla(){
         DefaultTableModel modelTurno = (DefaultTableModel) this.tblDetalle.getModel();
         modelTurno.getDataVector().removeAllElements();
@@ -57,6 +54,11 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
           auto.getHoraSalida(),auto.getHorasTangibles(),auto.getMinutosTangibles(),auto.getMontoTangible(),auto.isBoletoPerdido()?"SI":"NO",
           auto.isBoletoCancelado()?"SI":"NO",auto.isBoletoManual()?"SI":"NO",auto.isBoletoContra()?"SI":"NO"});
         tblDetalle.setModel(modelTurno);
+        
+       
+        this.btnCobrar.setEnabled(auto.isDentro());
+        this.btnCancelado.setEnabled(auto.isDentro());
+        this.btnPerdido.setEnabled(auto.isDentro());
     }
 
     @SuppressWarnings("unchecked")
@@ -116,10 +118,11 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
             tblDetalle.getColumnModel().getColumn(12).setResizable(false);
         }
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(FrmMonitorDetalle.class, this);
+        btnCobrar.setAction(actionMap.get("onCerrar")); // NOI18N
         btnCobrar.setText("Cobrar");
         btnCobrar.setName("btnCobrar"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(FrmMonitorDetalle.class, this);
         btnCancelado.setAction(actionMap.get("onCancelar")); // NOI18N
         btnCancelado.setText("Cancelado");
         btnCancelado.setName("btnCancelado"); // NOI18N
@@ -179,8 +182,7 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
             auto.setFechaSalida(Tiempo.getFecha());
             clienteMonitor.actualizarAuto(auto);
             JOptionPane.showMessageDialog(this, "El boleto se cancelo con exito");
-        }
-        
+        } 
     }
 
     @Action
@@ -194,8 +196,13 @@ public class FrmMonitorDetalle extends javax.swing.JDialog {
             auto.setHoraSalida(Tiempo.getHora());
             auto.setFechaSalida(Tiempo.getFecha());
             clienteMonitor.actualizarAuto(auto);
-            JOptionPane.showMessageDialog(this, "El boleto se cancelo con exito");
+            JOptionPane.showMessageDialog(this, "El boleto se cerro como perdido");
         }
+    }
+
+    @Action
+    public void onCerrar() {
+        new FrmCobroOficina(parent,false,auto,clienteMonitor).setVisible(true);
     }
 
 

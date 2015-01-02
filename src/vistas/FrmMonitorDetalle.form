@@ -170,6 +170,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnCobrar">
       <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="vistas.FrmMonitorDetalle" id="onCerrar" methodName="onCerrar"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Cobrar"/>
         <Property name="name" type="java.lang.String" value="btnCobrar" noResource="true"/>
       </Properties>

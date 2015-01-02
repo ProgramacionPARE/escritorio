@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package vistas;
 
 import java.awt.Color;
@@ -10,12 +6,8 @@ import java.awt.event.ItemEvent;
 import javax.swing.JOptionPane;
 import modelos.Auto;
 import modelos.BoletoManual;
-import modelos.Turno;
 
-/**
- *
- * @author sistema
- */
+
 public class FrmCobroManual extends javax.swing.JDialog {
 
     /**
@@ -53,7 +45,7 @@ public class FrmCobroManual extends javax.swing.JDialog {
     }
     
     
-         private boolean validaCamposEntrada() {
+    private boolean validaCamposEntrada() {
 
         if (txtFechaEntradaModificada.getText().equals("")){
             JOptionPane.showMessageDialog(this,"Introduce la nueva fecha de entrada.",
@@ -69,7 +61,7 @@ public class FrmCobroManual extends javax.swing.JDialog {
         }
         
         if (txtFechaSalidaModificada.getText().equals("")){
-            JOptionPane.showMessageDialog(this,"Introduce la nueva fecha de entrada.",
+            JOptionPane.showMessageDialog(this,"Introduce la nueva fecha de dalida.",
             "Formato erroneo",JOptionPane.WARNING_MESSAGE);
             txtFechaSalidaModificada.grabFocus();
             return false;
@@ -97,7 +89,7 @@ public class FrmCobroManual extends javax.swing.JDialog {
        
          
         if (txtHoraSalidaModificada.getText().equals("")){
-            JOptionPane.showMessageDialog(this,"Introduce la nueva fecha de salida.",
+            JOptionPane.showMessageDialog(this,"Introduce la nueva hora de salida.",
             "Formato erroneo",JOptionPane.WARNING_MESSAGE);
             txtHoraSalidaModificada.grabFocus();
             return false;

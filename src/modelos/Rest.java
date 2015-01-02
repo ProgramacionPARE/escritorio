@@ -109,7 +109,7 @@ public class Rest {
                     resp.add(new BasicNameValuePair("id_estacionamiento", estacionamiento.getIdRemoto()));
                     resp.add(new BasicNameValuePair("monto", String.valueOf(auto.getMontoTangible())));
                     resp.add(new BasicNameValuePair("horas", String.valueOf(auto.getHorasTangibles())));
-                    resp.add(new BasicNameValuePair("minutos", String.valueOf(auto.getMinutosTangibles())));
+                    resp.add(new BasicNameValuePair("Dminutos", String.valueOf(auto.getMinutosTangibles())));
                     resp.add(new BasicNameValuePair("id_turno_entrada", String.valueOf(auto.getTurnoEntrada().getId())));
                     if (!auto.isDentro()) {
                         resp.add(new BasicNameValuePair("id_turno_salida", String.valueOf(auto.getTurnoSalida().getId())));
