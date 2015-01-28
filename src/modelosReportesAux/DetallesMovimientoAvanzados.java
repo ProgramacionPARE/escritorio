@@ -191,7 +191,7 @@ public class DetallesMovimientoAvanzados {
         while(iteratorPendiente.hasNext()){
             Auto next = iteratorPendiente.next();
             detalles.add(new DetallesMovimientoAvanzados("Pendiente",next.getProgresivo(),next.getFechaEntrada(),next.getHoraEntrada(),
-            "-","-",next.getHorasTangibles(),next.getMinutosTangibles(),next.getMontoTangible(),""));
+            "------","------",next.getHorasTangibles(),next.getMinutosTangibles(),next.getMontoTangible(),""));
         }
         //Detalle de Cancelados
         if(autosBoletoCanceladoTurnoActual.size()>0)

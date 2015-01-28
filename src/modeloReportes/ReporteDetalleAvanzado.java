@@ -72,8 +72,8 @@ public class ReporteDetalleAvanzado implements Runnable {
     
             try {
                 JasperReport reporte = (JasperReport) JRLoader.
-                loadObject(new File("/home/empleado/pare/reportes/detalleAvanzado.jasper"));
-                //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/corteTurno.jasper"));
+                //loadObject(new File("/home/empleado/pare/reportes/detalleAvanzado.jasper"));
+                loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/detalleAvanzado.jasper"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getDetallesTurno().get(serie).getDetalleMovimientoAvanzado()));
                 PrinterJob job = PrinterJob.getPrinterJob();
                 PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);

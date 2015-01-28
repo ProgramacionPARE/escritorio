@@ -60,6 +60,8 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
             lblMensaje.setText("Coloca la contra en el sensor");
         }else if(accion.equals("ENTRADA")){
              lblMensaje.setText("Coloca tu gafet contra en el sensor");
+        }else{
+            lblMensaje.setText("Coloca el codigo");
         }
        
 
@@ -69,6 +71,8 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
          setLocationRelativeTo(parent);
         setVisible(true);
     }
+    
+            
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -133,9 +137,18 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
         
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         Auto auto=null;
+        String act ="";
         if (evt.getKeyChar() == '\n') { 
             if (id.length() ==12 ){
-                if(accion.equals("COBRO")){
+                if(accion.equals("COBRO-BOLETO")){
+                    if(id.charAt(0)=='.'){
+                        act = "ENTRADA";
+                    }else{
+                        act = "COBRO";
+                    }
+                }
+                
+                if(act.equals("COBRO")|| accion.equals("COBRO")){
                     auto = Auto.getByProgresivoClave(id);
                     if (auto != null){
                         if(auto.isDentro()){
@@ -191,7 +204,7 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
                             id = "";
                         }
                     }
-                }else if(accion.equals("ENTRADA")){
+                }else if(act.equals("ENTRADA") || accion.equals("COBRO")){
                     Empleado empleado = null;
                     empleado = Empleado.getByIdClave(id);
                     if (empleado != null){
@@ -208,7 +221,8 @@ public class FrmLeerCodigoBarras extends javax.swing.JDialog /*implements Runnab
                             Progresivo.setProgresivoMasUno(estacionamiento.getCaseta(),newAuto.getSerie());
                             //Imprimo boletos
                             PrinterJob job = PrinterJob.getPrinterJob();
-                            // Boleto al cliente
+                                                        
+// Boleto al cliente
                             
                             new FrmP1BoletoCliente(this, false,job,newAuto,empleado);
                             //Boleto llaves

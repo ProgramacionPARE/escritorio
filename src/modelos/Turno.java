@@ -294,7 +294,7 @@ public class Turno implements IDBModel,Serializable {
     public void setEstacionamiento(Estacionamiento estacionamiento) {
         this.estacionamiento = estacionamiento;
     }
-
+        
     public Empleado getEmpleadoEntrada() {
         return Empleado.getById(empleadoApertura);
     }

@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelos.Conexion;
 
 /**
  *
@@ -21,35 +20,47 @@ import modelos.Conexion;
  */
 public class BoletoCancelado implements IDBModel{
     int id;
+    int idAuto;
+    long idTurno;
     String razon;
-    Turno turno;
-    Auto auto;
-
     
     
-    public BoletoCancelado(int id, String razon, Turno turno) {
-        this.id = id;
+    
+    public BoletoCancelado(int idAuto,long idTurno, String razon) {
+        this.idAuto=idAuto ;
+        this.idTurno = idTurno;
         this.razon = razon;
-        this.turno = turno;
     }
 
-    public Auto getAuto() {
-        return auto;
+    public BoletoCancelado(int id, int idAuto, long idTurno, String razon) {
+        this.id = id;
+        this.idAuto = idAuto;
+        this.idTurno = idTurno;
+        this.razon = razon;
     }
 
-    public void setAuto(Auto auto) {
-        this.auto = auto;
-    }
-    
-    
-    
-    
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdAuto() {
+        return idAuto;
+    }
+
+    public void setIdAuto(int idAuto) {
+        this.idAuto = idAuto;
+    }
+
+    public long getIdTurno() {
+        return idTurno;
+    }
+
+    public void setIdTurno(int idTurno) {
+        this.idTurno = idTurno;
     }
 
     public String getRazon() {
@@ -60,13 +71,6 @@ public class BoletoCancelado implements IDBModel{
         this.razon = razon;
     }
 
-    public Turno getTurno() {
-        return turno;
-    }
-
-    public void setTurno(Turno turno) {
-        this.turno = turno;
-    }
 
     @Override
     public void guardar() {
@@ -74,11 +78,10 @@ public class BoletoCancelado implements IDBModel{
            Conexion conexion = Conexion.getInstance();
             Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("INSERT INTO boleto_cancelado (`id_auto`, `id`,"+
-                            " `razon`)"+
+            prepareStatement("INSERT INTO boleto_cancelado (`id_auto`, `id_turno`,`razon`)"+
                             " VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, auto.getId());
-            statement.setLong(2, turno.getId());
+            statement.setLong(1, idAuto);
+            statement.setLong(2, idTurno);
             statement.setString(3, razon);
            
             statement.executeUpdate();
@@ -114,9 +117,9 @@ public class BoletoCancelado implements IDBModel{
             statement.setLong(1, id);
             ResultSet executeQuery = statement.executeQuery();
             if (executeQuery.next()){
-                boletoCancelado = new BoletoCancelado(executeQuery.getInt("id")
-                ,executeQuery.getString("razon") , 
-                 Turno.getById(executeQuery.getLong("id")));
+                boletoCancelado = new BoletoCancelado(executeQuery.getInt("id"),
+                executeQuery.getInt("id_auto"),executeQuery.getInt("id_turno"),     
+                executeQuery.getString("razon") );
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {

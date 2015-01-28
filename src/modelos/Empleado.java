@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class Empleado implements IDBModel,Serializable {
     long id;
-    int nivel;
+  
     String nombre;
     String tipoPuesto;
     String tipoTurno;
@@ -22,9 +22,9 @@ public class Empleado implements IDBModel,Serializable {
     String contraseña;
     String clave;
     
-    public Empleado(int id, int nivel, String nombre,  String tipoPuesto,String usuario,String contraseña, String clave) {
+    public Empleado(int id, String nombre,  String tipoPuesto,String usuario,String contraseña, String clave) {
         this.id = id;
-        this.nivel = nivel;
+
         this.nombre = nombre;
         this.usuario = usuario;
         this.contraseña = contraseña;
@@ -43,7 +43,7 @@ public class Empleado implements IDBModel,Serializable {
             statement.setLong(1, idEmpleado);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
-                empleado = new Empleado(resultSet.getInt("id"),resultSet.getInt("nivel"),
+                empleado = new Empleado(resultSet.getInt("id"),
                         resultSet.getString("nombre_completo"), 
                         resultSet.getString("tipo_empleado"),
                         resultSet.getString("nombre"),resultSet.getString("contras")
@@ -163,15 +163,7 @@ public class Empleado implements IDBModel,Serializable {
         this.id = id;
     }
 
-    public int getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
-    }
-
-
+   
     public String getTipoPuesto() {
         return tipoPuesto;
     }
@@ -193,17 +185,17 @@ public class Empleado implements IDBModel,Serializable {
           Conexion conexion = Conexion.getInstance();
            Connection connectionDB = conexion.getConnection();
            PreparedStatement  statement = connectionDB.
-           prepareStatement("INSERT INTO usuarios (`nombre_completo`, `nivel`,"+
+           prepareStatement("INSERT INTO usuarios (`nombre_completo`,"+
                            " `nombre`,`contras`,`tipo_empleado`,`clave`,`id_caseta`)"
-                           + " VALUES (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+                           + " VALUES (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
            statement.setString(1, nombre);
-           statement.setInt(2, nivel);
-           statement.setString(3, usuario);
-           statement.setString(4, contraseña); 
-           statement.setString(5, tipoPuesto);
-           statement.setString(6,clave);
+       
+           statement.setString(2, usuario);
+           statement.setString(3, contraseña); 
+           statement.setString(4, tipoPuesto);
+           statement.setString(5,clave);
            
-           statement.setInt(7, 1);
+           statement.setInt(6, 1);
            
 
            statement.executeUpdate();
@@ -222,13 +214,12 @@ public class Empleado implements IDBModel,Serializable {
            Conexion conexion = Conexion.getInstance();
             Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.
-            prepareStatement("UPDATE usuarios SET `nombre_completo`=? ,`nivel` =? , `nombre` =?"
+            prepareStatement("UPDATE usuarios SET `nombre_completo`=? , `nombre` =?"
                     +",`contras` =? ,`tipo_empleado` =? ,`clave` =?    WHERE `id`=?");
             statement.setString(1, nombre);
-            statement.setInt(2, nivel);
-            statement.setString(3, usuario);
-            statement.setString(4, contraseña); 
-            statement.setString(5, tipoPuesto);
+            statement.setString(2, usuario);
+            statement.setString(3, contraseña); 
+            statement.setString(4, tipoPuesto);
             statement.setString(5, clave);
             statement.setLong(6, id);
 

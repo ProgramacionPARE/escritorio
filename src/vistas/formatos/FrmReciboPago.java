@@ -58,8 +58,8 @@ public class FrmReciboPago extends JDialog implements Printable {
         this.txtEntrada.setText(auto.getHoraEntrada());
         this.txtSalida.setText(auto.getHoraSalida());
         this.txtEstacionamiento.setText(estacionamiento.getDescripcion());
-        this.txtImporte.setText(String.format("%.2f", (float) auto.getMontoTangible()*.85));
-        this.txtIVA.setText(String.format("%.2f", (float) auto.getMontoTangible()*.15));
+        this.txtImporte.setText(String.format("%.2f", (float) auto.getMontoTangible()*.84));
+        this.txtIVA.setText(String.format("%.2f", (float) auto.getMontoTangible()*.16));
         this.txtTotal.setText(String.format("%.2f", auto.getMontoTangible()));
         this.txtProgresivo.setText("NO. "+Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(), "RECIBO_PAGO"));
         this.txtCantidadRecibida.setText(String.valueOf(auto.getMontoReciboPago()));
@@ -98,7 +98,6 @@ public class FrmReciboPago extends JDialog implements Printable {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         txtEstacionamiento = new javax.swing.JTextField();
         txtProgresivo = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -131,273 +130,164 @@ public class FrmReciboPago extends JDialog implements Printable {
                 formComponentShown(evt);
             }
         });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(FrmReciboPago.class);
         jLabel1.setIcon(resourceMap.getIcon("jLabel1.icon")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 317, 90));
 
-        jLabel2.setFont(new java.awt.Font("Droid Sans", 1, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Droid Sans", 1, 24)); // NOI18N
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 195, -1));
 
         jLabel3.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel3.setName("jLabel3"); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel5.setName("jLabel5"); // NOI18N
-
-        jLabel7.setFont(resourceMap.getFont("jLabel7.font")); // NOI18N
-        jLabel7.setIcon(resourceMap.getIcon("jLabel7.icon")); // NOI18N
-        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
-        jLabel7.setName("jLabel7"); // NOI18N
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, 137, -1));
 
         txtEstacionamiento.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtEstacionamiento.setText(resourceMap.getString("txtEstacionamiento.text")); // NOI18N
         txtEstacionamiento.setBorder(null);
         txtEstacionamiento.setMaximumSize(new java.awt.Dimension(100, 100));
         txtEstacionamiento.setName("txtEstacionamiento"); // NOI18N
+        getContentPane().add(txtEstacionamiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 137, -1));
 
         txtProgresivo.setFont(new java.awt.Font("Droid Sans", 1, 18)); // NOI18N
-        txtProgresivo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtProgresivo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtProgresivo.setText(resourceMap.getString("txtProgresivo.text")); // NOI18N
         txtProgresivo.setBorder(null);
         txtProgresivo.setMaximumSize(new java.awt.Dimension(100, 100));
         txtProgresivo.setName("txtProgresivo"); // NOI18N
+        getContentPane().add(txtProgresivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, 110, 29));
 
         jLabel8.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel8.setText(resourceMap.getString("jLabel8.text")); // NOI18N
         jLabel8.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel8.setName("jLabel8"); // NOI18N
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 143, -1));
 
         txtEntrada.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtEntrada.setBorder(null);
         txtEntrada.setMaximumSize(new java.awt.Dimension(100, 100));
         txtEntrada.setName("txtEntrada"); // NOI18N
+        getContentPane().add(txtEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 143, -1));
 
         txtImporte.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtImporte.setBorder(null);
         txtImporte.setMaximumSize(new java.awt.Dimension(100, 100));
         txtImporte.setName("txtImporte"); // NOI18N
+        getContentPane().add(txtImporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, 70, -1));
 
         jLabel9.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel9.setName("jLabel9"); // NOI18N
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 250, 70, -1));
 
         jLabel10.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel10.setText(resourceMap.getString("jLabel10.text")); // NOI18N
         jLabel10.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel10.setName("jLabel10"); // NOI18N
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 143, -1));
 
         txtSalida.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtSalida.setBorder(null);
         txtSalida.setMaximumSize(new java.awt.Dimension(100, 100));
         txtSalida.setName("txtSalida"); // NOI18N
+        getContentPane().add(txtSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 143, -1));
 
         txtIVA.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtIVA.setBorder(null);
         txtIVA.setMaximumSize(new java.awt.Dimension(100, 100));
         txtIVA.setName("txtIVA"); // NOI18N
+        getContentPane().add(txtIVA, new org.netbeans.lib.awtextra.AbsoluteConstraints(276, 270, 80, -1));
 
         txtTotal.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtTotal.setBorder(null);
         txtTotal.setMaximumSize(new java.awt.Dimension(100, 100));
         txtTotal.setName("txtTotal"); // NOI18N
+        getContentPane().add(txtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 160, -1));
 
         jLabel13.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel13.setText(resourceMap.getString("jLabel13.text")); // NOI18N
         jLabel13.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel13.setName("jLabel13"); // NOI18N
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 150, -1));
 
         txtBoleto.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtBoleto.setBorder(null);
         txtBoleto.setMaximumSize(new java.awt.Dimension(100, 100));
         txtBoleto.setName("txtBoleto"); // NOI18N
+        getContentPane().add(txtBoleto, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 170, 160, -1));
 
         jLabel12.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
         jLabel12.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel12.setName("jLabel12"); // NOI18N
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 143, -1));
 
         txtFecha.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtFecha.setBorder(null);
         txtFecha.setMaximumSize(new java.awt.Dimension(100, 100));
         txtFecha.setName("txtFecha"); // NOI18N
+        getContentPane().add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 143, -1));
 
         jLabel4.setFont(resourceMap.getFont("jLabel14.font")); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 430, 310, -1));
 
         jLabel14.setFont(resourceMap.getFont("jLabel14.font")); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText(resourceMap.getString("jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 310, -1));
 
         jLabel15.setFont(resourceMap.getFont("jLabel14.font")); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText(resourceMap.getString("jLabel15.text")); // NOI18N
         jLabel15.setName("jLabel15"); // NOI18N
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 415, 310, -1));
 
         jLabel16.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel16.setText(resourceMap.getString("jLabel16.text")); // NOI18N
         jLabel16.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel16.setName("jLabel16"); // NOI18N
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 80, -1));
 
         txtCantidadRecibida.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtCantidadRecibida.setBorder(null);
         txtCantidadRecibida.setMaximumSize(new java.awt.Dimension(100, 100));
         txtCantidadRecibida.setName("txtCantidadRecibida"); // NOI18N
+        getContentPane().add(txtCantidadRecibida, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, 160, -1));
 
         jLabel11.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel11.setText(resourceMap.getString("jLabel11.text")); // NOI18N
         jLabel11.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel11.setName("jLabel11"); // NOI18N
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 160, -1));
 
         jLabel17.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         jLabel17.setText(resourceMap.getString("jLabel17.text")); // NOI18N
         jLabel17.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel17.setName("jLabel17"); // NOI18N
+        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 320, -1));
 
         txtNotas.setFont(new java.awt.Font("Droid Sans", 0, 18)); // NOI18N
         txtNotas.setBorder(null);
         txtNotas.setMaximumSize(new java.awt.Dimension(100, 100));
         txtNotas.setName("txtNotas"); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtNotas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtEstacionamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtBoleto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(txtImporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                                                .addComponent(txtIVA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(0, 0, Short.MAX_VALUE))))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantidadRecibida, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(4, 4, 4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtProgresivo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(txtProgresivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(1, 1, 1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtEstacionamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtBoleto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(1, 1, 1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantidadRecibida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(1, 1, 1)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(3, 3, 3)
-                                .addComponent(txtEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(1, 1, 1)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(7, 7, 7)
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(1, 1, 1)
-                        .addComponent(txtNotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel14)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel15)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel4))))
-        );
+        getContentPane().add(txtNotas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 320, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -435,9 +325,9 @@ public class FrmReciboPago extends JDialog implements Printable {
         }
         
         Graphics2D g2d = (Graphics2D)g;
-        g2d.transform(AffineTransform.getScaleInstance(.45,.45));
-        g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/1.65,(this).getHeight()/1.65 ));
-        g2d.transform(AffineTransform.getTranslateInstance(0,-140));
+        g2d.transform(AffineTransform.getScaleInstance(.46,.46));
+        g2d.transform(AffineTransform.getRotateInstance( Math.toRadians(-90),(this).getWidth()/2.1,(this).getHeight()/2.1 ));
+        g2d.transform(AffineTransform.getTranslateInstance(30,20));
         
         this.printAll(g2d);
         return PAGE_EXISTS;
@@ -458,7 +348,6 @@ public class FrmReciboPago extends JDialog implements Printable {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField txtBoleto;

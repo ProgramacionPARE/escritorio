@@ -1054,7 +1054,7 @@ public class Auto implements Serializable{
             Conexion conexion = Conexion.getInstance();
             Connection connectionDB = conexion.getConnection();
             PreparedStatement statement = connectionDB.
-                    prepareStatement("SELECT * FROM autos where (id_remoto is null) or (id_remoto = 1 and entrada_salida = 'S') ");
+                    prepareStatement("SELECT * FROM autos where (id_remoto is null) or(estado_servidor = 1)or (estado_servidor = 1 and entrada_salida = 'S') ");
 
             ResultSet executeQuery = statement.executeQuery();
             while (executeQuery.next()) {
@@ -1363,7 +1363,24 @@ public class Auto implements Serializable{
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+      public void actualizarServidor() {
+        try {
+            Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("UPDATE autos SET  id_remoto = ?  , estado_servidor = ? "
+                            + " WHERE `id`=?");
+         
+            statement.setString(1, idRemoto);
+            statement.setInt(2, estadoServidor);
+            statement.setInt(3, id);
 
+            statement.executeUpdate();
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public void actualizarEstado() {
         try {
             Conexion conexion = Conexion.getInstance();

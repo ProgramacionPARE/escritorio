@@ -161,7 +161,9 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
                 ( turnoAux.getTipoTurno().equals("Segundo turno") && this.cbxSegundo.isSelected() && this.cbxSegundo.isVisible()) ||
                 ( turnoAux.getTipoTurno().equals("Tercer turno")&& this.cbxTercer.isSelected()&& this.cbxTercer.isVisible() ) ){
             modelTurno.addRow(new Object[]{ turnoAux.getHoraCierre()!=null?"CERRADO":"ABIERTO",turnoAux.getTipoTurno(),
-                turnoAux.getHoraApertura(),turnoAux.getHoraCierre(),turnoAux.getEmpleadoEntrada().getNombre(),
+                turnoAux.getHoraApertura(),
+                turnoAux.getHoraCierre(),
+                turnoAux.getEmpleadoEntrada().getNombre(),
                 turnoAux.getDetallesTurno().get(this.serie).getFolioInicial(),
                 turnoAux.getDetallesTurno().get(this.serie).getFolioFinal(),
                 turnoAux.getDetallesTurno().get(this.serie).getTotal()});

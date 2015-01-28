@@ -100,7 +100,7 @@ public class Rest {
                     resp.add(new BasicNameValuePair("serie", auto.getSerie()));
                     resp.add(new BasicNameValuePair("tarifa", String.valueOf(auto.getTarifa().getId())));
                     resp.add(new BasicNameValuePair("progresivo", auto.getProgresivo()));
-                    resp.add(new BasicNameValuePair("entrada_salida", auto.isDentro() ? "E" : "S"));
+                    resp.add(new BasicNameValuePair("entrada_salida", auto.getTurnoSalida()==null ? "E" : "S"));
                     resp.add(new BasicNameValuePair("fecha_entrada", auto.getFechaEntrada()));
                     resp.add(new BasicNameValuePair("hora_entrada", auto.getHoraEntrada()));
                     resp.add(new BasicNameValuePair("fecha_salida", auto.getFechaSalida()));
@@ -111,8 +111,10 @@ public class Rest {
                     resp.add(new BasicNameValuePair("horas", String.valueOf(auto.getHorasTangibles())));
                     resp.add(new BasicNameValuePair("Dminutos", String.valueOf(auto.getMinutosTangibles())));
                     resp.add(new BasicNameValuePair("id_turno_entrada", String.valueOf(auto.getTurnoEntrada().getId())));
-                    if (!auto.isDentro()) {
+                    if (auto.getTurnoSalida()!=null) {
                         resp.add(new BasicNameValuePair("id_turno_salida", String.valueOf(auto.getTurnoSalida().getId())));
+                    }else{
+                        resp.add(new BasicNameValuePair("id_turno_salida", "0"));
                     }
                     resp.add(new BasicNameValuePair("boleto_perdido", auto.isBoletoPerdido() ? "SI" : "NO"));
                     resp.add(new BasicNameValuePair("boleto_cancelado", auto.isBoletoCancelado() ? "SI" : "NO"));
@@ -146,11 +148,11 @@ public class Rest {
                             }else{
                                 JSONObject e = (JSONObject) parser.parse(data);
                                 auto.setIdRemoto((String) e.get("_id"));
-                                if(auto.isDentro())
+                                if(auto.getTurnoSalida()==null)
                                     auto.setEstadoServidor(1);
                                 else 
                                     auto.setEstadoServidor(2);
-                                auto.actualizar();
+                                auto.actualizarServidor();
                             }
                         } catch (ParseException ex) {
                             Logger.getLogger(Rest.class.getName()).log(Level.SEVERE, null, ex);
