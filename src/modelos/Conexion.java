@@ -36,6 +36,7 @@ public class Conexion {
         } 
         return this.connection;
     }
+    
 
     public  void setConnection(Connection connection) {
         this.connection = connection;
@@ -43,12 +44,6 @@ public class Conexion {
     
 
 
-//    @Override
-//    protected void finalize() throws Throwable {
-//        super.finalize(); //To change body of generated methods, choose Tools | Templates.
-//         no--;
-//    }
-    
     public void cerrarConexion(){
         try {
             this.connection.close();

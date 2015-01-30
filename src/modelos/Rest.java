@@ -251,7 +251,7 @@ public class Rest {
                     resp.add(new BasicNameValuePair("no_bol_perdidos", String.valueOf(turnoDetalle.getNoBolPerdidos())));
                     resp.add(new BasicNameValuePair("no_bol_cobrados", String.valueOf(turnoDetalle.getNoBolCobrados())));
                     resp.add(new BasicNameValuePair("no_bol_contra", String.valueOf(turnoDetalle.getNoBolContra())));
-
+                    resp.add(new BasicNameValuePair("no_bol_manual", String.valueOf(turnoDetalle.getNoBolManual())));  
                     resp.add(new BasicNameValuePair("no_bol_turno_s", String.valueOf(turnoDetalle.getNoBolTurnoS())));
                     resp.add(new BasicNameValuePair("total", String.valueOf(turnoDetalle.getTotal())));
                     resp.add(new BasicNameValuePair("id_estacionamiento", estacionamiento.getIdRemoto()));

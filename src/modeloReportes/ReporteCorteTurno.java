@@ -87,8 +87,8 @@ public class ReporteCorteTurno implements Runnable  {
             }  
             try {
                 JasperReport reporte = (JasperReport) JRLoader.
-                //loadObject(new File("/home/empleado/pare/reportes/corteTurno.jasper"));
-               loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/corteTurno.jasper"));
+                loadObject(new File("/home/empleado/pare/reportes/corteTurno.jasper"));
+               //loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/corteTurno.jasper"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getDetallesTurno().get(serie).getDetalleMovimiento()));
                 PrinterJob job = PrinterJob.getPrinterJob();
                 PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);

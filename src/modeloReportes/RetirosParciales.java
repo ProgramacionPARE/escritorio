@@ -12,7 +12,6 @@ import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
-import modelosReportesAux.DetallesMovimiento;
 import modelos.Estacionamiento;
 import modelos.Main;
 import modelos.RetiroParcial;
@@ -57,8 +56,8 @@ public class RetirosParciales  {
 //            }  
             try {
                 JasperReport reporte = (JasperReport) JRLoader.
-                //loadObject(new File("/home/empleado/pare/reportes/retirosParciales.jasper"));
-                loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/retirosParciales.jasper"));
+                loadObject(new File("/home/empleado/pare/reportes/retirosParciales.jasper"));
+                //loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/retirosParciales.jasper"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getRetirosParciales()));
                 PrinterJob job = PrinterJob.getPrinterJob();
                 PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);

@@ -33,6 +33,18 @@ public  class ConexionDatos {
         }
         return connection;
     }
+     public Connection getConnection(String ip) {
+         try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String servidor = "jdbc:mysql://"+ip+"/paredatos";
+            String usuarioDB="root";
+            String passwordDB="#parePROGRAMACIONdb";
+            this.connection = DriverManager.getConnection(servidor,usuarioDB,passwordDB);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(ConexionDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return connection;
+    }
 
     public void setConnection(Connection connection) {
         this.connection = connection;
