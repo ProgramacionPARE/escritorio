@@ -32,6 +32,8 @@ public class Tarifa implements IDBModel{
     int horasCompletas;
     String descripcion;
     float montoInicial;
+    boolean perdidoTiempo;
+    
     public Tarifa() {
         costos = new float[4];
     
@@ -39,7 +41,7 @@ public class Tarifa implements IDBModel{
 
     public Tarifa(long id, int fraciones, float[] costos, float precioHora, 
             float tarifaMaxima, float precioBoletoPerdido, int horasCompletas, 
-            String descripcion,float tarifaUnica,float montoInicial ) {
+            String descripcion,float tarifaUnica,float montoInicial,boolean perdidoTiempo ) {
         this.id = id;
         this.fraciones = fraciones;
         this.costos = costos;
@@ -50,6 +52,8 @@ public class Tarifa implements IDBModel{
         this.descripcion = descripcion;
         this.tarifaUnica = tarifaUnica;
         this.montoInicial = montoInicial;
+        this.perdidoTiempo =  perdidoTiempo;
+        
     }
 
     public static float getImporteEstadia(Auto auto){
@@ -86,8 +90,12 @@ public class Tarifa implements IDBModel{
         if(auto.getTarifa().getTarifaUnica()>0){
             importeFinal =  auto.getTarifa().getTarifaUnica();
         }
-        if( auto.isBoletoPerdido())
-            importeFinal+=  auto.getTarifa().getPrecioBoletoPerdido();
+        if( auto.isBoletoPerdido()){
+            if(auto.getTarifa().isPerdidoTiempo() )
+                importeFinal+=  auto.getTarifa().getPrecioBoletoPerdido();
+            else
+                importeFinal=  auto.getTarifa().getPrecioBoletoPerdido();
+        }
         
         return importeFinal;
     }
@@ -132,7 +140,7 @@ public class Tarifa implements IDBModel{
                         resultSet.getInt("precio_hora"),resultSet.getFloat("tarifa_maxima"),
                         resultSet.getFloat("boleto_perdido"), resultSet.getInt("hora_inicial"),
                         resultSet.getString("descripcion"),resultSet.getFloat("tarifa_unica"),
-                        resultSet.getFloat("monto_inicial"));
+                        resultSet.getFloat("monto_inicial"),resultSet.getString("perdido_tiempo").equals("SI"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
@@ -184,8 +192,8 @@ public class Tarifa implements IDBModel{
             PreparedStatement  statement = connectionDB.
             prepareStatement("INSERT INTO tarifa (`fracciones`, `costos`,"+
                             " `precio_hora`,`tarifa_maxima`,`boleto_perdido`,"+
-                            "`hora_inicial`,`descripcion`,`tarifa_unica`,`monto_inicial` )" +
-                            " VALUES (?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+                            "`hora_inicial`,`descripcion`,`tarifa_unica`,`monto_inicial`,`perdido_tiempo` )" +
+                            " VALUES (?,?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, 4);
             statement.setString(2,costosString );
             statement.setFloat(3, precioHora);
@@ -195,6 +203,8 @@ public class Tarifa implements IDBModel{
             statement.setString(7, descripcion);
             statement.setFloat(8, tarifaUnica);
             statement.setFloat(9, montoInicial);
+            statement.setString(10,perdidoTiempo?"SI":"NO");
+            
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if(generatedKeys.next())
@@ -229,12 +239,21 @@ public class Tarifa implements IDBModel{
             statement.setString(7, descripcion); 
             statement.setFloat(8, tarifaUnica);
             statement.setFloat(9, montoInicial);
-            statement.setLong(10, id); 
+            statement.setString(10,perdidoTiempo?"SI":"NO");
+            statement.setLong(11, id); 
             statement.executeUpdate();
             conexion.cerrarConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         } 
+    }
+
+    public boolean isPerdidoTiempo() {
+        return perdidoTiempo;
+    }
+
+    public void setPerdidoTiempo(boolean perdidoTiempo) {
+        this.perdidoTiempo = perdidoTiempo;
     }
 
     public float getMontoInicial() {
@@ -262,9 +281,7 @@ public class Tarifa implements IDBModel{
         }
     }
 
-
-    
-    
+  
     public long getId() {
         return id;
     }

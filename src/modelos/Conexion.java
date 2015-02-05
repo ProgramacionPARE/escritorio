@@ -36,8 +36,22 @@ public class Conexion {
         } 
         return this.connection;
     }
-    
+   
+    public  String testConnection() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String servidor = "jdbc:mysql://" + Configuracion.getInstancia().getIp() + "/paredb";
+            String usuarioDB = "root";
+            String passwordDB = "#parePROGRAMACIONdb";
+            DriverManager.getConnection(servidor, usuarioDB, passwordDB);
 
+          
+        } catch (ClassNotFoundException | SQLException ex) {
+           return ex.getLocalizedMessage();
+        } 
+        return "ok";
+    }
+    
     public  void setConnection(Connection connection) {
         this.connection = connection;
     }

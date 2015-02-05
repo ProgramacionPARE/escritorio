@@ -72,6 +72,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
         this.txtDescripcion.setText(String.valueOf(tarifa.getDescripcion()));
         this.txtTarifaUnica.setText(String.valueOf(tarifa.getTarifaUnica()));
         this.txtMontoInicial.setText(String.valueOf(tarifa.getMontoInicial()));
+        cbxTiempoPerdido.setSelected(tarifa.isPerdidoTiempo());
         int i=0;
         for(Float n:tarifa.getCostos()){
             txtTarifas.get(i).setText(String.valueOf(n));
@@ -115,6 +116,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
         txtTarifaUnica = new javax.swing.JTextField();
         txtMontoInicial = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
+        cbxTiempoPerdido = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -313,6 +315,9 @@ public class FrmTarifas extends javax.swing.JDialog  {
         jLabel27.setText("Monto adicional");
         jLabel27.setName("jLabel27"); // NOI18N
 
+        cbxTiempoPerdido.setText("Boleto perdido + estadia");
+        cbxTiempoPerdido.setName("cbxTiempoPerdido"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -324,6 +329,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
                                     .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -369,7 +375,8 @@ public class FrmTarifas extends javax.swing.JDialog  {
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtMontoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(txtMontoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cbxTiempoPerdido))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -447,7 +454,9 @@ public class FrmTarifas extends javax.swing.JDialog  {
                                                 .addGap(13, 13, 13)
                                                 .addComponent(txtMontoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                                .addComponent(cbxTiempoPerdido)
+                                .addGap(18, 18, 18)
                                 .addComponent(jLabel23)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -614,7 +623,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
                 Tarifa nuevaTarifa = new Tarifa(0,4,costos,Float.valueOf(txtPrecioHora.getText()),
                 Float.valueOf(txtTarifaMaxima.getText()),Float.valueOf(txtBoletoPerdido.getText()),
                 Integer.valueOf(txtHorasCompletas.getText()),txtDescripcion.getText(),
-                        Float.valueOf(txtTarifaUnica.getText()),Float.valueOf(txtMontoInicial.getText()) );
+                        Float.valueOf(txtTarifaUnica.getText()),Float.valueOf(txtMontoInicial.getText()),cbxTiempoPerdido.isSelected() );
                 nuevaTarifa.guardar();
                 tarifa = nuevaTarifa;
                 cargarTabla();
@@ -664,6 +673,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JCheckBox cbxTiempoPerdido;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;

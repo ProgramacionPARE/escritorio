@@ -30,13 +30,14 @@
                       <EmptySpace min="20" pref="20" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="txtDescripcion" pref="330" max="32767" attributes="0"/>
                                   <Component id="jLabel23" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="jLabel19" min="-2" pref="154" max="-2" attributes="0"/>
@@ -89,6 +90,7 @@
                                           <Component id="txtMontoInicial" alignment="0" min="-2" pref="154" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
+                                  <Component id="cbxTiempoPerdido" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace pref="18" max="32767" attributes="0"/>
                           </Group>
@@ -188,7 +190,9 @@
                                   </Group>
                                   <Component id="btnAgregar" min="-2" pref="35" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="18" max="32767" attributes="0"/>
+                              <EmptySpace pref="9" max="32767" attributes="0"/>
+                              <Component id="cbxTiempoPerdido" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtDescripcion" min="-2" pref="20" max="-2" attributes="0"/>
@@ -562,6 +566,12 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Monto adicional"/>
         <Property name="name" type="java.lang.String" value="jLabel27" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="cbxTiempoPerdido">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Boleto perdido + estadia"/>
+        <Property name="name" type="java.lang.String" value="cbxTiempoPerdido" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

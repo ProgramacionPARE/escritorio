@@ -172,8 +172,8 @@ public class DetallesMovimiento {
             DetallesMovimiento detalles = DetallesMovimiento.existePrecioUnitario(mapDetalles, next, "Perdido");
             //DetallesMovimiento detalles = DetallesMovimiento.existeRangoHorario(mapDetalles, next,"Perdido");
             if (detalles == null) {
-                mapDetalles.add(new DetallesMovimiento("", "Perdido", 1, next.getTarifa().getPrecioBoletoPerdido(),
-                        next.getTarifa().getPrecioBoletoPerdido()));
+                mapDetalles.add(new DetallesMovimiento("", "Perdido", 1, next.getMontoTangible(),
+                       next.getMontoTangible()));
             } else {
                 detalles.setNoBol(detalles.getNoBol() + 1);
                 detalles.setImporte(detalles.getPrecioUnitario() * detalles.getNoBol());

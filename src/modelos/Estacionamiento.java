@@ -25,7 +25,6 @@ public class Estacionamiento implements IDBModel {
 
     private Estacionamiento() {
         inicializarObjeto();
-
     }
 
     public int getId() {
@@ -170,6 +169,11 @@ public class Estacionamiento implements IDBModel {
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Estacionamiento{" + "id=" + id + ", idRemoto=" + idRemoto + ", centroCostos=" + centroCostos + ", descripcion=" + descripcion + ", direccion=" + direccion + ", caseta=" + caseta + ", tipo=" + tipo + ", token=" + token + ", correo=" + correo + ", contra=" + contra + '}';
     }
 
 }

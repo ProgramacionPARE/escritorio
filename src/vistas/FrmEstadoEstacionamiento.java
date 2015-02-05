@@ -400,8 +400,8 @@ public class FrmEstadoEstacionamiento extends javax.swing.JDialog implements IUs
     @Override
     public void updateFecha(String fecha) {
         this.txtFecha.setText(fecha);
-         fechaCambio = true;
-       cargarDatos(fecha);
+        fechaCambio = true;
+        cargarDatos(fecha);
     }
     
     @Override

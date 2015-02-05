@@ -1,17 +1,15 @@
 
 package modelos;
 
+import supervision.FrmSupervision;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import sockets.ClienteBoleto;
-import sockets.ClienteMonitor;
 import sockets.ClientePantalla;
 import sockets.ServerAcept;
 import vistas.FrmLogin;
-import vistas.FrmMonitor;
-
 
 public class Principal {
     
@@ -43,17 +41,9 @@ public class Principal {
             //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
         }else if(datos.getTerminal().equals(Configuracion.MONITOR)){
             Monitor monitor = Monitor.getInstancia();
-            Main.getInstance().setClienteMonitor(new ArrayList());
-            FrmMonitor frmMonitor = new FrmMonitor();
-            Iterator<MonitorEstacionamiento> iterator = monitor.getEstacionamientos().iterator();
-            while(iterator.hasNext()){
-                MonitorEstacionamiento next = iterator.next();
-                ClienteMonitor clienteMonitor = new ClienteMonitor(next,frmMonitor);
-                Main.getInstance().getClienteMonitor().add(clienteMonitor );
-                clienteMonitor.start();
-            }
-            frmMonitor.setVisible(true);
-            //frmMonitor.actualizarCentros();
+            FrmSupervision supervision = new FrmSupervision(null,false);
+            
+            supervision.setVisible(true);
         }
     }
     
