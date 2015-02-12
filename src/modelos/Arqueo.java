@@ -1,4 +1,7 @@
-
+/*
+    Modelo de un arqueo
+    
+*/
 package modelos;
 
 import modelosReportesAux.DetallesArqueo;

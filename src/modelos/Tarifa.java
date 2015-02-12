@@ -229,7 +229,7 @@ public class Tarifa implements IDBModel{
             prepareStatement("UPDATE tarifa SET `fracciones`=? ,`costos` =? , "+
                             "`precio_hora` =?,`tarifa_maxima` =? ,`boleto_perdido` =?"+
                             " ,`hora_inicial` =? ,`descripcion` =?,`tarifa_unica` =? "+ 
-                            ",`monto_inicial` =?  WHERE `id`=?");
+                            ",`monto_inicial` =? , perdido_tiempo = ?   WHERE `id`=?");
             statement.setInt(1, 4);
             statement.setString(2,costosString );
             statement.setFloat(3, precioHora);

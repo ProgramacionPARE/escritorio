@@ -1,3 +1,9 @@
+/*
+    Clase donde se preparan los datos para el reporte de jasper
+    correspondiente a los folios del turno actual (separa los que salieron, 
+    de los que sigen dentro)
+*/
+
 package modeloReportes;
 
 import ModelosAux.Tiempo;
@@ -32,19 +38,10 @@ public class ReporteFolios  {
 
     public void generarReporte(){
         Map<String, Object> parametros = new HashMap<String, Object>();
-//        parametros.put("fechaTurno", turno.getFechaApertura());
-//        parametros.put("operador", turno.getOperador().getNombre());
+
         parametros.put("fecha", Tiempo.getFecha()+" "+Tiempo.getHora() );
 
-//        parametros.put("numBoletos",turno.getNoBol());
-//        parametros.put("pendienteTA",turno.getNoBolTurnoA());
-//        parametros.put("cancelados",turno.getNoBolCancelados());
-//        parametros.put("perdidos",turno.getNoBolPerdidos());
-//        parametros.put("cobrados",turno.getNoBolCobrados());
-//        parametros.put("boletosTotales",(turno.getNoBolCobrados()+turno.getNoBolPerdidos()));
-//        parametros.put("pendientes",turno.getNoBolTurnoS());
-//        parametros.put("total",turno.getTotal());
-//        parametros.put("turno",turno.getTipoTurno());
+
         parametros.put("titulo",estacionamiento.getDescripcion());
         
         if(autos.size()<1){
@@ -52,8 +49,7 @@ public class ReporteFolios  {
         }  
         try {
             JasperReport reporte = (JasperReport) JRLoader.
-            loadObject(new File("/home/empleado/pare/reportes/folios.jasper"));
-            //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/folios.jasper"));
+            loadObject(new File(estacionamiento.getUrlReporte()+"/folios.jasper"));
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(autos));
             PrinterJob job = PrinterJob.getPrinterJob();
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
@@ -74,15 +70,6 @@ public class ReporteFolios  {
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
       
-//            exporter = new JRPrintServiceExporter();
-//            SimplePrintServiceExporterConfiguration configuration = new SimplePrintServiceExporterConfiguration();
-//            configuration.setPrintService((PrintService) jasperPrint);
-//            configuration.setPrintRequestAttributeSet(printRequestAttributeSet);
-//            configuration.setPrintServiceAttributeSet(services[selectedService].getAttributes());
-//            configuration.setDisplayPageDialog(false);
-//            configuration.setDisplayPrintDialog(false);
-//            exporter.setConfiguration(configuration);
-//            exporter.exportReport();      
            
         } catch (JRException ex) {
             ex.printStackTrace();

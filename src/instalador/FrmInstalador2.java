@@ -10,64 +10,29 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import javax.swing.JFileChooser;
 import modelos.ConexionDatos;
 
 /**
  *
  * @author sistema
  */
-public class FrmInstalador1 extends javax.swing.JFrame {
+public class FrmInstalador2 extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmInstalador
      */
-    public FrmInstalador1() {
+    JFileChooser chooser;
+    
+    public FrmInstalador2() {
         super("Instalador");
         initComponents();
-         setLocationRelativeTo(null);
-        installMyqsl();
+        setLocationRelativeTo(null);
+        
         
     }
 
-    public void installMyqsl(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String s = null;
-                try {
-
-                    Process p = Runtime.getRuntime().exec("sudo apt-get install -y mysql-server mysql-client"); 
-                    BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                    BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-                    
-                    BufferedWriter write = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-                    // read the output from the command
-                    write.append("#parePROGRAMACIONdb");
-                    System.out.println("M-\n");
-                    while ((s = stdInput.readLine()) != null) {
-                        txtLogs.setText(txtLogs.getText() + s +"\n");
-                        System.out.println(s);
-                    }
-
-                    // read any errors from the attempted command
-                    System.out.println("E-\n");
-                    while ((s = stdError.readLine()) != null) {
-                        System.out.println(s);
-                    }
-                    txtLogs.setText(txtLogs.getText() +"Cargando bases de datos\n");
-                    ConexionDatos.getInstance().checkDB();
-                    txtLogs.setText(txtLogs.getText() +"Se cargaron los datos correctamente\n");
-                    btnSiguiente.setEnabled(true);
-                }
-                catch (IOException e) {
-                    System.out.println("exception happened - here's what I know: ");
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-       
-    }
-
+  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -76,8 +41,8 @@ public class FrmInstalador1 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnSiguiente = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtLogs = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        btnRuta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(java.awt.Color.white);
@@ -92,10 +57,10 @@ public class FrmInstalador1 extends javax.swing.JFrame {
         jLabel2.setText("Parking PARE ");
         jLabel2.setName("jLabel2"); // NOI18N
 
-        jLabel3.setText("Se va a instalar mysql.");
+        jLabel3.setText("El sistema se va a copiar a la ruta:");
         jLabel3.setName("jLabel3"); // NOI18N
 
-        btnSiguiente.setText("Siguiente");
+        btnSiguiente.setText("Finalizar");
         btnSiguiente.setEnabled(false);
         btnSiguiente.setName("btnSiguiente"); // NOI18N
         btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
@@ -104,13 +69,15 @@ public class FrmInstalador1 extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
+        jLabel4.setName("jLabel4"); // NOI18N
 
-        txtLogs.setEditable(false);
-        txtLogs.setColumns(20);
-        txtLogs.setRows(5);
-        txtLogs.setName("txtLogs"); // NOI18N
-        jScrollPane1.setViewportView(txtLogs);
+        btnRuta.setText("Cambiar la ruta de instalacion");
+        btnRuta.setName("btnRuta"); // NOI18N
+        btnRuta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRutaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,13 +86,16 @@ public class FrmInstalador1 extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRuta)))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
@@ -136,8 +106,10 @@ public class FrmInstalador1 extends javax.swing.JFrame {
                 .addGap(82, 82, 82)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnRuta)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
                 .addComponent(btnSiguiente)
                 .addGap(26, 26, 26))
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -147,19 +119,33 @@ public class FrmInstalador1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
-        FrmInstalador2 frmInstalador2 = new FrmInstalador2 ();
-        frmInstalador2.setVisible(true);
-        this.dispose();
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnSiguienteActionPerformed
+
+    private void btnRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRutaActionPerformed
+        chooser = new JFileChooser(); 
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        //    
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+          
+        }else {
+        
+        
+        }
+         
+   
+    }//GEN-LAST:event_btnRutaActionPerformed
 
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRuta;
     private javax.swing.JButton btnSiguiente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea txtLogs;
+    private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
 }

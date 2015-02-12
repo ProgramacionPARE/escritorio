@@ -203,10 +203,7 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
         
         
     }
-          //turnoAux.getDetallesTurno().get(this.serie).getFolioInicial(),
-                //turnoAux.getDetallesTurno().get(this.serie).getFolioFinal(),
-                //turnoAux.getDetallesTurno().get(this.serie).getTotal()});
-            //importeTurnosTabla+=turnoAux.getDetallesTurno().get(this.serie).getTotal();
+         
      private void eventosTablas() {
         tblTurnos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -563,7 +560,7 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
     private void CobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CobrarActionPerformed
        if(autoGlo!= null){
             if(autoGlo.isDentro())
-                new FrmSupervisionCerrarBoleto(null, true,autoGlo);
+                new FrmSupervisionCerrarBoleto(null, true,autoGlo,estacionamiento,detalleGlo);
             //else
                // J 
        }

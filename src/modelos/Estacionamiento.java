@@ -22,6 +22,8 @@ public class Estacionamiento implements IDBModel {
     private String correo;
     private String contra;
     
+    private String urlReporte;
+    
 
     private Estacionamiento() {
         inicializarObjeto();
@@ -111,6 +113,16 @@ public class Estacionamiento implements IDBModel {
         this.idRemoto = idRemoto;
     }
 
+    public String getUrlReporte() {
+        return urlReporte;
+    }
+
+    public void setUrlReporte(String urlReporte) {
+        this.urlReporte = urlReporte;
+    }
+    
+    
+
     @Override
     public void guardar() {
 
@@ -163,7 +175,7 @@ public class Estacionamiento implements IDBModel {
                 this.correo = resultSet.getString("correo");
                 this.contra = resultSet.getString("contra");
                 this.idRemoto = resultSet.getString("id_remoto");
-                
+                this.urlReporte = resultSet.getString("url_reporte");
             }
         conexion.getConnection();
         } catch (SQLException ex) {

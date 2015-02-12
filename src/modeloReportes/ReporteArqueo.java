@@ -1,3 +1,9 @@
+/*
+    Clase donde se preparan los datos para el reporte de jasper
+    correspondiente a la emision de arqueo
+*/
+
+
 package modeloReportes;
 
 import ModelosAux.Tiempo;
@@ -56,10 +62,9 @@ public class ReporteArqueo  {
         parametros.put("total",arqueo.getTotal());
         parametros.put("diferencia",arqueo.getTotal()-turno.getDetallesTurno().get(serie).getTotal());
         
-
         try {
             JasperReport reporte = (JasperReport) JRLoader.
-            loadObject(new File("/home/empleado/pare/reportes/arqueo.jasper"));
+            loadObject(new File(estacionamiento.getUrlReporte()+"/arqueo.jasper"));
             //loadObject(new File("/home/sistema/proyectos/escritorio/src/reportes/arqueo.jasper"));
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(arqueo.getDetallesArqueo()));
             PrinterJob job = PrinterJob.getPrinterJob();
@@ -81,15 +86,6 @@ public class ReporteArqueo  {
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
       
-//            exporter = new JRPrintServiceExporter();
-//            SimplePrintServiceExporterConfiguration configuration = new SimplePrintServiceExporterConfiguration();
-//            configuration.setPrintService((PrintService) jasperPrint);
-//            configuration.setPrintRequestAttributeSet(printRequestAttributeSet);
-//            configuration.setPrintServiceAttributeSet(services[selectedService].getAttributes());
-//            configuration.setDisplayPageDialog(false);
-//            configuration.setDisplayPrintDialog(false);
-//            exporter.setConfiguration(configuration);
-//            exporter.exportReport();      
            
         } catch (JRException ex) {
             ex.printStackTrace();

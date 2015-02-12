@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    Clase donde se preparan los datos para el reporte de jasper
+    correspondiente al detalle del turno actual (Desglosa los boletos pendientes,
+    perdidos,cancelado y manuales)
  */
 package modeloReportes;
 
@@ -24,7 +24,6 @@ import modelos.Estacionamiento;
 import modelos.Main;
 import modelos.Turno;
 import modelos.TurnoDetalles;
-import modelosReportesAux.DetallesMovimiento;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -72,7 +71,7 @@ public class ReporteDetalleAvanzado implements Runnable {
     
             try {
                 JasperReport reporte = (JasperReport) JRLoader.
-                loadObject(new File("/home/empleado/pare/reportes/detalleAvanzado.jasper"));
+                loadObject(new File(estacionamiento.getUrlReporte()+"/detalleAvanzado.jasper"));
                 //loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/detalleAvanzado.jasper"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getDetallesTurno().get(serie).getDetalleMovimientoAvanzado()));
                 PrinterJob job = PrinterJob.getPrinterJob();

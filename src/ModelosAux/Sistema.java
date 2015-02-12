@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Clase con funciones especificas del sistema.
  */
 
 package ModelosAux;
@@ -10,6 +8,7 @@ import modelos.Caja;
 
 
 public class Sistema {
+    //Valida el monto en caja, contra el valor configuradod de retiro parcial.
     public static boolean requiereRetitroParcial(Caja caja){
         return caja.getMonto()>=caja.getMontoAlarma();
     }

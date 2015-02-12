@@ -1,3 +1,9 @@
+/*
+    Clase donde se preparan los datos para el reporte de jasper
+    correspondiente al los retiros parciales (Sumatoria de los retiros del turno
+    actual)
+*/
+
 package modeloReportes;
 
 import ModelosAux.Tiempo;
@@ -51,12 +57,10 @@ public class RetirosParciales  {
         parametros.put("turno",turno.getTipoTurno());
         parametros.put("centroCostos",estacionamiento.getDescripcion());
         parametros.put("total", total);
-//            if(turno.getDetallesMovimiento().size()<1){
-//                turno.getDetallesMovimiento().add(new DetallesMovimiento());
-//            }  
+
             try {
                 JasperReport reporte = (JasperReport) JRLoader.
-                loadObject(new File("/home/empleado/pare/reportes/retirosParciales.jasper"));
+                loadObject(new File(estacionamiento.getUrlReporte()+"/retirosParciales.jasper"));
                 //loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/retirosParciales.jasper"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getRetirosParciales()));
                 PrinterJob job = PrinterJob.getPrinterJob();
@@ -78,15 +82,7 @@ public class RetirosParciales  {
                 exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
                 exporter.exportReport();
 
-    //            exporter = new JRPrintServiceExporter();
-    //            SimplePrintServiceExporterConfiguration configuration = new SimplePrintServiceExporterConfiguration();
-    //            configuration.setPrintService((PrintService) jasperPrint);
-    //            configuration.setPrintRequestAttributeSet(printRequestAttributeSet);
-    //            configuration.setPrintServiceAttributeSet(services[selectedService].getAttributes());
-    //            configuration.setDisplayPageDialog(false);
-    //            configuration.setDisplayPrintDialog(false);
-    //            exporter.setConfiguration(configuration);
-    //            exporter.exportReport();      
+   
 
                 } catch (JRException ex) {
                     ex.printStackTrace();

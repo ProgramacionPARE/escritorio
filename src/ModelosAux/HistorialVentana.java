@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *     Clase auxiliar donde se guardan temporalmente las ventanas, al abrir una nueva,
+       despues de que la nueva ventana se cierra, la ultima que se guardo regresa a su
+       estado normal.
  */
 package ModelosAux;
 

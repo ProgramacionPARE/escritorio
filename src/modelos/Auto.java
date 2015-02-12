@@ -366,6 +366,11 @@ public class Auto implements Serializable{
      public long getIdTurnoEntrada() {
         return turnoEntrada;
     }
+     
+    public void setIdTurnoEntrada(long turnoEntrada) {
+        this.turnoEntrada = turnoEntrada;
+    }
+
 
     public void setTurnoEntrada(Turno turnoEntrada) {
         this.turnoEntrada = turnoEntrada.getId();
@@ -377,7 +382,9 @@ public class Auto implements Serializable{
     public long getIdTurnoSalida() {
         return turnoSalida;
     }
-
+    public void setIdTurnoSalida(long turnoSalida) {
+        this.turnoSalida = turnoSalida;
+    }
     public void setTurnoSalida(Turno turnoSalida) {
         this.turnoSalida = turnoSalida.getId();
     }

@@ -1,3 +1,8 @@
+/*
+    Clase donde se preparan los datos para el reporte de jasper
+    correspondiente al corte del turno correspondiente.
+*/
+
 package modeloReportes;
 
 import java.awt.print.PrinterJob;
@@ -5,7 +10,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -87,8 +91,8 @@ public class ReporteCorteTurno implements Runnable  {
             }  
             try {
                 JasperReport reporte = (JasperReport) JRLoader.
-                loadObject(new File("/home/empleado/pare/reportes/corteTurno.jasper"));
-               //loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/corteTurno.jasper"));
+                loadObject(new File(estacionamiento.getUrlReporte()+"/corteTurno.jasper"));
+               
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turno.getDetallesTurno().get(serie).getDetalleMovimiento()));
                 PrinterJob job = PrinterJob.getPrinterJob();
                 PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);

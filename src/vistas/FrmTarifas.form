@@ -571,6 +571,7 @@
     <Component class="javax.swing.JCheckBox" name="cbxTiempoPerdido">
       <Properties>
         <Property name="text" type="java.lang.String" value="Boleto perdido + estadia"/>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="cbxTiempoPerdido" noResource="true"/>
       </Properties>
     </Component>

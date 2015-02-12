@@ -1,3 +1,10 @@
+/*
+    Clase donde se preparan los datos para el reporte de jasper
+    correspondiente al corte diario (engloba un resumen de cada turno,
+    y l sumatoria de todo el dia.)
+    
+*/
+
 package modeloReportes;
 
 import modelos.Turno;
@@ -12,6 +19,7 @@ import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
+import modelos.Estacionamiento;
 import modelos.TurnoDetalles;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -22,10 +30,12 @@ import net.sf.jasperreports.engine.util.JRLoader;
 public class ReporteCorteDiario  {
     private ArrayList <Turno> turnos;
     String fecha;
+    private Estacionamiento estacionamiento;
 
-    public ReporteCorteDiario(ArrayList <Turno> turnos,String fecha) {
+    public ReporteCorteDiario(ArrayList <Turno> turnos,String fecha,Estacionamiento estacionamiento) {
         this.turnos = turnos;
         this.fecha = fecha;
+        this.estacionamiento =  estacionamiento;
     }
 
     public void generarReporte(){
@@ -57,9 +67,7 @@ public class ReporteCorteDiario  {
             }
             
         }
-        //tFolioInicial = turnos.get(0).getFolioInicial();
-        //tFolioFinal = turnos.get(turnos.size()-1).getFolioFinal();
-         
+       
            
         parametros.put("fecha",fecha); 
         parametros.put("tFolioInicial",tFolioInicial);
@@ -75,7 +83,7 @@ public class ReporteCorteDiario  {
 
         try {
             JasperReport reporte = (JasperReport) JRLoader.
-            loadObject(new File("/home/empleado/pare/reportes/corteDiario.jasper"));
+            loadObject(new File(estacionamiento.getUrlReporte()));
             //loadObject(new File("/home/sistemas/proyectos/escritorio/src/reportes/corteDiario.jasper"));
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(turnoDetalles));

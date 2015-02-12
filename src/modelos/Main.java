@@ -21,9 +21,8 @@ public class Main {
     private ArrayList<ServerAcept> serverAcept;
     private ServerBoleto serverBoleto;
     private ServerPantalla serverPantalla;
-    private ServerMonitor serverMonitor;
 
-    private ArrayList<ClienteMonitor> clienteMonitor;
+ 
     private ClienteBoleto clienteBoleto;
     private ClientePantalla clientePantalla;
     
@@ -92,13 +91,7 @@ public class Main {
         this.serverPantalla = serverPantalla;
     }
 
-    public ServerMonitor getServerMonitor() {
-        return serverMonitor;
-    }
-
-    public void setServerMonitor(ServerMonitor serverMonitor) {
-        this.serverMonitor = serverMonitor;
-    }
+   
 
     public ClienteBoleto getClienteBoleto() {
         return clienteBoleto;
@@ -116,13 +109,7 @@ public class Main {
         this.clientePantalla = clientePantalla;
     }
 
-    public ArrayList<ClienteMonitor> getClienteMonitor() {
-        return clienteMonitor;
-    }
-
-    public void setClienteMonitor(ArrayList<ClienteMonitor> clienteMonitor) {
-        this.clienteMonitor = clienteMonitor;
-    }
+    
     
     
     

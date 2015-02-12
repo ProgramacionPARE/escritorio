@@ -18,9 +18,12 @@ public class Configuracion{
     public static final String EXPEDIDOR = "expedidor";
     public static final String CLIENTE = "cliente";
     public static final String MONITOR = "monitor";
+    
     private Configuracion(){
         try {
+            
             ConexionDatos conexion = ConexionDatos.getInstance();
+            conexion.checkDB();
             Connection connectionDB = conexion.getConnection();
             PreparedStatement  statement = connectionDB.prepareStatement("SELECT * FROM configuracion");
             ResultSet resultSet = statement.executeQuery();
@@ -74,36 +77,5 @@ public class Configuracion{
     
     
   
-//    @Override
-//    public void guardar() {
-//       
-//    }
-//
-//    @Override
-//    public void actualizar() {
-//          try {
-//            ConexionDatos conexion = new ConexionDatos();
-//            Connection connectionDB = conexion.getConnectionDB().getConnection();
-//            PreparedStatement  statement = connectionDB.
-//            prepareStatement("UPDATE estacionamiento SET `centro_costos`=? ,`descripcion` =? , `direccion` =?"
-//                    +",`caseta_actual` =?  ,`tipo` =?   WHERE `id`=?");
-//            statement.setInt(1, this.centroCostos);
-//            statement.setString(2, this.descripcion);
-//            statement.setString(3, this.direccion);
-//            statement.setLong(4, this.numeroCaseta);
-//            statement.setString(5, this.tipo);
-//
-//            statement.setLong(6, this.id);
-//            statement.executeUpdate();
-//            conexion.cerrarConexion();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-//        } 
-//    }
-//
-//    @Override
-//    public void eliminar() {
-//        
-//    }
     
 }

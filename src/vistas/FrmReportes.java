@@ -73,7 +73,7 @@ public class FrmReportes extends javax.swing.JDialog {
             }
         }
         if(turnosByFecha.size()>0)
-            new ReporteCorteDiario(turnosByFecha,reporteDiarioFecha).generarReporte();
+            new ReporteCorteDiario(turnosByFecha,reporteDiarioFecha,estacionamiento).generarReporte();
         else
             JOptionPane.showMessageDialog(this, "No hay registros de esta fecha", "Vacio", JOptionPane.WARNING_MESSAGE);
     }

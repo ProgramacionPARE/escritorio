@@ -30,6 +30,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
         btnGuardar.setVisible(false);
         this.estacionamiento = Main.getInstance().getEstacionamiento();
         this.setLocationRelativeTo(parent);
+        estacionamiento.getCaseta().setTarifas(Tarifa.getAll());
         tarifa = estacionamiento.getCaseta().getTarifas().get(0);
         tblTarifas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -316,6 +317,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
         jLabel27.setName("jLabel27"); // NOI18N
 
         cbxTiempoPerdido.setText("Boleto perdido + estadia");
+        cbxTiempoPerdido.setEnabled(false);
         cbxTiempoPerdido.setName("cbxTiempoPerdido"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -488,7 +490,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
         txtTarifaMaxima.setEditable(true);
         txtTarifaUnica.setEditable(true);
         txtMontoInicial.setEditable(true);
-        
+        cbxTiempoPerdido.setEnabled(true);
         estado = "Modificar";
 
     }//GEN-LAST:event_btnModificarActionPerformed
@@ -525,7 +527,8 @@ public class FrmTarifas extends javax.swing.JDialog  {
             txtHorasCompletas.setText("");
             txtPrecioHora.setText("");
             txtTarifaMaxima.setText("");
-
+            cbxTiempoPerdido.setEnabled(true);
+            
             estado = "Agregar";
 
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -609,12 +612,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
         return true;
      }
  
- //    float costos[];
-//    float precioHora;
-//    float tarifaMaxima;
-//    float precioBoletoPerdido;
-//    int horasCompletas;
-//    String descripcion;
+
  
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
          if(validaCamposEntrada()){
@@ -637,9 +635,8 @@ public class FrmTarifas extends javax.swing.JDialog  {
                 tarifa.setCostos(new float[]{Float.valueOf( txtFraccion1.getText()),
                     Float.valueOf( txtFraccion2.getText()),Float.valueOf( txtFraccion3.getText()),
                     Float.valueOf( txtFraccion4.getText())});
-                tarifa.actualizar();
-
-               
+                tarifa.setTarifaUnica(Float.valueOf(txtTarifaUnica.getText()));
+                tarifa.setPerdidoTiempo(cbxTiempoPerdido.isSelected() );
                 tarifa.actualizar();
                 regresarEstado();
             }
@@ -664,7 +661,7 @@ public class FrmTarifas extends javax.swing.JDialog  {
         txtTarifaMaxima.setEditable(false);
         txtTarifaUnica.setEditable(false);
         txtTarifaUnica.setEditable(false);
-        
+        cbxTiempoPerdido.setEnabled(false);
         estado = "";
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

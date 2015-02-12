@@ -14,7 +14,7 @@ import vistas.FrmPrincipal;
 public class ServerAcept extends Thread {
     public static final int PANTALLA = 0;
     public static final int BOLETO = 1;
-    public static final int MONITOR = 2;
+   
     
     public static final int NUM_SOCKET = 8050;
     
@@ -75,9 +75,6 @@ public class ServerAcept extends Thread {
             }else if(tipo == BOLETO){
                 Main.getInstance().setServerBoleto(new ServerBoleto(socket,parent));
                 Main.getInstance().getServerBoleto().start();
-            }else if(tipo == MONITOR){
-                Main.getInstance().setServerMonitor(new ServerMonitor(socket,parent));
-                Main.getInstance().getServerMonitor().start();
             }
         }
     }
