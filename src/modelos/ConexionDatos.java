@@ -119,16 +119,20 @@ public  class ConexionDatos {
                     "  `ip` varchar(45) DEFAULT 'localhost', `terminal` varchar(10) DEFAULT 'caja'," +
                     "  `url` varchar(45) DEFAULT 'http://localhost:9000/'," +
                     "  PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
-//           createStatement.execute("INSERT INTO `configuracion` VALUES (1,'127.0.0.1','caja','http://pare.herokuapp.com/')");
+            ResultSet executeQuery = createStatement.executeQuery("Select * from configuracion");
+            if(!executeQuery.next())
+                createStatement.execute("INSERT INTO `configuracion` VALUES (1,'127.0.0.1','caja','http://localhost/')");
             
             createStatement.execute(
                     "CREATE TABLE IF NOT EXISTS `estacionamientos` ( `id` int(11) NOT NULL AUTO_INCREMENT," +
                     "  `nombre` varchar(45) DEFAULT NULL, `ip` varchar(45) DEFAULT NULL," +
                     "  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-           
-//            createStatement.execute("INSERT INTO `estacionamientos` VALUES (2,'Best buy','25.1.230.133'),"+
-//            "(3,'Inah a','25.124.237.52'),(4,'Inah b','25.115.53.226'),(5,'Magdalena','25.151.249.201'),"+
-//            "(6,'Pelvoux','25.191.112.165'),(7,'Rio Bamba','25.138.41.145')");
+            
+            executeQuery = createStatement.executeQuery("Select * from estacionamientos");
+            if(!executeQuery.next())
+                createStatement.execute("INSERT INTO `estacionamientos` VALUES (2,'Best buy','25.1.230.133'),"+
+                "(3,'Inah a','25.124.237.52'),(4,'Inah b','25.115.53.226'),(5,'Magdalena','25.151.249.201'),"+
+                "(6,'Pelvoux','25.191.112.165'),(7,'Rio Bamba','25.138.41.145')");
             
             //////////////////////////////////////////////////////////////////////////////////////////////////
             //                                  Cargo la base PAREDB                                        //
@@ -162,23 +166,34 @@ public  class ConexionDatos {
                     "  `fecha_salida` varchar(10) DEFAULT NULL, `hora_entrada` varchar(10) DEFAULT NULL," +
                     "  `hora_salida` varchar(10) DEFAULT NULL,  `razon` varchar(45) DEFAULT NULL," +
                     "  `id_auto` int(11) DEFAULT NULL,  PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+            //BOLETO PENDIENTE
             createStatement.execute("CREATE TABLE IF NOT EXISTS `boleto_pendiente` (" +
                     "  `id` int(11) NOT NULL AUTO_INCREMENT,  `id_auto` int(11) DEFAULT '0', `id_turno_pendiente` int(11) DEFAULT '0'," +
                     "  `serie` varchar(4) DEFAULT '0',  PRIMARY KEY (`id`)" +
                                     ") ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;");
+            //CAJA
             createStatement.execute("CREATE TABLE IF NOT EXISTS `caja` (" +
                     "  `id` int(11) NOT NULL AUTO_INCREMENT, `monto` decimal(10,0) DEFAULT NULL, `id_caseta` int(11) DEFAULT NULL," +
                     "  `fondo` varchar(45) DEFAULT NULL,  `monto_alarma` int(11) DEFAULT '500'," +
                     "  PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
+            executeQuery = createStatement.executeQuery("Select * from caja");
+            if(!executeQuery.next())
+                createStatement.execute("INSERT INTO `caja` VALUES (1,0,1,'1000',2000)");
+            
+            //CASETA
             createStatement.execute("CREATE TABLE IF NOT EXISTS `caseta` (" +
                     "  `id` int(11) NOT NULL AUTO_INCREMENT, `descripcion` varchar(45) DEFAULT NULL, `id_estacionameinto` int(11) DEFAULT NULL," +
                     "  `id_tarifa` int(11) DEFAULT NULL, `series` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`) ) "
                     + "ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
+            executeQuery = createStatement.executeQuery("Select * from caseta");
+            if(!executeQuery.next())
+                createStatement.execute("INSERT INTO `caseta` VALUES (1,'Caseta 1',1,1,'0')");
+            //DESCUENTOS
             createStatement.execute("CREATE TABLE IF NOT EXISTS `descuentos` (" +
                     "  `id` int(11) NOT NULL AUTO_INCREMENT, `folio` varchar(45) DEFAULT NULL,  `descuento` decimal(10,0) DEFAULT NULL,  "
                     + "`activo` varchar(20) DEFAULT NULL,  `clave` varchar(20) DEFAULT NULL, PRIMARY KEY (`id`) )"
                     + " ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8;");
-            
+            //DETALLE TURNO
             createStatement.execute("CREATE TABLE IF NOT EXISTS `detalle_turno` ( `id` int(11) NOT NULL AUTO_INCREMENT," +
                     "  `id_remoto` varchar(45) DEFAULT NULL, `folio_inicial` bigint(20) DEFAULT '0'," +
                     "  `folio_final` bigint(20) DEFAULT '0', `no_bol_turno_a` int(11) DEFAULT '0'," +
@@ -188,40 +203,51 @@ public  class ConexionDatos {
                     "  `id_turno` int(11) DEFAULT NULL,  `no_bol_manual` int(11) DEFAULT '0'," +
                     "  `no_bol_contra` int(11) DEFAULT '0',  `serie` varchar(45) DEFAULT '0'," +
                     "  PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;");
-            
+            //ESTACIONAMIENTO
             createStatement.execute("CREATE TABLE IF NOT EXISTS `estacionamiento` ( `id` int(11) NOT NULL AUTO_INCREMENT," +
                     "  `centro_costos` int(11) DEFAULT NULL,  `descripcion` varchar(45) DEFAULT NULL," +
                     "  `caseta_actual` int(11) DEFAULT NULL,  `id_tarifa` int(11) DEFAULT NULL," +
                     "  `direccion` varchar(45) DEFAULT NULL, `tipo` varchar(45) DEFAULT NULL," +
                     "  `correo` varchar(45) DEFAULT NULL, `contra` varchar(45) DEFAULT NULL," +
-                    "  `id_remoto` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`)" +
+                    "  `id_remoto` varchar(45) DEFAULT NULL,`url_reporte` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
-            
+            executeQuery = createStatement.executeQuery("Select * from estacionamiento");
+            if(!executeQuery.next())
+                createStatement.execute("INSERT INTO `estacionamiento` VALUES (1,1,'OFICINA',1,1,'','ValetMasivo','admin@pare.com.mx','5UxM0k','','');");
+            //PROGRESIVOS
             createStatement.execute("CREATE TABLE IF NOT EXISTS `progresivos` (  `id` int(11) NOT NULL AUTO_INCREMENT," +
                     "  `tipo` varchar(45) DEFAULT NULL,  `ultimo_progresivo` char(12) DEFAULT NULL," +
                     "  `id_cajero` int(11) DEFAULT NULL, PRIMARY KEY (`id`)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;");
-            
+            executeQuery = createStatement.executeQuery("Select * from progresivos");
+            if(!executeQuery.next())
+                createStatement.execute("INSERT INTO `progresivos` VALUES (1,'0','1',1),(2,'PERDIDO','1',1),(3,'RETIRO_PARCIAL','1',1),(4,'RECIBO_PAGO','1',1)");
+            //PROPIETARIO PERDIDO
             createStatement.execute("CREATE TABLE IF NOT EXISTS `propietario_perdido` ( `id` int(11) NOT NULL AUTO_INCREMENT," +
                     "  `nombre` varchar(40) DEFAULT NULL, `direccion` varchar(45) DEFAULT NULL," +
                     "  `telefono` varchar(45) DEFAULT NULL, `tipo_identificacion` varchar(45) DEFAULT NULL," +
                     "  `numero_identificacion` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;");
+            //RETIRO PARCIAL
             createStatement.execute("CREATE TABLE IF NOT EXISTS `retiro_parcial` (" +
                     "  `id` int(11) NOT NULL AUTO_INCREMENT,  `progresivo` int(11) DEFAULT NULL," +
                     "  `fecha` varchar(45) DEFAULT NULL,  `hora` varchar(45) DEFAULT NULL," +
                     "  `id_caseta` int(11) DEFAULT NULL,  `id_turno` int(11) DEFAULT NULL," +
                     "  `monto` decimal(10,0) DEFAULT NULL, `monto_real` decimal(10,0) DEFAULT NULL," +
                     "  PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;");
-            
+            //TARIFA
             createStatement.execute("CREATE TABLE IF NOT EXISTS `tarifa` ( `id` int(11) NOT NULL AUTO_INCREMENT," +
                     "  `fracciones` int(11) DEFAULT NULL,  `costos` varchar(100) DEFAULT NULL," +
                     "  `precio_hora` decimal(10,0) DEFAULT NULL, `tarifa_maxima` decimal(10,0) DEFAULT NULL," +
-                    "  `boleto_perdido` decimal(10,0) DEFAULT NULL, `descripcion` varchar(45) DEFAULT NULL," +
-                    "  `tarifa_unica` decimal(10,0) DEFAULT NULL, `monto_inicial` decimal(10,0) DEFAULT '0'," +
+                    "  `boleto_perdido` decimal(10,0) DEFAULT NULL, `hora_inicial` int(11) DEFAULT 0 ,"
+                    + " `descripcion` varchar(45) DEFAULT ''," +
+                    "  `tarifa_unica` decimal(10,0) DEFAULT 0, `monto_inicial` decimal(10,0) DEFAULT '0'," +
                     "  `perdido_tiempo` varchar(4) DEFAULT 'SI', PRIMARY KEY (`id`))"
                     + " ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
-            
+            executeQuery = createStatement.executeQuery("Select * from tarifa");
+            if(!executeQuery.next())
+                createStatement.execute("INSERT INTO `tarifa` VALUES (1,4,'0.0@0.0@0.0@0.0',0,0,0,0,'Tarifa regular',0,0,'NO')");
+            //TURNOS
             createStatement.execute("CREATE TABLE IF NOT EXISTS `turnos` ( `id` int(11) NOT NULL AUTO_INCREMENT," +
                     "  `tipo_turno` varchar(45) DEFAULT NULL, `fecha_apertura` varchar(45) DEFAULT NULL," +
                     "  `fecha_cierre` varchar(45) DEFAULT NULL, `hora_apertura` varchar(5) DEFAULT NULL," +
@@ -229,7 +255,7 @@ public  class ConexionDatos {
                     "  `id_empleado_cierre` int(11) DEFAULT '0', `id_remoto` varchar(45) DEFAULT NULL," +
                     "  `estado_servidor` varchar(45) DEFAULT NULL, PRIMARY KEY (`id`)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;");
-            
+            //USUARIOS
             createStatement.execute("CREATE TABLE IF NOT EXISTS `usuarios` (" +
                     "  `id` tinyint(3) unsigned zerofill NOT NULL AUTO_INCREMENT," +
                     "  `id_caseta` tinyint(3) unsigned zerofill DEFAULT NULL," +
@@ -238,8 +264,10 @@ public  class ConexionDatos {
                     "  `clave` varchar(12) DEFAULT NULL,  `nombre_completo` varchar(80) NOT NULL," +
                     "  `tipo_empleado` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;");
-
-
+             executeQuery = createStatement.executeQuery("Select * from usuarios");
+            if(!executeQuery.next())
+                createStatement.execute("INSERT INTO `usuarios` VALUES (001,001,'Admin','admin','.QWERT','Administrador','Administrador')");
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(ConexionDatos.class.getName()).log(Level.SEVERE, null, ex);
