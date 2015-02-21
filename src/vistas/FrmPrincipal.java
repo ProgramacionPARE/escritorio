@@ -292,7 +292,7 @@ public class FrmPrincipal extends JFrame {
                 this.dispose();
                 initLogin();
             }
-            m.setTurnoActual(null);
+//            m.setTurnoActual(null);
         } else {
             m.setEmpleadoSesion(null);
             this.dispose();

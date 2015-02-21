@@ -553,8 +553,10 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
     }//GEN-LAST:event_btnActualizarDetalleActionPerformed
 
     private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
-        if(autoGlo!=null)
+        if(autoGlo!=null){
             Rest.sendAuto(autoGlo, estacionamiento);
+            JOptionPane.showMessageDialog(this,"Auto actualizado");
+        }
     }//GEN-LAST:event_ActualizarActionPerformed
 
     private void CobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CobrarActionPerformed
