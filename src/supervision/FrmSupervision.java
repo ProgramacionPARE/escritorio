@@ -109,7 +109,7 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                         estacionamiento = Estacionamiento.getDatos();
                         Rest.login(estacionamiento);
                         JOptionPane.showMessageDialog(null,"Conexion exitosa", "Ok",JOptionPane.INFORMATION_MESSAGE);
-                        cargarTurnos();
+                        // cargarTurnos();
                         
                     }else{
                         JOptionPane.showMessageDialog(null,testConex, "Error",JOptionPane.ERROR_MESSAGE);
@@ -303,6 +303,11 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
         jLabel2.setName("jLabel2"); // NOI18N
 
         txtBuscarFolio.setName("txtBuscarFolio"); // NOI18N
+        txtBuscarFolio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarFolioActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
         jLabel3.setText("Cambiar fecha");
@@ -567,6 +572,18 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                // J 
        }
     }//GEN-LAST:event_CobrarActionPerformed
+
+    private void txtBuscarFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarFolioActionPerformed
+        Auto autoByProgresivo = Auto.getAutoByProgresivo(Integer.valueOf(txtBuscarFolio.getText())); 
+        if (autoByProgresivo != null )
+        {
+        String fechaEntrada = autoByProgresivo.getFechaEntrada();
+        this.txtFecha.setText(fechaEntrada);
+        cargarTurnos();
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarFolioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
