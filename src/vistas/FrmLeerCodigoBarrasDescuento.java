@@ -100,6 +100,16 @@ public class FrmLeerCodigoBarrasDescuento extends javax.swing.JDialog {
             if (id.length() ==12 )
                 descuento = Descuento.getByIdClave(id);
                 if (descuento != null){
+                    if(descuento.getDescuento()==0){
+                        frmCobro.getAuto().setDescuento(frmCobro.getAuto().getMontoTangible());
+                        frmCobro.getAuto().setIsBoletoCortesiaTotal(true);
+                    }else{
+//                        if(){
+//                        
+//                        }else{
+//                        
+//                        }
+                    }
                     frmCobro.getAuto().setDescuento( frmCobro.getAuto().getDescuento()+descuento.getDescuento() );
                     frmCobro.getAuto().actualizar();
                     frmCobro.calcularImporte();

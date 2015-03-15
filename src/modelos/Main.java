@@ -1,4 +1,3 @@
-
 package modelos;
 
 import java.util.ArrayList;
@@ -9,32 +8,28 @@ import sockets.*;
  * @author oscar
  */
 public class Main {
+
     private static Main MAIN = new Main();
-    
+
     private Estacionamiento estacionamiento;
     private Empleado empleadoSesion;
     private Turno turnoActual;
     private Caja caja;
 
-    
-    
     private ArrayList<ServerAcept> serverAcept;
     private ServerBoleto serverBoleto;
     private ServerPantalla serverPantalla;
 
- 
     private ClienteBoleto clienteBoleto;
     private ClientePantalla clientePantalla;
-    
-    
-    public static Main getInstance(){
+
+    public static Main getInstance() {
         return MAIN;
     }
-    
+
     private Main() {
     }
 
-    
     public Estacionamiento getEstacionamiento() {
         return estacionamiento;
     }
@@ -91,8 +86,6 @@ public class Main {
         this.serverPantalla = serverPantalla;
     }
 
-   
-
     public ClienteBoleto getClienteBoleto() {
         return clienteBoleto;
     }
@@ -109,9 +102,4 @@ public class Main {
         this.clientePantalla = clientePantalla;
     }
 
-    
-    
-    
-    
-    
 }

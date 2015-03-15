@@ -1,5 +1,3 @@
-
-
 package modelos;
 
 import java.sql.Connection;
@@ -11,11 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Conexion;
 
-
 public class PropietarioPerdido {
 
     int id;
-    BoletoPerdido boletoPerdido; 
+    BoletoPerdido boletoPerdido;
     String nombre;
     String direccion;
     String telefono;
@@ -25,7 +22,7 @@ public class PropietarioPerdido {
     public PropietarioPerdido() {
     }
 
-    public PropietarioPerdido( BoletoPerdido boletoPerdido, String nombre, String direccion, String telefono, String tipoIdentificacion, String numeroIdentificacion) {
+    public PropietarioPerdido(BoletoPerdido boletoPerdido, String nombre, String direccion, String telefono, String tipoIdentificacion, String numeroIdentificacion) {
         this.boletoPerdido = boletoPerdido;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -34,7 +31,6 @@ public class PropietarioPerdido {
         this.numeroIdentificacion = numeroIdentificacion;
     }
 
-    
     public int getId() {
         return id;
     }
@@ -90,21 +86,21 @@ public class PropietarioPerdido {
     public void setNumeroIdentificacion(String numeroIdentificacion) {
         this.numeroIdentificacion = numeroIdentificacion;
     }
-    
-    static PropietarioPerdido getById(int id,BoletoPerdido boleto) {
-         PropietarioPerdido propietarioPerdido = null;
+
+    static PropietarioPerdido getById(int id, BoletoPerdido boleto) {
+        PropietarioPerdido propietarioPerdido = null;
         try {
-           Conexion conexion = Conexion.getInstance();
+            Conexion conexion = Conexion.getInstance();
             Connection connectionDB = conexion.getConnection();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM propietario_perdido where id = ?");
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("SELECT * FROM propietario_perdido where id = ?");
             statement.setInt(1, id);
             ResultSet executeQuery = statement.executeQuery();
-            if (executeQuery.next()){
+            if (executeQuery.next()) {
                 propietarioPerdido = new PropietarioPerdido(boleto,
-                executeQuery.getString("nombre"), executeQuery.getString("direccion"),
-                executeQuery.getString("telefono") , executeQuery.getString("tipo_identificacion"),
-                executeQuery.getString("numero_identificacion"));
+                        executeQuery.getString("nombre"), executeQuery.getString("direccion"),
+                        executeQuery.getString("telefono"), executeQuery.getString("tipo_identificacion"),
+                        executeQuery.getString("numero_identificacion"));
             }
             conexion.cerrarConexion();
         } catch (SQLException ex) {
@@ -112,24 +108,24 @@ public class PropietarioPerdido {
         }
         return propietarioPerdido;
     }
-    
+
     public void guardar() {
         try {
-           Conexion conexion = Conexion.getInstance();
+            Conexion conexion = Conexion.getInstance();
             Connection connectionDB = conexion.getConnection();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("INSERT INTO propietario_perdido (`nombre`, `direccion`,"+
-                            " `telefono`,`tipo_identificacion`,`numero_identificacion`)"
-                            + " VALUES (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("INSERT INTO propietario_perdido (`nombre`, `direccion`,"
+                            + " `telefono`,`tipo_identificacion`,`numero_identificacion`)"
+                            + " VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
             statement.setString(1, nombre);
             statement.setString(2, direccion);
             statement.setString(3, telefono);
-            statement.setString(4, tipoIdentificacion); 
+            statement.setString(4, tipoIdentificacion);
             statement.setString(5, numeroIdentificacion);
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
-            if(generatedKeys.next()){
+            if (generatedKeys.next()) {
                 id = generatedKeys.getInt("GENERATED_KEY");
             }
             conexion.cerrarConexion();
@@ -137,5 +133,5 @@ public class PropietarioPerdido {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

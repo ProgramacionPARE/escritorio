@@ -1,6 +1,7 @@
 package vistas;
 
 import ModelosAux.HistorialVentana;
+import ModelosAux.Tiempo;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -63,10 +64,12 @@ public class FrmPrincipal extends JFrame {
     }
 
     public void initLogin() {
-        if(Main.getInstance().getServerPantalla() != null)
+        if (Main.getInstance().getServerPantalla() != null) {
             Main.getInstance().getServerPantalla().enviarTurnoCerrado();
-        if(Main.getInstance().getServerBoleto() != null)
-                Main.getInstance().getServerBoleto().enviarTurnoCerrado();
+        }
+        if (Main.getInstance().getServerBoleto() != null) {
+            Main.getInstance().getServerBoleto().enviarTurnoCerrado();
+        }
         new FrmLogin();
     }
 
@@ -80,6 +83,12 @@ public class FrmPrincipal extends JFrame {
         Rest.sendTurnosOffline(m.getEstacionamiento());
         Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
         validaPermisos();
+        if (m.getTurnoActual() != null) {
+            txtInfoTurno.setText("Turno actual: " + m.getTurnoActual().getTipoTurno() + " se abrio el dia " + m.getTurnoActual().getFechaApertura() + " a las "+m.getTurnoActual().getHoraApertura()+" ");
+            if(!m.getTurnoActual().getFechaApertura().equals(Tiempo.getFecha())){
+                lblAlertaTurno.setText("Alerta, el turno abierto no corresponde al dia de hoy.  ");
+            }
+        }
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "parking");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "caja");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0), "auditoria");
@@ -146,7 +155,7 @@ public class FrmPrincipal extends JFrame {
 
     @Action
     public void onCaja() {
-        new FrmCaja(this, false,false);
+        new FrmCaja(this, false, false);
     }
 
     @Action
@@ -171,7 +180,7 @@ public class FrmPrincipal extends JFrame {
     public void onConfiguracion() {
         new FrmMenuAdministracion(this, false);
     }
-    
+
     public void validaPermisos() {
         //Busco turno abierto
         Turno turnoTemp = Turno.existeTurnoAbierto();
@@ -188,27 +197,31 @@ public class FrmPrincipal extends JFrame {
                     m.getTurnoActual().inicializarTurno(tipo);
                     m.getTurnoActual().setTipoTurno(tipo);
                     m.getTurnoActual().actualizar();
-                    Rest.sendTurno( m.getTurnoActual(),  m.getEstacionamiento());
+                    Rest.sendTurno(m.getTurnoActual(), m.getEstacionamiento());
                     turnoAbierto = true;
-                    if(Main.getInstance().getServerPantalla() != null)
+                    if (Main.getInstance().getServerPantalla() != null) {
                         Main.getInstance().getServerPantalla().enviarTurnoAbierto();
-                    if(Main.getInstance().getServerBoleto() != null)
+                    }
+                    if (Main.getInstance().getServerBoleto() != null) {
                         Main.getInstance().getServerBoleto().enviarTurnoAbierto();
+                    }
                 }
-                
+
             }
-            
-        }else {
+
+        } else {
             m.setTurnoActual(turnoTemp);
             m.getTurnoActual().setEstacionamiento(m.getEstacionamiento());
             m.getTurnoActual().setEmpleadoEntrada(m.getEmpleadoSesion());
-            if(Main.getInstance().getServerPantalla() != null)
+            if (Main.getInstance().getServerPantalla() != null) {
                 Main.getInstance().getServerPantalla().enviarTurnoAbierto();
-            if(Main.getInstance().getServerBoleto() != null)
+            }
+            if (Main.getInstance().getServerBoleto() != null) {
                 Main.getInstance().getServerBoleto().enviarTurnoAbierto();
+            }
             turnoAbierto = true;
         }
-        
+
         btnAparcamiento.setEnabled(true);
         btnCaja.setEnabled(true);
         btnEstacionamiento.setEnabled(true);
@@ -223,7 +236,7 @@ public class FrmPrincipal extends JFrame {
         btnUsuarios.setVisible(true);
         btnConfiguracion.setVisible(true);
 
-        switch ( m.getEmpleadoSesion().getTipoPuesto()) {
+        switch (m.getEmpleadoSesion().getTipoPuesto()) {
             case "Cajero":
                 if (!turnoAbierto) {
                     btnAparcamiento.setVisible(false);
@@ -266,7 +279,7 @@ public class FrmPrincipal extends JFrame {
         }
         btnCerrarSesion.setText("<html><b>Cerrar sesion de " + m.getEmpleadoSesion().getUsuario() + "</b><br><center>(Esc)</center></html>");
         btnCerrarSesion.setVisible(true);
-        
+
     }
 
     @Action
@@ -275,11 +288,11 @@ public class FrmPrincipal extends JFrame {
             int res = JOptionPane.showConfirmDialog(this, "Quieres tambien hacer corte de turno?", "Cerrar sesion", JOptionPane.YES_NO_CANCEL_OPTION);
             if (res == JOptionPane.YES_OPTION) {
                 if (Caja.getByCaseta(m.getEstacionamiento().getCaseta().getId()).getMonto() > 0) {
-                    new FrmCaja(this, true,true);
+                    new FrmCaja(this, true, true);
                 } else {
-                    m.getTurnoActual().realizarCorte( "corte");
+                    m.getTurnoActual().realizarCorte("corte");
                     m.getTurnoActual().actualizar();
-                    Rest.sendTurno( m.getTurnoActual(),m.getEstacionamiento());
+                    Rest.sendTurno(m.getTurnoActual(), m.getEstacionamiento());
                     new ReporteCorteTurno().generarReporte();
                     new ReporteDetalleAvanzado().generarReporte();
                     new RetirosParciales().generarReporte();
@@ -307,14 +320,13 @@ public class FrmPrincipal extends JFrame {
             btnCaja.setBackground(new Color(255, 255, 255));
         }
     }
-    
+
 //     @Override
 //    public void run() {
 //         Rest.sendAutosOffline(m.getEstacionamiento());
 //         Rest.sendTurnosOffline(m.getEstacionamiento());
 //         Rest.sendTurnoDetalleOffline(m.getEstacionamiento());
 //    }
-
 //    @Action
 //    public void cerrarTurno(){
 //        turno.realizarCorte(empleado.getId());
@@ -327,7 +339,6 @@ public class FrmPrincipal extends JFrame {
 //        btnCerrarSesion.setVisible(false);
 //        initLogin();
 //    }
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -343,6 +354,8 @@ public class FrmPrincipal extends JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        txtInfoTurno = new javax.swing.JLabel();
+        lblAlertaTurno = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(FrmPrincipal.class);
@@ -358,7 +371,7 @@ public class FrmPrincipal extends JFrame {
         btnAparcamiento.setName("btnAparcamiento"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
@@ -374,7 +387,7 @@ public class FrmPrincipal extends JFrame {
         btnCaja.setName("btnCaja"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
@@ -390,7 +403,7 @@ public class FrmPrincipal extends JFrame {
         btnEstacionamiento.setName("btnEstacionamiento"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
@@ -406,7 +419,7 @@ public class FrmPrincipal extends JFrame {
         btnReportes.setName("btnReportes"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
@@ -422,7 +435,7 @@ public class FrmPrincipal extends JFrame {
         btnUsuarios.setName("btnUsuarios"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
@@ -438,7 +451,7 @@ public class FrmPrincipal extends JFrame {
         btnConfiguracion.setName("btnConfiguracion"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
@@ -453,7 +466,7 @@ public class FrmPrincipal extends JFrame {
         btnCerrarSesion.setName("btnCerrarSesion"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
@@ -464,7 +477,7 @@ public class FrmPrincipal extends JFrame {
         jPanel1.setName("jPanel1"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 6;
         gridBagConstraints.weighty = 100.0;
         getContentPane().add(jPanel1, gridBagConstraints);
@@ -487,10 +500,39 @@ public class FrmPrincipal extends JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(jPanel2, gridBagConstraints);
+
+        txtInfoTurno.setBackground(resourceMap.getColor("txtInfoTurno.background")); // NOI18N
+        txtInfoTurno.setFont(resourceMap.getFont("txtInfoTurno.font")); // NOI18N
+        txtInfoTurno.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        txtInfoTurno.setText(resourceMap.getString("txtInfoTurno.text")); // NOI18N
+        txtInfoTurno.setName("txtInfoTurno"); // NOI18N
+        txtInfoTurno.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipady = 10;
+        getContentPane().add(txtInfoTurno, gridBagConstraints);
+
+        lblAlertaTurno.setBackground(resourceMap.getColor("lblAlertaTurno.background")); // NOI18N
+        lblAlertaTurno.setFont(resourceMap.getFont("lblAlertaTurno.font")); // NOI18N
+        lblAlertaTurno.setForeground(resourceMap.getColor("lblAlertaTurno.foreground")); // NOI18N
+        lblAlertaTurno.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblAlertaTurno.setText(resourceMap.getString("lblAlertaTurno.text")); // NOI18N
+        lblAlertaTurno.setName("lblAlertaTurno"); // NOI18N
+        lblAlertaTurno.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipady = 10;
+        getContentPane().add(lblAlertaTurno, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAparcamiento;
@@ -503,8 +545,8 @@ public class FrmPrincipal extends JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblAlertaTurno;
+    private javax.swing.JLabel txtInfoTurno;
     // End of variables declaration//GEN-END:variables
-
-   
 
 }

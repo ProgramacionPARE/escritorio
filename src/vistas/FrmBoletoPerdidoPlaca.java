@@ -1,5 +1,3 @@
-
-
 package vistas;
 
 import vistas.formatos.FrmBoletoPerdido;
@@ -13,23 +11,23 @@ import modelos.Estacionamiento;
 import modelos.Main;
 import org.jdesktop.application.Action;
 
-
 public class FrmBoletoPerdidoPlaca extends javax.swing.JDialog {
+
     Estacionamiento estacionamiento;
     Turno turno;
     Frame parent;
+
     public FrmBoletoPerdidoPlaca(java.awt.Frame parent, boolean modal) {
-        super(parent,"Boleto perdido" ,modal);
+        super(parent, "Boleto perdido", modal);
         initComponents();
         this.parent = parent;
-        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
         this.turno = Main.getInstance().getTurnoActual();
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
         setVisible(true);
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -92,27 +90,26 @@ public class FrmBoletoPerdidoPlaca extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtPlacaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPlacaKeyReleased
-           txtPlaca.setText(txtPlaca.getText().toUpperCase());
+        txtPlaca.setText(txtPlaca.getText().toUpperCase());
     }//GEN-LAST:event_txtPlacaKeyReleased
-
-
 
     @Action
     public void onBuscarPlaca() {
         Auto auto = Auto.getAutoByMatricula(txtPlaca.getText());
-        if(auto!= null){
-            if(auto.isDentro()){
-                if(auto.getBoletoPerdido()==null)
-                     new FrmBoletoPerdido((JFrame) parent,true, turno, auto,estacionamiento);
-                else
-                    new FrmCobro(parent,true , auto,true);
-                this.dispose();
+        if (auto != null) {
+            if (auto.isDentro()) {
+                if (auto.getBoletoPerdido() == null) {
+                    new FrmBoletoPerdido((JFrame) parent, true, turno, auto, estacionamiento);
+                } else {
+                    new FrmCobro(parent, true, auto, true);
                 }
-            else
-                JOptionPane.showMessageDialog(this,"No se encontro un coche con la matricula indicada","Error", JOptionPane.WARNING_MESSAGE);
-        }else{
-            JOptionPane.showMessageDialog(this,"No se encontro un coche con la matricula indicada","Error", JOptionPane.WARNING_MESSAGE);
-                    
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontro un coche con la matricula indicada", "Error", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontro un coche con la matricula indicada", "Error", JOptionPane.WARNING_MESSAGE);
+
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

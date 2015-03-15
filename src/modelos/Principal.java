@@ -12,49 +12,50 @@ import sockets.ServerAcept;
 import vistas.FrmLogin;
 
 public class Principal {
-    
+
     public static void main(String[] args) {
-        if(args.length>0){
-            if(args[0].equals("instalador")){
-               FrmInstalador frmInstalador = new FrmInstalador();
-               frmInstalador.setVisible(true);
+        if (args.length > 0) {
+            if (args[0].equals("instalador")) {
+                FrmInstalador frmInstalador = new FrmInstalador();
+                frmInstalador.setVisible(true);
             }
-        }else{
+        } else {
             //new Principal().cargarDescuentos();
 
             //FrmInstalador frmInstalador = new FrmInstalador();
             //frmInstalador.setVisible(true);
-
             Configuracion datos = Configuracion.getInstancia();
             Socket socket = null;
-            if(datos.getTerminal().equals(Configuracion.CAJA)){
+            if (datos.getTerminal().equals(Configuracion.CAJA)) {
 
                 Main.getInstance().setServerAcept(new ArrayList());
                 FrmLogin frmLogin = new FrmLogin();
-                Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.BOLETO,frmLogin));
-                Main.getInstance().getServerAcept().add( new ServerAcept(ServerAcept.PANTALLA,frmLogin));
+                Main.getInstance().getServerAcept().add(new ServerAcept(ServerAcept.BOLETO, frmLogin));
+                Main.getInstance().getServerAcept().add(new ServerAcept(ServerAcept.PANTALLA, frmLogin));
 
                 Iterator<ServerAcept> iterator = Main.getInstance().getServerAcept().iterator();
-                while(iterator.hasNext())iterator.next().start();
+                while (iterator.hasNext()) {
+                    iterator.next().start();
+                }
 
-            }else  if(datos.getTerminal().equals(Configuracion.CLIENTE)){
+            } else if (datos.getTerminal().equals(Configuracion.CLIENTE)) {
                 Main.getInstance().setClientePantalla(new ClientePantalla());
                 Main.getInstance().getClientePantalla().start();
                 //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
-            } else  if(datos.getTerminal().equals(Configuracion.EXPEDIDOR)){
+            } else if (datos.getTerminal().equals(Configuracion.EXPEDIDOR)) {
                 Main.getInstance().setClienteBoleto(new ClienteBoleto());
                 Main.getInstance().getClienteBoleto().start();
 
                 //FrmErrorCarga frmErrorCarga = new FrmErrorCarga(null,true,null);
-            }else if(datos.getTerminal().equals(Configuracion.MONITOR)){
+            } else if (datos.getTerminal().equals(Configuracion.MONITOR)) {
                 Monitor monitor = Monitor.getInstancia();
-                FrmSupervision supervision = new FrmSupervision(null,false);
+                FrmSupervision supervision = new FrmSupervision(null, false);
 
                 supervision.setVisible(true);
             }
-            }
+        }
     }
-    
+
 //    public void cargarDescuentos(){
 //         File archivo = null;
 //      FileReader fr = null;

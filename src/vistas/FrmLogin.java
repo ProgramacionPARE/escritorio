@@ -1,5 +1,3 @@
-
-
 package vistas;
 
 import java.io.IOException;
@@ -14,10 +12,8 @@ import sockets.ClientePantalla;
 import sockets.ServerAcept;
 import sockets.ServerPantalla;
 
-
 public class FrmLogin extends JFrame {
-    
-    
+
     public FrmLogin() {
         super("Entrar");
         initComponents();
@@ -25,7 +21,6 @@ public class FrmLogin extends JFrame {
         this.setVisible(true);
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -106,31 +101,32 @@ public class FrmLogin extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int showConfirmDialog = JOptionPane.showConfirmDialog(this,"Esto cerrara el sistema. ¿Quieres continuar?", 
-                "Salir", JOptionPane.YES_NO_OPTION );
-        if(showConfirmDialog == JOptionPane.YES_OPTION){
+        int showConfirmDialog = JOptionPane.showConfirmDialog(this, "Esto cerrara el sistema. ¿Quieres continuar?",
+                "Salir", JOptionPane.YES_NO_OPTION);
+        if (showConfirmDialog == JOptionPane.YES_OPTION) {
             try {
                 this.dispose();
                 Iterator<ServerAcept> iteratorServerAcept = Main.getInstance().getServerAcept().iterator();
-                while(iteratorServerAcept.hasNext()){
+                while (iteratorServerAcept.hasNext()) {
                     ServerAcept next = iteratorServerAcept.next();
                     next.apagarHilo();
                     next.getServerSocket().close();
                 }
                 ServerPantalla serverPantalla = Main.getInstance().getServerPantalla();
-                if(serverPantalla!=null){
+                if (serverPantalla != null) {
                     serverPantalla.apagarHilo();
-                   
-                    if(serverPantalla.getSocket()!=null)
+
+                    if (serverPantalla.getSocket() != null) {
                         serverPantalla.getSocket().close();
-                    if(serverPantalla.getEntrada()!=null)
+                    }
+                    if (serverPantalla.getEntrada() != null) {
                         serverPantalla.getEntrada().close();
-                    if(serverPantalla.getSalida()!=null)
+                    }
+                    if (serverPantalla.getSalida() != null) {
                         serverPantalla.getSalida().close();
+                    }
                 }
-                
-                
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(FrmLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -144,20 +140,22 @@ public class FrmLogin extends JFrame {
     private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
         login();
     }//GEN-LAST:event_txtContraActionPerformed
-    
-    private void login(){
+
+    private void login() {
         Empleado empleado = Empleado.getEmpleadoLogin(txtNombre.getText(), String.valueOf(txtContra.getPassword()));
-        if(empleado == null){
+        if (empleado == null) {
             txtNombre.setText("");
             txtNombre.grabFocus();
             txtContra.setText("");
-            
-        }else{
+
+        } else {
             this.setVisible(false);
             this.dispose();
             FrmPrincipal frmPrincipal = new FrmPrincipal(empleado);
             Iterator<ServerAcept> iterator = Main.getInstance().getServerAcept().iterator();
-            while (iterator.hasNext()) iterator.next().setParent(frmPrincipal);
+            while (iterator.hasNext()) {
+                iterator.next().setParent(frmPrincipal);
+            }
         }
     }
 

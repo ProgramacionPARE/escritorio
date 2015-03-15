@@ -33,50 +33,6 @@ public class Caseta implements IDBModel {
         this.tarifas = tarifas;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public ArrayList<Tarifa> getTarifas() {
-        return tarifas;
-    }
-
-    public void setTarifas(ArrayList<Tarifa> tarifas) {
-        this.tarifas = tarifas;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public long getIdEstacionameinto() {
-        return idEstacionameinto;
-    }
-
-    public void setIdEstacionameinto(long idEstacionameinto) {
-        this.idEstacionameinto = idEstacionameinto;
-    }
-
-    public String[] getSeries() {
-        return series;
-    }
-
-    public void setSeries(String[] series) {
-        this.series = series;
-    }
-
     static Caseta getById(long id) {
         Caseta caseta = null;
         try {
@@ -130,4 +86,47 @@ public class Caseta implements IDBModel {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public ArrayList<Tarifa> getTarifas() {
+        return tarifas;
+    }
+
+    public void setTarifas(ArrayList<Tarifa> tarifas) {
+        this.tarifas = tarifas;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public long getIdEstacionameinto() {
+        return idEstacionameinto;
+    }
+
+    public void setIdEstacionameinto(long idEstacionameinto) {
+        this.idEstacionameinto = idEstacionameinto;
+    }
+
+    public String[] getSeries() {
+        return series;
+    }
+
+    public void setSeries(String[] series) {
+        this.series = series;
+    }
 }

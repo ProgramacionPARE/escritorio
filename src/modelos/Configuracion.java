@@ -12,22 +12,23 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Configuracion{
+public class Configuracion {
+
     private static Configuracion DATOS = new Configuracion();
     public static final String CAJA = "caja";
     public static final String EXPEDIDOR = "expedidor";
     public static final String CLIENTE = "cliente";
     public static final String MONITOR = "monitor";
-    
-    private Configuracion(){
+
+    private Configuracion() {
         try {
-            
+
             ConexionDatos conexion = ConexionDatos.getInstance();
             conexion.checkDB();
             Connection connectionDB = conexion.getConnection();
-            PreparedStatement  statement = connectionDB.prepareStatement("SELECT * FROM configuracion");
+            PreparedStatement statement = connectionDB.prepareStatement("SELECT * FROM configuracion");
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 this.ip = resultSet.getString("ip");
                 this.terminal = resultSet.getString("terminal");
                 this.url = resultSet.getString("url");
@@ -37,8 +38,8 @@ public class Configuracion{
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private  String ip;
+
+    private String ip;
     private String terminal;
     private String url;
 
@@ -70,12 +71,8 @@ public class Configuracion{
         this.url = url;
     }
 
-   
     public static Configuracion getInstancia() {
         return DATOS;
     }
-    
-    
-  
-    
+
 }

@@ -52,6 +52,10 @@ public class TurnoDetalles implements IDBModel{
     private long noBolTurnoS;
     private float total;
     
+    private long noBolCortesiaTotal;
+    private long noBolCortesiaParcial;
+    private float totalCortesia;
+    
     private String tipoTurno;
     
     private ArrayList<DetallesMovimiento> detalleMovimiento;
@@ -70,7 +74,8 @@ public class TurnoDetalles implements IDBModel{
     public TurnoDetalles(long id, long idTurno, String serie, long folioInicial,
             long folioFinal, long noBol, long noBolTurnoA, long noBolCancelados, 
             long noBolPerdidos, long noBolCobrados, long noBolContra, long noBolManual, 
-            long noBolTurnoS, float total, String idRemoto) {
+            long noBolTurnoS, float total,long noBolCortesiaTotal, 
+            long noBolCortesiaParcial, float totalCortesia, String idRemoto) {
         this.id = id;
         this.idTurno = idTurno;
         this.serie = serie;
@@ -85,6 +90,9 @@ public class TurnoDetalles implements IDBModel{
         this.noBolManual = noBolManual;
         this.noBolTurnoS = noBolTurnoS;
         this.total = total;
+        this.noBolCortesiaTotal = noBolCortesiaTotal;
+        this.noBolCortesiaParcial = noBolCortesiaParcial;
+        this.totalCortesia = totalCortesia;
         this.idRemoto = idRemoto;
     }
 
@@ -218,6 +226,30 @@ public class TurnoDetalles implements IDBModel{
 
     public void setTotal(float total) {
         this.total = total;
+    }
+
+    public long getNoBolCortesiaTotal() {
+        return noBolCortesiaTotal;
+    }
+
+    public void setNoBolCortesiaTotal(long noBolCortesiaTotal) {
+        this.noBolCortesiaTotal = noBolCortesiaTotal;
+    }
+
+    public long getNoBolCortesiaParcial() {
+        return noBolCortesiaParcial;
+    }
+
+    public void setNoBolCortesiaParcial(long noBolCortesiaParcial) {
+        this.noBolCortesiaParcial = noBolCortesiaParcial;
+    }
+
+    public float getTotalCortesia() {
+        return totalCortesia;
+    }
+
+    public void setTotalCortesia(float totalCortesia) {
+        this.totalCortesia = totalCortesia;
     }
 
     public ArrayList<DetallesMovimiento> getDetalleMovimiento() {
@@ -364,9 +396,15 @@ public class TurnoDetalles implements IDBModel{
                     executeQuery.getLong("no_bol_manual"),
                     executeQuery.getLong("no_bol_turno_s"),
                     executeQuery.getFloat("total"),
+                    executeQuery.getLong("no_bol_cortesia_total"),
+                    executeQuery.getLong("no_bol_cortesia_parcial"),
+                    executeQuery.getFloat("total_cortesia"),
+                        
                     executeQuery.getString("id_remoto"));
                 
             }
+            
+                    
             detalleTurno.setEstacionamiento(Estacionamiento.getDatos());
             conexion.cerrarConexion();
         } catch (SQLException ex) {

@@ -1,4 +1,3 @@
-
 package modelos;
 
 import java.sql.Connection;
@@ -13,61 +12,61 @@ import java.util.logging.Logger;
  * @author sistema
  */
 public class Caja implements IDBModel {
+
     int id;
     float monto;
     float fondo;
     float montoAlarma;
 
-    public Caja(int id, float monto,float fondo,float montoAlarma) {
+    public Caja(int id, float monto, float fondo, float montoAlarma) {
         this.id = id;
         this.monto = monto;
         this.fondo = fondo;
         this.montoAlarma = montoAlarma;
-        
+
     }
 
-     public static Caja getByCaseta(Long id){
+    public static Caja getByCaseta(Long id) {
         Caja caja = null;
-       Conexion conexion = Conexion.getInstance(); 
+        Conexion conexion = Conexion.getInstance();
         try {
             Connection connectionDB = conexion.getConnection();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT id FROM caja  where id_caseta = ?");
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("SELECT id FROM caja  where id_caseta = ?");
             statement.setLong(1, id);
             ResultSet executeQuery = statement.executeQuery();
-            if (executeQuery.next()){
+            if (executeQuery.next()) {
                 caja = Caja.getById(executeQuery.getInt("id"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             conexion.cerrarConexion();
-        }    
+        }
         return caja;
-     }
-    
-    
-    public static Caja getById(int id){
+    }
+
+    public static Caja getById(int id) {
         Caja caja = null;
-       Conexion conexion = Conexion.getInstance(); 
+        Conexion conexion = Conexion.getInstance();
         try {
             Connection connectionDB = conexion.getConnection();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("SELECT * FROM caja  where id = ?");
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("SELECT * FROM caja  where id = ?");
             statement.setInt(1, id);
             ResultSet executeQuery = statement.executeQuery();
-            if (executeQuery.next()){
-                caja = new Caja(executeQuery.getInt("id"),executeQuery.getFloat("monto"),
-                executeQuery.getFloat("fondo"),executeQuery.getFloat("monto_alarma"));
+            if (executeQuery.next()) {
+                caja = new Caja(executeQuery.getInt("id"), executeQuery.getFloat("monto"),
+                        executeQuery.getFloat("fondo"), executeQuery.getFloat("monto_alarma"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        } finally{
+        } finally {
             conexion.cerrarConexion();
-        }    
+        }
         return caja;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -107,22 +106,22 @@ public class Caja implements IDBModel {
 
     @Override
     public void actualizar() {
-       Conexion conexion = Conexion.getInstance(); 
-         try {
+        Conexion conexion = Conexion.getInstance();
+        try {
             Connection connectionDB = conexion.getConnection();
-            PreparedStatement  statement = connectionDB.
-            prepareStatement("UPDATE caja SET `monto`= ?,`fondo`= ?,`monto_alarma`= ? WHERE `id`= ?");
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("UPDATE caja SET `monto`= ?,`fondo`= ?,`monto_alarma`= ? WHERE `id`= ?");
             statement.setFloat(1, this.monto);
             statement.setFloat(2, this.fondo);
-             statement.setFloat(3, this.montoAlarma);
+            statement.setFloat(3, this.montoAlarma);
             statement.setLong(4, this.id);
-            
+
             statement.executeUpdate();
-           
+
         } catch (SQLException ex) {
             Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
-        } finally{
-          conexion.cerrarConexion();
+        } finally {
+            conexion.cerrarConexion();
         }
     }
 
@@ -130,6 +129,4 @@ public class Caja implements IDBModel {
     public void eliminar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
 }

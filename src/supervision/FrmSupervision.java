@@ -1,15 +1,17 @@
-
 package supervision;
 
 import ModelosAux.Tiempo;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -27,6 +29,7 @@ import modelos.Estacionamiento;
 import modelos.Estacionamiento;
 import modelos.IUseCalendar;
 import modelos.IUseCalendar;
+import modelos.Main;
 import modelos.Monitor;
 import modelos.Monitor;
 import modelos.MonitorEstacionamiento;
@@ -38,22 +41,31 @@ import modelos.Turno;
 import modelos.TurnoDetalles;
 import modelos.TurnoDetalles;
 import vistas.FrmCalendario;
-
+import vistas.FrmCobro;
+import vistas.FrmCobroManual;
+import vistas.FrmMenuParking;
+import vistas.formatos.FrmBoletoPerdido;
 
 public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
-    private ArrayList <MonitorEstacionamiento> estacionamientos; 
-    private ArrayList <Turno> turnosGlo; 
-    private ArrayList <TurnoDetalles> detallesGlo;
-    private ArrayList <Auto> autosGlo;
-    
+
+    private ArrayList<MonitorEstacionamiento> estacionamientos;
+    private ArrayList<Turno> turnosGlo;
+    private ArrayList<TurnoDetalles> detallesGlo;
+    private ArrayList<Auto> autosGlo;
+
     private Turno turnoGlo;
-    private TurnoDetalles detalleGlo ;
+    private TurnoDetalles detalleGlo;
     private Auto autoGlo;
-    
+
     private Estacionamiento estacionamiento;
-    
+
+    Frame parent;
+    Turno turno;
+
     public FrmSupervision(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.parent = parent;
+        this.turno = Main.getInstance().getTurnoActual();
         initComponents();
         personalizarTablas();
         this.setBackground(Color.white);
@@ -63,92 +75,100 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
         this.txtFecha.setText(Tiempo.getFecha());
         Monitor monitor = Monitor.getInstancia();
         Iterator<MonitorEstacionamiento> iterator = monitor.getEstacionamientos().iterator();
-        
-        while(iterator.hasNext()){
+
+        while (iterator.hasNext()) {
             MonitorEstacionamiento next = iterator.next();
             estacionamientos.add(next);
             cbxEstacionamientos.addItem(next.getNombre());
-            
+
         }
         conexionEstacionamiento();
-       eventosTablas();
+        eventosTablas();
     }
-    private void personalizarTablas(){
-        
-     tblAutos.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+
+    private void personalizarTablas() {
+
+        tblAutos.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if(table.getModel().getValueAt(row,1).equals("Fuera"))
-                    c.setBackground(new Color(255,255,102));
-                if(table.getModel().getValueAt(row,1).equals("Dentro"))
-                    c.setBackground(new Color(153,255,102));
-                if(table.getModel().getValueAt(row,1).equals("Contra"))
+                if (table.getModel().getValueAt(row, 1).equals("Fuera")) {
+                    c.setBackground(new Color(255, 255, 102));
+                }
+                if (table.getModel().getValueAt(row, 1).equals("Dentro")) {
+                    c.setBackground(new Color(153, 255, 102));
+                }
+                if (table.getModel().getValueAt(row, 1).equals("Contra")) {
                     c.setBackground(new Color(255, 0, 255));
-                if(table.getModel().getValueAt(row,1).equals("Manual"))
-                    c.setBackground(new Color(0,255,255));
-                if(table.getModel().getValueAt(row,1).equals("Perdido"))
-                    c.setBackground(new Color(255,102,102));
-                if(table.getModel().getValueAt(row,1).equals("Cancelado"))
-                    c.setBackground(new Color(153,153,153));
-                
-                this.setHorizontalAlignment( SwingConstants.CENTER);
+                }
+                if (table.getModel().getValueAt(row, 1).equals("Manual")) {
+                    c.setBackground(new Color(0, 255, 255));
+                }
+                if (table.getModel().getValueAt(row, 1).equals("Perdido")) {
+                    c.setBackground(new Color(255, 102, 102));
+                }
+                if (table.getModel().getValueAt(row, 1).equals("Cancelado")) {
+                    c.setBackground(new Color(153, 153, 153));
+                }
+
+                this.setHorizontalAlignment(SwingConstants.CENTER);
                 return c;
             }
         });
     }
-    private void conexionEstacionamiento() {
-       cbxEstacionamientos.addItemListener(new ItemListener() {
 
-           @Override
-           public void itemStateChanged(ItemEvent ie) {
-                if(ie.getStateChange() == 1){
-                    Configuracion.getInstancia().setIp(estacionamientos.get(cbxEstacionamientos.getSelectedIndex()-1).getIp());
+    private void conexionEstacionamiento() {
+        cbxEstacionamientos.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent ie) {
+                if (ie.getStateChange() == 1) {
+                    Configuracion.getInstancia().setIp(estacionamientos.get(cbxEstacionamientos.getSelectedIndex() - 1).getIp());
                     Conexion conexion = Conexion.getInstance();
                     String testConex = conexion.testConnection();
-                    if(testConex.equals("ok")){ 
+                    if (testConex.equals("ok")) {
                         estacionamiento = Estacionamiento.getDatos();
                         Rest.login(estacionamiento);
-                        JOptionPane.showMessageDialog(null,"Conexion exitosa", "Ok",JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Conexion exitosa", "Ok", JOptionPane.INFORMATION_MESSAGE);
                         // cargarTurnos();
-                        
-                    }else{
-                        JOptionPane.showMessageDialog(null,testConex, "Error",JOptionPane.ERROR_MESSAGE);
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, testConex, "Error", JOptionPane.ERROR_MESSAGE);
                     }
-                    
+
                 }
-           }
-       });
+            }
+        });
     }
-    
-    private void cargarTurnos(){
+
+    private void cargarTurnos() {
         turnosGlo = Turno.getTurnosByFechaAbierto(txtFecha.getText());
         Iterator<Turno> iterator = turnosGlo.iterator();
         DefaultTableModel modelTurno = (DefaultTableModel) tblTurnos.getModel();
         modelTurno.getDataVector().removeAllElements();
         modelTurno.fireTableDataChanged();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Turno turnoAux = iterator.next();
-             modelTurno.addRow(new Object[]{
+            modelTurno.addRow(new Object[]{
                 turnoAux.getTipoTurno(),
-                turnoAux.getHoraCierre()!=null?"CERRADO":"ABIERTO",
+                turnoAux.getHoraCierre() != null ? "CERRADO" : "ABIERTO",
                 turnoAux.getFechaApertura(),
                 turnoAux.getHoraApertura(),
                 turnoAux.getFechaCierre(),
                 turnoAux.getHoraCierre(),
                 turnoAux.getEmpleadoEntrada().getNombre()
-              
+
             });
         }
         this.tblTurnos.setModel(modelTurno);
     }
-    
+
     private void cargarDetalles(HashMap<String, TurnoDetalles> detallesTurno) {
         detallesGlo = new ArrayList();
         Iterator<Map.Entry<String, TurnoDetalles>> iterator = detallesTurno.entrySet().iterator();
         DefaultTableModel modelDetalle = (DefaultTableModel) tblDetalles.getModel();
         modelDetalle.getDataVector().removeAllElements();
         modelDetalle.fireTableDataChanged();
-        while(iterator.hasNext()){ 
+        while (iterator.hasNext()) {
             Map.Entry<String, TurnoDetalles> next = iterator.next();
             TurnoDetalles detalle = next.getValue();
             detallesGlo.add(detalle);
@@ -167,27 +187,33 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
             });
         }
     }
+
     private void cargarAutos(Turno turno, TurnoDetalles deta) {
-        ArrayList<Auto> autos = Auto.getAutosCerradosTurnoActual(turno.getId(),deta.getSerie() );
-        autos.addAll(Auto.getAutosPendientesByTurnoEntrada(turno.getId(),deta.getSerie()));
+        ArrayList<Auto> autos = Auto.getAutosCerradosTurnoActual(turno.getId(), deta.getSerie());
+        autos.addAll(Auto.getAutosPendientesByTurnoEntrada(turno.getId(), deta.getSerie()));
         Auto.ordenarByProgresivo(autos);
         autosGlo = autos;
         Iterator<Auto> iterator = autos.iterator();
         DefaultTableModel modelAutos = (DefaultTableModel) tblAutos.getModel();
         modelAutos.getDataVector().removeAllElements();
         modelAutos.fireTableDataChanged();
-        while(iterator.hasNext()){ 
+        while (iterator.hasNext()) {
             String estado = "";
             Auto auto = iterator.next();
-            if(auto.isDentro()) estado  = "Dentro";
-            else 
-                if(auto.isBoletoCancelado()) estado = "Cancelado";
-                else if(auto.isBoletoContra()) estado = "Contra";
-                else if(auto.isBoletoManual()) estado = "Manual";
-                else if(auto.isBoletoPerdido()) estado = "Perdido";
-                else estado = "Fuera";
-                        
-                        
+            if (auto.isDentro()) {
+                estado = "Dentro";
+            } else if (auto.isBoletoCancelado()) {
+                estado = "Cancelado";
+            } else if (auto.isBoletoContra()) {
+                estado = "Contra";
+            } else if (auto.isBoletoManual()) {
+                estado = "Manual";
+            } else if (auto.isBoletoPerdido()) {
+                estado = "Perdido";
+            } else {
+                estado = "Fuera";
+            }
+
             modelAutos.addRow(new Object[]{
                 auto.getProgresivo(),
                 estado,
@@ -200,50 +226,50 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                 auto.getMontoTangible()
             });
         }
-        
-        
+
     }
-         
-     private void eventosTablas() {
+
+    private void eventosTablas() {
         tblTurnos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
-                if(tblTurnos.getSelectedRow()>=0){
+                if (tblTurnos.getSelectedRow() >= 0) {
                     turnoGlo = turnosGlo.get(tblTurnos.getSelectedRow());
                     cargarDetalles(turnosGlo.get(tblTurnos.getSelectedRow()).getDetallesTurno());
-                  
-                }else{
+
+                } else {
                     DefaultTableModel modelDetalle = (DefaultTableModel) tblDetalles.getModel();
                     modelDetalle.getDataVector().removeAllElements();
                 }
             }
         });
-        
+
         tblDetalles.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
-                if(tblDetalles.getSelectedRow()>=0){
+                if (tblDetalles.getSelectedRow() >= 0) {
                     detalleGlo = detallesGlo.get(tblDetalles.getSelectedRow());
-                    cargarAutos(turnoGlo,detallesGlo.get(tblDetalles.getSelectedRow()));
-                }else{
+                    cargarAutos(turnoGlo, detallesGlo.get(tblDetalles.getSelectedRow()));
+                } else {
                     DefaultTableModel modelDetalle = (DefaultTableModel) tblDetalles.getModel();
                     modelDetalle.getDataVector().removeAllElements();
                 }
-            } 
+            }
         });
-        
+
         tblAutos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
-                if(tblAutos.getSelectedRow()>=0){
+                if (tblAutos.getSelectedRow() >= 0) {
                     autoGlo = autosGlo.get(tblAutos.getSelectedRow());
                 }/*else{
-                    DefaultTableModel modelDetalle = (DefaultTableModel) tblDetalles.getModel();
-                    modelDetalle.getDataVector().removeAllElements();
-                }*/
-            } 
+                 DefaultTableModel modelDetalle = (DefaultTableModel) tblDetalles.getModel();
+                 modelDetalle.getDataVector().removeAllElements();
+                 }*/
+
+            }
         });
-        
+
     }
 
     @Override
@@ -254,10 +280,10 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
 
     @Override
     public String getFechaActual() {
-       return this.txtFecha.getText();
+        return this.txtFecha.getText();
     }
 
-   
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -404,6 +430,11 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
 
         btnAgregarConcepto.setText("Agregar boleto");
         btnAgregarConcepto.setName("btnAgregarConcepto"); // NOI18N
+        btnAgregarConcepto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarConceptoActionPerformed(evt);
+            }
+        });
 
         jScrollPane4.setName("jScrollPane4"); // NOI18N
 
@@ -544,46 +575,56 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
     }//GEN-LAST:event_closeDialog
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new FrmCalendario(null,true,this);
+        new FrmCalendario(null, true, this);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnActualizarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarTurnoActionPerformed
-        if(turnoGlo!= null)
+        if (turnoGlo != null) {
             Rest.sendTurno(turnoGlo, estacionamiento);
+        }
     }//GEN-LAST:event_btnActualizarTurnoActionPerformed
 
     private void btnActualizarDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarDetalleActionPerformed
-        if(detalleGlo!= null)
+        if (detalleGlo != null) {
             Rest.sendTurnoDetalle(detalleGlo, estacionamiento);
+        }
     }//GEN-LAST:event_btnActualizarDetalleActionPerformed
 
     private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
-        if(autoGlo!=null){
+        if (autoGlo != null) {
             Rest.sendAuto(autoGlo, estacionamiento);
-            JOptionPane.showMessageDialog(this,"Auto actualizado");
+            JOptionPane.showMessageDialog(this, "Auto actualizado");
         }
     }//GEN-LAST:event_ActualizarActionPerformed
 
     private void CobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CobrarActionPerformed
-       if(autoGlo!= null){
-            if(autoGlo.isDentro())
-                new FrmSupervisionCerrarBoleto(null, true,autoGlo,estacionamiento,detalleGlo);
+        if (autoGlo != null) {
+            if (autoGlo.isDentro()) {
+                new FrmSupervisionCerrarBoleto(null, true, autoGlo, estacionamiento, detalleGlo);
+            }
             //else
-               // J 
-       }
+            // J 
+        }
     }//GEN-LAST:event_CobrarActionPerformed
 
     private void txtBuscarFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarFolioActionPerformed
-        Auto autoByProgresivo = Auto.getAutoByProgresivo(Integer.valueOf(txtBuscarFolio.getText())); 
-        if (autoByProgresivo != null )
-        {
-        String fechaEntrada = autoByProgresivo.getFechaEntrada();
-        this.txtFecha.setText(fechaEntrada);
-        cargarTurnos();
+        Auto autoByProgresivo = Auto.getAutoByProgresivo(Integer.valueOf(txtBuscarFolio.getText()));
+        if (autoByProgresivo != null) {
+            String fechaEntrada = autoByProgresivo.getFechaEntrada();
+            this.txtFecha.setText(fechaEntrada);
+            cargarTurnos();
         }
-        
+
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarFolioActionPerformed
+
+    private void btnAgregarConceptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarConceptoActionPerformed
+        Auto auto = new Auto();
+        auto.setHoraEntrada(Tiempo.getHora());
+        auto.setFechaEntrada(Tiempo.getFecha());
+        new FrmSupervisionAgregarBoleto(parent,true);
+        //(parent, true, turno, auto, estacionamiento);
+    }//GEN-LAST:event_btnAgregarConceptoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -612,6 +653,4 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
     private javax.swing.JTextField txtFecha;
     // End of variables declaration//GEN-END:variables
 
-    
-    
 }

@@ -430,6 +430,9 @@
         <Property name="text" type="java.lang.String" value="Agregar boleto"/>
         <Property name="name" type="java.lang.String" value="btnAgregarConcepto" noResource="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarConceptoActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane4">
       <Properties>

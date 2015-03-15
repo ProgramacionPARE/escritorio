@@ -1,16 +1,16 @@
 package modelos;
 
-
 import java.awt.Dialog;
 import java.awt.Frame;
 import vistas.FrmLoginTemporal;
 
-public class Operacion  {
+public class Operacion {
+
     boolean acceso;
     String permiso;
     public String getPermiso;
     private Frame parent;
-    
+
     public boolean isAcceso() {
         return acceso;
     }
@@ -18,9 +18,7 @@ public class Operacion  {
     public Operacion(Frame parent) {
         this.parent = parent;
     }
-    
-    
-    
+
     public void setAcceso(boolean acceso) {
         this.acceso = acceso;
     }
@@ -32,29 +30,27 @@ public class Operacion  {
     public void setPermiso(String permiso) {
         this.permiso = permiso;
     }
-    
-    
-    
-    public boolean requierePermisos(Empleado empleado, String permiso,boolean permitir){
+
+    public boolean requierePermisos(Empleado empleado, String permiso, boolean permitir) {
         acceso = false;
         this.permiso = permiso;
-        switch (permiso){
+        switch (permiso) {
             case "Administrador":
-                switch (empleado.getTipoPuesto()){
+                switch (empleado.getTipoPuesto()) {
                     case "Administrador":
                         return true;
                     case "Supervisor":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                     case "Auditor":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                     case "Encargado":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                     case "Cajero":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                 }
                 break;
             case "Supervisor":
-                  switch (empleado.getTipoPuesto()){
+                switch (empleado.getTipoPuesto()) {
                     case "Administrador":
                         return true;
                     case "Supervisor":
@@ -62,13 +58,13 @@ public class Operacion  {
                     case "Auditor":
                         return true;
                     case "Encargado":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                     case "Cajero":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                 }
                 break;
             case "Auditor":
-                switch (empleado.getTipoPuesto()){
+                switch (empleado.getTipoPuesto()) {
                     case "Administrador":
                         return true;
                     case "Supervisor":
@@ -76,13 +72,13 @@ public class Operacion  {
                     case "Auditor":
                         return true;
                     case "Encargado":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                     case "Cajero":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                 }
-                break;     
+                break;
             case "Encargado":
-                switch (empleado.getTipoPuesto()){
+                switch (empleado.getTipoPuesto()) {
                     case "Administrador":
                         return true;
                     case "Supervisor":
@@ -92,11 +88,11 @@ public class Operacion  {
                     case "Encargado":
                         return true;
                     case "Cajero":
-                        return permitir ? abrirLogin(): false ;
+                        return permitir ? abrirLogin() : false;
                 }
-                break;    
+                break;
             case "Cajero":
-                 switch (empleado.getTipoPuesto()){
+                switch (empleado.getTipoPuesto()) {
                     case "Administrador":
                         return true;
                     case "Supervisor":
@@ -113,9 +109,9 @@ public class Operacion  {
         return false;
     }
 
-    private  boolean abrirLogin() {
-        FrmLoginTemporal frmLoginTemporal = new FrmLoginTemporal(parent,true,this);
-        frmLoginTemporal.setVisible(true);  
+    private boolean abrirLogin() {
+        FrmLoginTemporal frmLoginTemporal = new FrmLoginTemporal(parent, true, this);
+        frmLoginTemporal.setVisible(true);
         return acceso;
     }
 }

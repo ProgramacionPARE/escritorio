@@ -1,4 +1,3 @@
-
 package vistas;
 
 import ModelosAux.Sistema;
@@ -27,7 +26,8 @@ import vistas.formatos.FrmReciboPago;
  *
  * @author Asistente Proyectos2
  */
-public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
+public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/ {
+
     private Estacionamiento estacionamiento;
     private Turno turno;
     private Auto auto;
@@ -35,22 +35,23 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
     private boolean visible;
     private ObjectInputStream entrada;
     private ObjectOutputStream salida;
+
     /**
      * Creates new form FrmCobro
      */
-    public FrmCobro(Frame parent, boolean modal,Auto auto,boolean visible) {
-        super(parent,"Cobro de boleto", modal);
+    public FrmCobro(Frame parent, boolean modal, Auto auto, boolean visible) {
+        super(parent, "Cobro de boleto", modal);
         initComponents();
         this.auto = auto;
-        this.estacionamiento =  Main.getInstance().getEstacionamiento();
+        this.estacionamiento = Main.getInstance().getEstacionamiento();
         this.turno = Main.getInstance().getTurnoActual();
-        
+
         this.parent = parent;
         this.visible = visible;
         this.getContentPane().setBackground(Color.white);
         pack();
         setLocationRelativeTo(parent);
-        if(visible){
+        if (visible) {
             this.auto.setHoraSalida(Tiempo.getHora());
             this.auto.setFechaSalida(Tiempo.getFecha());
         }
@@ -58,37 +59,37 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         calcularImporte();
         txtDineroPagado.grabFocus();
         txtCambio.setBackground(Color.red);
-        
+
         btnCobrar.setEnabled(false);
-        if(visible){
+        if (visible) {
             setVisible(true);
-        }    
+        }
     }
-    
-    private void cargarTarifas(){
+
+    private void cargarTarifas() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbxTarifas.getModel();
         ArrayList<Tarifa> tarifas = estacionamiento.getCaseta().getTarifas();
         Iterator<Tarifa> iterator = tarifas.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Tarifa next = iterator.next();
-           model.addElement(next.getDescripcion()+"  $"+next.getPrecioHora() );
+            model.addElement(next.getDescripcion() + "  $" + next.getPrecioHora());
         }
     }
-    
+
     public void calcularImporte() {
         //Completo la informacion de la salida del auto
         txtTiempoEstadia.setText("");
         txtProgresivo.setText(auto.getProgresivo());
-        if(auto.isBoletoManual()){
-            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getBoletoManual().getFechaEntradaM(),auto.getBoletoManual().getHoraEntradaM(),auto.getBoletoManual().getFechaSalidaM(),auto.getBoletoManual().getHoraSalidaM()));
-            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getBoletoManual().getFechaEntradaM(),auto.getBoletoManual().getHoraEntradaM(),auto.getBoletoManual().getFechaSalidaM(),auto.getBoletoManual().getHoraSalidaM()));
+        if (auto.isBoletoManual()) {
+            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getBoletoManual().getFechaEntradaM(), auto.getBoletoManual().getHoraEntradaM(), auto.getBoletoManual().getFechaSalidaM(), auto.getBoletoManual().getHoraSalidaM()));
+            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getBoletoManual().getFechaEntradaM(), auto.getBoletoManual().getHoraEntradaM(), auto.getBoletoManual().getFechaSalidaM(), auto.getBoletoManual().getHoraSalidaM()));
             txtFechaEntrada.setText(auto.getBoletoManual().getFechaEntradaM());
             txtFechaSalida.setText(auto.getBoletoManual().getFechaSalidaM());
             txtHoraEntrada.setText(auto.getBoletoManual().getHoraEntradaM());
             txtHoraSalida.setText(auto.getBoletoManual().getHoraSalidaM());
-        }else{
-            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
-            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntrada(),auto.getHoraEntrada(),auto.getFechaSalida(),auto.getHoraSalida()));
+        } else {
+            auto.setHorasTangibles(Tiempo.getDirenciaHoras(auto.getFechaEntrada(), auto.getHoraEntrada(), auto.getFechaSalida(), auto.getHoraSalida()));
+            auto.setMinutosTangibles(Tiempo.getDirenciaMinutos(auto.getFechaEntrada(), auto.getHoraEntrada(), auto.getFechaSalida(), auto.getHoraSalida()));
             txtFechaEntrada.setText(auto.getFechaEntrada());
             txtFechaSalida.setText(auto.getFechaSalida());
             txtHoraEntrada.setText(auto.getHoraEntrada());
@@ -96,27 +97,29 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
         }
         auto.setTurnoSalida(turno);
         auto.setMontoTangible(Tarifa.getImporteEstadia(auto));
-        if(auto.getDescuento()>0){
-            lblDescuento.setText("Descuento: $ "+auto.getDescuento());
+        if (auto.getDescuento() > 0) {
+            lblDescuento.setText("Descuento: $ " + auto.getDescuento());
         }
         // Completo campos del formulario
-        
-        if(auto.getHorasTangibles()==1)
-             txtTiempoEstadia.setText(auto.getHorasTangibles()+ " hora " );
-        else if(auto.getHorasTangibles()>1)
-             txtTiempoEstadia.setText(auto.getHorasTangibles()+ " horas " );
-        
-        txtTiempoEstadia.setText(txtTiempoEstadia.getText()+ auto.getMinutosTangibles()+" minutos");
+
+        if (auto.getHorasTangibles() == 1) {
+            txtTiempoEstadia.setText(auto.getHorasTangibles() + " hora ");
+        } else if (auto.getHorasTangibles() > 1) {
+            txtTiempoEstadia.setText(auto.getHorasTangibles() + " horas ");
+        }
+
+        txtTiempoEstadia.setText(txtTiempoEstadia.getText() + auto.getMinutosTangibles() + " minutos");
         txtImporteTotal.setText(String.valueOf(auto.getMontoTangible()));
         txtImporteBoletoPerdido.setText(String.valueOf(auto.getTarifa().getPrecioBoletoPerdido()));
-        if(!auto.isBoletoPerdido()){
+        if (!auto.isBoletoPerdido()) {
             jLabel5.setVisible(false);
             txtImporteBoletoPerdido.setVisible(false);
         }
-        if(Main.getInstance().getServerPantalla()!=null)
+        if (Main.getInstance().getServerPantalla() != null) {
             Main.getInstance().getServerPantalla().enviarAuto(auto);
+        }
     }
-  
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -401,59 +404,62 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtDineroPagadoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDineroPagadoKeyTyped
-      int k = (int) evt.getKeyChar();;
-      if (k >= 97 && k <= 122 || k >= 65 && k <= 90) 
-        evt.consume();      
+        int k = (int) evt.getKeyChar();
+        if (k >= 97 && k <= 122 || k >= 65 && k <= 90) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtDineroPagadoKeyTyped
 
-    
+
     private void txtDineroPagadoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDineroPagadoKeyReleased
-      if(!txtDineroPagado.getText().equals("")){
-        if(Float.valueOf(txtDineroPagado.getText())>=Float.valueOf(txtImporteTotal.getText())){
-            btnCobrar.setEnabled(true);
-            txtCambio.setText(String.valueOf(Float.valueOf(txtDineroPagado.getText())-Float.valueOf(txtImporteTotal.getText())));
-            txtCambio.setBackground(Color.green);
+        if (!txtDineroPagado.getText().equals("")) {
+            if (Float.valueOf(txtDineroPagado.getText()) >= Float.valueOf(txtImporteTotal.getText())) {
+                btnCobrar.setEnabled(true);
+                txtCambio.setText(String.valueOf(Float.valueOf(txtDineroPagado.getText()) - Float.valueOf(txtImporteTotal.getText())));
+                txtCambio.setBackground(Color.green);
+            } else {
+                txtDineroPagado.grabFocus();
+                txtCambio.setText("");
+                txtCambio.setBackground(Color.red);
+                btnCobrar.setEnabled(false);
+            }
         }
-        else{
-            txtDineroPagado.grabFocus();
-            txtCambio.setText("");
-            txtCambio.setBackground(Color.red);
-            btnCobrar.setEnabled(false);
-        }
-     }
     }//GEN-LAST:event_txtDineroPagadoKeyReleased
 
     private void cbxTarifasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTarifasItemStateChanged
-        if(ItemEvent.SELECTED == evt.getStateChange() ){
+        if (ItemEvent.SELECTED == evt.getStateChange()) {
             auto.setTarifa(estacionamiento.getCaseta().getTarifas().get(cbxTarifas.getSelectedIndex()));
             auto.actualizarTarifa();
-            calcularImporte();      
+            calcularImporte();
         }
     }//GEN-LAST:event_cbxTarifasItemStateChanged
 
     private void txtDineroPagadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDineroPagadoActionPerformed
-        if(btnCobrar.isEnabled())
+        if (btnCobrar.isEnabled()) {
             onCobrar();
+        }
     }//GEN-LAST:event_txtDineroPagadoActionPerformed
 
     private void btnDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescuentoActionPerformed
-        new FrmLeerCodigoBarrasDescuento(parent,true,this);       
+        new FrmLeerCodigoBarrasDescuento(parent, true, this);
     }//GEN-LAST:event_btnDescuentoActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        String ObjButtons[] = {"Si","No"};
-        int PromptResult = JOptionPane.showOptionDialog(null,"Estas seguro de no cobrar este boleto, permanecera abierto.","NO cobrar boleto",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
-        if(PromptResult==JOptionPane.YES_OPTION){
-            if( Main.getInstance().getServerPantalla()!=null)
+        String ObjButtons[] = {"Si", "No"};
+        int PromptResult = JOptionPane.showOptionDialog(null, "Estas seguro de no cobrar este boleto, permanecera abierto.", "NO cobrar boleto", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
+        if (PromptResult == JOptionPane.YES_OPTION) {
+            if (Main.getInstance().getServerPantalla() != null) {
                 Main.getInstance().getServerPantalla().enviaAlarmaCancelado();
-            if(auto.isBoletoManual())
+            }
+            if (auto.isBoletoManual()) {
                 auto.getBoletoManual().eliminar();
+            }
             this.dispose();
         }
     }//GEN-LAST:event_formWindowClosing
 
     private void btnCobroManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobroManualActionPerformed
-        new FrmCobroManual(this,true,auto);
+        new FrmCobroManual(this, true, auto);
     }//GEN-LAST:event_btnCobroManualActionPerformed
 
     private void cbxTarifasMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbxTarifasMouseReleased
@@ -462,53 +468,57 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
 
     @Action
     public void onCobrar() {
-       auto.setDentro(false);
+        auto.setDentro(false);
         //Actualizo monto en caja
-        Caja caja= Main.getInstance().getCaja();
-        caja.setMonto(caja.getMonto()+auto.getMontoTangible());
+        Caja caja = Main.getInstance().getCaja();
+        caja.setMonto(caja.getMonto() + auto.getMontoTangible());
         caja.actualizar();
         //Reviso si el auto fue boleto perdido, cancelado o cobrado normalmente 
-        if(auto.isBoletoCancelado())
-            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCancelados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCancelados()+1);
-        else if(auto.isBoletoPerdido())
-            turno.getDetallesTurno().get(auto.getSerie()).setNoBolPerdidos(turno.getDetallesTurno().get(auto.getSerie()).getNoBolPerdidos()+1);
-        else
-            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCobrados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCobrados()+1);
-       
-        turno.getDetallesTurno().get(auto.getSerie()).setTotal(turno.getDetallesTurno().get(auto.getSerie()).getTotal()+auto.getMontoTangible());
-        
-        Rest.sendTurnoDetalle( turno.getDetallesTurno().get(auto.getSerie()), estacionamiento);
-        
+        if (auto.isBoletoCancelado()) {
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCancelados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCancelados() + 1);
+        } else if (auto.isBoletoPerdido()) {
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolPerdidos(turno.getDetallesTurno().get(auto.getSerie()).getNoBolPerdidos() + 1);
+        } else {
+            turno.getDetallesTurno().get(auto.getSerie()).setNoBolCobrados(turno.getDetallesTurno().get(auto.getSerie()).getNoBolCobrados() + 1);
+        }
+
+        turno.getDetallesTurno().get(auto.getSerie()).setTotal(turno.getDetallesTurno().get(auto.getSerie()).getTotal() + auto.getMontoTangible());
+
+        Rest.sendTurnoDetalle(turno.getDetallesTurno().get(auto.getSerie()), estacionamiento);
+
         auto.actualizar();
-        turno.actualizar(); 
-        if(Main.getInstance().getServerPantalla()!=null)
+        turno.actualizar();
+        if (Main.getInstance().getServerPantalla() != null) {
             Main.getInstance().getServerPantalla().enviaAutoCobrado();
+        }
         //Reviso si activo la alarma
-        if(visible){
-            ((FrmPrincipal)parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja) );
-        
+        if (visible) {
+            ((FrmPrincipal) parent).setCajaAlarma(Sistema.requiereRetitroParcial(caja));
+
             int showConfirmDialog;
             //Pregunto si imprimo recibo de pago
-            if(auto.isBoletoCancelado() || auto.isBoletoPerdido())
+            if (auto.isBoletoCancelado() || auto.isBoletoPerdido()) {
                 showConfirmDialog = JOptionPane.YES_OPTION;
-            else
-                showConfirmDialog = JOptionPane.showConfirmDialog(this, "Quieres imprimir recibo de pago", "Recibo de pago",JOptionPane.YES_NO_OPTION);
-            if(showConfirmDialog == JOptionPane.YES_OPTION){
+            } else {
+                showConfirmDialog = JOptionPane.showConfirmDialog(this, "Quieres imprimir recibo de pago", "Recibo de pago", JOptionPane.YES_NO_OPTION);
+            }
+            if (showConfirmDialog == JOptionPane.YES_OPTION) {
                 auto.setReciboImpreso(true);
                 auto.actualizar();
                 auto.setMontoReciboPago(Float.valueOf(txtDineroPagado.getText()));
-                new FrmReciboPago(this,false,PrinterJob.getPrinterJob(),auto);   
+                new FrmReciboPago(this, false, PrinterJob.getPrinterJob(), auto);
             }
         }
         Rest.sendAuto(auto, estacionamiento);
-         if(visible){
-        this.dispose();
-         }
+        if (visible) {
+            this.dispose();
+        }
     }
+
     public Auto getAuto() {
-       return auto;
+        return auto;
     }
- 
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCobrar;
@@ -535,7 +545,5 @@ public class FrmCobro extends javax.swing.JDialog /*implements Runnable*/{
     private javax.swing.JTextField txtProgresivo;
     private javax.swing.JTextField txtTiempoEstadia;
     // End of variables declaration//GEN-END:variables
-
-  
 
 }
