@@ -5,6 +5,8 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Descuento;
+import modelos.Estacionamiento;
+import modelos.Progresivo;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeException;
 import net.sourceforge.barbecue.BarcodeFactory;
@@ -14,10 +16,12 @@ import net.sourceforge.barbecue.output.OutputException;
 
 public class FrmDescuentos extends javax.swing.JDialog {
     private Barcode barcode=null;
-
-    public FrmDescuentos(java.awt.Frame parent, boolean modal) {
+    private Estacionamiento estacionamiento;
+    
+    public FrmDescuentos(java.awt.Frame parent, boolean modal,Estacionamiento estacionamiento) {
         super(parent,"Descuentos", modal);
         initComponents();
+        this.estacionamiento = estacionamiento;
         setLocationRelativeTo(parent);
         setVisible(true);
     }
@@ -27,11 +31,11 @@ public class FrmDescuentos extends javax.swing.JDialog {
     private void initComponents() {
 
         btnGenerarDescuento = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        txtFolioInicial = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtFolioFinal = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        txtNoCortesias = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        cbxTipoCortesia = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
         txtDescuento = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -44,23 +48,28 @@ public class FrmDescuentos extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Folio Inicial");
-        jLabel1.setName("jLabel1"); // NOI18N
-
-        txtFolioInicial.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFolioInicial.setName("txtFolioInicial"); // NOI18N
-
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Folio final");
-        jLabel2.setName("jLabel2"); // NOI18N
-
-        txtFolioFinal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFolioFinal.setName("txtFolioFinal"); // NOI18N
-
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Descuento $");
+        jLabel3.setText("Tipo de cortesia");
         jLabel3.setName("jLabel3"); // NOI18N
+
+        txtNoCortesias.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNoCortesias.setName("txtNoCortesias"); // NOI18N
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Numero de cortesias");
+        jLabel4.setName("jLabel4"); // NOI18N
+
+        cbxTipoCortesia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Cortesia total", "Cortesia por tiempo" }));
+        cbxTipoCortesia.setName("cbxTipoCortesia"); // NOI18N
+        cbxTipoCortesia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxTipoCortesiaActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel5.setText("Descuento $");
+        jLabel5.setName("jLabel5"); // NOI18N
 
         txtDescuento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtDescuento.setName("txtDescuento"); // NOI18N
@@ -71,32 +80,36 @@ public class FrmDescuentos extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtFolioInicial)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtFolioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(btnGenerarDescuento))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGenerarDescuento)
+                    .addComponent(cbxTipoCortesia, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtNoCortesias, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                            .addComponent(txtDescuento, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFolioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFolioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxTipoCortesia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNoCortesias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGenerarDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -105,13 +118,12 @@ public class FrmDescuentos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarDescuentoActionPerformed
-        int ini = Integer.valueOf(txtFolioInicial.getText());
-        int fin = Integer.valueOf(txtFolioFinal.getText());
-        float montoDescuento = Float.valueOf(txtDescuento.getText());
+        float montoDescuento = Float.valueOf(txtNoCortesias.getText());
+        int noCortesias = Integer.valueOf(txtNoCortesias.getText());
         Descuento desc;
-        for(int i= ini ; i <= fin;i++){
+        for(int i= 0 ; i < noCortesias;i++){
             try {
-                desc = new Descuento(0,i,montoDescuento,true);
+                desc = new Descuento(Long.valueOf(Progresivo.getUltimoProgresivo(estacionamiento.getCaseta(),"cortesia")),montoDescuento,true);
                 desc.guardar();
                 barcode = BarcodeFactory.createCode128B(desc.getClave()+ String.format("%06d", desc.getFolio()));
                 barcode.setBarHeight(40);
@@ -127,15 +139,25 @@ public class FrmDescuentos extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnGenerarDescuentoActionPerformed
 
+    private void cbxTipoCortesiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTipoCortesiaActionPerformed
+        if(cbxTipoCortesia.getSelectedIndex() == 0){
+            jLabel5.setVisible(false);
+            txtDescuento.setVisible(false);
+        }else{
+            jLabel5.setVisible(true);
+            txtDescuento.setVisible(true);
+        }
+    }//GEN-LAST:event_cbxTipoCortesiaActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarDescuento;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox cbxTipoCortesia;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField txtDescuento;
-    private javax.swing.JTextField txtFolioFinal;
-    private javax.swing.JTextField txtFolioInicial;
+    private javax.swing.JTextField txtNoCortesias;
     // End of variables declaration//GEN-END:variables
 }

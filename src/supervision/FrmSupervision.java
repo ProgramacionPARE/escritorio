@@ -4,14 +4,12 @@ import ModelosAux.Tiempo;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
-import java.awt.Window;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -20,31 +18,17 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modelos.Auto;
-import modelos.Auto;
-import modelos.Conexion;
 import modelos.Conexion;
 import modelos.Configuracion;
-import modelos.Configuracion;
 import modelos.Estacionamiento;
-import modelos.Estacionamiento;
-import modelos.IUseCalendar;
 import modelos.IUseCalendar;
 import modelos.Main;
 import modelos.Monitor;
-import modelos.Monitor;
-import modelos.MonitorEstacionamiento;
 import modelos.MonitorEstacionamiento;
 import modelos.Rest;
-import modelos.Rest;
 import modelos.Turno;
-import modelos.Turno;
-import modelos.TurnoDetalles;
 import modelos.TurnoDetalles;
 import vistas.FrmCalendario;
-import vistas.FrmCobro;
-import vistas.FrmCobroManual;
-import vistas.FrmMenuParking;
-import vistas.formatos.FrmBoletoPerdido;
 
 public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
 
@@ -308,8 +292,9 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
         jScrollPane4 = new javax.swing.JScrollPane();
         tblTurnos = new javax.swing.JTable();
         btnCerrarDia = new javax.swing.JButton();
-        btnAgregarDeposito = new javax.swing.JButton();
+        btnGenerarStickers = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        btnAgregarDeposito1 = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -460,8 +445,13 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
         btnCerrarDia.setText("Cerrar dia");
         btnCerrarDia.setName("btnCerrarDia"); // NOI18N
 
-        btnAgregarDeposito.setText("Agregar deposito");
-        btnAgregarDeposito.setName("btnAgregarDeposito"); // NOI18N
+        btnGenerarStickers.setText("Generar stickers");
+        btnGenerarStickers.setName("btnGenerarStickers"); // NOI18N
+        btnGenerarStickers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarStickersActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("...");
         jButton1.setToolTipText("");
@@ -471,6 +461,9 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        btnAgregarDeposito1.setText("Agregar deposito");
+        btnAgregarDeposito1.setName("btnAgregarDeposito1"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -501,10 +494,12 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                                 .addComponent(txtFecha)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1)))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAgregarDeposito, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCerrarDia, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCerrarDia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnGenerarStickers, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(276, 276, 276))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -518,6 +513,11 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                         .addComponent(Actualizar))
                     .addComponent(jScrollPane4))
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(887, 887, 887)
+                    .addComponent(btnAgregarDeposito1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                    .addGap(287, 287, 287)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -526,14 +526,14 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(btnGenerarStickers))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxEstacionamientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtBuscarFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCerrarDia)
-                    .addComponent(btnAgregarDeposito)
                     .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
@@ -563,6 +563,11 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                     .addComponent(Cobrar)
                     .addComponent(btnAgregarConcepto))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(49, 49, 49)
+                    .addComponent(btnAgregarDeposito1)
+                    .addContainerGap(629, Short.MAX_VALUE)))
         );
 
         pack();
@@ -626,6 +631,10 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
         //(parent, true, turno, auto, estacionamiento);
     }//GEN-LAST:event_btnAgregarConceptoActionPerformed
 
+    private void btnGenerarStickersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarStickersActionPerformed
+       
+    }//GEN-LAST:event_btnGenerarStickersActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Actualizar;
@@ -633,8 +642,9 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
     private javax.swing.JButton btnActualizarDetalle;
     private javax.swing.JButton btnActualizarTurno;
     private javax.swing.JButton btnAgregarConcepto;
-    private javax.swing.JButton btnAgregarDeposito;
+    private javax.swing.JButton btnAgregarDeposito1;
     private javax.swing.JButton btnCerrarDia;
+    private javax.swing.JButton btnGenerarStickers;
     private javax.swing.JComboBox cbxEstacionamientos;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

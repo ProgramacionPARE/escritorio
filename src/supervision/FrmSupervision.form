@@ -53,10 +53,14 @@
                               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnAgregarDeposito" pref="263" max="32767" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnCerrarDia" min="-2" pref="267" max="-2" attributes="0"/>
+                      <EmptySpace pref="28" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnCerrarDia" alignment="1" min="-2" pref="267" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="btnGenerarStickers" min="-2" pref="262" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="276" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel7" max="32767" attributes="0"/>
@@ -75,6 +79,13 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="887" max="-2" attributes="0"/>
+                  <Component id="btnAgregarDeposito1" pref="263" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="287" max="-2" attributes="0"/>
+              </Group>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -85,6 +96,7 @@
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnGenerarStickers" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -92,7 +104,6 @@
                   <Component id="txtBuscarFolio" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtFecha" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnCerrarDia" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnAgregarDeposito" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -130,6 +141,13 @@
                   <Component id="btnAgregarConcepto" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                  <Component id="btnAgregarDeposito1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="629" max="32767" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -510,11 +528,14 @@
         <Property name="name" type="java.lang.String" value="btnCerrarDia" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnAgregarDeposito">
+    <Component class="javax.swing.JButton" name="btnGenerarStickers">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Agregar deposito"/>
-        <Property name="name" type="java.lang.String" value="btnAgregarDeposito" noResource="true"/>
+        <Property name="text" type="java.lang.String" value="Generar stickers"/>
+        <Property name="name" type="java.lang.String" value="btnGenerarStickers" noResource="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarStickersActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
@@ -525,6 +546,12 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAgregarDeposito1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Agregar deposito"/>
+        <Property name="name" type="java.lang.String" value="btnAgregarDeposito1" noResource="true"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
