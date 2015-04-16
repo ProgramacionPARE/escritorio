@@ -41,6 +41,7 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         this.setLocationRelativeTo(parent);
         this.job = job;
         jLabProgresivo.setText("NO. " + auto.getProgresivo());
+        lblFecha.setText(auto.getFechaEntrada() + " " + auto.getHoraEntrada());
         this.job = PrinterJob.getPrinterJob();
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
         int selectedService = 0;
@@ -73,6 +74,8 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         jLabel8 = new javax.swing.JLabel();
         jLabProgresivo = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        jLabEntrada = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -118,6 +121,14 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
         jLabel20.setText(resourceMap.getString("jLabel20.text")); // NOI18N
         jLabel20.setName("jLabel20"); // NOI18N
 
+        jLabEntrada.setFont(resourceMap.getFont("jLabEntrada.font")); // NOI18N
+        jLabEntrada.setText(resourceMap.getString("jLabEntrada.text")); // NOI18N
+        jLabEntrada.setName("jLabEntrada"); // NOI18N
+
+        lblFecha.setFont(resourceMap.getFont("lblFecha.font")); // NOI18N
+        lblFecha.setText(resourceMap.getString("lblFecha.text")); // NOI18N
+        lblFecha.setName("lblFecha"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -138,7 +149,12 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(26, Short.MAX_VALUE)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblFecha)))
                 .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
@@ -154,8 +170,12 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
                 .addComponent(jLabPlacas1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabProgresivo)
-                .addGap(46, 46, 46)
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabEntrada)
+                    .addComponent(lblFecha))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -212,6 +232,7 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabEntrada;
     private javax.swing.JLabel jLabPlacas1;
     private javax.swing.JLabel jLabProgresivo;
     private javax.swing.JLabel jLabel18;
@@ -219,6 +240,7 @@ public class FrmP3BoletoParabrisas extends javax.swing.JDialog implements Printa
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblFecha;
     // End of variables declaration//GEN-END:variables
 
 

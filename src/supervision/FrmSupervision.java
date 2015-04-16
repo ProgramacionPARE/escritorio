@@ -138,8 +138,8 @@ public class FrmSupervision extends java.awt.Dialog implements IUseCalendar {
                 turnoAux.getFechaApertura(),
                 turnoAux.getHoraApertura(),
                 turnoAux.getFechaCierre(),
-                turnoAux.getHoraCierre(),
-                turnoAux.getEmpleadoEntrada().getNombre()
+                turnoAux.getHoraCierre(),""
+                //turnoAux.getEmpleadoEntrada().getNombre()
 
             });
         }

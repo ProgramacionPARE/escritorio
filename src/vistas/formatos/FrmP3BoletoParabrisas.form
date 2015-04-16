@@ -67,7 +67,14 @@
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="26" max="32767" attributes="0"/>
-                  <Component id="jLabel8" min="-2" pref="301" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel8" min="-2" pref="301" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabEntrada" min="-2" pref="155" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblFecha" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -85,8 +92,13 @@
                   <Component id="jLabPlacas1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabProgresivo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                  <Component id="jLabel8" pref="259" max="32767" attributes="0"/>
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabEntrada" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblFecha" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jLabel8" min="-2" pref="240" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -151,6 +163,20 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabel20.text"/>
             <Property name="name" type="java.lang.String" value="jLabel20" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabEntrada">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabEntrada.font"/>
+            <Property name="text" type="java.lang.String" resourceKey="jLabEntrada.text"/>
+            <Property name="name" type="java.lang.String" value="jLabEntrada" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFecha">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="lblFecha.font"/>
+            <Property name="text" type="java.lang.String" resourceKey="lblFecha.text"/>
+            <Property name="name" type="java.lang.String" value="lblFecha" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>
