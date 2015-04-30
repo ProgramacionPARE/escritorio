@@ -104,6 +104,39 @@ public class Turno implements IDBModel, Serializable {
             Rest.sendTurnoDetalle(this.detallesTurno.get(serie), estacionamiento);
         }
     }
+    
+    /*public void realizarCorteAutomatico(String tipoCorte) {  
+        //this.estacionamiento = sEstacionamiento;
+        try {
+            Conexion conexion = Conexion.getInstance();
+            Connection connectionDB = conexion.getConnection();
+            PreparedStatement statement = connectionDB.
+                    prepareStatement("SELECT id_empleado_apertura, id_remoto FROM turnos"
+                            + " WHERE fecha_cierre is null");
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                this.empleadoCierre = resultSet.getLong("id_empleado_apertura");
+                System.out.println("Cargo al usuario que estuvo en el turno" + empleadoCierre);
+                //empleado = Empleado.getById(resultSet.getLong("id"));
+            }//if
+            conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }//catch
+        //return empleados;
+    
+        //this.empleadoCierre = Empleado.;
+        if (tipoCorte.equals("corte")) {
+            fechaCierre = Tiempo.getFecha();
+            horaCierre = Tiempo.getHora();
+        }//if
+        for (String serie : this.estacionamiento.getCaseta().getSeries()) {
+            this.detallesTurno.get(serie).cerrarTurno(tipoCorte);
+            if (tipoCorte.equals("corte")) {
+                Rest.sendTurnoDetalle(this.detallesTurno.get(serie), estacionamiento);
+            }//if
+        }//for
+    }//realizarCorteAutomatico*/
 
     public void realizarCorte(String tipoCorte) {
         this.empleadoCierre = m.getEmpleadoSesion().getId();

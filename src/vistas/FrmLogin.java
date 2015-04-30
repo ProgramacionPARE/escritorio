@@ -13,7 +13,7 @@ import sockets.ServerAcept;
 import sockets.ServerPantalla;
 
 public class FrmLogin extends JFrame {
-
+    
     public FrmLogin() {
         super("Entrar");
         initComponents();
@@ -159,7 +159,7 @@ public class FrmLogin extends JFrame {
         }
     }
 
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel1;

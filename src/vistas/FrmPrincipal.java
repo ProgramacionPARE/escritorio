@@ -72,7 +72,7 @@ public class FrmPrincipal extends JFrame {
         }
         new FrmLogin();
     }
-
+    
     private void iniciaOtrosComponentes() {
         m.setEstacionamiento(Estacionamiento.getDatos());
         m.setCaja(Caja.getByCaseta(m.getEstacionamiento().getCaseta().getId()));
@@ -86,9 +86,21 @@ public class FrmPrincipal extends JFrame {
         if (m.getTurnoActual() != null) {
             txtInfoTurno.setText("Turno actual: " + m.getTurnoActual().getTipoTurno() + " se abrio el dia " + m.getTurnoActual().getFechaApertura() + " a las "+m.getTurnoActual().getHoraApertura()+" ");
             if(!m.getTurnoActual().getFechaApertura().equals(Tiempo.getFecha())){
-                lblAlertaTurno.setText("Alerta, el turno abierto no corresponde al dia de hoy.  ");
-            }
-        }
+                m.getTurnoActual().realizarCorte("corte");
+                m.getTurnoActual().actualizar();
+                Rest.sendTurno(m.getTurnoActual(), m.getEstacionamiento());
+                new ReporteCorteTurno().generarReporte();
+                new ReporteDetalleAvanzado().generarReporte();
+                new RetirosParciales().generarReporte();
+                JOptionPane.showMessageDialog(this, "Realizando Corte del Día de Ayer. ", "ALERTA", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Favor de Volver ABRIR la aplicación. ", "Cerrando", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+                /*m.setEmpleadoSesion(null);
+                this.setVisible(false);
+                this.dispose();
+                initLogin();*/
+            }//if
+        }//if
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "parking");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "caja");
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0), "auditoria");

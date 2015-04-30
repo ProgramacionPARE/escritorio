@@ -11,6 +11,17 @@ import sockets.ClientePantalla;
 import sockets.ServerAcept;
 import vistas.FrmLogin;
 
+/*import ModelosAux.Tiempo;
+import modeloReportes.ReporteCorteTurno;
+import modeloReportes.ReporteDetalleAvanzado;
+import modeloReportes.RetirosParciales;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.util.logging.Logger;*/
+
+
 public class Principal {
 
     public static void main(String[] args) {
@@ -29,6 +40,7 @@ public class Principal {
             if (datos.getTerminal().equals(Configuracion.CAJA)) {
 
                 Main.getInstance().setServerAcept(new ArrayList());
+                               
                 FrmLogin frmLogin = new FrmLogin();
                 Main.getInstance().getServerAcept().add(new ServerAcept(ServerAcept.BOLETO, frmLogin));
                 Main.getInstance().getServerAcept().add(new ServerAcept(ServerAcept.PANTALLA, frmLogin));
